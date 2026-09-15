@@ -1,4 +1,4 @@
-# Estado atual — v23.09.2003.4
+# Estado atual — v23.09.2003.6
 
 ## Feito
 
@@ -8,40 +8,35 @@
 - schema de importação com limites, data, categorias, séries, cardio e pendências;
 - cálculo diário proporcional em centésimos, deduplicação, edição e remoção;
 - Store com save versionado, snapshot anterior, backup e restauração;
-- HUD responsivo, menus de personagem/treinos/mochila/configurações e direcional de toque.
-- Câmera com zoom inteiro aprovado e margens simétricas para mapas menores; `data-camera-padding` registra o enquadramento.
-- Ciclos de idle dos quatro monstros, vento ocasional em grama/árvores/bandeiras e mapa prévio com regiões futuras bloqueadas.
-- Loja reorganizada em cartões compactos e HUD com ouro, materiais e poções.
+- HUD responsivo de 2 colunas com barras de 8px e valor inline, menu nav com ícone+label e direcional D-pad touch responsivo.
+- Câmera com zoom inteiro e enquadramento simétrico.
+- Ciclos de idle de 3 quadros para o herói (respiração e piscar) e 6 quadros dedicados para cada espécie de monstro.
+- Transição de caminhada com passada completa (4 quadros por direção) com elevação e oscilação alternada de pernas/braços.
+- Loja e mochila em formato de cards com badges de estado (equipado/disponível).
 - Suporte a equipamentos em 4 slots (arma, escudo, armadura e acessório) e velocidade baseada no atributo Agilidade.
 - Spawn determinístico dos inimigos com leve variância visual.
 
-## Verificado nesta etapa
+## Verificado nesta etapa (v23.09.2003.6)
 
 - Dependências instaladas; TypeScript e build Vite executados com sucesso.
-- 25 testes de domínio: pontuação, teto/ordem, validação, histórico, backup, quota, combate, compra e rotas.
-- Ciclo no navegador: importar fixture e revisar → explorar → vencer Broto → retornar → reload → exportar/remover/restaurar.
-- Loja e fogueira exercitadas na UI. Reload durante animação preserva a rodada já calculada e não duplica loot.
-- Capturas de desktop 1366×768 e viewport móvel 390×844 inspecionadas. Não equivale a teste em telefone físico.
-- 28 testes de domínio: equipamentos, offsets e migração passados com sucesso.
-- Resultado final: 28 testes de domínio + build concluído.
+- 28 testes de domínio passando (equipamentos, offsets, atributos, save e migrações).
+- 6 testes End-to-End (Playwright) validados no Chromium sem regressões.
+- HUD, modais de personagem/mochila e D-pad reestruturados e testados em resoluções de desktop e mobile.
 
 ## Melhorias visuais
 
-- HUD e menu sem sobreposição no viewport móvel; câmera preenche a tela com escala inteira e centraliza sobras.
-- Mais detalhe em aventureiro, Broto, árvore e guilda; animações de água, fogo, bandeiras e folhagem; idle dos monstros sem mover coordenadas de gameplay.
-- `CombatEvent[]` alimenta apresentação separada: avanço/recuo, flash de alvo, dano flutuante, cura, guarda, preparação, fuga, vitória e derrota.
-- Toda rodada é persistida antes dos efeitos. Durante os efeitos, a UI usa uma cópia descartável para atualizar barras no momento visual correto.
-- `prefers-reduced-motion` reduz efeitos; redimensionamento encerra efeitos antigos e reconstrói a cena.
-- Versão exibida no jogo a partir de `src/version.ts`.
+- HUD com layout limpo em card compacto 2 colunas.
+- Menus de ação (Personagem, Treinos, Mochila, Mapa, Ajustes) com ícones e rótulos integrados.
+- Modais com header em degradê e detalhe dourado, botão fechar circular e cartões para itens de mochila.
+- Animação do aventureiro com ciclo Idle (3 quadros) e Walk (4 quadros por direção).
+- Sprites de monstros com quadros específicos de respiro e movimentação fluida via animações nativas do Phaser 3.
+- `prefers-reduced-motion` respeitado e persistência de save preservada integralmente.
 
 ## Ainda não concluído
 
-- Repositório remoto GitHub e deployment Vercel. Só há Git local; nenhuma URL pública foi criada.
-- Áudio, PWA/offline e atalho de força. Posto de vigia ainda não tem composição própria.
-- Commit local pronto: `087a186 feat: centralizar mapa e compactar HUD v23.09.2003.3`.
-- Repositório GitHub criado e sincronizado: `JoaoFiscina/Fizzi-Quest`, branch `main`, commit remoto `6e07c67`.
-- Deployment Vercel ainda não foi criado; o `vercel.json` já define Vite, `npm run build` e saída `dist`.
-- Backlog: estética do mapa, pixel art mais definida dos monstros, HUD completo e balanceamento.
-- Balanceamento de uma sessão longa e verificação em iPhone/Android reais.
+- Repositório remoto no GitHub sincronizado; deploy na Vercel a ser atualizado.
+- Áudio, PWA/offline e atalho de força.
+- Backlog futuro: spawn dinâmico de monstros com patrulhamento (pós primeira derrota) e balanceamento visual detalhado dos tiles do mapa.
+
 
 Veja `docs/VALIDATION.md` para comandos, cobertura e limitações.

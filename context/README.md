@@ -4,7 +4,7 @@ Esta pasta é a memória operacional do jogo. Atualize-a a cada versão antes de
 
 ## Versão corrente
 
-`v23.09.2003.5` — sprite do herói com 5 frames e sombra de contato; animações de walk sincronizadas com velocidade real; HUD com ícones distintos por recurso; botão X redesenhado; divisores pontilhados; D-pad com relevo e :active.
+`v23.09.2003.6` — animações de walk com deslocamento real de 4px por perna; idle genuíno de 3 frames (respiração + piscar); monstros com 6 frames específicos por espécie; HUD compacto em grid 2 colunas; nav com ícone+label; modais com header dourado e atributos com valor em destaque.
 
 ## Árvore lógica
 

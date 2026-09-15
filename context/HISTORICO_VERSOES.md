@@ -1,5 +1,9 @@
 # Histórico de versões
 
+## v23.09.2003.6 — 15/09/2026
+
+Animações de aventureiro completas com ciclo Idle (3 quadros: respiração e piscar) e Walk (4 quadros por direção com passada completa de 4px e oscilação de braços/ombros). Sprites de monstros retrabalhados com 6 quadros dedicados de idle e respiro por espécie. HUD reestruturado em grid compacto de 2 colunas com barras de vitais de 8px e valores inline, nav menu com ícones e rótulos integrados, modais com cabeçalhos dourados e cards de inventário por estado. 28 testes unitários, 6 testes E2E e build aprovados.
+
 ## v23.09.2003.4 — 15/09/2026
 
 Adição dos slots explícitos de equipamento (escudo, armadura) com migração lazy não destrutiva. O HUD exibe a arma, o escudo e a armadura ativamente equipados. Implementação de velocidade de movimento controlada pelo atributo Agilidade (base de 56 px/s até máximo próximo de 82 px/s). O spawn de inimigos ganhou variabilidade determinística restrita a áreas caminháveis sem afetar a lógica base. Todos os 28 testes e o build passam.

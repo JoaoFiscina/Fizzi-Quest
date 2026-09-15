@@ -194,10 +194,11 @@ export class World extends Phaser.Scene {
       s.y = 232;
     }
     this.player = this.add
-      .sprite(s.x, s.y, "hero-0-0")
+      .sprite(s.x, s.y, "hero-0-idle-0")
       .setOrigin(0.5, 1)
       .setDepth(s.y);
     this.foreground.add(this.player);
+    if (!this.reduced) this.player.play("hero-idle-0");
     this.cameras.main.setBounds(0, 0, m.width * 16, m.height * 16);
     this.cameras.main.startFollow(this.player, true, 0.15, 0.15);
     this.resizeCamera();
@@ -313,9 +314,11 @@ export class World extends Phaser.Scene {
     if (this.reduced) {
       this.player.setTexture(`hero-${this.direction}-${dx || dy ? 1 : 0}`);
     } else {
-      const anim = dx || dy ? `hero-walk-${this.direction}` : `hero-idle-${this.direction}`;
+      const anim = dx || dy
+        ? `hero-walk-${this.direction}`
+        : `hero-idle-${this.direction}`;
       if (this.player.anims.currentAnim?.key !== anim) {
-        this.player.play(anim, true);
+        this.player.play(anim);
       }
     }
     this.foreground.sort("depth");

@@ -75,6 +75,33 @@ const interact = button("Explorar", () => world.interact(), "interact");
 interact.disabled = true;
 const controls = el("div", "", "controls"),
   dpad = el("div", "", "dpad");
+for (const [key, label, cls, icon] of [
+  ["character", "Personagem", "character-btn", "⚔️"],
+  ["workouts", "Treinos", "workouts-btn", "🏃"],
+  ["bag", "Mochila", "bag-btn", "🎒"],
+  ["map", "Mapa", "map-button map-btn", "🗺️"],
+  ["settings", "Ajustes", "settings-btn", "⚙️"],
+] as const) {
+  const b = button(
+    "",
+    () => {
+      if (store.state.battle) return;
+      if (key === "character") character();
+      else if (key === "workouts") {
+        openModal("Diário de treinos");
+        workoutsUI(store, content, notify);
+      }
+      else if (key === "bag") equipment(false);
+      else if (key === "map") worldMap();
+      else if (key === "settings") settings();
+    },
+    cls,
+  );
+  const iconEl = el("span", icon, "nav-icon");
+  const labelEl = el("span", label);
+  b.append(iconEl, labelEl);
+  nav.append(b);
+}
 for (const [key, label, cls] of [
   ["w", "↑", "up"],
   ["a", "←", "left"],
@@ -143,26 +170,31 @@ function renderHUD() {
   const s = visualState ?? store.state,
     a = stats(s);
   hud.replaceChildren();
-  const crest = el("div", "FQ", "crest"),
-    info = el("div", "", "vitals");
+  const crest = el("div", "FQ", "crest");
+  const info  = el("div", "", "vitals");
   info.append(el("strong", `Aventureiro · Nv. ${a.level}`));
-  const hp = el("div", `Vida ${s.hp}/${a.maxHp}`, "resource");
-  hp.append(bar(s.hp, a.maxHp));
-  const stamina = el("div", `Fôlego ${s.stamina}/${a.maxStamina}`, "resource");
-  stamina.append(bar(s.stamina, a.maxStamina, "stamina"));
+
+  const hp = el("div", "", "resource");
+  const hpLabel = el("span", "❤️");
+  const hpVal   = el("span", `${s.hp}/${a.maxHp}`, "resource-value");
+  hp.append(hpLabel, bar(s.hp, a.maxHp), hpVal);
+
+  const stamina = el("div", "", "resource");
+  const stLabel = el("span", "✨");
+  const stVal   = el("span", `${s.stamina}/${a.maxStamina}`, "resource-value");
+  stamina.append(stLabel, bar(s.stamina, a.maxStamina, "stamina"), stVal);
+
   info.append(hp, stamina);
+
   const loot = el("div", "", "hud-loot");
   loot.append(
-    el("span", `🪙 ${s.gold}`, "gold gold-icon"),
-    el("span", `◈ ${s.materials}`, "materials materials-icon"),
-    el("span", `⬡ ${s.potions}`, "potions potions-icon"),
+    el("span", `🪙${s.gold}`, "gold"),
+    el("span", `◈${s.materials}`, "materials-icon"),
+    el("span", `⬡${s.potions}`, "potions-icon"),
+    el("span", `⚔ ${items[s.weapon].name.split(" ")[0]}`, "weapon-icon"),
   );
-  const equips = el("div", "", "hud-equips");
-  equips.append(el("span", `⚔️ ${items[s.weapon].name.split(" ")[0]}`));
-  if (s.shield) equips.append(el("span", `🛡️ ${items[s.shield].name.split(" ")[0]}`));
-  if (s.armor) equips.append(el("span", `👕 ${items[s.armor].name.split(" ")[0]}`));
-  
-  hud.append(crest, info, equips, loot);
+
+  hud.append(crest, info, loot);
   place.replaceChildren(
     el("small", "A TRILHA ESQUECIDA"),
     el("strong", s.map === "village" ? "Vila da Guilda" : "Bosque das Brumas"),
@@ -188,23 +220,31 @@ function character() {
       (s.shield ? items[s.shield].bonus[k] : 0) +
       (s.armor ? items[s.armor].bonus[k] : 0) +
       (s.accessory ? items[s.accessory].bonus[k] : 0);
+
+    const h3 = el("h3");
+    h3.append(
+      el("span", labels[k]),
+      el("span", String(a.attributes[k]), "attr-value"),
+    );
     row.append(
-      el("h3", `${labels[k]} ${a.attributes[k]}`),
+      h3,
       el(
         "small",
-        `Base 5 + treino ${Math.floor(a.mastery[k] / 10000)} + alocados ${s.allocated[k]} + equipamento ${bonus}`,
+        `Base 5 · treino ${Math.floor(a.mastery[k] / 10000)} · alocados ${s.allocated[k]} · equip. ${bonus}`,
       ),
       bar((a.mastery[k] / 100) % 100, 100, "xp"),
       el(
         "p",
-        `${fmt(a.mastery[k] / 100)} de maestria · ${fmt((a.mastery[k] / 100) % 100)}/100 para o próximo atributo`,
+        `${fmt(a.mastery[k] / 100)} de maestria · ${fmt((a.mastery[k] / 100) % 100)}/100 para o próximo`,
+        "muted",
       ),
     );
     if (k === "agility") {
       row.append(
-        el("small", `Define sua velocidade de movimento: ${Math.floor(56 + Math.min(18, a.attributes[k] * 1.2))} px/s.`, "muted")
+        el("small", `Velocidade: ${Math.floor(56 + Math.min(18, a.attributes[k] * 1.2))} px/s.`, "muted")
       );
     }
+    const actions = el("div", "", "entry-actions");
     const b = button("Alocar +1", () =>
       safe(() => {
         store.transact((s) => allocate(s, k));
@@ -213,7 +253,8 @@ function character() {
       "alloc-btn",
     );
     b.disabled = a.free <= 0;
-    row.append(b);
+    actions.append(b);
+    row.append(actions);
     content.append(row);
   });
 }
@@ -447,30 +488,8 @@ function worldMap() {
     ),
   );
 }
-nav.append(
-  button("Personagem", () => {
-    if (!store.state.battle) character();
-  }),
-  button("Treinos", () => {
-    if (!store.state.battle) {
-      openModal("Diário de treinos");
-      workoutsUI(store, content, notify);
-    }
-  }),
-  button("Mochila", () => {
-    if (!store.state.battle) equipment();
-  }),
-  button(
-    "Mapa",
-    () => {
-      if (!store.state.battle) worldMap();
-    },
-    "map-button",
-  ),
-  button("Ajustes", () => {
-    if (!store.state.battle) settings();
-  }),
-);
+
+
 world.onNear = (e) => {
   interact.textContent = e ? `${e.label} · E` : "Explore a trilha";
   interact.disabled = !e;

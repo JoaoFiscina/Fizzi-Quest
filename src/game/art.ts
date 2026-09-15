@@ -134,103 +134,127 @@ export function createArt(scene: Phaser.Scene) {
   for (const kind of ["hero", "master", "merchant"])
     for (let dir = 0; dir < 4; dir++)
       for (let frame = 0; frame < 5; frame++)
-        texture(`${kind}-${dir}-${frame}`, 20, 30, (c) => {
-          // frame 0 = idle; 1,2,3,4 = walk (passada completa)
-          const walkPhase = frame; // 0..4
-          const legL = walkPhase === 1 || walkPhase === 2 ? 1 : walkPhase === 3 || walkPhase === 4 ? -1 : 0;
-          const legR = -legL;
-          const armL = walkPhase === 1 || walkPhase === 2 ? -1 : walkPhase === 3 || walkPhase === 4 ? 1 : 0;
-          const armR = -armL;
-          const bob = (walkPhase === 2 || walkPhase === 4) ? 1 : 0;
+        texture(`${kind}-${dir}-${frame}`, 20, 32, (c) => {
+          // ─── paleta por personagem ───────────────────────────────────────
           const coat =
             kind === "hero" ? "#3d6b73"
-            : kind === "master" ? "#b98446"
-            : "#927193";
-          const coatShadow =
-            kind === "hero" ? "#2e5259"
-            : kind === "master" ? "#8f6232"
-            : "#6e5370";
+            : kind === "master" ? "#b98446" : "#927193";
+          const coatDark =
+            kind === "hero" ? "#2a4e56"
+            : kind === "master" ? "#7d5b2a" : "#6a3d6a";
           const coatLight =
-            kind === "hero" ? "#5a8e98"
-            : kind === "master" ? "#d4a462"
-            : "#b090ba";
+            kind === "hero" ? "#5a9099"
+            : kind === "master" ? "#d4a462" : "#b090ba";
 
-          // --- sombra de contato no chão ---
-          rect(c, "#19402e", 5, 28, 11, 2);
-          rect(c, "#0e2a1f", 7, 29, 7, 1);
+          // ─── ciclo de caminhada ──────────────────────────────────────────
+          // frame 0 = neutral (idle base)
+          // frame 1 = passo L  (perna esq +4y, braço dir sobe)
+          // frame 2 = neutral alto (bob –1px, corpo sobe 1px)
+          // frame 3 = passo R  (perna dir +4y, braço esq sobe)
+          // frame 4 = neutral alto (espelho do 2)
+          const neutral = frame === 0 || frame === 2 || frame === 4;
+          const stepL   = frame === 1;   // perna esq à frente
+          const stepR   = frame === 3;   // perna dir à frente
+          const bob      = (frame === 2 || frame === 4) ? -1 : 0; // corpo 1px acima no meio da passada
 
-          // --- pernas ---
-          // perna esquerda
-          rect(c, "#2e2e26", 6, 22 + legL, 4, 6 - Math.abs(legL));
-          rect(c, "#3e3c32", 6, 22 + legL, 3, 5 - Math.abs(legL));
-          // perna direita
-          rect(c, "#2e2e26", 11, 22 + legR, 4, 6 - Math.abs(legR));
-          rect(c, "#3e3c32", 11, 22 + legR, 3, 5 - Math.abs(legR));
-          // base dos pés
-          rect(c, "#272520", 5, 26 + legL, 5, 2);
-          rect(c, "#272520", 10, 26 + legR, 5, 2);
+          // deslocamentos de perna: +4 = à frente, -3 = atrás
+          const legLy = stepL ? 4 : stepR ? -3 : 0;  // perna esquerda
+          const legRy = stepR ? 4 : stepL ? -3 : 0;  // perna direita
 
-          // --- cinturão ---
+          // deslocamentos de braço: sobe 3px quando a perna oposta avança
+          const armLy = stepR ? -3 : stepL ? 2 : 0;  // braço esq (oposto ao passo)
+          const armRy = stepL ? -3 : stepR ? 2 : 0;  // braço dir
+
+          // ─── sombra de contato no chão ───────────────────────────────────
+          rect(c, "#12392b", 5, 29, 12, 2);
+          rect(c, "#0a2418", 7, 30, 8, 1);
+
+          // ─── perna esquerda ──────────────────────────────────────────────
+          // canela
+          rect(c, coatDark, 6, 22 + legLy + bob, 3, neutral ? 6 : 5);
+          rect(c, "#2e2e26", 5, 22 + legLy + bob, 4, neutral ? 6 : 5);
+          // pé
+          rect(c, "#222018", 4, 27 + legLy + bob, 5, 2);
+          rect(c, "#333028", 4, 27 + legLy + bob, 5, 1);
+
+          // ─── perna direita ───────────────────────────────────────────────
+          rect(c, coatDark, 12, 22 + legRy + bob, 3, neutral ? 6 : 5);
+          rect(c, "#2e2e26", 11, 22 + legRy + bob, 4, neutral ? 6 : 5);
+          rect(c, "#222018", 11, 27 + legRy + bob, 5, 2);
+          rect(c, "#333028", 11, 27 + legRy + bob, 5, 1);
+
+          // ─── cinturão ────────────────────────────────────────────────────
           rect(c, "#d5b773", 5, 20 + bob, 11, 2);
           rect(c, "#b89650", 5, 21 + bob, 11, 1);
-          rect(c, "#e8ce88", 9, 20 + bob, 3, 1);
+          rect(c, "#edd990", 9, 20 + bob, 3, 1); // fivela
 
-          // --- corpo / casaco ---
-          rect(c, "#1f3830", 4, 11 + bob, 13, 10);
-          rect(c, coatShadow, 4, 12 + bob, 13, 9);
-          rect(c, coat, 5, 12 + bob, 11, 8);
-          rect(c, coatLight, 6, 13 + bob, 3, 4); // reflexo esquerdo
-          rect(c, coatShadow, 13, 14 + bob, 2, 5); // sombra direita
+          // ─── corpo / casaco ───────────────────────────────────────────────
+          rect(c, "#1a3028", 4, 10 + bob, 13, 11); // contorno
+          rect(c, coatDark, 4, 11 + bob, 13, 10);
+          rect(c, coat, 5, 11 + bob, 11, 9);
+          rect(c, coatLight, 6, 12 + bob, 3, 5); // reflexo esq
+          rect(c, coatDark, 13, 13 + bob, 2, 6); // sombra dir
 
-          // --- braço esquerdo ---
-          rect(c, coatShadow, 3, 13 + bob + armL, 3, 7 - Math.abs(armL));
-          rect(c, "#e2ba88", 3, 14 + bob + armL, 3, 5 - Math.abs(armL));
-          // --- braço direito ---
-          rect(c, coatShadow, 15, 13 + bob + armR, 3, 7 - Math.abs(armR));
-          rect(c, "#e2ba88", 15, 14 + bob + armR, 2, 5 - Math.abs(armR));
+          // ─── braço esquerdo ──────────────────────────────────────────────
+          rect(c, coatDark, 3, 12 + bob + armLy, 3, neutral ? 7 : 6);
+          rect(c, "#e2ba88", 3, 14 + bob + armLy, 3, neutral ? 5 : 4);
+          // mão esq
+          rect(c, "#e8c898", 3, 18 + bob + armLy, 3, 2);
 
-          // --- acessório de herói (capa / escudo) ---
+          // ─── braço direito ───────────────────────────────────────────────
+          rect(c, coatDark, 15, 12 + bob + armRy, 3, neutral ? 7 : 6);
+          rect(c, "#e2ba88", 15, 14 + bob + armRy, 2, neutral ? 5 : 4);
+          // mão dir
+          rect(c, "#e8c898", 15, 18 + bob + armRy, 2, 2);
+
+          // ─── acessórios do herói ─────────────────────────────────────────
           if (kind === "hero") {
-            rect(c, "#9b5940", 4, 12 + bob, 3, 10);   // capa esquerda
-            rect(c, "#c07045", 3, 13 + bob, 2, 6);
-            rect(c, "#c1cfb5", 16, 16 + bob, 2, 7); // haste de espada
-            rect(c, "#8fa3a0", 17, 14 + bob, 1, 3);
+            // capa lateral esquerda
+            rect(c, "#8a4e38", 4, 11 + bob, 3, 10);
+            rect(c, "#b06040", 3, 13 + bob, 2, 7);
+            // haste de espada (lado dir, atrás do braço)
+            rect(c, "#c1cfb5", 17, 15 + bob + armRy, 2, 8);
+            rect(c, "#8fa3a0", 17, 13 + bob + armRy, 1, 3);
           }
 
-          // --- pescoço e cabeça ---
-          rect(c, "#c9a87c", 8, 9 + bob, 5, 3);
-          rect(c, "#e2ba88", 6, 4 + bob, 10, 9);
-          // contorno escuro da cabeça (pixel art)
-          rect(c, "#1a2e27", 5, 4 + bob, 1, 7);
-          rect(c, "#1a2e27", 16, 5 + bob, 1, 6);
-          rect(c, "#1a2e27", 6, 3 + bob, 9, 1);
-          rect(c, "#1a2e27", 6, 12 + bob, 9, 1);
-          // bochechas / volume
-          rect(c, "#f0ccaa", 6, 6 + bob, 2, 3);
-          rect(c, "#cda071", 14, 7 + bob, 2, 3);
+          // ─── pescoço ─────────────────────────────────────────────────────
+          rect(c, "#c9a87c", 8, 8 + bob, 5, 3);
+          rect(c, "#b8956c", 8, 10 + bob, 5, 1); // sombra pescoço→tronco
 
-          // --- cabelo ---
-          rect(c, "#5a3722", 5, 3 + bob, 12, 5);
-          rect(c, "#7a4e2e", 7, 2 + bob, 9, 3);
-          rect(c, "#8c5f36", 9, 2 + bob, 5, 2); // topo mais claro
-          rect(c, "#4a2d1a", 5, 6 + bob, 3, 2); // lateral esquerda mais escura
-          rect(c, "#4a2d1a", 14, 6 + bob, 2, 2);
+          // ─── cabeça ──────────────────────────────────────────────────────
+          rect(c, "#e2ba88", 6, 2 + bob, 10, 9);
+          // contorno pixel art
+          rect(c, "#1a2e27", 5, 2 + bob, 1, 8);  // esq
+          rect(c, "#1a2e27", 16, 3 + bob, 1, 7); // dir
+          rect(c, "#1a2e27", 6, 1 + bob, 9, 1);  // topo
+          rect(c, "#1a2e27", 6, 10 + bob, 9, 1); // base
+          // volume / bochechas
+          rect(c, "#f0ccaa", 6, 4 + bob, 2, 4);  // reflexo esq
+          rect(c, "#cda071", 14, 5 + bob, 2, 3); // sombra dir
 
-          // --- olhos / expressão ---
+          // ─── cabelo ───────────────────────────────────────────────────────
+          rect(c, "#5a3722", 5, 1 + bob, 12, 5);
+          rect(c, "#7a4e2e", 7, 0 + bob, 9, 3);
+          rect(c, "#9a6840", 9, 0 + bob, 5, 2); // topo claro
+          rect(c, "#412818", 5, 4 + bob, 3, 2); // lateral esq escura
+          rect(c, "#412818", 14, 5 + bob, 2, 2); // lateral dir escura
+          rect(c, "#7a4e2e", 5, 6 + bob, 2, 2); // mecha lateral esq
+
+          // ─── olhos e sobrancelhas ─────────────────────────────────────────
           if (dir !== 1) {
-            rect(c, "#1a2e27",
-              dir === 2 ? 6 : dir === 3 ? 14 : 8,
-              8 + bob, 1, 2);
-            if (dir === 0) rect(c, "#1a2e27", 13, 8 + bob, 1, 2);
+            const eyeX = dir === 2 ? 7 : dir === 3 ? 13 : 9;
+            rect(c, "#1a2e27", eyeX, 6 + bob, 1, 2);           // olho principal
+            if (dir === 0) rect(c, "#1a2e27", eyeX + 4, 6 + bob, 1, 2); // segundo olho (frente)
+            rect(c, "#f5d9b0", eyeX + 1, 6 + bob, 1, 1);       // brilho do olho
             // sobrancelha
-            rect(c, "#4a2d1a",
-              dir === 2 ? 6 : dir === 3 ? 13 : 8,
-              7 + bob, 2, 1);
+            rect(c, "#3d2010", eyeX, 5 + bob, 2, 1);
+            if (dir === 0) rect(c, "#3d2010", eyeX + 4, 5 + bob, 2, 1);
           } else {
-            // virado para trás: só cabelo na nuca
-            rect(c, "#5a3722", 6, 7 + bob, 10, 5);
+            // costas: nuca com cabelo
+            rect(c, "#5a3722", 6, 6 + bob, 9, 5);
           }
         });
+
   texture("sprout", 32, 32, (c) => {
     rect(c, "#476140", 4, 26, 24, 4);
     rect(c, "#304e36", 6, 13, 21, 15);

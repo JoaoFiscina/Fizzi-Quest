@@ -120,46 +120,84 @@ export function polishArt(scene: Phaser.Scene) {
     dot(c, "#d7b768", 5, 11, 3, 2);
     dot(c, "#a27c45", 3, 2, 18, 4);
   });
-  const monsterFrames = {
+  const monsterSizes = {
     sprout: { w: 32, h: 32 },
     beetle: { w: 32, h: 32 },
-    moth: { w: 32, h: 32 },
+    moth:   { w: 32, h: 32 },
     guardian: { w: 48, h: 52 },
   } as const;
-  for (const [key, size] of Object.entries(monsterFrames)) {
-    for (let f = 0; f < 4; f++)
+
+  for (const [key, size] of Object.entries(monsterSizes)) {
+    // 6 frames idle por monstro
+    for (let f = 0; f < 6; f++)
       clone(key, `${key}-idle-${f}`, size.w, size.h, (c) => {
         if (key === "sprout") {
-          dot(c, "#183d35", 13, f === 2 ? 21 : 20, 3, f === 2 ? 1 : 3);
-          dot(c, "#183d35", 21, f === 2 ? 20 : 19, 3, f === 2 ? 1 : 3);
-          dot(c, f % 2 ? "#91aa62" : "#7da556", 19 + (f % 2), 2, 8, 2);
-          dot(c, "#b9c979", 5 + (f % 2), 6, 7, 1);
+          // folhas oscilam: 2 grupos alternados
+          const leafOff = f < 3 ? 0 : 1;
+          const eyeOpen = f !== 2 && f !== 5; // pisca nos frames 2 e 5
+          dot(c, leafOff ? "#91aa62" : "#7da556", 19 + leafOff, 2, 8, 2);
+          dot(c, "#b9c979", 5 + leafOff, 6, 7, 1);
+          // movimento sutil do corpo: frames pares levantam 1px
+          if (f % 2 === 0) dot(c, "#9ca96a", 9, 12, 16, 1); // ombro claro sobe
+          // olho pisca
+          if (!eyeOpen) {
+            dot(c, "#183d35", 13, 20, 3, 1);
+            dot(c, "#183d35", 21, 19, 3, 1);
+          } else {
+            dot(c, "#183d35", 13, 20, 3, 3);
+            dot(c, "#183d35", 21, 19, 3, 3);
+          }
+          // antenas oscilam
+          dot(c, f % 3 === 0 ? "#c0ce80" : "#a4bd71", 20 + (f % 2), 4, 6, 1);
+          dot(c, f % 3 === 1 ? "#a4bd71" : "#b9c979", 5, 7 + (f % 2), 7, 1);
         } else if (key === "beetle") {
-          dot(c, "#263b34", 2, 25 - (f % 2), 7, 2);
-          dot(c, "#263b34", 23, 24 + (f % 2), 7, 2);
-          dot(c, f === 2 ? "#bec29e" : "#8c987f", 11, 8, 9, 2);
-          dot(c, "#d7b768", 7 + f, 20, 2, 1);
+          // pernas: 3 pares oscilam alternados
+          const legPhase = f % 3;
+          dot(c, "#263b34", 2, 25 - (legPhase === 0 ? 1 : 0), 7, 2);
+          dot(c, "#263b34", 23, 24 + (legPhase === 1 ? 1 : 0), 7, 2);
+          dot(c, "#263b34", 4, 21 - (legPhase === 2 ? 1 : 0), 5, 1);
+          dot(c, "#263b34", 23, 21 + (legPhase === 0 ? 1 : 0), 5, 1);
+          // carapaça “respira”
+          const shell = f < 3 ? "#9ca286" : "#8a906e";
+          dot(c, shell, 11, 8, 9, 2);
+          // antenas oscilam suavemente
+          dot(c, "#d7b768", 7 + (f % 3), 20, 2, 1);
+          dot(c, "#d7b768", 22 - (f % 2), 19, 2, 1);
         } else if (key === "moth") {
-          const wing = f === 1 || f === 3 ? "#d1c8da" : "#aaa5bc";
-          dot(c, wing, 3, 8 + (f % 2), 8, 5);
-          dot(c, wing, 21, 8 + (f % 2), 8, 5);
-          dot(c, "#f1e6ca", 6, 11 + (f % 2), 2, 2);
-          dot(c, "#f1e6ca", 24, 11 + (f % 2), 2, 2);
-        } else {
-          dot(c, f === 2 ? "#f1e6ca" : "#d7b768", 16, 19, 4, f === 2 ? 1 : 4);
-          dot(c, f === 2 ? "#f1e6ca" : "#d7b768", 29, 19, 4, f === 2 ? 1 : 4);
+          // asas: 3 posições (fechada, meio, aberta)
+          const wingStage = f % 3;
+          const wingY  = wingStage === 0 ? 10 : wingStage === 1 ? 8 : 6;
+          const wingH  = wingStage === 0 ? 4  : wingStage === 1 ? 6 : 8;
+          const wingCol = wingStage === 2 ? "#d1c8da" : wingStage === 1 ? "#bbb0c9" : "#aaa5bc";
+          dot(c, wingCol, 3, wingY, 8, wingH);
+          dot(c, wingCol, 21, wingY, 8, wingH);
+          // brilho nas asas
+          dot(c, "#f1e6ca", 6, wingY + 1, 2, 2);
+          dot(c, "#f1e6ca", 24, wingY + 1, 2, 2);
+          // antenas oscilam
+          dot(c, f % 2 ? "#c8b8d4" : "#9890ac", 13, 5 + (f % 2), 1, 4);
+          dot(c, f % 2 ? "#c8b8d4" : "#9890ac", 15, 5 + (f % 2), 1, 4);
+        } else { // guardian
+          // braços oscilam lentamente
+          const armOff = f < 3 ? 0 : 2;
+          dot(c, f < 3 ? "#d7b768" : "#f1e6ca", 16, 19 + armOff, 4, 4 - armOff);
+          dot(c, f < 3 ? "#d7b768" : "#f1e6ca", 29, 19 + armOff, 4, 4 - armOff);
+          // coroa de folhas oscila
           dot(c, f % 2 ? "#91aa62" : "#719557", 9 + (f % 2), 4, 12, 2);
           dot(c, "#4e7443", 35 - (f % 2), 7, 8, 3);
+          // olhos brilham em ciclo
+          const eyeGlow = ["#e8ce81", "#f0dc95", "#ffe8a0", "#f0dc95", "#e8ce81", "#d4b66c"];
+          dot(c, eyeGlow[f], 16, 19, 4, 4);
+          dot(c, eyeGlow[f], 29, 19, 4, 4);
         }
       });
+
     scene.anims.create({
       key: `monster-${key}-idle`,
-      frames: Array.from({ length: 4 }, (_, i) => ({
-        key: `${key}-idle-${i}`,
-      })),
-      frameRate: key === "moth" ? 5 : 3,
+      frames: Array.from({ length: 6 }, (_, i) => ({ key: `${key}-idle-${i}` })),
+      frameRate: key === "moth" ? 6 : key === "guardian" ? 2 : 4,
       repeat: -1,
-      yoyo: true,
+      yoyo: false,
     });
   }
   for (let f = 0; f < 4; f++) {
@@ -196,25 +234,52 @@ export function polishArt(scene: Phaser.Scene) {
 
   for (const kind of ["hero", "master", "merchant"]) {
     for (let d = 0; d < 4; d++) {
-      // idle: 2 frames — frame0 normal + clone com corpo 1px para baixo
-      clone(`${kind}-${d}-0`, `${kind}-${d}-idle-0`, 20, 30, () => {});
-      clone(`${kind}-${d}-0`, `${kind}-${d}-idle-1`, 20, 30, (c) => {
-        c.clearRect(0, 0, 20, 20);
+      // ── idle: 3 frames genuínos ──────────────────────────────────────────
+      // frame 0: pose base
+      // frame 1: ombros sobem 1px (inspiração) — clonado e redesenhado
+      // frame 2: olho pisca — clonado e redesenhado
+
+      clone(`${kind}-${d}-0`, `${kind}-${d}-idle-0`, 20, 32, () => {});
+
+      // frame 1: parte superior do corpo 1px acima (cabeça + torso)
+      clone(`${kind}-${d}-0`, `${kind}-${d}-idle-1`, 20, 32, (c) => {
+        // apaga a faixa do torso + cabeça
+        c.clearRect(0, 0, 20, 24);
+        // redesenha 1px acima
         c.drawImage(
           scene.textures.get(`${kind}-${d}-0`).getSourceImage() as HTMLCanvasElement,
-          0, 0, 20, 19,
-          0, 1, 20, 19,
+          0, 0, 20, 23,  // src: torso + cabeça (primeiros 23px)
+          0, -1, 20, 23, // dst: 1px acima
         );
       });
+
+      // frame 2: olho piscando — usa base e pinta 1 linha sobre os olhos
+      clone(`${kind}-${d}-0`, `${kind}-${d}-idle-2`, 20, 32, (c) => {
+        // fecha o olho: pinta sobre a pupila com a cor da pele
+        const eyeX = d === 2 ? 7 : d === 3 ? 13 : 9;
+        dot(c, "#e2ba88", eyeX, 6, 1, 2);  // olho principal
+        if (d === 0) dot(c, "#e2ba88", eyeX + 4, 6, 1, 2); // segundo olho
+        dot(c, "#d5b080", eyeX, 7, 1, 1);  // pálpebra escura
+        if (d === 0) dot(c, "#d5b080", eyeX + 4, 7, 1, 1);
+      });
+
+      // animação idle: 0→1→0→0→2→0 (pisca infrequente)
       scene.anims.create({
         key: `${kind}-idle-${d}`,
-        frames: [{ key: `${kind}-${d}-idle-0` }, { key: `${kind}-${d}-idle-1` }],
-        frameRate: 1.5,
+        frames: [
+          { key: `${kind}-${d}-idle-0` },
+          { key: `${kind}-${d}-idle-1` },
+          { key: `${kind}-${d}-idle-0` },
+          { key: `${kind}-${d}-idle-0` },
+          { key: `${kind}-${d}-idle-2` },
+          { key: `${kind}-${d}-idle-0` },
+        ],
+        frameRate: 1.2,
         repeat: -1,
-        yoyo: true,
       });
-      // walk: 4 frames (1→2→3→4) — ciclo completo de passada
-      // frameRate 4 ≈ 16px/frame * 4fps = 64px/s (em sincronia com speed=56-74)
+
+      // ── walk: 4 frames distintos — pernas e braços reais ─────────────────
+      // frame 1 = passo L, frame 2 = neutro alto, frame 3 = passo R, frame 4 = neutro alto
       scene.anims.create({
         key: `${kind}-walk-${d}`,
         frames: [

@@ -1,11 +1,10 @@
 # Próximos passos
 
-## Próxima sessão — depois de v23.09.2003.4
+## Próxima sessão — v23.09.2003.7
 
-1. Jogar o capítulo inteiro até a entrega do emblema, avaliando ritmo, dificuldade e navegação.
-2. Acrescentar testes E2E para recompensa única da missão, baú e melhoria da guilda.
-3. Detalhar visualmente o posto de vigia e os três monstros secundários; implementar atalho de força com rota alternativa.
-4. Verificar em telefone físico (Safari iOS/Chrome Android) e ajustar os controles a partir desse uso.
+1. Implementar respawn dinâmico e espalhado dos monstros secundários (após a 1ª derrota), permitindo movimentação/patrulhamento leve pelos caminhos.
+2. Refinar a definição das texturas de pixel art e tilesets dos cenários (Posto de Vigia, Ruínas, Bosque).
+3. Testar a sessão em dispositivos móveis físicos (iOS Safari / Android Chrome).
 
 ## Depois da validação local
 
