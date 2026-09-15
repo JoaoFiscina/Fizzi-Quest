@@ -1,0 +1,353 @@
+/* v23.09.2003.3: centered world, compact shop and denser HUD. */
+.version-label {
+  position: fixed;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  color: #c5d0b7;
+  text-shadow: 0 1px 3px #183d35;
+  pointer-events: none;
+}
+.intro-version {
+  margin-top: 18px;
+  opacity: 0.6;
+}
+.battle-panel {
+  width: min(410px, 90vw);
+  right: 3vw;
+  background: #17392ff5;
+}
+.battle-panel .meter {
+  height: 7px;
+}
+.battle-log {
+  min-height: 58px;
+}
+.modal-content > .primary {
+  position: sticky;
+  bottom: 0;
+  box-shadow: 0 3px 15px #183d3530;
+}
+.nav .map-button {
+  color: #ecd88f;
+  border-color: #9c9365;
+}
+.hud-loot {
+  display: grid;
+  gap: 3px;
+  min-width: 48px;
+  padding-left: 10px;
+  border-left: 1px solid #61765d;
+  font-size: 10px;
+  text-align: right;
+  white-space: nowrap;
+}
+.hud-loot .materials {
+  color: #b8ce9c;
+}
+.hud-loot .potions {
+  color: #90c6ca;
+}
+.shop-content {
+  padding: 14px 18px 18px;
+}
+.shop-balance {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 9px 11px;
+  border: 1px solid #b8b08e;
+  border-radius: 8px;
+  background: #e7dbb9;
+  font-size: 12px;
+}
+.shop-balance strong {
+  color: #7d5a20;
+}
+.shop-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
+}
+.shop-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 76px;
+  padding: 10px 11px;
+  border: 1px solid #c7bea0;
+  border-radius: 9px;
+  background: #f7edd3;
+}
+.shop-item h3 {
+  margin: 0 0 5px;
+  font-size: 15px;
+}
+.shop-item small {
+  display: block;
+  line-height: 1.35;
+  color: #60705b;
+}
+.shop-item button {
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 7px 9px;
+  min-height: 38px;
+  font-size: 10px;
+}
+.potion-item {
+  grid-column: 1 / -1;
+}
+.world-map {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(96px, 1fr));
+  grid-template-rows: repeat(3, auto);
+  gap: 14px 9px;
+  align-items: center;
+  padding: 25px 4px 20px;
+  overflow: hidden;
+  background: linear-gradient(160deg, #d9d0a8, #c8c08f);
+  border: 1px solid #aca476;
+  border-radius: 10px;
+}
+.world-map::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.22;
+  background: repeating-linear-gradient(
+    15deg,
+    transparent 0 17px,
+    #7c825d 18px 19px
+  );
+}
+.map-area {
+  position: relative;
+  z-index: 1;
+  min-height: 112px;
+  padding: 13px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  border: 2px solid #45644a;
+  border-radius: 48% 52% 45% 55%;
+  background: #e8dfb9;
+  box-shadow: 0 4px 0 #8f885f;
+}
+.map-area strong {
+  font:
+    17px "MedievalSharp",
+    Georgia,
+    serif;
+  margin: 7px 0 5px;
+}
+.map-area small {
+  font-size: 10px;
+  line-height: 1.35;
+}
+.map-status {
+  font-size: 8px;
+  letter-spacing: 1px;
+  font-weight: 700;
+  color: #536549;
+}
+.map-route {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  font-size: 9px;
+  color: #536149;
+  border-top: 3px dotted #697557;
+  padding-top: 5px;
+}
+.map-area.village {
+  grid-column: 1;
+  grid-row: 2;
+}
+.open-route {
+  grid-column: 2;
+  grid-row: 2;
+}
+.map-area.forest {
+  grid-column: 3;
+  grid-row: 2;
+}
+.locked-route {
+  grid-column: 4;
+  grid-row: 2;
+}
+.map-area.watch {
+  grid-column: 5;
+  grid-row: 2;
+}
+.map-area.mine {
+  grid-column: 4;
+  grid-row: 3;
+}
+.map-area.ruins {
+  grid-column: 3;
+  grid-row: 1;
+}
+.map-area.coast {
+  grid-column: 2;
+  grid-row: 3;
+}
+.map-area.locked {
+  filter: saturate(0.25);
+  border-color: #777867;
+  background: #c8c4aa;
+  color: #6b6e61;
+  box-shadow: 0 4px 0 #8a8877;
+}
+.map-area.danger {
+  border-color: #a85e43;
+  background: #ead3aa;
+}
+.map-area.cleared {
+  border-color: #d0a64e;
+  background: #f0e4b8;
+}
+.locked-route {
+  border-color: #8b7665;
+  color: #7b6759;
+}
+@media (max-width: 700px) {
+  .hud {
+    width: 200px;
+    padding: 8px;
+    gap: 6px;
+    min-height: 89px;
+  }
+  .crest {
+    width: 25px;
+    height: 34px;
+    font-size: 15px;
+  }
+  .vitals {
+    min-width: 0;
+  }
+  .vitals strong {
+    font-size: 10px;
+  }
+  .gold {
+    font-size: 10px;
+  }
+  .hud-loot {
+    min-width: 36px;
+    padding-left: 5px;
+    font-size: 8px;
+  }
+  .nav {
+    width: 154px;
+    gap: 4px;
+  }
+  .nav .map-button {
+    grid-column: auto;
+  }
+  .nav button:last-child {
+    grid-column: 1 / -1;
+    min-height: 36px;
+  }
+  .nav button {
+    padding: 6px 4px;
+    font-size: 10px;
+    min-height: 44px;
+  }
+  .place {
+    top: 157px;
+  }
+  .place small {
+    font-size: 8px;
+    letter-spacing: 2px;
+  }
+  .battle-panel {
+    width: calc(100vw - 24px);
+    right: 12px;
+    bottom: 24px;
+    max-height: 48dvh;
+    padding: 12px 16px;
+  }
+  .battle-panel h2 {
+    font-size: 23px;
+    margin: 6px 0;
+  }
+  .battle-panel .intent {
+    margin: 8px 0;
+    padding: 8px;
+  }
+  .battle-log {
+    font-size: 11px;
+    min-height: 44px;
+  }
+  .battle-actions button {
+    min-height: 44px;
+  }
+  .toast {
+    bottom: 130px;
+  }
+  .intro h1 {
+    font-size: 59px;
+  }
+  .shop-list {
+    grid-template-columns: 1fr;
+  }
+  .potion-item {
+    grid-column: auto;
+  }
+  .shop-balance {
+    gap: 8px;
+    justify-content: space-between;
+    font-size: 10px;
+  }
+  .shop-item {
+    min-height: 70px;
+  }
+  .world-map {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    padding: 14px 20px;
+  }
+  .map-area {
+    width: 100%;
+    min-height: 72px;
+    border-radius: 28px 34px 27px 31px;
+  }
+  .map-area strong {
+    font-size: 15px;
+  }
+  .map-area.village {
+    order: 1;
+  }
+  .open-route {
+    order: 2;
+  }
+  .map-area.forest {
+    order: 3;
+  }
+  .locked-route {
+    order: 4;
+  }
+  .map-area.watch {
+    order: 5;
+  }
+  .map-area.mine {
+    order: 6;
+  }
+  .map-area.ruins {
+    order: 7;
+  }
+  .map-area.coast {
+    order: 8;
+  }
+  .map-route {
+    width: 70%;
+    align-self: center;
+    padding-top: 3px;
+  }
+}

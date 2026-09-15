@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "sessionId": "treino-2026-09-14-1137",
+  "source": "screenshot",
+  "sourceApp": null,
+  "date": "2026-09-14",
+  "dateYearInferred": true,
+  "displayedTime": "11:37",
+  "durationText": "102:09",
+  "reportedVolumeKg": 2540,
+  "reportedPRs": 0,
+  "reportedSets": 12,
+  "status": "draft",
+  "partial": false,
+  "exercises": [
+    {
+      "name": "Desenvolvimento maquina skyfit",
+      "equipment": "machine",
+      "category": "upper_strength",
+      "loadKg": 4,
+      "reps": [10, 9, 10],
+      "setType": "unknown"
+    },
+    {
+      "name": "Desenvolvimento arnold skyfit",
+      "equipment": "dumbbell",
+      "category": "upper_strength",
+      "loadKg": 16,
+      "reps": [8, 7, 6],
+      "setType": "unknown"
+    },
+    {
+      "name": "Elevação lateral maquina skyfit",
+      "equipment": "machine",
+      "category": "upper_strength",
+      "loadKg": 24,
+      "reps": [9, 8, 8],
+      "setType": "unknown"
+    },
+    {
+      "name": "Crucifixo invertido maquina skyfit",
+      "equipment": "machine",
+      "category": "upper_strength",
+      "loadKg": 62,
+      "reps": [8, 8, 8],
+      "setType": "unknown"
+    }
+  ],
+  "cardio": [],
+  "reviewNotes": [
+    "Ano inferido: confirmar a data.",
+    "Confirmar se as 12 séries são de trabalho.",
+    "Carga preservada conforme exibida, sem inferir lado ou par."
+  ]
+}
