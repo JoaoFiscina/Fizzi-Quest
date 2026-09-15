@@ -193,4 +193,36 @@ export function polishArt(scene: Phaser.Scene) {
       repeat: key === "water" || key === "fire" ? -1 : 0,
       yoyo: key === "tree" || key === "flag",
     });
+
+  for (const kind of ["hero", "master", "merchant"]) {
+    for (let d = 0; d < 4; d++) {
+      clone(`${kind}-${d}-0`, `${kind}-${d}-idle-0`, 20, 28, () => {});
+      clone(`${kind}-${d}-0`, `${kind}-${d}-idle-1`, 20, 28, (c) => {
+        c.clearRect(0, 0, 20, 16);
+        c.drawImage(
+          scene.textures.get(`${kind}-${d}-0`).getSourceImage() as HTMLCanvasElement,
+          0, 0, 20, 15,
+          0, 1, 20, 15
+        );
+      });
+      scene.anims.create({
+        key: `${kind}-idle-${d}`,
+        frames: [{ key: `${kind}-${d}-idle-0` }, { key: `${kind}-${d}-idle-1` }],
+        frameRate: 2,
+        repeat: -1,
+        yoyo: true,
+      });
+      scene.anims.create({
+        key: `${kind}-walk-${d}`,
+        frames: [
+          { key: `${kind}-${d}-1` },
+          { key: `${kind}-${d}-0` },
+          { key: `${kind}-${d}-2` },
+          { key: `${kind}-${d}-0` },
+        ],
+        frameRate: 6,
+        repeat: -1,
+      });
+    }
+  }
 }

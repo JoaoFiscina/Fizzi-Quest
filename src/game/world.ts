@@ -138,9 +138,10 @@ export class World extends Phaser.Scene {
         }
       }
       const sprite = this.add
-        .sprite(e.x + ox, e.y + oy, npc ? e.kind + "-0-0" : e.kind)
+        .sprite(e.x + ox, e.y + oy, npc ? `${e.kind}-0-idle-0` : e.kind)
         .setOrigin(0.5, 1)
         .setDepth(e.y);
+      if (npc && !this.reduced) sprite.play(`${e.kind}-idle-0`);
       if (e.kind in enemies) {
         this.enemySprites.set(e.kind, sprite);
         sprite.setVisible(!s.defeated.includes(e.kind as keyof typeof enemies));
@@ -307,10 +308,14 @@ export class World extends Phaser.Scene {
       s.y = ny;
     }
     this.player.setPosition(Math.round(s.x), Math.round(s.y)).setDepth(s.y);
-    this.frame += delta;
-    this.player.setTexture(
-      `hero-${this.direction}-${dx || dy ? Math.floor(this.frame / 130) % 3 : 0}`,
-    );
+    if (this.reduced) {
+      this.player.setTexture(`hero-${this.direction}-${dx || dy ? 1 : 0}`);
+    } else {
+      const anim = dx || dy ? `hero-walk-${this.direction}` : `hero-idle-${this.direction}`;
+      if (this.player.anims.currentAnim?.key !== anim) {
+        this.player.play(anim, true);
+      }
+    }
     this.foreground.sort("depth");
     const near = this.mapData.entities
       .filter(

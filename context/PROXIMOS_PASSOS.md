@@ -16,8 +16,10 @@
 ## Backlog informado pelo usuário
 
 1. Melhorar esteticamente o mapa prévio sem perder legibilidade da rota principal.
-2. Pixel art mais definida dos monstros.
+2. Pixel art mais definida dos monstros e personagens.
 3. Novas áreas bloqueadas e refinamento de tiles e texturas no código.
+4. Spawn dinâmico de monstros: após a primeira morte, espalhar respawn pelo mapa e implementar movimento de patrulha.
+5. Adicionar animações nos ataques de personagens em combate.
 
 ## M2 depois de M1
 

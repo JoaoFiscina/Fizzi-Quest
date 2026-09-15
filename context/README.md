@@ -30,8 +30,9 @@ fizzi-quest/
 ## Backlog visual e de gameplay
 
 - Melhorar a estética do mapa prévio sem perder a leitura da rota principal.
-- Novas áreas bloqueadas e pixel art mais definida dos monstros.
+- Novas áreas bloqueadas e pixel art mais definida dos monstros e personagens.
 - Refinar os tiles e texturas originais geradas no código.
+- Após a primeira morte do monstro, implementar spawn espalhado e movimento de patrulha.
 
 ## Regra de continuidade
 
