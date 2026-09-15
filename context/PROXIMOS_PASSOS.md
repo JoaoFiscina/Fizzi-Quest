@@ -9,8 +9,8 @@
 
 ## Depois da validação local
 
-5. Após o limite de uso liberar, criar o repositório próprio `fizzi-quest` no GitHub, adicionar `origin` e enviar `feat/v23.09.2003.2-polimento` com o commit `087a186`.
-6. Publicar a build `dist` na Vercel e registrar a URL de produção fixa.
+5. Importar `JoaoFiscina/Fizzi-Quest` na Vercel e publicar a build `dist` em produção.
+6. Registrar a URL de produção fixa e testar a URL pública em navegador.
 7. Depois da publicação, testar a URL pública em navegador e registrar o deployment.
 
 ## Backlog informado pelo usuário

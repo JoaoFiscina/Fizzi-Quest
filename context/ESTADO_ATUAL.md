@@ -36,8 +36,8 @@
 - Repositório remoto GitHub e deployment Vercel. Só há Git local; nenhuma URL pública foi criada.
 - Áudio, PWA/offline e atalho de força. Posto de vigia ainda não tem composição própria.
 - Commit local pronto: `087a186 feat: centralizar mapa e compactar HUD v23.09.2003.3`.
-- GitHub conectado lista a conta `JoaoFiscina`, mas não existe ainda um repositório Fizzi Quest; os projetos `FIZQUIS` e `IMPOSTOR-FIZZI` foram verificados e são aplicações diferentes.
-- Criação do repositório pelo GitHub e deployment Vercel foram bloqueados pelo limite de uso da conta nesta sessão; nenhuma publicação externa foi declarada.
+- Repositório GitHub criado e sincronizado: `JoaoFiscina/Fizzi-Quest`, branch `main`, commit remoto `6e07c67`.
+- Deployment Vercel ainda não foi criado; o `vercel.json` já define Vite, `npm run build` e saída `dist`.
 - Backlog: estética do mapa, variações de spawn, HUD de arma/escudo/armadura, velocidade por atributo e pixel art mais definida dos monstros.
 - Balanceamento de uma sessão longa e verificação em iPhone/Android reais.
 

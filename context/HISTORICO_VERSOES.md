@@ -2,7 +2,7 @@
 
 ## v23.09.2003.3 — 15/09/2026
 
-Correção do enquadramento: o zoom inteiro foi preservado e as sobras agora ficam simétricas quando o mapa é menor que a viewport. O mapa prévio foi reorganizado em rota vertical no celular e trilha central no desktop, mantendo Mina do Eco, Ruínas Altas e Costa Dourada bloqueadas. Loja compacta em cartões, HUD com ouro/materiais/poções, idle de monstros e vento ocasional de terreno. 25 testes de domínio, 6 E2E e build aprovados. O commit local `087a186` está pronto; publicação GitHub/Vercel aguarda liberação do limite de uso.
+Correção do enquadramento: o zoom inteiro foi preservado e as sobras agora ficam simétricas quando o mapa é menor que a viewport. O mapa prévio foi reorganizado em rota vertical no celular e trilha central no desktop, mantendo Mina do Eco, Ruínas Altas e Costa Dourada bloqueadas. Loja compacta em cartões, HUD com ouro/materiais/poções, idle de monstros e vento ocasional de terreno. 25 testes de domínio, 6 E2E e build aprovados. O código está sincronizado no GitHub; Vercel é o próximo passo.
 
 ## v23.09.2003.2 — 15/09/2026
 

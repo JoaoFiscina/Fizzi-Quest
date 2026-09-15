@@ -33,4 +33,4 @@ Capturas de vila, formulário e batalha inspecionadas em 1366×768 e 390×844. C
 - Não foi feito ensaio de performance em aparelho de entrada ou sessão longa.
 - Missão completa do chefe, baú e guilda ainda precisam de E2E dedicado.
 - Teste de fuga teve inicialmente uma falha no fixture: o save automático de saída substituía o estado inserido com a página ativa. O cenário passou a preparar o save na tela inicial.
-- Deploy GitHub/Vercel ainda não foi verificado nesta captura: a revisão automática bloqueou a criação/publicação por limite de uso da conta.
+- GitHub sincronizado em `JoaoFiscina/Fizzi-Quest` na branch `main`; Vercel ainda aguarda o primeiro deployment de produção.
