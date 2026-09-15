@@ -79,13 +79,11 @@ select:focus-visible {
   top: max(20px, env(safe-area-inset-top));
   left: 20px;
   padding: 10px 14px;
-  background: linear-gradient(135deg, #1a3d33f0 0%, #183d35f5 100%);
-  border: 1px solid #3d6b50;
-  border-radius: 12px;
-  box-shadow:
-    0 8px 30px #0a211b55,
-    inset 0 1px 0 #4a8a6030;
-  backdrop-filter: blur(6px);
+  background: rgba(15, 25, 20, 0.85);
+  border: 1px solid rgba(156, 170, 106, 0.2);
+  border-radius: 8px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
   width: 240px;
   display: grid;
   grid-template-columns: auto 1fr;
@@ -135,25 +133,32 @@ select:focus-visible {
 }
 .meter {
   flex: 1;
-  height: 7px;
-  border-radius: 3px;
-  background: #0e2820;
+  height: 4px;
+  border-radius: 2px;
+  background: #0e1a14;
   overflow: hidden;
-  box-shadow: inset 0 1px 2px #06160f;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 .meter i {
   display: block;
   height: 100%;
-  background: linear-gradient(90deg, #6a9048, #91aa62);
+  background: #50e35b;
   transition: width 0.3s;
-  box-shadow: 0 0 4px #91aa6240;
+  box-shadow: 0 0 6px rgba(80, 227, 91, 0.6);
+}
+.hud-icon {
+  font-size: 9px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  color: #7b9c8b;
 }
 .meter.stamina i {
-  background: linear-gradient(90deg, #4f8f92, #75b2b5);
-  box-shadow: 0 0 4px #75b2b540;
+  background: #50e3c2;
+  box-shadow: 0 0 6px rgba(80, 227, 194, 0.6);
 }
 .meter.xp i {
-  background: linear-gradient(90deg, #b09040, #d7b768);
+  background: #e3b050;
+  box-shadow: 0 0 6px rgba(227, 176, 80, 0.6);
 }
 .hud-loot {
   grid-column: 2;

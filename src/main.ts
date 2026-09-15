@@ -43,7 +43,7 @@ const store = new Store(storage),
 const canvas = el("div", "", "world");
 canvas.id = "world";
 app.append(canvas);
-new Phaser.Game({
+const game = new Phaser.Game({
   type: Phaser.AUTO,
   parent: "world",
   backgroundColor: "#183d35",
@@ -57,6 +57,8 @@ new Phaser.Game({
   scene: [world],
   render: { antialias: false },
 });
+// @ts-ignore
+window.__PHASER_GAME__ = game;
 const hud = el("header", "", "hud"),
   place = el("div", "", "place"),
   nav = el("nav", "", "nav"),
@@ -175,12 +177,12 @@ function renderHUD() {
   info.append(el("strong", `Aventureiro · Nv. ${a.level}`));
 
   const hp = el("div", "", "resource");
-  const hpLabel = el("span", "❤️");
+  const hpLabel = el("span", "PV", "hud-icon");
   const hpVal   = el("span", `${s.hp}/${a.maxHp}`, "resource-value");
   hp.append(hpLabel, bar(s.hp, a.maxHp), hpVal);
 
   const stamina = el("div", "", "resource");
-  const stLabel = el("span", "✨");
+  const stLabel = el("span", "ST", "hud-icon");
   const stVal   = el("span", `${s.stamina}/${a.maxStamina}`, "resource-value");
   stamina.append(stLabel, bar(s.stamina, a.maxStamina, "stamina"), stVal);
 
@@ -188,10 +190,10 @@ function renderHUD() {
 
   const loot = el("div", "", "hud-loot");
   loot.append(
-    el("span", `🪙${s.gold}`, "gold"),
-    el("span", `◈${s.materials}`, "materials-icon"),
-    el("span", `⬡${s.potions}`, "potions-icon"),
-    el("span", `⚔ ${items[s.weapon].name.split(" ")[0]}`, "weapon-icon"),
+    el("span", `Ouro: ${s.gold}`, "gold"),
+    el("span", `Mat: ${s.materials}`, "materials-icon"),
+    el("span", `Poções: ${s.potions}`, "potions-icon"),
+    el("span", `Arma: ${items[s.weapon].name.split(" ")[0]}`, "weapon-icon"),
   );
 
   hud.append(crest, info, loot);

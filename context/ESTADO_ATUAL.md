@@ -1,4 +1,4 @@
-# Estado atual — v23.09.2003.6
+# Estado atual — v23.09.2003.7
 
 ## Feito
 
@@ -15,17 +15,22 @@
 - Loja e mochila em formato de cards com badges de estado (equipado/disponível).
 - Suporte a equipamentos em 4 slots (arma, escudo, armadura e acessório) e velocidade baseada no atributo Agilidade.
 - Spawn determinístico dos inimigos com leve variância visual.
+- Refinamentos ambientais (água e fogo com funções senoidais de 8 quadros) e animações avançadas (Squash & Stretch em monstros, respiração e capa do herói).
 
-## Verificado nesta etapa (v23.09.2003.6)
+## Verificado nesta etapa (v23.09.2003.7)
 
 - Dependências instaladas; TypeScript e build Vite executados com sucesso.
+- Refinamentos ambientais: água e fogo usam funções senoidais de 8 quadros.
+- Monstros usam Squash & Stretch. Herói respira e balança a capa na idle.
+- Testes E2E (Playwright) verificam frames (`world.ts` / `main.ts`).
+- HUD atualizado para painéis glassmorphism escuros, ícones textuais limpos e barras flat, removendo os emojis antigos.
 - 28 testes de domínio passando (equipamentos, offsets, atributos, save e migrações).
 - 6 testes End-to-End (Playwright) validados no Chromium sem regressões.
 - HUD, modais de personagem/mochila e D-pad reestruturados e testados em resoluções de desktop e mobile.
 
 ## Melhorias visuais
 
-- HUD com layout limpo em card compacto 2 colunas.
+- HUD com painéis glassmorphism escuros, ícones textuais limpos e barras flat.
 - Menus de ação (Personagem, Treinos, Mochila, Mapa, Ajustes) com ícones e rótulos integrados.
 - Modais com header em degradê e detalhe dourado, botão fechar circular e cartões para itens de mochila.
 - Animação do aventureiro com ciclo Idle (3 quadros) e Walk (4 quadros por direção).

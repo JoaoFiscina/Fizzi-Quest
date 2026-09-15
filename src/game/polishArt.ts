@@ -82,33 +82,42 @@ export function polishArt(scene: Phaser.Scene) {
     draw(t.context);
     t.refresh();
   };
-  for (let f = 0; f < 4; f++) {
+  for (let f = 0; f < 8; f++) {
+    const p = f / 8;
     clone("water", "water-" + f, 16, 16, (c) => {
       dot(c, "#387b80", 0, 0, 16, 16);
       dot(c, "#417f80", 0, 8, 16, 8);
-      dot(c, "#69a5a0", (f * 3) % 10, 4, 6, 1);
-      dot(c, "#4d9091", (12 + f * 2) % 14, 11, 4, 1);
-      dot(c, "#b0c9ad", 2 + f * 3, 5, 1, 1);
+      for (let y = 0; y < 16; y++) {
+        if (y % 4 !== 0) continue;
+        const offset = Math.round(Math.sin((y + p * 16) * Math.PI / 8) * 2);
+        dot(c, "#69a5a0", (offset + 4 + y + 16) % 16, y, 4, 1);
+        dot(c, "#4d9091", (offset + 10 + y + 16) % 16, y + 1, 3, 1);
+      }
     });
     clone("fire", "fire-" + f, 24, 24, (c) => {
       c.clearRect(0, 0, 24, 17);
       dot(c, "#b66a49", 6, 13, 13, 6);
-      dot(c, "#df9e51", 8 + (f % 2), 8, 9, 10);
-      dot(c, "#f0ca78", 10, 5 + (f % 3), 5, 12);
-      dot(c, "#f8e5ac", 12, 12, 3, 7);
-      dot(c, "#d7b768", 6 + f * 3, 2 + f, 1, 2);
+      const r1 = Math.round(p * 7);
+      const r2 = Math.round(((p + 0.5) % 1) * 7);
+      dot(c, "#df9e51", 7, 10 - r1, 6, 8);
+      dot(c, "#df9e51", 13, 10 - r2, 5, 8);
+      dot(c, "#f0ca78", 8, 7 - r1, 4, 6);
+      dot(c, "#f0ca78", 14, 7 - r2, 3, 6);
+      dot(c, "#f8e5ac", 9, 4 - r1, 2, 4);
+      dot(c, "#f8e5ac", 14, 4 - r2, 2, 4);
     });
     clone("tree", "tree-" + f, 40, 52, (c) => {
-      dot(c, "#87a961", 12 + (f % 2), 10, 3, 1);
-      dot(c, "#659151", 26 - (f % 2), 19, 3, 2);
-      dot(c, "#91aa62", 16 + (f % 3), 25, 2, 1);
+      const sway = Math.round(Math.sin(p * Math.PI * 2) * 1.5);
+      dot(c, "#87a961", 12 + sway, 10, 3, 1);
+      dot(c, "#659151", 26 + sway, 19, 3, 2);
+      dot(c, "#91aa62", 16 + sway, 25, 2, 1);
     });
     const flag = scene.textures.createCanvas("flag-" + f, 24, 32)!;
     const c = flag.context;
     dot(c, "#755735", 3, 1, 2, 31);
     dot(c, "#d7b768", 2, 0, 4, 2);
     for (let x = 5; x < 22; x++) {
-      const y = Math.round(Math.sin((x + f * 3) / 4));
+      const y = Math.round(Math.sin((x / 4) - (p * Math.PI * 2)) * 1.5);
       dot(c, "#b66a49", x, 4 + y, 1, 11);
       dot(c, "#e6b56d", x, 4 + y, 1, 1);
       if (x > 10 && x < 16) dot(c, "#f1e6ca", x, 7 + y, 1, 4);
@@ -131,64 +140,58 @@ export function polishArt(scene: Phaser.Scene) {
     // 6 frames idle por monstro
     for (let f = 0; f < 6; f++)
       clone(key, `${key}-idle-${f}`, size.w, size.h, (c) => {
+        const src = scene.textures.get(key).getSourceImage() as HTMLCanvasElement;
+        c.clearRect(0, 0, size.w, size.h);
+        const p = f / 6;
+
         if (key === "sprout") {
-          // folhas oscilam: 2 grupos alternados
-          const leafOff = f < 3 ? 0 : 1;
-          const eyeOpen = f !== 2 && f !== 5; // pisca nos frames 2 e 5
-          dot(c, leafOff ? "#91aa62" : "#7da556", 19 + leafOff, 2, 8, 2);
-          dot(c, "#b9c979", 5 + leafOff, 6, 7, 1);
-          // movimento sutil do corpo: frames pares levantam 1px
-          if (f % 2 === 0) dot(c, "#9ca96a", 9, 12, 16, 1); // ombro claro sobe
-          // olho pisca
+          const squash = Math.round(Math.sin(p * Math.PI * 2));
+          c.drawImage(src, 0, squash);
+          const sway = Math.round(Math.cos(p * Math.PI * 2) * 2);
+          c.clearRect(0, 0, 32, 12);
+          c.drawImage(src, 0, 0, 32, 12, sway, squash, 32, 12);
+          
+          const eyeOpen = f !== 2; 
           if (!eyeOpen) {
-            dot(c, "#183d35", 13, 20, 3, 1);
-            dot(c, "#183d35", 21, 19, 3, 1);
+            dot(c, "#183d35", 13 + sway/2, 20 + squash, 3, 1);
+            dot(c, "#183d35", 21 + sway/2, 19 + squash, 3, 1);
           } else {
-            dot(c, "#183d35", 13, 20, 3, 3);
-            dot(c, "#183d35", 21, 19, 3, 3);
+            dot(c, "#183d35", 13 + sway/4, 20 + squash, 3, 3);
+            dot(c, "#183d35", 21 + sway/4, 19 + squash, 3, 3);
           }
-          // antenas oscilam
-          dot(c, f % 3 === 0 ? "#c0ce80" : "#a4bd71", 20 + (f % 2), 4, 6, 1);
-          dot(c, f % 3 === 1 ? "#a4bd71" : "#b9c979", 5, 7 + (f % 2), 7, 1);
         } else if (key === "beetle") {
-          // pernas: 3 pares oscilam alternados
-          const legPhase = f % 3;
-          dot(c, "#263b34", 2, 25 - (legPhase === 0 ? 1 : 0), 7, 2);
-          dot(c, "#263b34", 23, 24 + (legPhase === 1 ? 1 : 0), 7, 2);
-          dot(c, "#263b34", 4, 21 - (legPhase === 2 ? 1 : 0), 5, 1);
-          dot(c, "#263b34", 23, 21 + (legPhase === 0 ? 1 : 0), 5, 1);
-          // carapaça “respira”
+          const breathe = Math.round(Math.sin(p * Math.PI * 2));
+          c.drawImage(src, 0, breathe);
+          c.clearRect(0, 24, 32, 8); 
+          c.drawImage(src, 0, 24, 32, 8, 0, 24, 32, 8); 
+          
           const shell = f < 3 ? "#9ca286" : "#8a906e";
-          dot(c, shell, 11, 8, 9, 2);
-          // antenas oscilam suavemente
-          dot(c, "#d7b768", 7 + (f % 3), 20, 2, 1);
-          dot(c, "#d7b768", 22 - (f % 2), 19, 2, 1);
+          dot(c, shell, 11, 8 + breathe, 9, 2);
         } else if (key === "moth") {
-          // asas: 3 posições (fechada, meio, aberta)
+          const float = Math.round(Math.sin(p * Math.PI * 2) * 2);
+          c.drawImage(src, 0, float);
+          c.clearRect(0, 0, 13, 32);
+          c.clearRect(19, 0, 13, 32);
+          
           const wingStage = f % 3;
-          const wingY  = wingStage === 0 ? 10 : wingStage === 1 ? 8 : 6;
-          const wingH  = wingStage === 0 ? 4  : wingStage === 1 ? 6 : 8;
+          const wingY  = wingStage === 0 ? 10 : wingStage === 1 ? 7 : 4;
+          const wingH  = wingStage === 0 ? 4  : wingStage === 1 ? 8 : 12;
           const wingCol = wingStage === 2 ? "#d1c8da" : wingStage === 1 ? "#bbb0c9" : "#aaa5bc";
-          dot(c, wingCol, 3, wingY, 8, wingH);
-          dot(c, wingCol, 21, wingY, 8, wingH);
-          // brilho nas asas
-          dot(c, "#f1e6ca", 6, wingY + 1, 2, 2);
-          dot(c, "#f1e6ca", 24, wingY + 1, 2, 2);
-          // antenas oscilam
-          dot(c, f % 2 ? "#c8b8d4" : "#9890ac", 13, 5 + (f % 2), 1, 4);
-          dot(c, f % 2 ? "#c8b8d4" : "#9890ac", 15, 5 + (f % 2), 1, 4);
-        } else { // guardian
-          // braços oscilam lentamente
-          const armOff = f < 3 ? 0 : 2;
-          dot(c, f < 3 ? "#d7b768" : "#f1e6ca", 16, 19 + armOff, 4, 4 - armOff);
-          dot(c, f < 3 ? "#d7b768" : "#f1e6ca", 29, 19 + armOff, 4, 4 - armOff);
-          // coroa de folhas oscila
-          dot(c, f % 2 ? "#91aa62" : "#719557", 9 + (f % 2), 4, 12, 2);
-          dot(c, "#4e7443", 35 - (f % 2), 7, 8, 3);
-          // olhos brilham em ciclo
+          dot(c, wingCol, 3, wingY + float, 8, wingH);
+          dot(c, wingCol, 21, wingY + float, 8, wingH);
+        } else {
+          const breathe = Math.round(Math.sin(p * Math.PI * 2));
+          c.drawImage(src, 0, breathe);
+          
+          const armSway = Math.round(Math.sin(p * Math.PI * 2 - 1));
+          c.clearRect(0, 19, 11, 33);
+          c.clearRect(37, 19, 11, 33);
+          c.drawImage(src, 0, 19, 11, 33, 0, 19 + armSway, 11, 33);
+          c.drawImage(src, 37, 19, 11, 33, 37, 19 + armSway, 11, 33);
+          
           const eyeGlow = ["#e8ce81", "#f0dc95", "#ffe8a0", "#f0dc95", "#e8ce81", "#d4b66c"];
-          dot(c, eyeGlow[f], 16, 19, 4, 4);
-          dot(c, eyeGlow[f], 29, 19, 4, 4);
+          dot(c, eyeGlow[f], 16, 19 + breathe, 4, 4);
+          dot(c, eyeGlow[f], 29, 19 + breathe, 4, 4);
         }
       });
 
@@ -200,81 +203,73 @@ export function polishArt(scene: Phaser.Scene) {
       yoyo: false,
     });
   }
-  for (let f = 0; f < 4; f++) {
+  for (let f = 0; f < 8; f++) {
+    const p = f / 8;
     const wind = scene.textures.createCanvas(`grass-wind-${f}`, 32, 16)!;
     const c = wind.context;
     for (let i = 0; i < 5; i++) {
-      const x = 3 + i * 6 + (f > 1 ? 1 : 0),
+      const wave = Math.sin((i / 5) * Math.PI - p * Math.PI * 2);
+      const sway = wave > 0.5 ? 2 : wave > 0 ? 1 : 0;
+      const x = 3 + i * 6 + sway,
         y = 5 + ((i * 3) % 8);
-      dot(c, f === 3 ? "#a8ba71" : "#8eaa61", x, y, 1, 3);
-      if (f > 0) dot(c, "#c4ca86", x + 1, y, 1, 1);
+      dot(c, sway > 1 ? "#a8ba71" : "#8eaa61", x, y, 1, 3);
+      if (sway > 0) dot(c, "#c4ca86", x + 1, y, 1, 1);
     }
     wind.refresh();
   }
   scene.anims.create({
     key: "ambient-grass-wind",
-    frames: Array.from({ length: 4 }, (_, i) => ({ key: `grass-wind-${i}` })),
-    frameRate: 5,
+    frames: Array.from({ length: 8 }, (_, i) => ({ key: `grass-wind-${i}` })),
+    frameRate: 8,
     repeat: 0,
-    yoyo: true,
   });
   for (const [key, rate] of [
-    ["water", 3],
-    ["fire", 6],
-    ["tree", 2],
-    ["flag", 4],
+    ["water", 6],
+    ["fire", 8],
+    ["tree", 4],
+    ["flag", 6],
   ] as const)
     scene.anims.create({
       key: `ambient-${key}`,
-      frames: Array.from({ length: 4 }, (_, i) => ({ key: `${key}-${i}` })),
+      frames: Array.from({ length: 8 }, (_, i) => ({ key: `${key}-${i}` })),
       frameRate: rate,
-      repeat: key === "water" || key === "fire" ? -1 : 0,
-      yoyo: key === "tree" || key === "flag",
+      repeat: key === "water" || key === "fire" || key === "tree" || key === "flag" ? -1 : 0,
     });
 
   for (const kind of ["hero", "master", "merchant"]) {
     for (let d = 0; d < 4; d++) {
-      // ── idle: 3 frames genuínos ──────────────────────────────────────────
-      // frame 0: pose base
-      // frame 1: ombros sobem 1px (inspiração) — clonado e redesenhado
-      // frame 2: olho pisca — clonado e redesenhado
+      for (let f = 0; f < 6; f++) {
+        clone(`${kind}-${d}-0`, `${kind}-${d}-idle-${f}`, 20, 32, (c) => {
+          const src = scene.textures.get(`${kind}-${d}-0`).getSourceImage() as HTMLCanvasElement;
+          c.clearRect(0, 0, 20, 32);
+          const p = f / 6;
+          const breathe = Math.round(Math.sin(p * Math.PI * 2));
+          c.drawImage(src, 0, 23, 20, 9, 0, 23, 20, 9);
+          c.drawImage(src, 0, 0, 20, 23, 0, breathe, 20, 23);
+          
+          if (d !== 2) {
+            const capeWave = Math.round(Math.cos(p * Math.PI * 2) * 1.5);
+            c.clearRect(0, 19 + breathe, 20, 4);
+            c.drawImage(src, 0, 19, 20, 4, capeWave, 19 + breathe, 20, 4);
+          }
+          
+          if (d !== 0) {
+            const eyeOpen = f !== 3;
+            if (!eyeOpen) {
+              const eyeX = d === 2 ? 7 : d === 3 ? 13 : 9;
+              dot(c, "#e2ba88", eyeX, 6 + breathe, 1, 2);
+              if (d === 2) dot(c, "#e2ba88", eyeX + 4, 6 + breathe, 1, 2);
+              dot(c, "#d5b080", eyeX, 7 + breathe, 1, 1);
+              if (d === 2) dot(c, "#d5b080", eyeX + 4, 7 + breathe, 1, 1);
+            }
+          }
+        });
+      }
 
-      clone(`${kind}-${d}-0`, `${kind}-${d}-idle-0`, 20, 32, () => {});
-
-      // frame 1: parte superior do corpo 1px acima (cabeça + torso)
-      clone(`${kind}-${d}-0`, `${kind}-${d}-idle-1`, 20, 32, (c) => {
-        // apaga a faixa do torso + cabeça
-        c.clearRect(0, 0, 20, 24);
-        // redesenha 1px acima
-        c.drawImage(
-          scene.textures.get(`${kind}-${d}-0`).getSourceImage() as HTMLCanvasElement,
-          0, 0, 20, 23,  // src: torso + cabeça (primeiros 23px)
-          0, -1, 20, 23, // dst: 1px acima
-        );
-      });
-
-      // frame 2: olho piscando — usa base e pinta 1 linha sobre os olhos
-      clone(`${kind}-${d}-0`, `${kind}-${d}-idle-2`, 20, 32, (c) => {
-        // fecha o olho: pinta sobre a pupila com a cor da pele
-        const eyeX = d === 2 ? 7 : d === 3 ? 13 : 9;
-        dot(c, "#e2ba88", eyeX, 6, 1, 2);  // olho principal
-        if (d === 0) dot(c, "#e2ba88", eyeX + 4, 6, 1, 2); // segundo olho
-        dot(c, "#d5b080", eyeX, 7, 1, 1);  // pálpebra escura
-        if (d === 0) dot(c, "#d5b080", eyeX + 4, 7, 1, 1);
-      });
-
-      // animação idle: 0→1→0→0→2→0 (pisca infrequente)
       scene.anims.create({
         key: `${kind}-idle-${d}`,
-        frames: [
-          { key: `${kind}-${d}-idle-0` },
-          { key: `${kind}-${d}-idle-1` },
-          { key: `${kind}-${d}-idle-0` },
-          { key: `${kind}-${d}-idle-0` },
-          { key: `${kind}-${d}-idle-2` },
-          { key: `${kind}-${d}-idle-0` },
-        ],
-        frameRate: 1.2,
+        frames: Array.from({ length: 6 }, (_, i) => ({ key: `${kind}-${d}-idle-${i}` })),
+        frameRate: 4,
         repeat: -1,
       });
 
