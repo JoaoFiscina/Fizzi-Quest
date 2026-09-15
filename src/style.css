@@ -170,7 +170,9 @@ select:focus-visible {
 .nav button {
   font-size: 12px;
   background: #183d35eb;
-  padding: 8px 12px;
+  border-color: #4a6852;
+  padding: 9px 13px;
+  letter-spacing: 0.2px;
 }
 .controls {
   position: fixed;
@@ -191,11 +193,20 @@ select:focus-visible {
   display: grid;
   grid-template-columns: repeat(3, 48px);
   grid-template-rows: repeat(2, 48px);
-  gap: 4px;
+  gap: 5px;
 }
 .dpad button {
-  font-size: 21px;
-  background: #183d35d9;
+  font-size: 19px;
+  background:
+    linear-gradient(180deg, #254b40 0%, #183d35 100%);
+  border-color: #4a7060;
+  box-shadow: 0 3px 0 #0e2a1f;
+  padding: 0;
+}
+.dpad button:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #0e2a1f;
+  background: #183d35;
 }
 .up {
   grid-column: 2;
@@ -322,9 +333,29 @@ dialog::backdrop {
   margin: 0;
 }
 .close {
-  background: transparent;
-  border: 0;
-  font-size: 20px;
+  background: #2a5448;
+  border: 1px solid #4a7863;
+  color: #c8ddc2;
+  font-size: 17px;
+  width: 44px;
+  height: 44px;
+  min-height: 44px;
+  padding: 0;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  transition:
+    background 0.12s,
+    color 0.12s;
+}
+.close:hover {
+  background: #3a6e5c;
+  color: #f1e6ca;
+}
+.close:focus-visible {
+  outline: 2px solid #91aa62;
+  outline-offset: 2px;
 }
 .modal-content {
   padding: 22px;
@@ -343,8 +374,22 @@ dialog::backdrop {
   color: #63735d;
 }
 .entry {
-  border-bottom: 1px solid #ccc4a7;
-  padding: 14px 0;
+  border-bottom: 2px dotted #b8aa82;
+  padding: 16px 0;
+  position: relative;
+}
+.entry::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: repeating-linear-gradient(
+    to right,
+    #b8aa82 0 4px,
+    transparent 4px 9px
+  );
 }
 .entry h3 {
   margin: 0 0 10px;

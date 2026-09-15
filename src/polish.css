@@ -1,4 +1,4 @@
-/* v23.09.2003.3: centered world, compact shop and denser HUD. */
+/* v23.09.2003.5: refinamento visual — animações, inertes, hn e HUD. */
 .version-label {
   position: fixed;
   bottom: 5px;
@@ -43,11 +43,30 @@
   text-align: right;
   white-space: nowrap;
 }
-.hud-loot .materials {
-  color: #b8ce9c;
+.hud-loot .gold-icon { color: #e7c87e; }
+.hud-loot .materials-icon { color: #b8ce9c; }
+.hud-loot .potions-icon { color: #90c6ca; }
+.hud-loot span {
+  display: flex;
+  align-items: center;
+  gap: 3px;
 }
-.hud-loot .potions {
-  color: #90c6ca;
+/* botão "Equipado" — estado conclusão, não competem com primário */
+button:disabled.equipped-state {
+  opacity: 1;
+  background: #2e5a3a;
+  border-color: #4e8a5a;
+  color: #a8d8a8;
+  cursor: default;
+}
+/* botão "Alocar +1" — disponível com destaque sutil */
+button.alloc-btn:not(:disabled) {
+  background: #3b6e58;
+  border-color: #5a9070;
+  color: #e4f0d8;
+}
+button.alloc-btn:not(:disabled):hover {
+  background: #4a8068;
 }
 .shop-content {
   padding: 14px 18px 18px;

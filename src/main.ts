@@ -153,9 +153,9 @@ function renderHUD() {
   info.append(hp, stamina);
   const loot = el("div", "", "hud-loot");
   loot.append(
-    el("span", `${s.gold} ◈`, "gold"),
-    el("span", `${s.materials} ◆`, "materials"),
-    el("span", `${s.potions} ◒`, "potions"),
+    el("span", `🪙 ${s.gold}`, "gold gold-icon"),
+    el("span", `◈ ${s.materials}`, "materials materials-icon"),
+    el("span", `⬡ ${s.potions}`, "potions potions-icon"),
   );
   const equips = el("div", "", "hud-equips");
   equips.append(el("span", `⚔️ ${items[s.weapon].name.split(" ")[0]}`));
@@ -210,6 +210,7 @@ function character() {
         store.transact((s) => allocate(s, k));
         character();
       }),
+      "alloc-btn",
     );
     b.disabled = a.free <= 0;
     row.append(b);
@@ -263,6 +264,7 @@ function equipment(shop = false) {
         }),
     );
     b.disabled = shop ? s.owned.includes(id) || s.gold < item.price : equipped;
+    if (!shop && equipped) b.classList.add("equipped-state");
     row.append(copy, b);
     list.append(row);
   }

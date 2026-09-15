@@ -141,7 +141,9 @@ export class World extends Phaser.Scene {
         .sprite(e.x + ox, e.y + oy, npc ? `${e.kind}-0-idle-0` : e.kind)
         .setOrigin(0.5, 1)
         .setDepth(e.y);
-      if (npc && !this.reduced) sprite.play(`${e.kind}-idle-0`);
+      if (npc && !this.reduced) {
+        sprite.play(`${e.kind}-idle-0`);
+      }
       if (e.kind in enemies) {
         this.enemySprites.set(e.kind, sprite);
         sprite.setVisible(!s.defeated.includes(e.kind as keyof typeof enemies));

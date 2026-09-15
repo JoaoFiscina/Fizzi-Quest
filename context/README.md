@@ -4,7 +4,7 @@ Esta pasta é a memória operacional do jogo. Atualize-a a cada versão antes de
 
 ## Versão corrente
 
-`v23.09.2003.4` — equipamentos nos novos slots de escudo e armadura, velocidade progressiva com agilidade e variância determinística no spawn de monstros.
+`v23.09.2003.5` — sprite do herói com 5 frames e sombra de contato; animações de walk sincronizadas com velocidade real; HUD com ícones distintos por recurso; botão X redesenhado; divisores pontilhados; D-pad com relevo e :active.
 
 ## Árvore lógica
 

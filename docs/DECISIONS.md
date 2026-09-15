@@ -1,4 +1,30 @@
-# Decisões — v23.09.2003.2
+# Decisões — v23.09.2003.5
+
+## Refinamento Visual (v23.09.2003.5)
+
+### Sprite do herói
+- Aumentado de 3 para 5 frames por direção (frame 0 = idle; frames 1–4 = ciclo completo de passada).
+- Altura do canvas aumentada de 28 para 30 px para acomodar a sombra de contato no chão (elipse escura em y=28–29), sem alterar o grid de colisão.
+- Braços passam a alternar de forma independente das pernas (armL/-R contrapostos), imitando caminhada real.
+- Mais detalhe de volume: contorno escuro explícito na cabeça, reflexo claro e sombra lateral no casaco, bochechas.
+- Sobrance lha fina adicionada para direcionamento visual.
+- NPCs (mestre, mercador) seguem o mesmo padrão para coerência.
+
+### Animações
+- `idle` desacelerou de 2 para 1.5 fps (respiração mais credível).
+- `walk` usa agora os 4 frames distintos (1→2→3→4) sem repetir o frame 0 como divisor; frameRate 5 ≈ 64 px/s em sincronia com a velocidade base do jogador.
+
+### HUD e modais
+- Ícones de recursos diferenciados: 🪙 ouro, ◈ materiais, ⬡ poções — silhuetas distintas sem depender apenas de cor.
+- Botão Fechar redesenhado: fundo #2a5448 com borda sutil, sem o outline amarelo que competia com o tom de recompensa.
+- Botão "Alocar +1" recebe classe `alloc-btn` e cor verde-ativa (#3b6e58) quando disponível; desativado volta ao opaco padrão.
+- Botão "Equipado" recebe classe `equipped-state`: verde escuro (#2e5a3a) e texto verde-claro, lido imediatamente como "já concluído", não "bloquedo".
+- Divisores entre atributos trocados de linha cinza sólida por pontilhado `repeating-linear-gradient` na paleta paper/dourado.
+- D-pad: leve gradiente, box-shadow de 3 px e :active rebaixa 2 px para dar feedback tátil sem mudar layout.
+- Nav buttons: padding ligeiramente aumentado e border-color integrada à paleta verde.
+
+## Decisões anteriores
+
 
 ## Preservação e arquitetura
 

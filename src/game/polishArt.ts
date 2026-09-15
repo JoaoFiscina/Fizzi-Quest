@@ -196,31 +196,34 @@ export function polishArt(scene: Phaser.Scene) {
 
   for (const kind of ["hero", "master", "merchant"]) {
     for (let d = 0; d < 4; d++) {
-      clone(`${kind}-${d}-0`, `${kind}-${d}-idle-0`, 20, 28, () => {});
-      clone(`${kind}-${d}-0`, `${kind}-${d}-idle-1`, 20, 28, (c) => {
-        c.clearRect(0, 0, 20, 16);
+      // idle: 2 frames — frame0 normal + clone com corpo 1px para baixo
+      clone(`${kind}-${d}-0`, `${kind}-${d}-idle-0`, 20, 30, () => {});
+      clone(`${kind}-${d}-0`, `${kind}-${d}-idle-1`, 20, 30, (c) => {
+        c.clearRect(0, 0, 20, 20);
         c.drawImage(
           scene.textures.get(`${kind}-${d}-0`).getSourceImage() as HTMLCanvasElement,
-          0, 0, 20, 15,
-          0, 1, 20, 15
+          0, 0, 20, 19,
+          0, 1, 20, 19,
         );
       });
       scene.anims.create({
         key: `${kind}-idle-${d}`,
         frames: [{ key: `${kind}-${d}-idle-0` }, { key: `${kind}-${d}-idle-1` }],
-        frameRate: 2,
+        frameRate: 1.5,
         repeat: -1,
         yoyo: true,
       });
+      // walk: 4 frames (1→2→3→4) — ciclo completo de passada
+      // frameRate 4 ≈ 16px/frame * 4fps = 64px/s (em sincronia com speed=56-74)
       scene.anims.create({
         key: `${kind}-walk-${d}`,
         frames: [
           { key: `${kind}-${d}-1` },
-          { key: `${kind}-${d}-0` },
           { key: `${kind}-${d}-2` },
-          { key: `${kind}-${d}-0` },
+          { key: `${kind}-${d}-3` },
+          { key: `${kind}-${d}-4` },
         ],
-        frameRate: 6,
+        frameRate: 5,
         repeat: -1,
       });
     }
