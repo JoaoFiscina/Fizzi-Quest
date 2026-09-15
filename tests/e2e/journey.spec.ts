@@ -36,9 +36,9 @@ test("treino, exploração, recompensa, reload, remoção e restauração", asyn
   await expect(page.getByText("Total do dia: 78 pontos")).toBeVisible();
   await page.getByRole("button", { name: "Fechar menu" }).click();
   await move(page, "ArrowUp", 1000);
-  await move(page, "ArrowRight", 2850);
+  await move(page, "ArrowRight", 3000);
   await expect(page.locator(".place strong")).toHaveText("Bosque das Brumas");
-  await move(page, "ArrowRight", 1700);
+  await move(page, "ArrowRight", 1900);
   await page.keyboard.press("e");
   await expect(page.locator(".battle-panel")).toBeVisible();
   await page.getByRole("button", { name: "Atacar", exact: true }).click();
@@ -46,7 +46,7 @@ test("treino, exploração, recompensa, reload, remoção e restauração", asyn
   await page.getByRole("button", { name: "Atacar", exact: true }).click();
   await expect(page.getByText(/Vitória! \+15 XP/)).toBeVisible();
   await page.getByRole("button", { name: "Voltar à aventura" }).click();
-  await move(page, "ArrowLeft", 2400);
+  await move(page, "ArrowLeft", 2700);
   await expect(page.locator(".place strong")).toHaveText("Vila da Guilda");
   await page.reload();
   await page.getByRole("button", { name: "Continuar aventura" }).click();
@@ -206,8 +206,8 @@ test("compra e descanso pela vila", async ({ page }) => {
   await expect(page.locator(".shop-balance")).toContainText("2 ouro");
   await expect(page.locator(".shop-balance")).toContainText("4 poções");
   await page.getByRole("button", { name: "Fechar menu" }).click();
-  await move(page, "ArrowDown", 260);
-  await move(page, "ArrowRight", 2450);
+  await move(page, "ArrowDown", 350);
+  await move(page, "ArrowRight", 2700);
   await page.keyboard.press("e");
   await expect(page.getByText("Vida 50/50", { exact: true })).toBeVisible();
   expect(

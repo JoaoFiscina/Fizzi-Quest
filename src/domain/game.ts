@@ -43,6 +43,30 @@ export const items = {
     price: 25,
     bonus: { ...zero(), breath: 2 },
   },
+  wood_shield: {
+    name: "Escudo de madeira",
+    slot: "shield",
+    price: 20,
+    bonus: { ...zero(), vigor: 1 },
+  },
+  iron_shield: {
+    name: "Escudo de ferro",
+    slot: "shield",
+    price: 50,
+    bonus: { ...zero(), vigor: 3, agility: -1 },
+  },
+  leather_armor: {
+    name: "Armadura de couro",
+    slot: "armor",
+    price: 25,
+    bonus: { ...zero(), vigor: 2 },
+  },
+  chainmail: {
+    name: "Cota de malha",
+    slot: "armor",
+    price: 60,
+    bonus: { ...zero(), vigor: 4, agility: -2 },
+  },
 } as const;
 export type ItemId = keyof typeof items;
 export const enemies = {
@@ -107,6 +131,8 @@ export type Save = {
   potions: number;
   owned: ItemId[];
   weapon: ItemId;
+  shield: ItemId | null;
+  armor: ItemId | null;
   accessory: ItemId | null;
   hp: number;
   stamina: number;
@@ -132,6 +158,8 @@ export function freshSave(): Save {
     potions: 3,
     owned: ["blade"],
     weapon: "blade",
+    shield: null,
+    armor: null,
     accessory: null,
     hp: 50,
     stamina: 8,
@@ -156,6 +184,8 @@ export function level(xp: number) {
   return { level, xp: remaining, next: 50 + 25 * (level - 1) };
 }
 export function stats(s: Save) {
+  if (s.shield === undefined) s.shield = null;
+  if (s.armor === undefined) s.armor = null;
   const l = level(s.adventureXpTotal),
     m = mastery(s.workouts),
     a = zero();
@@ -166,6 +196,8 @@ export function stats(s: Save) {
         Math.floor(m[k] / 10000) +
         s.allocated[k] +
         items[s.weapon].bonus[k] +
+        (s.shield ? items[s.shield].bonus[k] : 0) +
+        (s.armor ? items[s.armor].bonus[k] : 0) +
         (s.accessory ? items[s.accessory].bonus[k] : 0)),
   );
   return {
@@ -209,7 +241,10 @@ export function buy(s: Save, id: ItemId | "potion") {
 export function equip(s: Save, id: ItemId) {
   if (s.battle || !s.owned.includes(id))
     throw Error("Equipamento indisponível.");
-  if (items[id].slot === "weapon") s.weapon = id;
+  const slot = items[id].slot;
+  if (slot === "weapon") s.weapon = id;
+  else if (slot === "shield") s.shield = id;
+  else if (slot === "armor") s.armor = id;
   else s.accessory = id;
   clampResources(s);
 }

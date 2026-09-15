@@ -157,7 +157,12 @@ function renderHUD() {
     el("span", `${s.materials} ◆`, "materials"),
     el("span", `${s.potions} ◒`, "potions"),
   );
-  hud.append(crest, info, loot);
+  const equips = el("div", "", "hud-equips");
+  equips.append(el("span", `⚔️ ${items[s.weapon].name.split(" ")[0]}`));
+  if (s.shield) equips.append(el("span", `🛡️ ${items[s.shield].name.split(" ")[0]}`));
+  if (s.armor) equips.append(el("span", `👕 ${items[s.armor].name.split(" ")[0]}`));
+  
+  hud.append(crest, info, equips, loot);
   place.replaceChildren(
     el("small", "A TRILHA ESQUECIDA"),
     el("strong", s.map === "village" ? "Vila da Guilda" : "Bosque das Brumas"),
@@ -180,6 +185,8 @@ function character() {
     const row = el("section", "", "entry");
     const bonus =
       items[s.weapon].bonus[k] +
+      (s.shield ? items[s.shield].bonus[k] : 0) +
+      (s.armor ? items[s.armor].bonus[k] : 0) +
       (s.accessory ? items[s.accessory].bonus[k] : 0);
     row.append(
       el("h3", `${labels[k]} ${a.attributes[k]}`),
@@ -193,6 +200,11 @@ function character() {
         `${fmt(a.mastery[k] / 100)} de maestria · ${fmt((a.mastery[k] / 100) % 100)}/100 para o próximo atributo`,
       ),
     );
+    if (k === "agility") {
+      row.append(
+        el("small", `Define sua velocidade de movimento: ${Math.floor(56 + Math.min(18, a.attributes[k] * 1.2))} px/s.`, "muted")
+      );
+    }
     const b = button("Alocar +1", () =>
       safe(() => {
         store.transact((s) => allocate(s, k));
@@ -235,7 +247,7 @@ function equipment(shop = false) {
           .join(" · ") || "Equipamento inicial",
       ),
     );
-    const equipped = s.weapon === id || s.accessory === id;
+    const equipped = s.weapon === id || s.shield === id || s.armor === id || s.accessory === id;
     const b = button(
       shop
         ? s.owned.includes(id)

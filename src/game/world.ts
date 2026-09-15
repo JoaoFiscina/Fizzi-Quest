@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 import { createArt } from "./art";
 import { makeMap, walkable, type Entity, type MapData } from "./maps";
-import { enemies, type CombatEvent } from "../domain/game";
+import { enemies, stats, type CombatEvent } from "../domain/game";
 import { BattlePresentation } from "./battlePresentation";
 import type { Store } from "../application/store";
 export class World extends Phaser.Scene {
@@ -12,6 +12,7 @@ export class World extends Phaser.Scene {
   private direction = 0;
   private worldKey = "";
   private elapsed = 0;
+  private speed = 56;
   private root!: Phaser.GameObjects.Container;
   private enemySprites = new Map<string, Phaser.GameObjects.Sprite>();
   private presentation?: BattlePresentation;
@@ -128,8 +129,16 @@ export class World extends Phaser.Scene {
     const sorted = [...m.entities].sort((a, b) => a.y - b.y);
     for (const e of sorted) {
       const npc = e.kind === "master" || e.kind === "merchant";
+      let ox = 0, oy = 0;
+      if (e.kind in enemies) {
+        ox = ((e.x * 7 + e.y * 13 + e.kind.charCodeAt(0)) % 11) - 5;
+        oy = ((e.x * 11 + e.y * 17 + e.kind.charCodeAt(e.kind.length - 1)) % 11) - 5;
+        if (!walkable(m, e.x + ox, e.y + oy)) {
+          ox = 0; oy = 0;
+        }
+      }
       const sprite = this.add
-        .sprite(e.x, e.y, npc ? e.kind + "-0-0" : e.kind)
+        .sprite(e.x + ox, e.y + oy, npc ? e.kind + "-0-0" : e.kind)
         .setOrigin(0.5, 1)
         .setDepth(e.y);
       if (e.kind in enemies) {
@@ -236,6 +245,7 @@ export class World extends Phaser.Scene {
   sync() {
     if (!this.player) return;
     const s = this.store.state;
+    this.speed = 56 + Math.min(18, stats(s).speed * 1.2);
     if (this.worldKey !== s.map && !s.battle) this.build();
     for (const [key, sprite] of this.enemySprites)
       sprite.setVisible(!s.defeated.includes(key as keyof typeof enemies));
@@ -289,7 +299,7 @@ export class World extends Phaser.Scene {
       dy = 1;
       this.direction = 0;
     }
-    const step = (64 * Math.min(delta, 35)) / 1000,
+    const step = (this.speed * Math.min(delta, 35)) / 1000,
       nx = s.x + dx * step,
       ny = s.y + dy * step;
     if (walkable(this.mapData, nx, ny)) {

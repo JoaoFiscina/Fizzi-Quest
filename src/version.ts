@@ -1,2 +1,2 @@
 /** Public release label; independent of the versioned save format. */
-export const GAME_VERSION = "v23.09.2003.3";
+export const GAME_VERSION = "v23.09.2003.4";

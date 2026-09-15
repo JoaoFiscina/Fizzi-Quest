@@ -1,6 +1,6 @@
 # Próximos passos
 
-## Próxima sessão — depois de v23.09.2003.3
+## Próxima sessão — depois de v23.09.2003.4
 
 1. Jogar o capítulo inteiro até a entrega do emblema, avaliando ritmo, dificuldade e navegação.
 2. Acrescentar testes E2E para recompensa única da missão, baú e melhoria da guilda.
@@ -15,11 +15,9 @@
 
 ## Backlog informado pelo usuário
 
-1. Melhorar esteticamente o mapa prévio.
-2. Variar levemente o spawn dos monstros sem perder determinismo.
-3. Mostrar no HUD arma, escudo e armadura equipados.
-4. Aplicar modificador suave de velocidade pelo atributo de velocidade.
-5. Definir melhor os monstros em pixel art.
+1. Melhorar esteticamente o mapa prévio sem perder legibilidade da rota principal.
+2. Pixel art mais definida dos monstros.
+3. Novas áreas bloqueadas e refinamento de tiles e texturas no código.
 
 ## M2 depois de M1
 

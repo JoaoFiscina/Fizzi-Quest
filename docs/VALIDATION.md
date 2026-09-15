@@ -1,10 +1,10 @@
-# Validação — v23.09.2003.3
+# Validação — v23.09.2003.4
 
 Data: 15/09/2026. Ambiente: Windows, Node 24, Microsoft Edge headless via Playwright.
 
 ## Comandos executados
 
-- `npm test`: 25 testes unitários e de integração de domínio aprovados.
+- `npm test`: 28 testes unitários e de integração de domínio aprovados.
 - `npm run build`: TypeScript estrito e Vite concluídos; saída em `dist`.
 - `npm run test:e2e`: 6 testes de navegador aprovados (1,5 min na execução final).
 

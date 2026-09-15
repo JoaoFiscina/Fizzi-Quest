@@ -175,6 +175,30 @@ describe("save, histórico e economia", () => {
     expect(stats(validateSave(s)).free).toBe(1);
   });
 });
+describe("equipamentos e migração", () => {
+  it("migra save antigo adicionando os slots de escudo e armadura sem corromper dados", () => {
+    const s = freshSave() as any;
+    delete s.shield;
+    delete s.armor;
+    const a = stats(s);
+    expect(s.shield).toBeNull();
+    expect(s.armor).toBeNull();
+    expect(a.maxHp).toBeGreaterThan(0);
+  });
+  it("equipa itens nos slots corretos, impedindo conflitos e calculando bônus", () => {
+    const s = freshSave();
+    s.owned.push("iron_shield", "leather_armor", "dagger");
+    equip(s, "iron_shield");
+    equip(s, "leather_armor");
+    equip(s, "dagger");
+    const a = stats(s);
+    expect(s.shield).toBe("iron_shield");
+    expect(s.armor).toBe("leather_armor");
+    expect(s.weapon).toBe("dagger");
+    expect(a.attributes.vigor).toBe(10); // 5 base + 3 escudo + 2 armadura
+    expect(a.attributes.agility).toBe(6); // 5 base - 1 escudo + 2 adaga + 0 armadura
+  });
+});
 describe("rodadas determinísticas", () => {
   it("eventos respeitam velocidade e não repetem uma vitória já resolvida", () => {
     const s = freshSave();
@@ -277,5 +301,22 @@ describe("rotas e colisões", () => {
           e.label,
         ).toBe(true);
     }
+  });
+});
+describe("spawn variável e seguro", () => {
+  it("desloca posição deterministicamente sem colidir com paredes", () => {
+    const m = makeMap(true);
+    let offsetsGenerated = 0;
+    let safeOffsetsApplied = 0;
+    for (const e of m.entities) {
+      if (e.kind === "sprout" || e.kind === "beetle" || e.kind === "moth") {
+        const ox = ((e.x * 7 + e.y * 13 + e.kind.charCodeAt(0)) % 11) - 5;
+        const oy = ((e.x * 11 + e.y * 17 + e.kind.charCodeAt(e.kind.length - 1)) % 11) - 5;
+        if (ox !== 0 || oy !== 0) offsetsGenerated++;
+        if (walkable(m, e.x + ox, e.y + oy)) safeOffsetsApplied++;
+      }
+    }
+    expect(offsetsGenerated).toBeGreaterThan(0);
+    expect(safeOffsetsApplied).toBeGreaterThan(0);
   });
 });

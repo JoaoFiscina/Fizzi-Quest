@@ -4,7 +4,7 @@ Esta pasta é a memória operacional do jogo. Atualize-a a cada versão antes de
 
 ## Versão corrente
 
-`v23.09.2003.3` — câmera centralizada, mapa prévio responsivo, loja compacta, HUD de recursos e ciclos ambientais/monstros.
+`v23.09.2003.4` — equipamentos nos novos slots de escudo e armadura, velocidade progressiva com agilidade e variância determinística no spawn de monstros.
 
 ## Árvore lógica
 
@@ -30,10 +30,8 @@ fizzi-quest/
 ## Backlog visual e de gameplay
 
 - Melhorar a estética do mapa prévio sem perder a leitura da rota principal.
-- Variar levemente e de forma determinística os pontos de spawn dos monstros.
-- Adicionar ao HUD os equipamentos equipados: arma, escudo e armadura.
-- Fazer a velocidade do personagem considerar o atributo de velocidade, com limite suave.
-- Definir melhor os sprites de Besouro, Mariposa e Guardião em pixel art.
+- Novas áreas bloqueadas e pixel art mais definida dos monstros.
+- Refinar os tiles e texturas originais geradas no código.
 
 ## Regra de continuidade
 
