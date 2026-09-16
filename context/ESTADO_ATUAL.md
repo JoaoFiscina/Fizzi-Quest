@@ -39,4 +39,11 @@
 - o mapa prévio funcional ainda precisa de uma passada estética própria.
 - a IA é externa; o jogo não envia imagens nem chama uma API por conta própria.
 
+## Planejamento futuro registrado
+
+- O roadmap consolidado está em `context/ROADMAP_IMPLEMENTACOES.md`.
+- A próxima implementação proposta é `v23.09.2003.11`: tags de tipo, mochila organizada e aba Tutorial.
+- As etapas posteriores cobrem zoom, escolha visual do personagem, ambientação, novo equilíbrio dos treinos, habilidades progressivas, respawn e patrulhamento.
+- Este planejamento não alterou o comportamento publicado da `v23.09.2003.10`.
+
 Consulte `docs/VALIDATION.md` para os comandos e `context/PROXIMOS_PASSOS.md` para o backlog.
