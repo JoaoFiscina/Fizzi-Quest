@@ -2,7 +2,7 @@
 
 RPG pessoal de exploração em pixel art, construído com Phaser, TypeScript e Vite para o marco **Treino à aventura**.
 
-## Estado atual — v23.09.2003.4
+## Estado atual — v23.09.2003.9
 
 Já estão implementados os blocos principais do domínio e da experiência:
 
@@ -22,11 +22,11 @@ npm install
 npm run dev
 ```
 
-Build para Vercel: `npm run build`, saída `dist`. O projeto já está no GitHub; falta criar o deployment de produção.
+Build para Vercel: `npm run build`, saída `dist`. O projeto está no GitHub e a produção atual fica em [fizzi-quest.vercel.app](https://fizzi-quest.vercel.app). A restauração visual `v23.09.2003.9` permanece na branch de revisão até ser integrada.
 
 Validação: `npm test` e `npm run test:e2e` (Edge via Playwright). Evidências e limites em [`docs/VALIDATION.md`](docs/VALIDATION.md).
 
-Esta versão acrescenta slots visíveis de escudo e armadura, escala a velocidade do personagem com base no atributo de agilidade e gera o spawn de inimigos de forma levemente variável e segura. O resultado é salvo antes de qualquer animação. A versão pública usa `v23.09.2003.x`; a versão npm equivalente usa SemVer (`23.9.2003-4`), sem alterar o formato do save.
+Esta versão restaura a direção de pixel art, traz animações ambientais e de monstros com quadros reais, melhora caminhos e detalhes do chão e volta a exibir arma, escudo e armadura no HUD. A velocidade por agilidade e o spawn seguro continuam preservados. A versão pública usa `v23.09.2003.x`; a versão npm equivalente usa SemVer (`23.9.2003-9`), sem alterar o formato do save.
 
 ## Contexto vivo
 

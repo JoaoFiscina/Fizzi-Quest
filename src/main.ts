@@ -92,8 +92,7 @@ for (const [key, label, cls] of [
       else if (key === "workouts") {
         openModal("Diário de treinos");
         workoutsUI(store, content, notify);
-      }
-      else if (key === "bag") equipment(false);
+      } else if (key === "bag") equipment(false);
       else if (key === "map") worldMap();
       else if (key === "settings") settings();
     },
@@ -170,30 +169,49 @@ function renderHUD() {
     a = stats(s);
   hud.replaceChildren();
   const crest = el("div", "FQ", "crest");
-  const info  = el("div", "", "vitals");
+  const info = el("div", "", "vitals");
   info.append(el("strong", `Aventureiro · Nv. ${a.level}`));
 
   const hp = el("div", "", "resource");
   const hpLabel = el("span", "Vida", "hud-icon");
-  const hpVal   = el("span", `${s.hp}/${a.maxHp}`, "resource-value");
+  const hpVal = el("span", `${s.hp}/${a.maxHp}`, "resource-value");
   hp.append(hpLabel, bar(s.hp, a.maxHp), hpVal);
 
   const stamina = el("div", "", "resource");
   const stLabel = el("span", "Fôlego", "hud-icon");
-  const stVal   = el("span", `${s.stamina}/${a.maxStamina}`, "resource-value");
+  const stVal = el("span", `${s.stamina}/${a.maxStamina}`, "resource-value");
   stamina.append(stLabel, bar(s.stamina, a.maxStamina, "stamina"), stVal);
 
   info.append(hp, stamina);
 
+  const equipment = el("div", "", "hud-equipment");
+  const equipped = (slot: string, name: string, filled: boolean) => {
+    const item = el("span", "", `equip-slot${filled ? " equipped" : ""}`);
+    item.title = name;
+    item.append(el("b", slot), el("small", name));
+    return item;
+  };
+  equipment.append(
+    equipped("ARMA", items[s.weapon].name, true),
+    equipped(
+      "ESC",
+      s.shield ? items[s.shield].name : "Sem escudo",
+      Boolean(s.shield),
+    ),
+    equipped(
+      "ARM",
+      s.armor ? items[s.armor].name : "Sem armadura",
+      Boolean(s.armor),
+    ),
+  );
   const loot = el("div", "", "hud-loot");
   loot.append(
-    el("span", `⚔️ ${items[s.weapon].name}`, "weapon-icon"),
-    el("span", `${s.gold} 🔸`, "gold"),
-    el("span", `${s.materials} 🔷`, "materials-icon"),
-    el("span", `${s.potions} 🧪`, "potions-icon"),
+    el("span", `Ouro ${s.gold}`, "gold"),
+    el("span", `Mat. ${s.materials}`, "materials-icon"),
+    el("span", `Poções ${s.potions}`, "potions-icon"),
   );
 
-  hud.append(crest, info, loot);
+  hud.append(crest, info, equipment, loot);
   place.replaceChildren(
     el("small", "A TRILHA ESQUECIDA"),
     el("strong", s.map === "village" ? "Vila da Guilda" : "Bosque das Brumas"),
@@ -240,15 +258,21 @@ function character() {
     );
     if (k === "agility") {
       row.append(
-        el("small", `Velocidade: ${Math.floor(56 + Math.min(18, a.attributes[k] * 1.2))} px/s.`, "muted")
+        el(
+          "small",
+          `Velocidade: ${Math.floor(56 + Math.min(18, a.attributes[k] * 1.2))} px/s.`,
+          "muted",
+        ),
       );
     }
     const actions = el("div", "", "entry-actions");
-    const b = button("Alocar +1", () =>
-      safe(() => {
-        store.transact((s) => allocate(s, k));
-        character();
-      }),
+    const b = button(
+      "Alocar +1",
+      () =>
+        safe(() => {
+          store.transact((s) => allocate(s, k));
+          character();
+        }),
       "alloc-btn",
     );
     b.disabled = a.free <= 0;
@@ -288,7 +312,11 @@ function equipment(shop = false) {
           .join(" · ") || "Equipamento inicial",
       ),
     );
-    const equipped = s.weapon === id || s.shield === id || s.armor === id || s.accessory === id;
+    const equipped =
+      s.weapon === id ||
+      s.shield === id ||
+      s.armor === id ||
+      s.accessory === id;
     const b = button(
       shop
         ? s.owned.includes(id)
@@ -487,7 +515,6 @@ function worldMap() {
     ),
   );
 }
-
 
 world.onNear = (e) => {
   interact.textContent = e ? `${e.label} · E` : "Explore a trilha";

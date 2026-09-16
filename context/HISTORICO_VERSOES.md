@@ -1,5 +1,9 @@
 # Histórico de versões
 
+## v23.09.2003.9 — 15/09/2026
+
+Auditoria comparativa do histórico e restauração visual seletiva na branch `visual/restauracao-pos-antigravity`. O terreno voltou à paleta calma e recebeu bordas de caminho, pedras, tufos e flores com distribuição controlada. Árvores, construções e personagens recuperaram silhuetas compactas; água, fogo, vento, bandeiras e monstros usam quadros realmente diferentes. O HUD voltou à linguagem visual de RPG e mostra arma, escudo e armadura. A matriz E2E cobre 1920×1080, 1366×768, 1024×768, 430×932 e 390×844.
+
 ## v23.09.2003.8 — 15/09/2026
 
 Reversão gráfica e de interface para alinhar com a foto de referência (v23.09.2003.4). Remoção de ruídos em sprites (herói, monstros, árvores e construções). Restauração dos rótulos "Vida" e "Fôlego" no HUD, armas e ícones no layout limpo. Todos os 28 testes de domínio e build Vite aprovados com sucesso.

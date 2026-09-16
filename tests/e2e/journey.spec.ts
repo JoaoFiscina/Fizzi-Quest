@@ -252,3 +252,37 @@ test("fuga, derrota e resize durante efeito liberam a interface", async ({
   await expect(page.locator(".battle-panel")).toBeHidden();
   expect(errors).toEqual([]);
 });
+
+test("matriz visual mantém HUD, navegação e mapa dentro da tela", async ({
+  page,
+}) => {
+  const viewports = [
+    { name: "1920x1080", width: 1920, height: 1080 },
+    { name: "1366x768", width: 1366, height: 768 },
+    { name: "1024x768", width: 1024, height: 768 },
+    { name: "430x932", width: 430, height: 932 },
+    { name: "390x844", width: 390, height: 844 },
+  ];
+  for (const viewport of viewports) {
+    await page.setViewportSize(viewport);
+    await page.goto("/");
+    await page.evaluate(() => localStorage.clear());
+    await page.reload();
+    await page
+      .getByRole("button", { name: "Nova aventura", exact: true })
+      .click();
+    await expect(page.locator(".hud")).toBeVisible();
+    await expect(page.locator(".nav")).toBeVisible();
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= window.innerWidth,
+      ),
+    ).toBe(true);
+    const hud = await page.locator(".hud").boundingBox();
+    const nav = await page.locator(".nav").boundingBox();
+    expect(hud!.x + hud!.width).toBeLessThanOrEqual(nav!.x);
+    await page.screenshot({
+      path: `test-results/visual-${viewport.name}.png`,
+    });
+  }
+});

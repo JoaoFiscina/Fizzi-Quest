@@ -1,25 +1,23 @@
 # Próximos passos
 
-## Próxima sessão — v23.09.2003.7
+## Fechamento de v23.09.2003.9
 
-1. Implementar respawn dinâmico e espalhado dos monstros secundários (após a 1ª derrota), permitindo movimentação/patrulhamento leve pelos caminhos.
-2. Refinar a definição das texturas de pixel art e tilesets dos cenários (Posto de Vigia, Ruínas, Bosque).
-3. Testar a sessão em dispositivos móveis físicos (iOS Safari / Android Chrome).
+1. Revisar a PR `#1` e a preview da Vercel da branch `visual/restauracao-pos-antigravity`.
+2. Comparar a preview e as capturas em `docs/evidence/v23.09.2003.9/` com a produção atual.
+3. Integrar na `main` somente após aprovação visual.
+4. Confirmar o deployment automático da `main` na Vercel e testar a URL pública.
 
-## Depois da validação local
+## Melhorias futuras registradas pelo usuário
 
-5. Importar `JoaoFiscina/Fizzi-Quest` na Vercel e publicar a build `dist` em produção.
-6. Registrar a URL de produção fixa e testar a URL pública em navegador.
-7. Depois da publicação, testar a URL pública em navegador e registrar o deployment.
+1. Melhorar esteticamente o mapa prévio, com rota legível e áreas inexistentes claramente bloqueadas.
+2. Refinar a definição em pixel art dos monstros sem aumentar demais os sprites.
+3. Criar respawn de monstros em posições levemente diferentes após a primeira derrota.
+4. Adicionar patrulhamento leve de monstros em áreas caminháveis.
+5. Ampliar o HUD de equipamentos quando novos slots entrarem no jogo; por enquanto manter arma, escudo e armadura.
+6. Continuar calibrando a velocidade por atributo sem permitir deslocamento exagerado.
+7. Adicionar animações de ataque na apresentação de combate.
+8. Testar em Safari/iOS e Android Chrome físicos.
 
-## Backlog informado pelo usuário
+## Depois do polimento atual
 
-1. Melhorar esteticamente o mapa prévio sem perder legibilidade da rota principal.
-2. Pixel art mais definida dos monstros e personagens.
-3. Novas áreas bloqueadas e refinamento de tiles e texturas no código.
-4. Spawn dinâmico de monstros: após a primeira morte, espalhar respawn pelo mapa e implementar movimento de patrulha.
-5. Adicionar animações nos ataques de personagens em combate.
-
-## M2 depois de M1
-
-Rota bifurcada, baú, chefe, equipamentos e missão já têm implementação inicial. Não recriar: revisar, testar e completar. Áudio opcional e PWA só devem ser anunciados após implementação e verificação.
+Rota bifurcada, baú, chefe, equipamentos e missão já têm implementação inicial. Revisar e completar esses sistemas antes de criar regiões novas. Áudio e PWA continuam opcionais e só devem ser anunciados depois de implementados e verificados.

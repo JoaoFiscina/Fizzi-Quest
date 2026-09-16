@@ -1,4 +1,4 @@
-# Validação — v23.09.2003.4
+# Validação — v23.09.2003.9
 
 Data: 15/09/2026. Ambiente: Windows, Node 24, Microsoft Edge headless via Playwright.
 
@@ -6,7 +6,7 @@ Data: 15/09/2026. Ambiente: Windows, Node 24, Microsoft Edge headless via Playwr
 
 - `npm test`: 28 testes unitários e de integração de domínio aprovados.
 - `npm run build`: TypeScript estrito e Vite concluídos; saída em `dist`.
-- `npm run test:e2e`: 6 testes de navegador aprovados (1,5 min na execução final).
+- `npm run test:e2e`: 8 testes aprovados para jornada, toque, combate, animações e matriz visual (1,1 min na execução final).
 
 O build emite avisos sobre comentários PURE no Zod e tamanho do bundle do Phaser (~332 KB gzip). Não são erros de compilação.
 
@@ -25,7 +25,7 @@ O build emite avisos sobre comentários PURE no Zod e tamanho do bundle do Phase
 
 ## Inspeção visual
 
-Capturas de vila, formulário e batalha inspecionadas em 1366×768 e 390×844. Cópias em `docs/evidence/v23.09.2003.2/`. Testes geram novas capturas em `test-results/` (ignorado pelo Git).
+Capturas da vila são verificadas em 1920×1080, 1366×768, 1024×768, 430×932 e 390×844. A evidência final desta versão fica em `docs/evidence/v23.09.2003.9/`; os testes também geram cópias descartáveis em `test-results/`.
 
 ## Limites
 
@@ -33,4 +33,4 @@ Capturas de vila, formulário e batalha inspecionadas em 1366×768 e 390×844. C
 - Não foi feito ensaio de performance em aparelho de entrada ou sessão longa.
 - Missão completa do chefe, baú e guilda ainda precisam de E2E dedicado.
 - Teste de fuga teve inicialmente uma falha no fixture: o save automático de saída substituía o estado inserido com a página ativa. O cenário passou a preparar o save na tela inicial.
-- GitHub sincronizado em `JoaoFiscina/Fizzi-Quest` na branch `main`; Vercel ainda aguarda o primeiro deployment de produção.
+- A URL de produção está ativa, mas esta branch visual só chegará à produção depois de revisão e integração.
