@@ -27,8 +27,9 @@
 - `npm run test:e2e`: 8 testes aprovados;
 - fluxo principal verificado do prompt até o reload com recompensa persistida;
 - inspeção visual das telas de prompt, prévia, resultado e personagem em desktop e mobile;
-- branch de entrega: `feat/treinos-reais-v23.09.2003.10`;
-- produção ainda permanece em `v23.09.2003.9` até integração e deployment desta versão.
+- PR `#2` integrada à `main` no commit `30b3323`;
+- deployment de produção concluído pela Vercel;
+- URL fixa respondeu `HTTP 200` e o bundle publicado contém `v23.09.2003.10`.
 
 ## Riscos e limites
 

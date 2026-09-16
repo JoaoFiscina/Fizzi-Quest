@@ -2,11 +2,10 @@
 
 ## Próxima sessão após v23.09.2003.10
 
-1. Integrar a versão estável à `main` e conferir o deployment fixo da Vercel.
-2. Fazer uma rodada de uso da produção em celular físico e registrar qualquer sobreposição específica do aparelho.
-3. Melhorar esteticamente o mapa prévio, mantendo a rota e as áreas bloqueadas.
-4. Refinar os sprites dos monstros sem aumentar demais a escala visual.
-5. Planejar respawn e patrulhamento como uma etapa separada de gameplay.
+1. Fazer uma rodada de uso da produção em celular físico e registrar qualquer sobreposição específica do aparelho.
+2. Melhorar esteticamente o mapa prévio, mantendo a rota e as áreas bloqueadas.
+3. Refinar os sprites dos monstros sem aumentar demais a escala visual.
+4. Planejar respawn e patrulhamento como uma etapa separada de gameplay.
 
 ## Melhorias futuras registradas pelo usuário
 
