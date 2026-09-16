@@ -1,11 +1,11 @@
 # Próximos passos
 
-## Fechamento de v23.09.2003.9
+## Próxima sessão após v23.09.2003.9
 
-1. Revisar a PR `#1` e a preview da Vercel da branch `visual/restauracao-pos-antigravity`.
-2. Comparar a preview e as capturas em `docs/evidence/v23.09.2003.9/` com a produção atual.
-3. Integrar na `main` somente após aprovação visual.
-4. Confirmar o deployment automático da `main` na Vercel e testar a URL pública.
+1. Fazer uma rodada de uso da produção em celular físico e registrar qualquer sobreposição específica do aparelho.
+2. Melhorar esteticamente o mapa prévio, mantendo a rota e as áreas bloqueadas.
+3. Refinar os sprites dos monstros sem aumentar demais a escala visual.
+4. Planejar respawn e patrulhamento como uma etapa separada de gameplay.
 
 ## Melhorias futuras registradas pelo usuário
 

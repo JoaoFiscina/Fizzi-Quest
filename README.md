@@ -22,7 +22,7 @@ npm install
 npm run dev
 ```
 
-Build para Vercel: `npm run build`, saída `dist`. O projeto está no GitHub e a produção atual fica em [fizzi-quest.vercel.app](https://fizzi-quest.vercel.app). A restauração visual `v23.09.2003.9` permanece na branch de revisão até ser integrada.
+Build para Vercel: `npm run build`, saída `dist`. O projeto está no GitHub e a versão `v23.09.2003.9` está publicada em [fizzi-quest.vercel.app](https://fizzi-quest.vercel.app).
 
 Validação: `npm test` e `npm run test:e2e` (Edge via Playwright). Evidências e limites em [`docs/VALIDATION.md`](docs/VALIDATION.md).
 
