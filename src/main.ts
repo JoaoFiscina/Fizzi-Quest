@@ -77,12 +77,12 @@ const interact = button("Explorar", () => world.interact(), "interact");
 interact.disabled = true;
 const controls = el("div", "", "controls"),
   dpad = el("div", "", "dpad");
-for (const [key, label, cls, icon] of [
-  ["character", "Personagem", "character-btn", "⚔️"],
-  ["workouts", "Treinos", "workouts-btn", "🏃"],
-  ["bag", "Mochila", "bag-btn", "🎒"],
-  ["map", "Mapa", "map-button map-btn", "🗺️"],
-  ["settings", "Ajustes", "settings-btn", "⚙️"],
+for (const [key, label, cls] of [
+  ["character", "Personagem", "character-btn"],
+  ["workouts", "Treinos", "workouts-btn"],
+  ["bag", "Mochila", "bag-btn"],
+  ["map", "Mapa", "map-button map-btn"],
+  ["settings", "Ajustes", "settings-btn"],
 ] as const) {
   const b = button(
     "",
@@ -99,9 +99,7 @@ for (const [key, label, cls, icon] of [
     },
     cls,
   );
-  const iconEl = el("span", icon, "nav-icon");
-  const labelEl = el("span", label);
-  b.append(iconEl, labelEl);
+  b.append(el("span", label));
   nav.append(b);
 }
 for (const [key, label, cls] of [

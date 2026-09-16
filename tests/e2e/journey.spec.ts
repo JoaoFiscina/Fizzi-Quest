@@ -209,7 +209,7 @@ test("compra e descanso pela vila", async ({ page }) => {
   await move(page, "ArrowDown", 350);
   await move(page, "ArrowRight", 2700);
   await page.keyboard.press("e");
-  await expect(page.getByText("Vida 50/50", { exact: true })).toBeVisible();
+  await expect(page.locator(".resource-value").first()).toHaveText("50/50");
   expect(
     await page.evaluate(
       () => JSON.parse(localStorage.getItem("fizzi-quest.save.v1")!).defeated,
@@ -236,7 +236,7 @@ test("fuga, derrota e resize durante efeito liberam a interface", async ({
   await page.setViewportSize({ width: 390, height: 844 });
   await page.getByRole("button", { name: "Voltar à aventura" }).click();
   await expect(page.locator(".place strong")).toHaveText("Vila da Guilda");
-  await expect(page.getByText("Vida 50/50", { exact: true })).toBeVisible();
+  await expect(page.locator(".resource-value").first()).toHaveText("50/50");
   s.hp = 50;
   s.battle = null;
   startBattle(s, "sprout");
