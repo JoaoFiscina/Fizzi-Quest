@@ -1,36 +1,34 @@
-# Estado atual — v23.09.2003.9
+# Estado atual — v23.09.2003.10
 
 ## Feito nesta versão
 
-- auditoria do intervalo `346c805..7d8bde0`, documentada em `docs/VISUAL_AUDIT_ANTIGRAVITY.md`;
-- branch isolada `visual/restauracao-pos-antigravity`, sem reset ou rollback destrutivo;
-- restauração da paleta natural, das árvores orgânicas, das construções e dos personagens compactos;
-- retirada do padrão ruidoso do gramado e da grade interna dos caminhos;
-- bordas de caminho, pedrinhas, tufos, flores e rochas com distribuição determinística;
-- animações reais de água, fogo, vento, bandeiras, árvores, personagem e quatro monstros;
-- HUD compacto com vida, fôlego, arma, escudo, armadura, ouro, materiais e poções;
-- câmera inteira, suave e centralizada preservada;
-- velocidade por agilidade, equipamentos, spawn seguro e sistemas de gameplay preservados.
+- fluxo único de treino real: copiar o modelo, usar uma IA externa, colar o JSON, revisar e confirmar;
+- contrato JSON v1 estável, com ID, data, confiança, treino, recompensas e progressão;
+- correção automática da confiança conforme as evidências realmente recebidas;
+- limites por sessão e por dia, retornos decrescentes para atributos altos e bloqueio por ID ou conteúdo duplicado;
+- aplicação atômica de XP, ouro e atributos, com histórico persistente e compatível com saves antigos;
+- histórico antigo preservado e apresentado junto aos registros do fluxo atual;
+- tela do personagem com valor fracionário, barra para o próximo ponto, origem dos atributos, equipamentos e ganhos recentes;
+- prévia e confirmação responsivas, com feedback discreto após a recompensa.
 
 ## Estado funcional preservado
 
 - Vite, TypeScript e Phaser com saída `dist` para Vercel;
 - vila e bosque, colisões, transição, NPCs e encontros;
 - combate determinístico e recompensa única;
-- importação e revisão de treino;
+- importação e revisão de treino pela IA externa;
 - pontuação, maestria, XP, loja, inventário, missão e backup;
 - save versionado com migração não destrutiva.
 
 ## Verificação
 
-- `npm test`: 28 testes de domínio aprovados;
+- `npm test`: 34 testes aprovados;
 - `npm run build`: aprovado;
-- `npm run test:e2e`: 8 testes aprovados, incluindo troca real de quadros e matriz visual;
-- inspeção manual concluída em 1920×1080, 1366×768, 1024×768, 390×844 e 430×932;
-- PR `#1` integrada à `main` no commit `ab8371c`;
-- deployment de produção concluído com sucesso pela Vercel;
-- URL fixa verificada em navegador: `https://fizzi-quest.vercel.app`;
-- resposta `HTTP 200`, título e versão visível confirmados como `v23.09.2003.9`.
+- `npm run test:e2e`: 8 testes aprovados;
+- fluxo principal verificado do prompt até o reload com recompensa persistida;
+- inspeção visual das telas de prompt, prévia, resultado e personagem em desktop e mobile;
+- branch de entrega: `feat/treinos-reais-v23.09.2003.10`;
+- produção ainda permanece em `v23.09.2003.9` até integração e deployment desta versão.
 
 ## Riscos e limites
 
@@ -38,5 +36,6 @@
 - a arte continua gerada em código e tem limite de detalhe por sprite;
 - o bundle principal do Phaser permanece grande, embora o build seja válido;
 - o mapa prévio funcional ainda precisa de uma passada estética própria.
+- a IA é externa; o jogo não envia imagens nem chama uma API por conta própria.
 
 Consulte `docs/VALIDATION.md` para os comandos e `context/PROXIMOS_PASSOS.md` para o backlog.

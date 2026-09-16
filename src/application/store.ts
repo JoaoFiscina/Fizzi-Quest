@@ -11,8 +11,18 @@ import {
   workoutSchema,
   pending,
   fingerprint,
+  attributes,
   type Workout,
 } from "../domain/workouts";
+import {
+  aiWorkoutSchema,
+  balanceAiWorkout,
+  fingerprintAiWorkout,
+  trainingRewardRecordSchema,
+  DAILY_TRAINING_CAPS,
+  type AiWorkout,
+  type AppliedWorkoutReward,
+} from "../domain/aiWorkouts";
 const int = z.number().int().nonnegative().max(100000000);
 const vector = z.object({
   strength: int,
@@ -20,7 +30,18 @@ const vector = z.object({
   agility: int,
   breath: int,
 });
-const item = z.enum(["blade", "iron", "dagger", "hammer", "moss", "wind"]);
+const item = z.enum([
+  "blade",
+  "iron",
+  "dagger",
+  "hammer",
+  "moss",
+  "wind",
+  "wood_shield",
+  "iron_shield",
+  "leather_armor",
+  "chainmail",
+]);
 const enemy = z.enum(["sprout", "beetle", "moth", "guardian"]);
 const schema = z.object({
   saveVersion: z.literal(1),
@@ -34,13 +55,16 @@ const schema = z.object({
       }),
     )
     .max(5000),
+  trainingRewards: z.array(trainingRewardRecordSchema).max(5000).default([]),
   adventureXpTotal: int,
   allocated: vector,
   gold: int,
   materials: int,
   potions: int,
-  owned: z.array(item).min(1).max(6),
+  owned: z.array(item).min(1).max(10),
   weapon: item,
+  shield: item.nullable().default(null),
+  armor: item.nullable().default(null),
   accessory: item.nullable(),
   hp: int,
   stamina: int,
@@ -62,6 +86,7 @@ const schema = z.object({
     })
     .nullable(),
   muted: z.boolean(),
+  kills: int.default(0),
 });
 export function validateSave(raw: unknown): Save {
   const r = schema.safeParse(raw);
@@ -77,6 +102,10 @@ export function validateSave(raw: unknown): Save {
     (s.accessory &&
       (!s.owned.includes(s.accessory) ||
         items[s.accessory].slot !== "accessory")) ||
+    (s.shield &&
+      (!s.owned.includes(s.shield) || items[s.shield].slot !== "shield")) ||
+    (s.armor &&
+      (!s.owned.includes(s.armor) || items[s.armor].slot !== "armor")) ||
     new Set(s.owned).size !== s.owned.length ||
     s.hp > stats(s).maxHp ||
     s.stamina > stats(s).maxStamina ||
@@ -86,6 +115,29 @@ export function validateSave(raw: unknown): Save {
       s.workouts.length
   )
     throw Error("Backup contém dados inconsistentes.");
+  if (
+    new Set(s.trainingRewards.map((r) => r.externalSessionId)).size !==
+      s.trainingRewards.length ||
+    new Set(s.trainingRewards.map((r) => r.fingerprint)).size !==
+      s.trainingRewards.length
+  )
+    throw Error("Backup contém treinos de IA duplicados.");
+  for (const date of new Set(s.trainingRewards.map((r) => r.workout.date))) {
+    const records = s.trainingRewards.filter((r) => r.workout.date === date);
+    const xp = records.reduce((n, r) => n + r.reward.xp, 0);
+    const gold = records.reduce((n, r) => n + r.reward.gold, 0);
+    const attribute = records.reduce(
+      (n, r) =>
+        n + attributes.reduce((sum, key) => sum + r.reward.attributes[key], 0),
+      0,
+    );
+    if (
+      xp > DAILY_TRAINING_CAPS.xp ||
+      gold > DAILY_TRAINING_CAPS.gold ||
+      attribute > DAILY_TRAINING_CAPS.attribute + 0.001
+    )
+      throw Error("Backup excede os limites diários de treino.");
+  }
   if (
     s.battle &&
     ((s.battle.status === "awaiting_player" &&
@@ -227,6 +279,40 @@ export class Store {
           workout: normalized,
         });
     });
+  }
+  previewAiWorkout(input: AiWorkout): AppliedWorkoutReward {
+    const normalized = aiWorkoutSchema.parse(input);
+    return balanceAiWorkout(
+      normalized,
+      this.state.trainingRewards,
+      stats(this.state).attributes,
+    );
+  }
+  recordAiWorkout(input: AiWorkout): AppliedWorkoutReward {
+    if (this.state.battle) throw Error("Termine o encontro antes de importar.");
+    const normalized = aiWorkoutSchema.parse(input);
+    const fingerprint = fingerprintAiWorkout(normalized);
+    if (
+      this.state.trainingRewards.some(
+        (record) =>
+          record.externalSessionId === normalized.id ||
+          record.fingerprint === fingerprint,
+      )
+    )
+      throw Error("Esse treino já está no histórico.");
+    const reward = this.previewAiWorkout(normalized);
+    this.transact((s) => {
+      s.adventureXpTotal += reward.xp;
+      s.gold += reward.gold;
+      s.trainingRewards.push({
+        id: crypto.randomUUID(),
+        externalSessionId: normalized.id,
+        fingerprint,
+        workout: normalized,
+        reward,
+      });
+    });
+    return reward;
   }
   remove(id: string) {
     if (this.state.battle) throw Error("Termine o encontro.");

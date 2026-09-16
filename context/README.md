@@ -4,7 +4,7 @@ Esta pasta é a memória operacional do jogo. Atualize-a a cada versão antes de
 
 ## Versão corrente
 
-`v23.09.2003.9` — restauração visual seletiva pós-Antigravity: paleta natural, terreno legível, bordas de caminho, detalhes esparsos, animações reais e HUD compacto com arma, escudo e armadura.
+`v23.09.2003.10` — fluxo principal de treino real por IA externa, validação e balanceamento local, histórico unificado e progressão visual de atributos.
 
 ## Árvore lógica
 
@@ -17,12 +17,14 @@ fizzi-quest/
 │   ├── DECISOES.md               ← escolhas de produto e engenharia
 │   └── HISTORICO_VERSOES.md       ← linha do tempo das versões
 ├── docs/GAME_SPEC.md             ← contrato original do produto
+├── docs/TRAINING_AI_FORMAT.md    ← contrato JSON, limites e fluxo do treino por IA
 ├── docs/VISUAL_POLISH_SPEC.md    ← pedido de continuação visual
 ├── docs/VISUAL_AUDIT_ANTIGRAVITY.md ← auditoria e decisões da restauração
 ├── docs/VALIDATION.md            ← evidências e limites da verificação
 ├── docs/DECISIONS.md             ← decisões técnicas e ponto de retomada
 └── src/
     ├── domain/                   ← regras puras: treino, progressão, combate
+    ├── content/                  ← prompt copiável para a IA externa
     ├── application/              ← Store, save e comandos de estado
     ├── game/                     ← Phaser, mapas, sprites e controles
     └── ui/                       ← menus e revisão de treino em DOM

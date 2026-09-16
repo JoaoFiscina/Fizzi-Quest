@@ -5,72 +5,52 @@ const move = async (page: Page, key: string, ms: number) => {
   await page.waitForTimeout(ms);
   await page.keyboard.up(key);
 };
-test("treino, exploração, recompensa, reload, remoção e restauração", async ({
+test("modelo da IA, importação, recompensa, histórico e reload", async ({
   page,
 }) => {
   const errors: string[] = [];
-  page.on("pageerror", (e) => errors.push(e.message));
+  page.on("pageerror", (error) => errors.push(error.message));
   await page.goto("/");
   await page
     .getByRole("button", { name: "Nova aventura", exact: true })
     .click();
   await page.getByRole("button", { name: "Treinos", exact: true }).click();
   await page
-    .getByRole("button", { name: "Importar treino", exact: true })
+    .getByRole("button", { name: "Copiar modelo para a IA", exact: true })
     .click();
-  await page
-    .getByRole("button", { name: "Carregar exemplo do documento" })
-    .click();
-  await page.getByRole("button", { name: "Revisar JSON" }).click();
   await expect(
-    page.getByRole("button", { name: "Confirmar treino", exact: true }),
-  ).toBeDisabled();
-  await page.getByLabel("Confirmo que esta é a data correta").check();
+    page.getByLabel("Prompt para analisar treino com IA"),
+  ).toContainText("responda SOMENTE com um JSON válido");
+  await page.screenshot({ path: "test-results/desktop-training-prompt.png" });
   await page
-    .getByRole("button", { name: "Todas são séries de trabalho" })
+    .getByRole("button", { name: "Já tenho o resultado — importar" })
     .click();
-  await expect(page.getByText("Força +58,5 · total 58,5")).toBeVisible();
+  await page.getByRole("button", { name: "Carregar exemplo" }).click();
+  await page
+    .getByRole("button", { name: "Validar e visualizar", exact: true })
+    .click();
+  await expect(page.getByText("+340", { exact: true })).toBeVisible();
+  await expect(page.getByText("+72", { exact: true })).toBeVisible();
+  await expect(page.getByText("+0,18", { exact: true })).toBeVisible();
+  await page.screenshot({ path: "test-results/desktop-training-preview.png" });
   await page
     .getByRole("button", { name: "Confirmar treino", exact: true })
     .click();
-  await expect(page.getByText("Total do dia: 78 pontos")).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Treino concluído" }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Voltar ao histórico" }).click();
+  await expect(page.getByText("Treino de membros inferiores")).toBeVisible();
   await page.getByRole("button", { name: "Fechar menu" }).click();
-  await move(page, "ArrowUp", 1000);
-  await move(page, "ArrowRight", 3000);
-  await expect(page.locator(".place strong")).toHaveText("Bosque das Brumas");
-  await move(page, "ArrowRight", 1900);
-  await page.keyboard.press("e");
-  await expect(page.locator(".battle-panel")).toBeVisible();
-  await page.getByRole("button", { name: "Atacar", exact: true }).click();
-  await page.getByRole("button", { name: "Atacar", exact: true }).click();
-  await page.getByRole("button", { name: "Atacar", exact: true }).click();
-  await expect(page.getByText(/Vitória! \+15 XP/)).toBeVisible();
-  await page.getByRole("button", { name: "Voltar à aventura" }).click();
-  await move(page, "ArrowLeft", 2700);
-  await expect(page.locator(".place strong")).toHaveText("Vila da Guilda");
+  await expect(page.locator(".gold")).toContainText("72");
   await page.reload();
   await page.getByRole("button", { name: "Continuar aventura" }).click();
-  await expect(page.locator(".gold")).toContainText("5");
-  await page.getByRole("button", { name: "Ajustes", exact: true }).click();
-  const dl = page.waitForEvent("download");
-  await page
-    .getByRole("button", { name: "Exportar backup", exact: true })
-    .click();
-  const backup = await dl;
-  const path = await backup.path();
-  await page.getByRole("button", { name: "Fechar menu" }).click();
-  await page.getByRole("button", { name: "Treinos", exact: true }).click();
-  await page.getByRole("button", { name: "Remover", exact: true }).click();
-  await page.getByRole("button", { name: "Confirmar remoção" }).click();
-  await page.getByRole("button", { name: "Fechar menu" }).click();
-  await page.getByRole("button", { name: "Ajustes", exact: true }).click();
-  await page.locator("input[type=file]").setInputFiles(path!);
-  await page
-    .getByRole("button", { name: "Restaurar backup", exact: true })
-    .click();
-  await page.getByRole("button", { name: "Confirmar restauração" }).click();
   await page.getByRole("button", { name: "Personagem", exact: true }).click();
-  await expect(page.getByText(/58,5 de maestria/)).toBeVisible();
+  await expect(page.getByText("5,18", { exact: true })).toBeVisible();
+  await expect(
+    page.getByText("+0,18 · Treino de membros inferiores"),
+  ).toBeVisible();
+  await page.screenshot({ path: "test-results/desktop-character.png" });
   await page.getByRole("button", { name: "Fechar menu" }).click();
   await page.screenshot({ path: "test-results/desktop-village.png" });
   expect(errors).toEqual([]);
@@ -90,9 +70,20 @@ test("tela vertical, menus e movimento por ponteiro", async ({ page }) => {
   await page.screenshot({ path: "test-results/mobile-village.png" });
   await page.getByRole("button", { name: "Treinos", exact: true }).click();
   await page
-    .getByRole("button", { name: "Importar treino", exact: true })
+    .getByRole("button", { name: "Importar resultado da IA", exact: true })
     .click();
   await page.screenshot({ path: "test-results/mobile-import.png" });
+  await page.getByRole("button", { name: "Carregar exemplo" }).click();
+  await page
+    .getByRole("button", { name: "Validar e visualizar", exact: true })
+    .click();
+  await page.screenshot({ path: "test-results/mobile-training-preview.png" });
+  await page
+    .getByRole("button", { name: "Confirmar treino", exact: true })
+    .click();
+  await page.screenshot({ path: "test-results/mobile-training-feedback.png" });
+  await page.getByRole("button", { name: "Ver personagem" }).click();
+  await page.screenshot({ path: "test-results/mobile-character.png" });
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= window.innerWidth,

@@ -2,14 +2,16 @@
 
 RPG pessoal de exploração em pixel art, construído com Phaser, TypeScript e Vite para o marco **Treino à aventura**.
 
-## Estado atual — v23.09.2003.9
+## Estado atual — v23.09.2003.10
 
 Já estão implementados os blocos principais do domínio e da experiência:
 
 - vila e bosque gerados em pixel art própria, com colisões, transição e personagem controlável;
 - Broto Errante, Besouro de Pedra, Mariposa da Névoa e Guardião de Musgo com combate determinístico por turnos;
 - atacar, golpe pesado, recuperar fôlego, defender, poção, fugir e habilidades desbloqueadas por nível;
-- importação JSON validada, revisão de data/categoria/tipos, prévia, edição, remoção, duplicata e histórico;
+- fluxo principal de treino real: copiar o modelo para uma IA externa, colar o JSON devolvido, revisar e confirmar a recompensa;
+- validação local de confiança, limites por sessão e por dia, retornos decrescentes e bloqueio de duplicatas;
+- tela do personagem com atributos fracionários, origem dos pontos, equipamentos e ganhos recentes;
 - pontuação diária por regrasVersion 1, maestrias separadas de XP de aventura;
 - inventário, loja, equipamento, baú, fogueira, missão da guilda e melhoria da sede;
 - save versionado em localStorage, cópia anterior, exportação e restauração de backup;
@@ -22,11 +24,11 @@ npm install
 npm run dev
 ```
 
-Build para Vercel: `npm run build`, saída `dist`. O projeto está no GitHub e a versão `v23.09.2003.9` está publicada em [fizzi-quest.vercel.app](https://fizzi-quest.vercel.app).
+Build para Vercel: `npm run build`, saída `dist`. O projeto está no GitHub; a produção atual continua em `v23.09.2003.9` em [fizzi-quest.vercel.app](https://fizzi-quest.vercel.app) até a integração desta versão.
 
 Validação: `npm test` e `npm run test:e2e` (Edge via Playwright). Evidências e limites em [`docs/VALIDATION.md`](docs/VALIDATION.md).
 
-Esta versão restaura a direção de pixel art, traz animações ambientais e de monstros com quadros reais, melhora caminhos e detalhes do chão e volta a exibir arma, escudo e armadura no HUD. A velocidade por agilidade e o spawn seguro continuam preservados. A versão pública usa `v23.09.2003.x`; a versão npm equivalente usa SemVer (`23.9.2003-9`), sem alterar o formato do save.
+Esta versão torna o treino por IA o fluxo principal e estável: a IA interpreta as evidências e propõe a recompensa; o jogo valida, limita e persiste o resultado. Saves anteriores continuam compatíveis. A versão pública usa `v23.09.2003.x`; a versão npm equivalente usa SemVer (`23.9.2003-10`), sem alterar o formato externo do save.
 
 ## Contexto vivo
 
