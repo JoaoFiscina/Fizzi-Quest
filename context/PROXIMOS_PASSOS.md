@@ -2,11 +2,10 @@
 
 ## Fechamento de v23.09.2003.9
 
-1. Executar novamente toda a matriz E2E após os últimos ajustes.
-2. Copiar as cinco capturas finais para `docs/evidence/v23.09.2003.9/`.
-3. Inspecionar vila, bosque, mapa, loja e combate em desktop e celular.
-4. Commitar e enviar a branch `visual/restauracao-pos-antigravity` ao GitHub.
-5. Integrar na `main` e publicar na Vercel somente após revisão do resultado.
+1. Revisar no GitHub a branch `visual/restauracao-pos-antigravity`, já testada e enviada.
+2. Comparar as capturas em `docs/evidence/v23.09.2003.9/` com a produção atual.
+3. Integrar na `main` somente após aprovação visual.
+4. Confirmar o deployment automático da `main` na Vercel e testar a URL pública.
 
 ## Melhorias futuras registradas pelo usuário
 

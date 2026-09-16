@@ -27,7 +27,8 @@
 - `npm run build`: aprovado;
 - `npm run test:e2e`: 8 testes aprovados, incluindo troca real de quadros e matriz visual;
 - inspeção manual concluída em 1920×1080, 1366×768, 1024×768, 390×844 e 430×932;
-- a branch ainda não foi integrada nem publicada.
+- commit `5aee6df` enviado ao GitHub na branch `visual/restauracao-pos-antigravity`;
+- a branch ainda não foi integrada à `main` nem publicada na produção.
 
 ## Riscos e limites
 
