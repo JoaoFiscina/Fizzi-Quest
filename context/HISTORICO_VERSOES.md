@@ -1,5 +1,9 @@
 # Histórico de versões
 
+## v23.09.2003.10 — 15/09/2026
+
+O treino real passou a usar um fluxo principal único: o jogador copia o modelo do jogo, envia o treino a uma IA externa e cola o JSON recebido. O Fizzi Quest valida a estrutura, reduz a confiança sem evidências, aplica limites por sessão e por dia, usa retornos decrescentes, bloqueia duplicatas e só então concede XP, ouro e atributos. O histórico antigo permanece compatível. A tela do personagem agora mostra progressão fracionária, origem dos atributos, equipamentos e ganhos recentes.
+
 ## v23.09.2003.9 — 15/09/2026
 
 Auditoria comparativa do histórico e restauração visual seletiva na branch `visual/restauracao-pos-antigravity`. O terreno voltou à paleta calma e recebeu bordas de caminho, pedras, tufos e flores com distribuição controlada. Árvores, construções e personagens recuperaram silhuetas compactas; água, fogo, vento, bandeiras e monstros usam quadros realmente diferentes. O HUD voltou à linguagem visual de RPG e mostra arma, escudo e armadura. A matriz E2E cobre 1920×1080, 1366×768, 1024×768, 430×932 e 390×844.
@@ -15,7 +19,6 @@ Animações de aventureiro completas com ciclo Idle (3 quadros: respiração e p
 ## v23.09.2003.4 — 15/09/2026
 
 Adição dos slots explícitos de equipamento (escudo, armadura) com migração lazy não destrutiva. O HUD exibe a arma, o escudo e a armadura ativamente equipados. Implementação de velocidade de movimento controlada pelo atributo Agilidade (base de 56 px/s até máximo próximo de 82 px/s). O spawn de inimigos ganhou variabilidade determinística restrita a áreas caminháveis sem afetar a lógica base. Todos os 28 testes e o build passam.
-
 
 ## v23.09.2003.3 — 15/09/2026
 

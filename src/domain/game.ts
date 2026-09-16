@@ -6,6 +6,7 @@ import {
   type RecordEntry,
   type Vector,
 } from "./workouts";
+import { trainingTotals, type TrainingRewardRecord } from "./aiWorkouts";
 export const items = {
   blade: {
     name: "Lâmina de aprendiz",
@@ -124,6 +125,7 @@ export type Save = {
   saveVersion: 1;
   rulesVersion: 1;
   workouts: RecordEntry[];
+  trainingRewards: TrainingRewardRecord[];
   adventureXpTotal: number;
   allocated: Vector;
   gold: number;
@@ -152,6 +154,7 @@ export function freshSave(): Save {
     saveVersion: 1,
     rulesVersion: 1,
     workouts: [],
+    trainingRewards: [],
     adventureXpTotal: 0,
     allocated: zero(),
     gold: 0,
@@ -188,27 +191,52 @@ export function level(xp: number) {
 export function stats(s: Save) {
   if (s.shield === undefined) s.shield = null;
   if (s.armor === undefined) s.armor = null;
+  if (s.trainingRewards === undefined) s.trainingRewards = [];
   const l = level(s.adventureXpTotal),
     m = mastery(s.workouts),
-    a = zero();
-  attributes.forEach(
-    (k) =>
-      (a[k] =
-        5 +
-        Math.floor(m[k] / 10000) +
-        s.allocated[k] +
-        items[s.weapon].bonus[k] +
-        (s.shield ? items[s.shield].bonus[k] : 0) +
-        (s.armor ? items[s.armor].bonus[k] : 0) +
-        (s.accessory ? items[s.accessory].bonus[k] : 0)),
-  );
+    training = trainingTotals(s.trainingRewards),
+    a = zero(),
+    attributeBreakdown = {} as Record<
+      Attribute,
+      {
+        base: number;
+        legacy: number;
+        training: number;
+        allocated: number;
+        equipment: number;
+      }
+    >;
+  attributes.forEach((k) => {
+    const equipment =
+      items[s.weapon].bonus[k] +
+      (s.shield ? items[s.shield].bonus[k] : 0) +
+      (s.armor ? items[s.armor].bonus[k] : 0) +
+      (s.accessory ? items[s.accessory].bonus[k] : 0);
+    attributeBreakdown[k] = {
+      base: 5,
+      legacy: Math.round((m[k] / 10000) * 100) / 100,
+      training: training[k],
+      allocated: s.allocated[k],
+      equipment,
+    };
+    a[k] =
+      Math.round(
+        (5 +
+          attributeBreakdown[k].legacy +
+          training[k] +
+          s.allocated[k] +
+          equipment) *
+          100,
+      ) / 100;
+  });
   return {
     ...l,
     attributes: a,
+    attributeBreakdown,
     mastery: m,
-    maxHp: 30 + 4 * a.vigor + 5 * (l.level - 1) + (s.guild ? 5 : 0),
+    maxHp: 30 + 4 * Math.floor(a.vigor) + 5 * (l.level - 1) + (s.guild ? 5 : 0),
     maxStamina: 6 + Math.floor(a.breath / 2) + Math.floor((l.level - 1) / 2),
-    attack: 4 + a.strength + Math.floor((l.level - 1) / 2),
+    attack: 4 + Math.floor(a.strength) + Math.floor((l.level - 1) / 2),
     defense: 1 + Math.floor(a.vigor / 3),
     speed: a.agility,
     free: l.level - 1 - attributes.reduce((n, k) => n + s.allocated[k], 0),

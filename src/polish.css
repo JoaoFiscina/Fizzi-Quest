@@ -29,6 +29,11 @@
   bottom: 0;
   box-shadow: 0 3px 15px #183d3530;
 }
+
+.modal-content .quiet {
+  color: #315448;
+  border-color: #9b9b77;
+}
 .nav .map-button {
   color: #ecd88f;
   border-color: #9c9365;
@@ -232,6 +237,216 @@ button.alloc-btn:not(:disabled):hover {
   border-color: #8b7665;
   color: #7b6759;
 }
+.eyebrow-inline {
+  display: block;
+  margin-bottom: 6px;
+  color: #6f724c;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+}
+.training-hero {
+  padding: 18px;
+  border: 1px solid #b9ab7e;
+  border-radius: 10px;
+  background: #e8ddba;
+  box-shadow: inset 0 0 0 3px #f5ebcf;
+}
+.training-hero h3 {
+  margin: 4px 0 8px;
+  font:
+    24px "MedievalSharp",
+    Georgia,
+    serif;
+}
+.ai-prompt {
+  max-height: 330px;
+  background: #f7efd8;
+  line-height: 1.55;
+}
+.training-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 12px 0;
+}
+.training-metric {
+  min-width: 92px;
+  padding: 8px 10px;
+  border: 1px solid #c5b98f;
+  border-radius: 6px;
+  background: #eee4c7;
+}
+.training-metric small,
+.training-metric strong {
+  display: block;
+}
+.training-metric small {
+  color: #65705b;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+.training-metric strong {
+  margin-top: 2px;
+  color: #234a3e;
+  font-size: 14px;
+}
+.training-rewards {
+  margin: 14px 0;
+  padding: 15px;
+  border: 2px solid #9a8550;
+  border-radius: 9px;
+  background: #f4e8c3;
+}
+.training-rewards > h3 {
+  margin-top: 0;
+  font:
+    20px "MedievalSharp",
+    Georgia,
+    serif;
+}
+.training-rewards > .training-metric {
+  display: inline-block;
+  margin: 0 6px 8px 0;
+}
+.attribute-gain-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 7px;
+  margin-top: 7px;
+}
+.attribute-gain {
+  padding: 9px;
+  border-left: 3px solid #77905c;
+  background: #e1d6af;
+  transform: translateY(3px);
+  opacity: 0.82;
+  transition:
+    transform 240ms ease,
+    opacity 240ms ease;
+}
+.attribute-gain.gain-revealed {
+  transform: translateY(0);
+  opacity: 1;
+}
+.attribute-gain small,
+.attribute-gain strong {
+  display: block;
+}
+.attribute-gain small {
+  color: #5c6954;
+  font-size: 9px;
+}
+.attribute-gain strong {
+  color: #315941;
+  font-size: 17px;
+}
+.balance-adjustment,
+.training-note {
+  padding: 9px 11px;
+  border-left: 3px solid #b58a47;
+  background: #eadcb7;
+  color: #5b5941;
+  font-size: 12px !important;
+}
+.training-history-entry h3 {
+  margin: 4px 0;
+}
+.training-history-entry > small {
+  color: #70775f;
+  font-weight: 700;
+}
+.compact-entry {
+  padding: 9px 0;
+}
+.training-complete-summary {
+  font:
+    20px "MedievalSharp",
+    Georgia,
+    serif;
+  color: #315941;
+}
+.character-overview {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 20px;
+  align-items: center;
+  padding: 16px;
+  border: 1px solid #aa9865;
+  border-radius: 9px;
+  background: #e8ddba;
+}
+.character-overview h3 {
+  margin: 2px 0 4px;
+  font:
+    27px "MedievalSharp",
+    Georgia,
+    serif;
+}
+.character-wealth {
+  min-width: 130px;
+  padding-left: 16px;
+  border-left: 1px solid #bcae82;
+}
+.character-wealth strong,
+.character-wealth small {
+  display: block;
+}
+.character-wealth strong {
+  color: #806222;
+}
+.character-equipment {
+  margin: 10px 0;
+  padding: 10px 13px;
+  border: 1px solid #c3b993;
+  border-radius: 7px;
+  background: #f5ecd3;
+}
+.character-equipment p {
+  margin: 0;
+  font-size: 12px;
+}
+.attribute-card {
+  margin: 9px 0;
+  padding: 13px 14px;
+  border: 1px solid #beb38d;
+  border-radius: 8px;
+  background: #f7efd9;
+}
+.attribute-card h3 {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 0 8px;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.attribute-card .attr-value {
+  color: #315941;
+  font-size: 19px;
+}
+.attribute-card .meter {
+  height: 8px;
+  background: #d3c7a3;
+}
+.attribute-source summary {
+  cursor: pointer;
+  color: #526351;
+  font-size: 11px;
+  font-weight: 700;
+}
+.attribute-source p,
+.recent-gains p {
+  margin: 5px 0;
+  font-size: 11px;
+}
+.recent-gains {
+  margin-top: 9px;
+  padding-top: 8px;
+  border-top: 1px solid #d5c9a6;
+}
 @media (max-width: 700px) {
   .hud {
     width: 204px;
@@ -337,6 +552,29 @@ button.alloc-btn:not(:disabled):hover {
     flex-direction: column;
     gap: 7px;
     padding: 14px 20px;
+  }
+  .training-hero {
+    padding: 13px;
+  }
+  .training-hero button {
+    width: 100%;
+    margin-right: 0;
+  }
+  .training-metric {
+    flex: 1 1 42%;
+    min-width: 0;
+  }
+  .attribute-gain-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .character-overview {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .character-wealth {
+    padding: 9px 0 0;
+    border-top: 1px solid #bcae82;
+    border-left: 0;
   }
   .map-area {
     width: 100%;

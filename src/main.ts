@@ -98,6 +98,7 @@ for (const [key, label, cls] of [
     },
     cls,
   );
+  b.dataset.section = key;
   nav.append(b);
 }
 for (const [key, label, cls] of [
@@ -225,37 +226,82 @@ function character() {
   openModal("Seu aventureiro");
   const s = store.state,
     a = stats(s);
-  content.append(
-    el("p", `Nível ${a.level} · ${a.xp}/${a.next} XP de aventura`),
+  content.classList.add("character-sheet");
+  const overview = el("section", "", "character-overview");
+  const levelCopy = el("div");
+  levelCopy.append(
+    el("small", "JORNADA DO AVENTUREIRO", "eyebrow-inline"),
+    el("h3", `Nível ${a.level}`),
+    el("p", `${a.xp}/${a.next} XP até o próximo nível`, "muted"),
     bar(a.xp, a.next, "xp"),
+  );
+  const wealth = el("div", "", "character-wealth");
+  wealth.append(
+    el("strong", `${s.gold} ouro`),
+    el(
+      "small",
+      `${s.trainingRewards.length + s.workouts.length} treino(s) registrados`,
+    ),
+  );
+  overview.append(levelCopy, wealth);
+  const equipmentLine = el("section", "", "character-equipment");
+  equipmentLine.append(
+    el("small", "EQUIPAMENTOS", "eyebrow-inline"),
+    el(
+      "p",
+      `${items[s.weapon].name} · ${s.shield ? items[s.shield].name : "sem escudo"} · ${s.armor ? items[s.armor].name : "sem armadura"}`,
+    ),
+  );
+  content.append(
+    overview,
+    equipmentLine,
     el("p", `${a.free} ponto(s) livre(s). A alocação é permanente.`, "muted"),
   );
   attributes.forEach((k) => {
-    const row = el("section", "", "entry");
-    const bonus =
-      items[s.weapon].bonus[k] +
-      (s.shield ? items[s.shield].bonus[k] : 0) +
-      (s.armor ? items[s.armor].bonus[k] : 0) +
-      (s.accessory ? items[s.accessory].bonus[k] : 0);
-
+    const row = el("section", "", "attribute-card");
+    const breakdown = a.attributeBreakdown[k];
+    const progress = (a.attributes[k] - Math.floor(a.attributes[k])) * 100;
     const h3 = el("h3");
     h3.append(
       el("span", labels[k]),
-      el("span", String(a.attributes[k]), "attr-value"),
+      el("span", fmt(a.attributes[k]), "attr-value"),
     );
     row.append(
       h3,
-      el(
-        "small",
-        `Base 5 · treino ${Math.floor(a.mastery[k] / 10000)} · alocados ${s.allocated[k]} · equip. ${bonus}`,
-      ),
-      bar((a.mastery[k] / 100) % 100, 100, "xp"),
+      bar(progress, 100, "attribute-progress"),
       el(
         "p",
-        `${fmt(a.mastery[k] / 100)} de maestria · ${fmt((a.mastery[k] / 100) % 100)}/100 para o próximo`,
+        `${fmt(progress)}% para ${Math.floor(a.attributes[k]) + 1}`,
         "muted",
       ),
     );
+    const source = el("details", "", "attribute-source");
+    source.append(
+      el("summary", "Origem do atributo"),
+      el(
+        "p",
+        `Base ${fmt(breakdown.base)} · Treinos ${fmt(breakdown.legacy + breakdown.training)} · Pontos ${fmt(breakdown.allocated)} · Equipamentos ${breakdown.equipment >= 0 ? "+" : ""}${fmt(breakdown.equipment)}`,
+      ),
+    );
+    row.append(source);
+    const recent = [...s.trainingRewards]
+      .sort((left, right) =>
+        right.workout.date.localeCompare(left.workout.date),
+      )
+      .filter((record) => record.reward.attributes[k] > 0)
+      .slice(0, 3);
+    if (recent.length) {
+      const gains = el("div", "", "recent-gains");
+      gains.append(el("small", "GANHOS RECENTES", "eyebrow-inline"));
+      for (const record of recent)
+        gains.append(
+          el(
+            "p",
+            `+${fmt(record.reward.attributes[k])} · ${record.workout.summary}`,
+          ),
+        );
+      row.append(gains);
+    }
     if (k === "agility") {
       row.append(
         el(

@@ -9,6 +9,12 @@ import {
   mastery,
 } from "../src/domain/workouts";
 import {
+  balanceAiWorkout,
+  parseAiWorkout,
+  trainingTotals,
+  type AiWorkout,
+} from "../src/domain/aiWorkouts";
+import {
   freshSave,
   act,
   startBattle,
@@ -26,6 +32,38 @@ const workout = () => {
   w.exercises.forEach((e) => e.sets.forEach((s) => (s.setType = "work")));
   return w;
 };
+const aiWorkout = (overrides: Partial<AiWorkout> = {}): AiWorkout => ({
+  type: "fizzi_workout",
+  version: 1,
+  id: "workout-2026-09-15-1928",
+  date: "2026-09-15",
+  summary: "Treino de membros inferiores",
+  confidence: "high",
+  workout: {
+    modality: "strength",
+    duration_min: 55,
+    sets: 20,
+    volume_kg: 6165.5,
+    prs: 9,
+    intensity_rpe: 8,
+    exercises: [
+      {
+        name: "Agachamento hack",
+        sets: [
+          { weight: 20, reps: 10 },
+          { weight: 30, reps: 10 },
+        ],
+      },
+    ],
+  },
+  rewards: {
+    xp: 340,
+    gold: 72,
+    attributes: { strength: 0.18, vigor: 0.11, agility: 0.04, breath: 0 },
+  },
+  progression: { prs: 9, notes: "Progressão positiva" },
+  ...overrides,
+});
 const memory = () => {
   const data = new Map<string, string>();
   return {
@@ -100,6 +138,120 @@ describe("treinos e limites diários", () => {
       b = workout();
     b.exercises.reverse();
     expect(fingerprint(a)).toBe(fingerprint(b));
+  });
+});
+describe("treino principal analisado por IA", () => {
+  it("aceita o formato estável e mantém a recompensa detalhada dentro dos limites", () => {
+    const parsed = parseAiWorkout(JSON.stringify(aiWorkout()));
+    const reward = balanceAiWorkout(parsed, [], {
+      strength: 5,
+      vigor: 5,
+      agility: 5,
+      breath: 5,
+    });
+    expect(reward).toMatchObject({
+      xp: 340,
+      gold: 72,
+      effectiveConfidence: "high",
+      attributes: { strength: 0.18, vigor: 0.11, agility: 0.04, breath: 0 },
+    });
+  });
+  it("rejeita JSON inválido e campos estruturais incorretos", () => {
+    expect(() => parseAiWorkout("{")).toThrow(/JSON inválido/);
+    expect(() =>
+      parseAiWorkout(JSON.stringify({ ...aiWorkout(), date: "2026-02-30" })),
+    ).toThrow(/formato da IA/);
+  });
+  it("reduz confiança sem evidência e conserva XP e ouro em limites baixos", () => {
+    const input = aiWorkout({
+      confidence: "high",
+      workout: { modality: "other", exercises: [] },
+      progression: {},
+      rewards: {
+        xp: 999,
+        gold: 999,
+        attributes: { strength: 999, vigor: 999, agility: 999, breath: 999 },
+      },
+    });
+    const reward = balanceAiWorkout(input, [], {
+      strength: 5,
+      vigor: 5,
+      agility: 5,
+      breath: 5,
+    });
+    expect(reward.effectiveConfidence).toBe("low");
+    expect(reward.xp).toBe(100);
+    expect(reward.gold).toBe(18);
+    expect(Object.values(reward.attributes).reduce((a, b) => a + b)).toBe(0.02);
+  });
+  it("aplica limites diários e retornos decrescentes", () => {
+    const input = aiWorkout();
+    const first = balanceAiWorkout(input, [], {
+      strength: 18,
+      vigor: 18,
+      agility: 18,
+      breath: 18,
+    });
+    const record = {
+      id: crypto.randomUUID(),
+      externalSessionId: input.id,
+      fingerprint: "first",
+      workout: input,
+      reward: first,
+    };
+    const secondInput = aiWorkout({ id: "workout-2026-09-15-2100" });
+    const second = balanceAiWorkout(secondInput, [record], {
+      strength: 18,
+      vigor: 18,
+      agility: 18,
+      breath: 18,
+    });
+    expect(first.attributes.strength).toBeLessThan(0.18);
+    expect(first.xp + second.xp).toBeLessThanOrEqual(450);
+    expect(first.gold + second.gold).toBeLessThanOrEqual(100);
+    expect(
+      Object.values(
+        trainingTotals([
+          record,
+          {
+            ...record,
+            id: crypto.randomUUID(),
+            externalSessionId: secondInput.id,
+            workout: secondInput,
+            reward: second,
+          },
+        ]),
+      ).reduce((a, b) => a + b),
+    ).toBeLessThanOrEqual(0.5);
+  });
+  it("aplica XP, ouro e atributos uma vez, persistindo depois do reload", () => {
+    const port = memory();
+    const store = new Store(port);
+    const reward = store.recordAiWorkout(aiWorkout());
+    expect(store.state.adventureXpTotal).toBe(reward.xp);
+    expect(store.state.gold).toBe(reward.gold);
+    expect(stats(store.state).attributes.strength).toBe(5.18);
+    expect(() => store.recordAiWorkout(aiWorkout())).toThrow(/histórico/);
+    const resumed = new Store(port);
+    expect(resumed.state.trainingRewards).toHaveLength(1);
+    expect(resumed.state.adventureXpTotal).toBe(340);
+    expect(resumed.state.gold).toBe(72);
+    expect(stats(resumed.state).attributes.vigor).toBe(5.11);
+  });
+  it("migra save anterior preservando treino, equipamentos, ouro e XP", () => {
+    const previous = freshSave() as any;
+    previous.gold = 44;
+    previous.adventureXpTotal = 125;
+    previous.owned.push("wood_shield", "leather_armor");
+    previous.shield = "wood_shield";
+    previous.armor = "leather_armor";
+    delete previous.trainingRewards;
+    const migrated = validateSave(previous);
+    expect(migrated.trainingRewards).toEqual([]);
+    expect(migrated.gold).toBe(44);
+    expect(migrated.adventureXpTotal).toBe(125);
+    expect(migrated.shield).toBe("wood_shield");
+    expect(migrated.armor).toBe("leather_armor");
   });
 });
 describe("save, histórico e economia", () => {
@@ -311,7 +463,9 @@ describe("spawn variável e seguro", () => {
     for (const e of m.entities) {
       if (e.kind === "sprout" || e.kind === "beetle" || e.kind === "moth") {
         const ox = ((e.x * 7 + e.y * 13 + e.kind.charCodeAt(0)) % 11) - 5;
-        const oy = ((e.x * 11 + e.y * 17 + e.kind.charCodeAt(e.kind.length - 1)) % 11) - 5;
+        const oy =
+          ((e.x * 11 + e.y * 17 + e.kind.charCodeAt(e.kind.length - 1)) % 11) -
+          5;
         if (ox !== 0 || oy !== 0) offsetsGenerated++;
         if (walkable(m, e.x + ox, e.y + oy)) safeOffsetsApplied++;
       }
