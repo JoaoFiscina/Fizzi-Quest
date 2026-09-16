@@ -1,5 +1,9 @@
 # Histórico de versões
 
+## v23.09.2003.8 — 15/09/2026
+
+Reversão gráfica e de interface para alinhar com a foto de referência (v23.09.2003.4). Remoção de ruídos em sprites (herói, monstros, árvores e construções). Restauração dos rótulos "Vida" e "Fôlego" no HUD, armas e ícones no layout limpo. Todos os 28 testes de domínio e build Vite aprovados com sucesso.
+
 ## v23.09.2003.6 — 15/09/2026
 
 Animações de aventureiro completas com ciclo Idle (3 quadros: respiração e piscar) e Walk (4 quadros por direção com passada completa de 4px e oscilação de braços/ombros). Sprites de monstros retrabalhados com 6 quadros dedicados de idle e respiro por espécie. HUD reestruturado em grid compacto de 2 colunas com barras de vitais de 8px e valores inline, nav menu com ícones e rótulos integrados, modais com cabeçalhos dourados e cards de inventário por estado. 28 testes unitários, 6 testes E2E e build aprovados.

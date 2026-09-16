@@ -85,7 +85,7 @@ for (const [key, label, cls] of [
   ["settings", "Ajustes", "settings-btn"],
 ] as const) {
   const b = button(
-    "",
+    label,
     () => {
       if (store.state.battle) return;
       if (key === "character") character();
@@ -99,7 +99,6 @@ for (const [key, label, cls] of [
     },
     cls,
   );
-  b.append(el("span", label));
   nav.append(b);
 }
 for (const [key, label, cls] of [
@@ -175,12 +174,12 @@ function renderHUD() {
   info.append(el("strong", `Aventureiro · Nv. ${a.level}`));
 
   const hp = el("div", "", "resource");
-  const hpLabel = el("span", "PV", "hud-icon");
+  const hpLabel = el("span", "Vida", "hud-icon");
   const hpVal   = el("span", `${s.hp}/${a.maxHp}`, "resource-value");
   hp.append(hpLabel, bar(s.hp, a.maxHp), hpVal);
 
   const stamina = el("div", "", "resource");
-  const stLabel = el("span", "ST", "hud-icon");
+  const stLabel = el("span", "Fôlego", "hud-icon");
   const stVal   = el("span", `${s.stamina}/${a.maxStamina}`, "resource-value");
   stamina.append(stLabel, bar(s.stamina, a.maxStamina, "stamina"), stVal);
 
@@ -188,10 +187,10 @@ function renderHUD() {
 
   const loot = el("div", "", "hud-loot");
   loot.append(
-    el("span", `Ouro: ${s.gold}`, "gold"),
-    el("span", `Mat: ${s.materials}`, "materials-icon"),
-    el("span", `Poções: ${s.potions}`, "potions-icon"),
-    el("span", `Arma: ${items[s.weapon].name.split(" ")[0]}`, "weapon-icon"),
+    el("span", `⚔️ ${items[s.weapon].name}`, "weapon-icon"),
+    el("span", `${s.gold} 🔸`, "gold"),
+    el("span", `${s.materials} 🔷`, "materials-icon"),
+    el("span", `${s.potions} 🧪`, "potions-icon"),
   );
 
   hud.append(crest, info, loot);

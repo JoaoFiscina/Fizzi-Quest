@@ -4,7 +4,7 @@ Esta pasta é a memória operacional do jogo. Atualize-a a cada versão antes de
 
 ## Versão corrente
 
-`v23.09.2003.6` — animações de walk com deslocamento real de 4px por perna; idle genuíno de 3 frames (respiração + piscar); monstros com 6 frames específicos por espécie; HUD compacto em grid 2 colunas; nav com ícone+label; modais com header dourado e atributos com valor em destaque.
+`v23.09.2003.8` — reversão gráfica e fidelidade de UI com a versão v23.09.2003.4 (foto de referência): remoção de ruídos sobrepostos em texturas, restauração de rótulos "Vida" e "Fôlego" no HUD, armas e ícones limpos no HUD e navegação direta.
 
 ## Árvore lógica
 

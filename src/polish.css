@@ -34,23 +34,14 @@
   border-color: #9c9365;
 }
 .hud-loot {
-  display: grid;
-  gap: 3px;
-  min-width: 48px;
-  padding-left: 10px;
-  border-left: 1px solid #61765d;
+  display: flex;
+  gap: 8px;
   font-size: 10px;
-  text-align: right;
-  white-space: nowrap;
+  align-items: center;
 }
 .hud-loot .gold-icon { color: #e7c87e; }
 .hud-loot .materials-icon { color: #b8ce9c; }
 .hud-loot .potions-icon { color: #90c6ca; }
-.hud-loot span {
-  display: flex;
-  align-items: center;
-  gap: 3px;
-}
 /* botão "Equipado" — estado conclusão, não competem com primário */
 button:disabled.equipped-state {
   opacity: 1;
