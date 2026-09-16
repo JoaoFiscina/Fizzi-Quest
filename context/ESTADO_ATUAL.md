@@ -27,8 +27,10 @@
 - `npm run build`: aprovado;
 - `npm run test:e2e`: 8 testes aprovados, incluindo troca real de quadros e matriz visual;
 - inspeção manual concluída em 1920×1080, 1366×768, 1024×768, 390×844 e 430×932;
-- commit `5aee6df` enviado ao GitHub na branch `visual/restauracao-pos-antigravity`;
-- a branch ainda não foi integrada à `main` nem publicada na produção.
+- implementação enviada ao GitHub na branch `visual/restauracao-pos-antigravity`;
+- PR de revisão: `#1` (`Restaura direção visual do Fizzi Quest v23.09.2003.9`);
+- preview da branch pronta na Vercel: `fizzi-quest-git-visual-restaurac-ed9bca-joao-fiscina-s-projects.vercel.app`;
+- a branch ainda não foi integrada à `main`; a produção fixa continua na versão anterior até aprovação.
 
 ## Riscos e limites
 
