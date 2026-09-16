@@ -76,12 +76,24 @@ export function createArt(scene: Phaser.Scene) {
     rect(c, "#1a3b2a", 12, 36, 17, 2);
   });
   texture("house", 112, 88, (c) => {
-    rect(c, "#59744b", 6, 73, 103, 12);
-    rect(c, "#735b3e", 14, 28, 84, 49);
-    rect(c, "#e5d1a0", 17, 31, 78, 43);
+    // shadow base
+    rect(c, "#3d5431", 6, 73, 103, 12);
+    rect(c, "#59744b", 8, 75, 99, 8);
+    // main body
+    rect(c, "#5a432b", 14, 28, 84, 49); // darker back
+    rect(c, "#735b3e", 15, 29, 82, 47); // mid
+    rect(c, "#e5d1a0", 17, 31, 78, 43); // plaster
+    // wall texture
+    rect(c, "#d1bc8a", 20, 35, 10, 4);
+    rect(c, "#d1bc8a", 80, 60, 8, 3);
+    rect(c, "#d1bc8a", 70, 40, 12, 5);
+    // base trim
     rect(c, "#c0a475", 17, 62, 78, 12);
+    rect(c, "#9e845a", 17, 72, 78, 2);
+    // roof base
     rect(c, "#4c4e36", 12, 27, 88, 4);
     rect(c, "#7c4436", 4, 25, 104, 6);
+    // roof shingles
     for (let y = 0; y < 6; y++) {
       rect(
         c,
@@ -91,20 +103,32 @@ export function createArt(scene: Phaser.Scene) {
         88 + y * 4,
         4,
       );
-      for (let x = 0; x < 10; x++)
+      // roof shingles texture
+      for (let x = 0; x < 10; x++) {
         rect(c, "#d28758", 16 + x * 9 + (y % 2 ? 4 : 0), 5 + y * 4, 7, 1);
+        rect(c, "#8a4631", 16 + x * 9 + (y % 2 ? 4 : 0), 7 + y * 4, 7, 1); // shingle shadow
+      }
     }
-    rect(c, "#654b34", 49, 47, 18, 30);
-    rect(c, "#263e36", 52, 49, 12, 28);
-    rect(c, "#d7b768", 62, 64, 2, 2);
-    for (const x of [26, 77]) {
-      rect(c, "#846541", x - 2, 43, 15, 19);
-      rect(c, "#2e5960", x, 45, 11, 13);
-      rect(c, "#e6cd83", x + 5, 45, 1, 13);
-      rect(c, "#e6cd83", x, 51, 11, 1);
-    }
+    // door
+    rect(c, "#4a3523", 49, 47, 18, 30);
+    rect(c, "#654b34", 50, 48, 16, 28);
+    rect(c, "#263e36", 52, 49, 12, 28); // inner dark
+    rect(c, "#d7b768", 62, 64, 2, 2); // knob
+    // door step
     rect(c, "#ebe0bc", 47, 77, 22, 4);
+    rect(c, "#c9be9b", 47, 79, 22, 2);
     rect(c, "#beaa7a", 44, 81, 28, 3);
+    
+    // windows
+    for (const x of [26, 77]) {
+      rect(c, "#5e452a", x - 2, 43, 15, 19); // frame shadow
+      rect(c, "#846541", x - 1, 44, 13, 17); // frame
+      rect(c, "#183033", x, 45, 11, 13); // glass dark
+      rect(c, "#2e5960", x, 45, 11, 13); // glass
+      rect(c, "#568e96", x, 45, 5, 5); // reflection
+      rect(c, "#e6cd83", x + 5, 45, 1, 13); // muntin
+      rect(c, "#e6cd83", x, 51, 11, 1); // muntin
+    }
   });
   texture("stall", 64, 48, (c) => {
     rect(c, "#557646", 2, 42, 59, 6);

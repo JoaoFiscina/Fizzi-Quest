@@ -145,6 +145,7 @@ export type Save = {
   chest: boolean;
   battle: Battle | null;
   muted: boolean;
+  kills: number;
 };
 export function freshSave(): Save {
   return {
@@ -172,6 +173,7 @@ export function freshSave(): Save {
     chest: false,
     battle: null,
     muted: true,
+    kills: 0,
   };
 }
 export function level(xp: number) {
@@ -407,6 +409,7 @@ export function act(s: Save, action: Action): CombatEvent[] {
     s.gold += e.gold;
     s.materials += e.materials;
     s.defeated.push(b.enemy);
+    s.kills = (s.kills || 0) + 1;
     if (b.enemy === "guardian" && s.quest !== "completed")
       s.quest = "emblem_recovered";
     b.log.push(
