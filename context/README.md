@@ -4,7 +4,7 @@ Esta pasta é a memória operacional do jogo. Atualize-a a cada versão antes de
 
 ## Versão corrente
 
-`v23.09.2003.8` — reversão gráfica e fidelidade de UI com a versão v23.09.2003.4 (foto de referência): remoção de ruídos sobrepostos em texturas, restauração de rótulos "Vida" e "Fôlego" no HUD, armas e ícones limpos no HUD e navegação direta.
+`v23.09.2003.9` — restauração visual seletiva pós-Antigravity: paleta natural, terreno legível, bordas de caminho, detalhes esparsos, animações reais e HUD compacto com arma, escudo e armadura.
 
 ## Árvore lógica
 
@@ -18,6 +18,7 @@ fizzi-quest/
 │   └── HISTORICO_VERSOES.md       ← linha do tempo das versões
 ├── docs/GAME_SPEC.md             ← contrato original do produto
 ├── docs/VISUAL_POLISH_SPEC.md    ← pedido de continuação visual
+├── docs/VISUAL_AUDIT_ANTIGRAVITY.md ← auditoria e decisões da restauração
 ├── docs/VALIDATION.md            ← evidências e limites da verificação
 ├── docs/DECISIONS.md             ← decisões técnicas e ponto de retomada
 └── src/

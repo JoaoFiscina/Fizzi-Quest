@@ -103,6 +103,22 @@ export class World extends Phaser.Scene {
           .setOrigin(0);
         this.root.add(tile);
         if (m.tiles[y][x] === 2 && !this.reduced) tile.play("ambient-water");
+        if (m.tiles[y][x] === 1) {
+          const edge = (key: string) => {
+            const overlay = this.add.sprite(x * 16, y * 16, key).setOrigin(0);
+            this.root.add(overlay);
+          };
+          if (m.tiles[y - 1]?.[x] !== 1) edge("path-edge-n");
+          if (m.tiles[y + 1]?.[x] !== 1) edge("path-edge-s");
+          if (m.tiles[y]?.[x - 1] !== 1) edge("path-edge-w");
+          if (m.tiles[y]?.[x + 1] !== 1) edge("path-edge-e");
+          if ((x * 5 + y * 11) % 17 === 0) {
+            const stones = this.add
+              .sprite(x * 16, y * 16, "pebbles")
+              .setOrigin(0);
+            this.root.add(stones);
+          }
+        }
         if (
           m.tiles[y][x] === 0 &&
           (x * 11 + y * 7) % 53 === 0 &&
@@ -115,13 +131,18 @@ export class World extends Phaser.Scene {
           this.root.add(breeze);
           this.terrainSprites.push(breeze);
         }
-        if (m.tiles[y][x] === 0 && (x * 19 + y * 3) % 29 === 0) {
-          this.root.add(
-            this.add.rectangle(x * 16 + 5, y * 16 + 9, 2, 2, 0xe2cda0),
-          );
-          this.root.add(
-            this.add.rectangle(x * 16 + 6, y * 16 + 11, 1, 3, 0x426447),
-          );
+        if (m.tiles[y][x] === 0) {
+          const detail = (x * 19 + y * 3) % 41;
+          if (detail === 0 || detail === 13) {
+            const decor = this.add
+              .sprite(
+                x * 16,
+                y * 16,
+                detail === 0 ? "wildflower" : "grass-tuft",
+              )
+              .setOrigin(0);
+            this.root.add(decor);
+          }
         }
       }
     this.foreground = this.add.container(0, 0);
@@ -129,12 +150,16 @@ export class World extends Phaser.Scene {
     const sorted = [...m.entities].sort((a, b) => a.y - b.y);
     for (const e of sorted) {
       const npc = e.kind === "master" || e.kind === "merchant";
-      let ox = 0, oy = 0;
+      let ox = 0,
+        oy = 0;
       if (e.kind in enemies) {
         ox = ((e.x * 7 + e.y * 13 + e.kind.charCodeAt(0)) % 11) - 5;
-        oy = ((e.x * 11 + e.y * 17 + e.kind.charCodeAt(e.kind.length - 1)) % 11) - 5;
+        oy =
+          ((e.x * 11 + e.y * 17 + e.kind.charCodeAt(e.kind.length - 1)) % 11) -
+          5;
         if (!walkable(m, e.x + ox, e.y + oy)) {
-          ox = 0; oy = 0;
+          ox = 0;
+          oy = 0;
         }
       }
       const sprite = this.add
@@ -314,9 +339,10 @@ export class World extends Phaser.Scene {
     if (this.reduced) {
       this.player.setTexture(`hero-${this.direction}-${dx || dy ? 1 : 0}`);
     } else {
-      const anim = dx || dy
-        ? `hero-walk-${this.direction}`
-        : `hero-idle-${this.direction}`;
+      const anim =
+        dx || dy
+          ? `hero-walk-${this.direction}`
+          : `hero-idle-${this.direction}`;
       if (this.player.anims.currentAnim?.key !== anim) {
         this.player.play(anim);
       }

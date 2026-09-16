@@ -50,10 +50,14 @@ export function makeMap(forest: boolean): MapData {
       { kind: "master", x: 200, y: 140, label: "Mestre da guilda" },
       { kind: "merchant", x: 104, y: 200, label: "Loja da vila" },
       { kind: "fire", x: 272, y: 224, label: "Descansar" },
+      { kind: "rock", x: 296, y: 88 },
+      { kind: "rock", x: 56, y: 280 },
     );
     block(9, 3, 7, 4);
     block(3, 8, 4, 3);
     block(16, 13, 2, 1);
+    block(18, 5, 1, 1);
+    block(3, 17, 1, 1);
     for (let y = 3; y < 7; y++)
       for (let x = 2; x < 6; x++) {
         tiles[y][x] = 2;
@@ -73,7 +77,11 @@ export function makeMap(forest: boolean): MapData {
       { kind: "moth", x: 392, y: 344, label: "Mariposa da Névoa" },
       { kind: "guardian", x: 568, y: 200, label: "Guardião de Musgo" },
       { kind: "chest", x: 456, y: 152, label: "Baú antigo" },
+      { kind: "rock", x: 264, y: 104 },
+      { kind: "rock", x: 440, y: 296 },
     );
+    block(16, 6, 1, 1);
+    block(27, 18, 1, 1);
     for (let y = 13; y < 16; y++) solid[y][0] = false;
     for (let y = 2; y < 8; y++)
       for (let x = 3; x < 8; x++) {

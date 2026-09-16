@@ -1,45 +1,39 @@
-# Estado atual — v23.09.2003.8
+# Estado atual — v23.09.2003.9
 
-## Feito
+## Feito nesta versão
 
-- Reversão estética e alinhamento visual com a foto de referência (v23.09.2003.4);
-- Remoção de ruídos de textura e alterações visuais indesejadas em herói, monstros, árvores e terrenos;
-- Restauração dos rótulos "Vida" e "Fôlego" no HUD, armas e ícones limpos em `main.ts` e `style.css`;
-- scaffold Vite/TypeScript/Phaser com configuração de saída `dist` para Vercel;
-- mapa de vila e bosque, colisões simples, transição leste/oeste, NPCs e encontros visíveis;
-- combate determinístico e recompensas únicas por inimigo;
-- schema de importação com limites, data, categorias, séries, cardio e pendências;
-- cálculo diário proporcional em centésimos, deduplicação, edição e remoção;
-- Store com save versionado, snapshot anterior, backup e restauração;
+- auditoria do intervalo `346c805..7d8bde0`, documentada em `docs/VISUAL_AUDIT_ANTIGRAVITY.md`;
+- branch isolada `visual/restauracao-pos-antigravity`, sem reset ou rollback destrutivo;
+- restauração da paleta natural, das árvores orgânicas, das construções e dos personagens compactos;
+- retirada do padrão ruidoso do gramado e da grade interna dos caminhos;
+- bordas de caminho, pedrinhas, tufos, flores e rochas com distribuição determinística;
+- animações reais de água, fogo, vento, bandeiras, árvores, personagem e quatro monstros;
+- HUD compacto com vida, fôlego, arma, escudo, armadura, ouro, materiais e poções;
+- câmera inteira, suave e centralizada preservada;
+- velocidade por agilidade, equipamentos, spawn seguro e sistemas de gameplay preservados.
 
-## Verificado nesta etapa (v23.09.2003.8)
+## Estado funcional preservado
 
-- Todos os 28 testes de domínio unitários aprovados (`npm test`).
-- Build executado com sucesso sem erros (`npm run build`).
+- Vite, TypeScript e Phaser com saída `dist` para Vercel;
+- vila e bosque, colisões, transição, NPCs e encontros;
+- combate determinístico e recompensa única;
+- importação e revisão de treino;
+- pontuação, maestria, XP, loja, inventário, missão e backup;
+- save versionado com migração não destrutiva.
 
-- Dependências instaladas; TypeScript e build Vite executados com sucesso.
-- Refinamentos ambientais: água e fogo usam funções senoidais de 8 quadros.
-- Monstros usam Squash & Stretch. Herói respira e balança a capa na idle.
-- Testes E2E (Playwright) verificam frames (`world.ts` / `main.ts`).
-- HUD atualizado para painéis glassmorphism escuros, ícones textuais limpos e barras flat, removendo os emojis antigos.
-- 28 testes de domínio passando (equipamentos, offsets, atributos, save e migrações).
-- 6 testes End-to-End (Playwright) validados no Chromium sem regressões.
-- HUD, modais de personagem/mochila e D-pad reestruturados e testados em resoluções de desktop e mobile.
+## Verificação
 
-## Melhorias visuais
+- `npm test`: 28 testes de domínio aprovados;
+- `npm run build`: aprovado;
+- `npm run test:e2e`: 8 testes aprovados, incluindo troca real de quadros e matriz visual;
+- inspeção manual concluída em 1920×1080, 1366×768, 1024×768, 390×844 e 430×932;
+- a branch ainda não foi integrada nem publicada.
 
-- HUD com painéis glassmorphism escuros, ícones textuais limpos e barras flat.
-- Menus de ação (Personagem, Treinos, Mochila, Mapa, Ajustes) com ícones e rótulos integrados.
-- Modais com header em degradê e detalhe dourado, botão fechar circular e cartões para itens de mochila.
-- Animação do aventureiro com ciclo Idle (3 quadros) e Walk (4 quadros por direção).
-- Sprites de monstros com quadros específicos de respiro e movimentação fluida via animações nativas do Phaser 3.
-- `prefers-reduced-motion` respeitado e persistência de save preservada integralmente.
+## Riscos e limites
 
-## Ainda não concluído
+- navegador móvel emulado não substitui Safari/iOS e Android físicos;
+- a arte continua gerada em código e tem limite de detalhe por sprite;
+- o bundle principal do Phaser permanece grande, embora o build seja válido;
+- o mapa prévio funcional ainda precisa de uma passada estética própria.
 
-- Repositório remoto no GitHub sincronizado; deploy na Vercel a ser atualizado.
-- Áudio, PWA/offline e atalho de força.
-- Backlog futuro: spawn dinâmico de monstros com patrulhamento (pós primeira derrota) e balanceamento visual detalhado dos tiles do mapa.
-
-
-Veja `docs/VALIDATION.md` para comandos, cobertura e limitações.
+Consulte `docs/VALIDATION.md` para os comandos e `context/PROXIMOS_PASSOS.md` para o backlog.
