@@ -40,4 +40,4 @@ Capturas da vila continuam cobertas em 1920×1080, 1366×768, 1024×768, 430×93
 - Não foi feito ensaio de performance em aparelho de entrada ou sessão longa.
 - Missão completa do chefe, baú e guilda ainda precisam de E2E dedicado.
 - Teste de fuga teve inicialmente uma falha no fixture: o save automático de saída substituía o estado inserido com a página ativa. O cenário passou a preparar o save na tela inicial.
-- A publicação da `v23.09.2003.11` depende da integração desta branch; a produção permanece em `v23.09.2003.10` neste registro.
+- A PR `#4` foi integrada à `main` no commit `ba349ab`. A Vercel concluiu o deployment, a URL fixa respondeu `HTTP 200` e o bundle servido contém `v23.09.2003.11`.

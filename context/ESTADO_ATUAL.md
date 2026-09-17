@@ -29,8 +29,9 @@
 - jornada específica verifica quatro grupos, tipos, itens equipados e tutorial;
 - ajuda contextual de Defesa testada durante batalha;
 - capturas de mochila e tutorial inspecionadas em desktop e mobile;
-- branch de entrega: `feat/mochila-tutorial-v23.09.2003.11`;
-- produção permanece em `v23.09.2003.10` até integração e deployment.
+- PR `#4` integrada à `main` no commit `ba349ab`;
+- deployment de produção concluído pela Vercel;
+- URL fixa respondeu `HTTP 200` e o bundle publicado contém `v23.09.2003.11`.
 
 ## Riscos e limites
 
