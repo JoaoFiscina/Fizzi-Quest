@@ -1,6 +1,6 @@
 # Roadmap auditado de implementações futuras
 
-Data da organização: 15/09/2026. Base atual: `v23.09.2003.10`.
+Data da organização: 15/09/2026. Base atual: `v23.09.2003.11`.
 
 Este documento registra intenções futuras. Um item só muda para concluído depois de implementação, testes e inspeção visual. Cada etapa deve manter saves existentes e receber uma versão `v23.09.2003.x` própria.
 
@@ -18,7 +18,7 @@ Este documento registra intenções futuras. Um item só muda para concluído de
 | Tutorial         | Orientação inicial curta                                                              | Criar uma aba consultável, com foco inicial em Defesa                                   |
 | Mochila          | Lista única de itens com botão de equipar                                             | Agrupar, ordenar e identificar categorias e estado                                      |
 
-## Etapa 1 — mochila, tags e tutorial
+## Etapa 1 — mochila, tags e tutorial — concluída na v23.09.2003.11
 
 Objetivo: tornar sistemas existentes compreensíveis antes de adicionar mais conteúdo.
 

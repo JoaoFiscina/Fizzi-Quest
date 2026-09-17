@@ -1,5 +1,5 @@
 import { test, expect, type Page } from "@playwright/test";
-import { freshSave, startBattle } from "../../src/domain/game";
+import { freshSave, items, startBattle } from "../../src/domain/game";
 const move = async (page: Page, key: string, ms: number) => {
   await page.keyboard.down(key);
   await page.waitForTimeout(ms);
@@ -101,6 +101,63 @@ test("tela vertical, menus e movimento por ponteiro", async ({ page }) => {
     await page.evaluate(() => document.documentElement.dataset.cameraPadding),
   ).toBe("0,51");
 });
+test("mochila organizada, tipos de item e tutorial consultável", async ({
+  page,
+}) => {
+  const s = freshSave();
+  s.owned = Object.keys(items) as (keyof typeof items)[];
+  s.weapon = "dagger";
+  s.shield = "wood_shield";
+  s.armor = "leather_armor";
+  s.accessory = "wind";
+  await page.goto("/");
+  await page.evaluate(
+    (save) => localStorage.setItem("fizzi-quest.save.v1", JSON.stringify(save)),
+    s,
+  );
+  await page.reload();
+  await page.getByRole("button", { name: "Continuar aventura" }).click();
+  await page.getByRole("button", { name: "Mochila", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Armas" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Escudos" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Armaduras" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Acessórios" })).toBeVisible();
+  await expect(page.locator(".item-kind", { hasText: /^Arma$/ })).toHaveCount(
+    4,
+  );
+  await expect(page.locator(".item-kind", { hasText: /^Escudo$/ })).toHaveCount(
+    2,
+  );
+  await expect(page.getByText("Broche", { exact: true })).toBeVisible();
+  await expect(page.getByText("Pingente", { exact: true })).toBeVisible();
+  await expect(page.locator(".inventory-item.equipped-item")).toHaveCount(4);
+  await page.screenshot({ path: "test-results/desktop-inventory.png" });
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth,
+    ),
+  ).toBe(true);
+  await page.screenshot({ path: "test-results/mobile-inventory.png" });
+  await page.setViewportSize({ width: 1366, height: 768 });
+  await page.getByRole("button", { name: "Fechar menu" }).click();
+  await page.getByRole("button", { name: "Tutorial", exact: true }).click();
+  await expect(page.locator('[data-topic="defense"]')).toHaveAttribute(
+    "open",
+    "",
+  );
+  await expect(page.getByText(/Defender age antes do inimigo/)).toBeVisible();
+  await page.getByText("Fôlego e habilidades", { exact: true }).click();
+  await expect(page.getByText(/Golpe pesado custa 3/)).toBeVisible();
+  await page.screenshot({ path: "test-results/desktop-tutorial.png" });
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth,
+    ),
+  ).toBe(true);
+  await page.screenshot({ path: "test-results/mobile-tutorial.png" });
+});
 test("rodada salva antes da animação, reload sem duplicação e layout de combate", async ({
   page,
 }) => {
@@ -116,6 +173,14 @@ test("rodada salva antes da animação, reload sem duplicação e layout de comb
   );
   await page.reload();
   await page.getByRole("button", { name: "Continuar aventura" }).click();
+  await page
+    .getByRole("button", { name: "Como funciona a Defesa?", exact: true })
+    .click();
+  await expect(page.getByText(/Defender age antes do inimigo/)).toBeVisible();
+  await page.screenshot({
+    path: "test-results/desktop-battle-defense-tutorial.png",
+  });
+  await page.getByRole("button", { name: "Fechar menu" }).click();
   await page.screenshot({ path: "test-results/desktop-battle.png" });
   await page.getByRole("button", { name: "Atacar", exact: true }).click();
   expect(

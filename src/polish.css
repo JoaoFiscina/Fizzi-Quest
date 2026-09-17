@@ -122,6 +122,232 @@ button.alloc-btn:not(:disabled):hover {
 .potion-item {
   grid-column: 1 / -1;
 }
+.item-copy {
+  min-width: 0;
+}
+.item-heading {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px 8px;
+  align-items: center;
+  margin-bottom: 5px;
+}
+.item-heading h3,
+.potion-item h3 {
+  margin: 0;
+}
+.item-kind {
+  display: inline-block;
+  width: fit-content;
+  padding: 3px 6px;
+  border: 1px solid #8d956c;
+  border-radius: 999px;
+  background: #e0d5ae;
+  color: #405b49 !important;
+  font-size: 8px !important;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  line-height: 1 !important;
+  text-transform: uppercase;
+}
+.item-kind-weapon {
+  border-color: #9a7452;
+  background: #ead3ad;
+}
+.item-kind-shield {
+  border-color: #627e72;
+  background: #cbd8c7;
+}
+.item-kind-armor {
+  border-color: #77766c;
+  background: #d6d1bc;
+}
+.item-kind-accessory {
+  border-color: #81709a;
+  background: #ddd0df;
+}
+.item-kind-consumable {
+  border-color: #9b705e;
+  background: #edd0bc;
+}
+.inventory-loadout {
+  margin-bottom: 16px;
+  padding: 12px;
+  border: 1px solid #aa9865;
+  border-radius: 9px;
+  background: #e8ddba;
+}
+.inventory-slots {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 7px;
+}
+.inventory-slot {
+  min-width: 0;
+  padding: 8px;
+  border: 1px dashed #a89f7f;
+  border-radius: 7px;
+  background: #ded4b5;
+  color: #77745f;
+}
+.inventory-slot.filled {
+  border-style: solid;
+  border-color: #78906c;
+  background: #eef0d2;
+  color: #315448;
+}
+.inventory-slot small,
+.inventory-slot strong {
+  display: block;
+}
+.inventory-slot small {
+  margin-bottom: 3px;
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+}
+.inventory-slot strong {
+  overflow: hidden;
+  font-size: 10px;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+}
+.inventory-group {
+  margin: 14px 0 18px;
+}
+.inventory-group-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 7px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #c7bc98;
+}
+.inventory-group-heading h3 {
+  margin: 0;
+  font:
+    20px "MedievalSharp",
+    Georgia,
+    serif;
+}
+.inventory-group-heading small {
+  color: #68705b;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.inventory-group-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+}
+.inventory-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 78px;
+  padding: 10px 11px;
+  border: 1px solid #c7bea0;
+  border-radius: 9px;
+  background: #f7edd3;
+}
+.inventory-item.equipped-item {
+  border-color: #6f8d69;
+  box-shadow: inset 3px 0 #6f8d69;
+}
+.inventory-item p {
+  margin: 0;
+  color: #60705b;
+  font-size: 11px;
+  line-height: 1.35;
+}
+.inventory-item button {
+  flex: 0 0 auto;
+  margin: 0;
+  min-height: 38px;
+  padding: 7px 9px;
+  font-size: 10px;
+}
+.tutorial-intro {
+  margin-bottom: 12px;
+  padding: 14px 16px;
+  border: 1px solid #aa9865;
+  border-radius: 9px;
+  background: #e8ddba;
+}
+.tutorial-intro h3 {
+  margin: 2px 0 4px;
+  font:
+    24px "MedievalSharp",
+    Georgia,
+    serif;
+}
+.tutorial-intro p {
+  margin: 0;
+}
+.tutorial-topics {
+  display: grid;
+  gap: 7px;
+}
+.tutorial-topic {
+  border: 1px solid #beb38d;
+  border-radius: 8px;
+  background: #f7efd9;
+  overflow: hidden;
+}
+.tutorial-topic summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 11px 13px;
+  cursor: pointer;
+  list-style: none;
+}
+.tutorial-topic summary::-webkit-details-marker {
+  display: none;
+}
+.tutorial-topic summary span:first-child,
+.tutorial-topic summary strong,
+.tutorial-topic summary small {
+  display: block;
+}
+.tutorial-topic summary strong {
+  color: #294f42;
+  font-size: 13px;
+}
+.tutorial-topic summary small {
+  margin-top: 2px;
+  color: #68705b;
+  font-size: 10px;
+  line-height: 1.35;
+}
+.tutorial-toggle {
+  color: #886b2d;
+  font-size: 20px;
+  transition: transform 160ms ease;
+}
+.tutorial-topic[open] .tutorial-toggle {
+  transform: rotate(45deg);
+}
+.tutorial-body {
+  padding: 0 13px 12px;
+  border-top: 1px solid #ded2af;
+}
+.tutorial-body p {
+  margin: 10px 0 0;
+  font-size: 12px;
+  line-height: 1.55;
+}
+.battle-actions .battle-help {
+  grid-column: 1 / -1;
+  min-height: 32px;
+  border-color: #8fa595;
+  background: transparent;
+  color: #d7e2cf;
+  font-size: 10px;
+}
 .world-map {
   position: relative;
   display: grid;
@@ -489,10 +715,6 @@ button.alloc-btn:not(:disabled):hover {
   .nav .map-button {
     grid-column: auto;
   }
-  .nav button:last-child {
-    grid-column: 1 / -1;
-    min-height: 36px;
-  }
   .nav button {
     padding: 6px 4px;
     font-size: 10px;
@@ -546,6 +768,15 @@ button.alloc-btn:not(:disabled):hover {
   }
   .shop-item {
     min-height: 70px;
+  }
+  .inventory-slots {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .inventory-group-grid {
+    grid-template-columns: 1fr;
+  }
+  .inventory-item {
+    min-height: 74px;
   }
   .world-map {
     display: flex;

@@ -2,7 +2,7 @@
 
 RPG pessoal de exploração em pixel art, construído com Phaser, TypeScript e Vite para o marco **Treino à aventura**.
 
-## Estado atual — v23.09.2003.10
+## Estado atual — v23.09.2003.11
 
 Já estão implementados os blocos principais do domínio e da experiência:
 
@@ -12,6 +12,8 @@ Já estão implementados os blocos principais do domínio e da experiência:
 - fluxo principal de treino real: copiar o modelo para uma IA externa, colar o JSON devolvido, revisar e confirmar a recompensa;
 - validação local de confiança, limites por sessão e por dia, retornos decrescentes e bloqueio de duplicatas;
 - tela do personagem com atributos fracionários, origem dos pontos, equipamentos e ganhos recentes;
+- mochila agrupada por slot, tipos visíveis em cada equipamento e conjunto equipado em destaque;
+- manual do aventureiro com Defesa, Fôlego, atributos, equipamentos, treinos e exploração;
 - pontuação diária por regrasVersion 1, maestrias separadas de XP de aventura;
 - inventário, loja, equipamento, baú, fogueira, missão da guilda e melhoria da sede;
 - save versionado em localStorage, cópia anterior, exportação e restauração de backup;
@@ -24,11 +26,11 @@ npm install
 npm run dev
 ```
 
-Build para Vercel: `npm run build`, saída `dist`. A versão `v23.09.2003.10` está na `main` do GitHub e publicada em [fizzi-quest.vercel.app](https://fizzi-quest.vercel.app).
+Build para Vercel: `npm run build`, saída `dist`. A produção permanece em `v23.09.2003.10` até a integração desta versão em [fizzi-quest.vercel.app](https://fizzi-quest.vercel.app).
 
 Validação: `npm test` e `npm run test:e2e` (Edge via Playwright). Evidências e limites em [`docs/VALIDATION.md`](docs/VALIDATION.md).
 
-Esta versão torna o treino por IA o fluxo principal e estável: a IA interpreta as evidências e propõe a recompensa; o jogo valida, limita e persiste o resultado. Saves anteriores continuam compatíveis. A versão pública usa `v23.09.2003.x`; a versão npm equivalente usa SemVer (`23.9.2003-10`), sem alterar o formato externo do save.
+Esta versão organiza equipamentos por categoria e inclui um tutorial consultável sem alterar o formato do save. A versão pública usa `v23.09.2003.x`; a versão npm equivalente usa SemVer (`23.9.2003-11`).
 
 ## Contexto vivo
 

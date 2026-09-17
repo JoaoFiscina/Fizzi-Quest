@@ -24,6 +24,7 @@ import {
 import { attributes } from "./domain/workouts";
 import { el, button, bar, labels, fmt } from "./ui/dom";
 import { workoutsUI } from "./ui/workouts";
+import { TUTORIAL_TOPICS } from "./content/tutorial";
 let storage: Storage;
 try {
   storage = localStorage;
@@ -82,6 +83,7 @@ for (const [key, label, cls] of [
   ["workouts", "Treinos", "workouts-btn"],
   ["bag", "Mochila", "bag-btn"],
   ["map", "Mapa", "map-button map-btn"],
+  ["tutorial", "Tutorial", "tutorial-btn"],
   ["settings", "Ajustes", "settings-btn"],
 ] as const) {
   const b = button(
@@ -94,6 +96,7 @@ for (const [key, label, cls] of [
         workoutsUI(store, content, notify);
       } else if (key === "bag") equipment(false);
       else if (key === "map") worldMap();
+      else if (key === "tutorial") tutorial();
       else if (key === "settings") settings();
     },
     cls,
@@ -327,6 +330,19 @@ function character() {
     content.append(row);
   });
 }
+type ItemSlot = (typeof items)[ItemId]["slot"];
+const ITEM_GROUPS: { slot: ItemSlot; label: string; short: string }[] = [
+  { slot: "weapon", label: "Armas", short: "ARMA" },
+  { slot: "shield", label: "Escudos", short: "ESCUDO" },
+  { slot: "armor", label: "Armaduras", short: "ARMADURA" },
+  { slot: "accessory", label: "Acessórios", short: "ACESSÓRIO" },
+];
+function equippedItem(s: Save, slot: ItemSlot): ItemId | null {
+  if (slot === "weapon") return s.weapon;
+  if (slot === "shield") return s.shield;
+  if (slot === "armor") return s.armor;
+  return s.accessory;
+}
 function equipment(shop = false) {
   openModal(shop ? "Armazém da vila" : "Sua mochila");
   const s = store.state;
@@ -338,17 +354,40 @@ function equipment(shop = false) {
     el("span", `${s.potions} poções`),
   );
   content.append(balance);
-  const list = el("div", "", shop ? "shop-list" : "inventory-list");
-  for (const [key, item] of Object.entries(items)) {
-    const id = key as ItemId;
-    if (shop && id === "blade") continue;
-    if (!shop && !s.owned.includes(id)) continue;
-    const row = el("section", "", shop ? "shop-item" : "entry");
+  if (!shop) {
+    const loadout = el("section", "", "inventory-loadout");
+    loadout.append(el("small", "EQUIPADO AGORA", "eyebrow-inline"));
+    const slots = el("div", "", "inventory-slots");
+    for (const group of ITEM_GROUPS) {
+      const id = equippedItem(s, group.slot);
+      const slot = el("div", "", `inventory-slot${id ? " filled" : ""}`);
+      slot.append(
+        el("small", group.short),
+        el("strong", id ? items[id].name : "Vazio"),
+      );
+      slots.append(slot);
+    }
+    loadout.append(slots);
+    content.append(loadout);
+  }
+  const card = (id: ItemId, shopCard: boolean) => {
+    const item = items[id];
+    const equipped = equippedItem(s, item.slot) === id;
+    const row = el(
+      "section",
+      "",
+      `${shopCard ? "shop-item" : "inventory-item"}${equipped ? " equipped-item" : ""}`,
+    );
     const copy = el("div", "", "item-copy");
-    copy.append(
+    const heading = el("div", "", "item-heading");
+    heading.append(
+      el("span", item.kind, `item-kind item-kind-${item.slot}`),
       el("h3", item.name),
+    );
+    copy.append(
+      heading,
       el(
-        shop ? "small" : "p",
+        shopCard ? "small" : "p",
         attributes
           .filter((k) => item.bonus[k])
           .map(
@@ -358,13 +397,8 @@ function equipment(shop = false) {
           .join(" · ") || "Equipamento inicial",
       ),
     );
-    const equipped =
-      s.weapon === id ||
-      s.shield === id ||
-      s.armor === id ||
-      s.accessory === id;
     const b = button(
-      shop
+      shopCard
         ? s.owned.includes(id)
           ? "Já adquirido"
           : `${item.price} ouro · Comprar`
@@ -373,14 +407,45 @@ function equipment(shop = false) {
           : "Equipar",
       () =>
         safe(() => {
-          store.transact((s) => (shop ? buy(s, id) : equip(s, id)));
-          equipment(shop);
+          store.transact((s) => (shopCard ? buy(s, id) : equip(s, id)));
+          equipment(shopCard);
         }),
     );
-    b.disabled = shop ? s.owned.includes(id) || s.gold < item.price : equipped;
-    if (!shop && equipped) b.classList.add("equipped-state");
+    b.disabled = shopCard
+      ? s.owned.includes(id) || s.gold < item.price
+      : equipped;
+    if (!shopCard && equipped) b.classList.add("equipped-state");
     row.append(copy, b);
-    list.append(row);
+    return row;
+  };
+  const list = el("div", "", shop ? "shop-list" : "inventory-list");
+  if (shop) {
+    for (const key of Object.keys(items)) {
+      const id = key as ItemId;
+      if (id !== "blade") list.append(card(id, true));
+    }
+  } else {
+    for (const group of ITEM_GROUPS) {
+      const owned = s.owned
+        .filter((id) => items[id].slot === group.slot)
+        .sort((left, right) => {
+          const active = equippedItem(s, group.slot);
+          if (left === active) return -1;
+          if (right === active) return 1;
+          return items[left].price - items[right].price;
+        });
+      if (!owned.length) continue;
+      const section = el("section", "", "inventory-group");
+      const heading = el("div", "", "inventory-group-heading");
+      heading.append(
+        el("h3", group.label),
+        el("small", `${owned.length} ${owned.length === 1 ? "item" : "itens"}`),
+      );
+      const grid = el("div", "", "inventory-group-grid");
+      for (const id of owned) grid.append(card(id, false));
+      section.append(heading, grid);
+      list.append(section);
+    }
   }
   if (shop) {
     const b = button(
@@ -396,6 +461,7 @@ function equipment(shop = false) {
     const potion = el("section", "", "shop-item potion-item");
     const copy = el("div", "", "item-copy");
     copy.append(
+      el("span", "Consumível", "item-kind item-kind-consumable"),
       el("h3", "Poção"),
       el("small", "Restaura 20 de vida durante o combate"),
     );
@@ -420,6 +486,37 @@ function download() {
   a.download = "fizzi-quest-backup.json";
   a.click();
   setTimeout(() => URL.revokeObjectURL(url), 5000);
+}
+function tutorial(openTopic = "defense") {
+  openModal("Manual do aventureiro");
+  content.classList.add("tutorial-content");
+  const intro = el("section", "", "tutorial-intro");
+  intro.append(
+    el("small", "CONSULTA RÁPIDA", "eyebrow-inline"),
+    el("h3", "Aprenda no seu ritmo"),
+    el(
+      "p",
+      "Abra um tópico para rever as regras que já estão funcionando no jogo.",
+      "muted",
+    ),
+  );
+  content.append(intro);
+  const topics = el("div", "", "tutorial-topics");
+  for (const topic of TUTORIAL_TOPICS) {
+    const details = el("details", "", "tutorial-topic");
+    details.dataset.topic = topic.id;
+    details.open = topic.id === openTopic;
+    const summary = el("summary");
+    const copy = el("span");
+    copy.append(el("strong", topic.title), el("small", topic.summary));
+    summary.append(copy, el("span", "+", "tutorial-toggle"));
+    details.append(summary);
+    const body = el("div", "", "tutorial-body");
+    for (const paragraph of topic.paragraphs) body.append(el("p", paragraph));
+    details.append(body);
+    topics.append(details);
+  }
+  content.append(topics);
 }
 function settings() {
   openModal("Configurações");
@@ -754,6 +851,9 @@ function battle() {
   item.disabled = busy;
   actions.append(item);
   choice("Fugir", "flee");
+  actions.append(
+    button("Como funciona a Defesa?", () => tutorial("defense"), "battle-help"),
+  );
 }
 const intro = el("section", "", "intro");
 intro.append(
