@@ -53,19 +53,20 @@ export function polishArt(scene: Phaser.Scene) {
     dot(c, "#c0ce80", 20, 4, 6, 1);
     dot(c, "#a4bd71", 5, 7, 7, 1);
   });
-  for (let d = 0; d < 4; d++)
-    for (let f = 0; f < 3; f++)
-      edit(`hero-${d}-${f}`, (c) => {
-        const bob = f === 1 ? 1 : 0;
-        dot(c, "#29515d", 12, 14 + bob, 3, 5);
-        dot(c, "#6c9b9b", 8, 13 + bob, 2, 6);
-        dot(c, "#efcf9c", 7, 6 + bob, 2, 2);
-        dot(c, "#4e382d", 5, 4 + bob, 2, 5);
-        dot(c, "#9d7751", 8, 3 + bob, 5, 1);
-        dot(c, "#e1c38a", 6, 20, 1, 2);
-        dot(c, "#f2e9bf", 17, 17 + bob, 1, 6);
-        dot(c, "#1c342d", 7, 25, 3, 1);
-      });
+  for (const hero of ["hero", "hero-f"])
+    for (let d = 0; d < 4; d++)
+      for (let f = 0; f < 3; f++)
+        edit(`${hero}-${d}-${f}`, (c) => {
+          const bob = f === 1 ? 1 : 0;
+          dot(c, hero === "hero" ? "#29515d" : "#4f4663", 12, 14 + bob, 3, 5);
+          dot(c, hero === "hero" ? "#6c9b9b" : "#9385a1", 8, 13 + bob, 2, 6);
+          dot(c, "#efcf9c", 7, 6 + bob, 2, 2);
+          dot(c, hero === "hero" ? "#4e382d" : "#49302f", 5, 4 + bob, 2, 5);
+          dot(c, hero === "hero" ? "#9d7751" : "#80565b", 8, 3 + bob, 5, 1);
+          dot(c, "#e1c38a", 6, 20, 1, 2);
+          dot(c, "#f2e9bf", 17, 17 + bob, 1, 6);
+          dot(c, "#1c342d", 7, 25, 3, 1);
+        });
   const clone = (
     source: string,
     target: string,
@@ -196,13 +197,14 @@ export function polishArt(scene: Phaser.Scene) {
 
   // Personagens mantêm o desenho compacto e recebem ciclos próprios.
   // O idle mexe só um detalhe por vez para evitar a sensação de flutuação.
-  for (const kind of ["hero", "master", "merchant"]) {
+  for (const kind of ["hero", "hero-f", "master", "merchant"]) {
     for (let d = 0; d < 4; d++) {
       for (let f = 0; f < 4; f++)
         clone(`${kind}-${d}-0`, `${kind}-${d}-idle-${f}`, 20, 28, (c) => {
           if (f === 2) {
             dot(c, "#886039", 14, 3, 2, 1);
             if (kind === "hero") dot(c, "#d1935a", 3, 15, 1, 3);
+            if (kind === "hero-f") dot(c, "#a86f6c", 3, 15, 1, 3);
           }
         });
       scene.anims.create({

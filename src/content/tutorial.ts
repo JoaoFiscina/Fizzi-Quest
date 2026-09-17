@@ -52,11 +52,20 @@ export const TUTORIAL_TOPICS: TutorialTopic[] = [
     ],
   },
   {
+    id: "personalization",
+    title: "Aparência e câmera",
+    summary: "Personagem e zoom sem impacto nos atributos.",
+    paragraphs: [
+      "Em Ajustes, escolha o visual masculino ou feminino. A opção é somente cosmética: hitbox, velocidade, atributos e equipamentos permanecem iguais.",
+      "O zoom Afastado, Padrão ou Próximo usa escalas inteiras para preservar a pixel art. Em telas menores, o jogo limita automaticamente opções que mostrariam área demais.",
+    ],
+  },
+  {
     id: "exploration",
     title: "Exploração e controles",
     summary: "Movimento, interação, descanso e progresso.",
     paragraphs: [
-      "Use WASD ou as setas para mover e E ou Espaço para interagir. No celular, use o direcional e o botão contextual. Esc fecha menus.",
+      "Use WASD ou as setas para mover e combine duas direções para andar na diagonal. No celular, o direcional tem oito posições. E ou Espaço interage e Esc fecha menus.",
       "A fogueira recupera Vida e Fôlego e faz criaturas comuns retornarem. Derrotas não apagam treino, equipamentos, XP, ouro ou materiais.",
     ],
   },

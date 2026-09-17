@@ -170,17 +170,20 @@ export function createArt(scene: Phaser.Scene) {
     rect(c, "#e2c77e", 10, 7, 4, 7);
     rect(c, "#62462f", 4, 16, 16, 3);
   });
-  for (const kind of ["hero", "master", "merchant"])
+  for (const kind of ["hero", "hero-f", "master", "merchant"])
     for (let dir = 0; dir < 4; dir++)
       for (let frame = 0; frame < 3; frame++)
         texture(`${kind}-${dir}-${frame}`, 20, 28, (c) => {
           const bob = frame === 1 ? 1 : 0,
+            isHero = kind === "hero" || kind === "hero-f",
             coat =
               kind === "hero"
                 ? "#426f78"
-                : kind === "master"
-                  ? "#b98446"
-                  : "#927193";
+                : kind === "hero-f"
+                  ? "#6b637f"
+                  : kind === "master"
+                    ? "#b98446"
+                    : "#927193";
           rect(c, "#35533b", 4, 25, 13, 2);
           rect(c, "#3e3c32", 6, 21 + bob, 4, 5 - bob);
           rect(
@@ -210,9 +213,16 @@ export function createArt(scene: Phaser.Scene) {
             );
             if (dir === 0) rect(c, "#273b35", 13, 8 + bob, 1, 2);
           } else rect(c, "#694735", 6, 7 + bob, 10, 5);
-          if (kind === "hero") {
+          if (kind === "hero-f") {
+            rect(c, "#5a3a34", 4, 6 + bob, 2, 9);
+            rect(c, "#5a3a34", 16, 6 + bob, 2, 9);
+            rect(c, "#7b4f54", 4, 12 + bob, 4, 11);
+            rect(c, "#a86f6c", 3, 13 + bob, 2, 6);
+          } else if (kind === "hero") {
             rect(c, "#b66a49", 4, 12 + bob, 4, 11);
             rect(c, "#d1935a", 3, 13 + bob, 2, 6);
+          }
+          if (isHero) {
             rect(c, "#c1cfb5", 17, 16 + bob, 2, 8);
           }
         });

@@ -24,6 +24,7 @@ export class World extends Phaser.Scene {
   private ambientTimer?: Phaser.Time.TimerEvent;
   private terrainSprites: Phaser.GameObjects.Sprite[] = [];
   private treeSprites: Phaser.GameObjects.Sprite[] = [];
+  private appliedCameraZoom = "";
   paused = true;
   touch = "";
   near: Entity | undefined;
@@ -218,12 +219,14 @@ export class World extends Phaser.Scene {
       s.x = s.map === "village" ? 200 : 40;
       s.y = 232;
     }
+    const hero = s.appearance === "feminine" ? "hero-f" : "hero";
     this.player = this.add
-      .sprite(s.x, s.y, "hero-0-idle-0")
+      .sprite(s.x, s.y, `${hero}-0-idle-0`)
       .setOrigin(0.5, 1)
-      .setDepth(s.y);
+      .setDepth(s.y)
+      .setData("heroKey", hero);
     this.foreground.add(this.player);
-    if (!this.reduced) this.player.play("hero-idle-0");
+    if (!this.reduced) this.player.play(`${hero}-idle-0`);
     this.cameras.main.setBounds(0, 0, m.width * 16, m.height * 16);
     this.cameras.main.startFollow(this.player, true, 0.15, 0.15);
     this.resizeCamera();
@@ -255,7 +258,16 @@ export class World extends Phaser.Scene {
     }
     const w = this.scale.width,
       h = this.scale.height;
-    const zoom = Math.max(2, Math.floor(Math.min(w / 240, h / 220)));
+    const automatic = Math.max(2, Math.floor(Math.min(w / 240, h / 220))),
+      preference = this.store.state.cameraZoom,
+      zoom = Math.max(
+        2,
+        Math.min(
+          5,
+          automatic +
+            (preference === "near" ? 1 : preference === "far" ? -1 : 0),
+        ),
+      );
     const mapWidth = this.mapData.width * 16,
       mapHeight = this.mapData.height * 16,
       padX = Math.max(0, (w / zoom - mapWidth) / 2),
@@ -266,7 +278,9 @@ export class World extends Phaser.Scene {
       .centerOn(this.player.x, this.player.y)
       .setRoundPixels(true);
     document.documentElement.dataset.cameraZoom = String(zoom);
+    document.documentElement.dataset.cameraZoomPreference = preference;
     document.documentElement.dataset.cameraPadding = `${Math.round(padX)},${Math.round(padY)}`;
+    this.appliedCameraZoom = preference;
   }
   interact() {
     if (!this.paused && this.near) this.onInteract(this.near);
@@ -276,6 +290,16 @@ export class World extends Phaser.Scene {
     const s = this.store.state;
     this.speed = 56 + Math.min(18, stats(s).speed * 1.2);
     if (this.worldKey !== s.map && !s.battle) this.build();
+    const hero = s.appearance === "feminine" ? "hero-f" : "hero";
+    if (this.player.getData("heroKey") !== hero) {
+      this.player.stop();
+      this.player
+        .setData("heroKey", hero)
+        .setTexture(`${hero}-${this.direction}-idle-0`);
+      if (!this.reduced) this.player.play(`${hero}-idle-${this.direction}`);
+    }
+    if (this.appliedCameraZoom !== s.cameraZoom && !this.presentation)
+      this.resizeCamera();
     for (const [key, sprite] of this.enemySprites)
       sprite.setVisible(!s.defeated.includes(key as keyof typeof enemies));
     this.chest?.setTexture(s.chest ? "chest-open" : "chest");
@@ -313,36 +337,34 @@ export class World extends Phaser.Scene {
     const s = this.store.state;
     let dx = 0,
       dy = 0;
-    const has = (...k: string[]) =>
-      k.some((x) => this.keys.has(x) || this.touch === x);
-    if (has("arrowleft", "a")) {
-      dx = -1;
-      this.direction = 2;
-    } else if (has("arrowright", "d")) {
-      dx = 1;
-      this.direction = 3;
-    } else if (has("arrowup", "w")) {
-      dy = -1;
-      this.direction = 1;
-    } else if (has("arrowdown", "s")) {
-      dy = 1;
-      this.direction = 0;
+    const touchKeys = this.touch ? this.touch.split("+") : [],
+      has = (...k: string[]) =>
+        k.some((x) => this.keys.has(x) || touchKeys.includes(x));
+    dx = Number(has("arrowright", "d")) - Number(has("arrowleft", "a"));
+    dy = Number(has("arrowdown", "s")) - Number(has("arrowup", "w"));
+    if (dy < 0) this.direction = 1;
+    else if (dy > 0) this.direction = 0;
+    else if (dx < 0) this.direction = 2;
+    else if (dx > 0) this.direction = 3;
+    if (dx && dy) {
+      dx *= Math.SQRT1_2;
+      dy *= Math.SQRT1_2;
     }
     const step = (this.speed * Math.min(delta, 35)) / 1000,
       nx = s.x + dx * step,
       ny = s.y + dy * step;
-    if (walkable(this.mapData, nx, ny)) {
-      s.x = nx;
-      s.y = ny;
-    }
+    if (walkable(this.mapData, nx, s.y)) s.x = nx;
+    if (walkable(this.mapData, s.x, ny)) s.y = ny;
     this.player.setPosition(Math.round(s.x), Math.round(s.y)).setDepth(s.y);
     if (this.reduced) {
-      this.player.setTexture(`hero-${this.direction}-${dx || dy ? 1 : 0}`);
+      const hero = this.player.getData("heroKey") as string;
+      this.player.setTexture(`${hero}-${this.direction}-${dx || dy ? 1 : 0}`);
     } else {
+      const hero = this.player.getData("heroKey") as string;
       const anim =
         dx || dy
-          ? `hero-walk-${this.direction}`
-          : `hero-idle-${this.direction}`;
+          ? `${hero}-walk-${this.direction}`
+          : `${hero}-idle-${this.direction}`;
       if (this.player.anims.currentAnim?.key !== anim) {
         this.player.play(anim);
       }

@@ -123,6 +123,10 @@ export const enemies = {
   },
 };
 export type EnemyId = keyof typeof enemies;
+export const appearances = ["masculine", "feminine"] as const;
+export type Appearance = (typeof appearances)[number];
+export const cameraZoomOptions = ["far", "auto", "near"] as const;
+export type CameraZoom = (typeof cameraZoomOptions)[number];
 export type Battle = {
   enemy: EnemyId;
   hp: number;
@@ -158,6 +162,8 @@ export type Save = {
   battle: Battle | null;
   muted: boolean;
   kills: number;
+  appearance: Appearance;
+  cameraZoom: CameraZoom;
 };
 export function freshSave(): Save {
   return {
@@ -187,6 +193,8 @@ export function freshSave(): Save {
     battle: null,
     muted: true,
     kills: 0,
+    appearance: "masculine",
+    cameraZoom: "auto",
   };
 }
 export function level(xp: number) {

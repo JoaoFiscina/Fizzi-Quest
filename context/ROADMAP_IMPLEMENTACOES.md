@@ -1,6 +1,6 @@
 # Roadmap auditado de implementações futuras
 
-Data da organização: 15/09/2026. Base atual: `v23.09.2003.11`.
+Data da organização: 15/09/2026. Base atual: `v23.09.2003.12`.
 
 Este documento registra intenções futuras. Um item só muda para concluído depois de implementação, testes e inspeção visual. Cada etapa deve manter saves existentes e receber uma versão `v23.09.2003.x` própria.
 
@@ -52,7 +52,7 @@ Objetivo: tornar sistemas existentes compreensíveis antes de adicionar mais con
 - O tutorial explica Defesa sem exigir iniciar um combate.
 - Save anterior abre sem migração destrutiva.
 
-## Etapa 2 — zoom e opções de personagem
+## Etapa 2 — zoom, personagem e diagonais — concluída na v23.09.2003.12
 
 Objetivo: oferecer conforto visual e escolha cosmética sem mudar colisões ou atributos.
 
@@ -72,11 +72,19 @@ Objetivo: oferecer conforto visual e escolha cosmética sem mudar colisões ou a
 - Criar idle e caminhada nas quatro direções para os dois conjuntos.
 - Tratar a escolha somente como aparência, sem bônus de gameplay.
 
+### Movimento composto
+
+- Aceitar duas teclas direcionais simultâneas para as quatro diagonais.
+- Disponibilizar oito posições no direcional móvel.
+- Normalizar o vetor diagonal para manter a mesma velocidade total da caminhada reta.
+- Permitir deslizamento por um eixo quando o outro estiver bloqueado por colisão.
+
 ### Aceite
 
 - Zoom muda imediatamente, persiste após reload e permanece centralizado.
 - 390×844, 430×932, 1366×768 e 1920×1080 não mostram área vazia indevida.
 - Os dois personagens caminham nas quatro direções sem alterar colisão ou velocidade.
+- Teclado e toque percorrem diagonais sem bônus de velocidade.
 
 ## Etapa 3 — ambientação, monstros e mapa
 
@@ -142,6 +150,44 @@ Essas faixas são hipóteses para teste, não valores finais aprovados.
 - Adicionar patrulhamento curto sem alterar a posição lógica durante efeitos visuais.
 - Completar e testar rota bifurcada, baú, chefe, guilda e recompensas únicas.
 - Reavaliar a velocidade por Agilidade junto ao zoom e ao tamanho das áreas.
+
+## Etapas 6 a 8 — novos slots liberados por nível
+
+Esta expansão será dividida para que cada versão mantenha complexidade média, migração verificável e balanceamento compreensível. Os níveis abaixo são hipóteses iniciais para teste.
+
+### v23.09.2003.15 — fundação de desbloqueios e Anel
+
+Complexidade alvo: média.
+
+- Criar metadados de requisito de nível por slot sem armazenar regras duplicadas no save.
+- Mostrar slots futuros bloqueados, nível necessário e prévia do benefício.
+- Manter o slot atual de Acessório para Broches e Pingentes.
+- Adicionar somente o slot **Anel** e um conjunto pequeno de itens para validar compra, equipar, backup e migração.
+- Definir tratamento compatível para peças antigas que já estejam equipadas.
+
+### v23.09.2003.16 — Botas e Capa
+
+Complexidade alvo: média.
+
+- Adicionar **Botas** e **Capa** sobre a fundação validada na versão anterior.
+- Relacionar Botas principalmente a deslocamento/Agilidade e Capas a defesa ou utilidade, sem criar bônus dominantes.
+- Atualizar mochila, HUD resumido, personagem, loja e testes de combinações.
+- Limitar esta versão aos novos slots e ao balanceamento dos itens; não incluir runas.
+
+### v23.09.2003.17 — Runas
+
+Complexidade alvo: média-alta e isolada.
+
+- Tratar Runas separadamente porque podem introduzir efeitos passivos, condições e combinações.
+- Começar com um único slot e efeitos simples que reutilizem regras existentes.
+- Evitar empilhamento livre ou efeitos que alterem a ordem determinística do combate sem testes próprios.
+- Só definir nível de desbloqueio e catálogo final depois das simulações das versões 15 e 16.
+
+### Regra de complexidade por versão
+
+- Uma versão adiciona no máximo um sistema estrutural novo ou dois slots simples apoiados em uma fundação já testada.
+- Mudança de save, regra de combate e grande expansão visual não entram juntas na mesma versão.
+- Cada novo slot precisa de migração, catálogo, loja, mochila, tela do personagem, backup e E2E antes do próximo.
 
 ## Verificação exigida em cada versão
 

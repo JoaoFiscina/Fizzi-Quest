@@ -1,5 +1,9 @@
 # Histórico de versões
 
+## v23.09.2003.12 — 17/09/2026
+
+Configurações agora permitem escolher personagem masculino ou feminino e zoom Afastado, Padrão ou Próximo. Os dois visuais possuem idle e caminhada nas quatro direções, com a mesma hitbox, velocidade e atributos. Teclado aceita duas direções simultâneas e o direcional móvel passou a oito posições; a velocidade diagonal é normalizada para não superar a caminhada reta. Saves antigos recebem aparência masculina e zoom padrão. Foram aprovados 34 testes de domínio, build e 10 jornadas E2E.
+
 ## v23.09.2003.11 — 17/09/2026
 
 O catálogo passou a identificar Armas, Escudos, Armaduras, Broches e Pingentes sem alterar os IDs do save. A mochila mostra o conjunto equipado, agrupa peças pelo slot e prioriza a peça ativa. A loja também exibe os tipos. O novo Manual do aventureiro explica Defesa, intenção inimiga, Fôlego, habilidades, atributos, equipamentos, treinos e exploração; a explicação de Defesa pode ser aberta durante o combate. Foram aprovados 34 testes de domínio, build e 9 jornadas E2E, com inspeção visual em desktop e mobile.
