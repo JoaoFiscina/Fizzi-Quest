@@ -32,8 +32,9 @@
 - E2E confirma zoom 2/3/4, troca para o visual feminino e persistência após reload;
 - E2E confirma deslocamento nos dois eixos e limita a distância diagonal;
 - direcional móvel e Configurações inspecionados em 390×844;
-- branch de entrega: `feat/camera-personagem-diagonal-v23.09.2003.12`;
-- produção permanece em `v23.09.2003.11` até integração e deployment.
+- PR [#5](https://github.com/JoaoFiscina/Fizzi-Quest/pull/5) integrado à `main` no commit `f57b19a`;
+- deployment de produção aprovado pela Vercel;
+- domínio fixo respondeu HTTP 200 com o bundle da `v23.09.2003.12`.
 
 ## Riscos e limites
 

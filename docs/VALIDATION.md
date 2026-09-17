@@ -1,6 +1,6 @@
 # Validação — v23.09.2003.12
 
-Data: 15/09/2026. Ambiente: Windows, Node 24, Microsoft Edge headless via Playwright.
+Data: 17/09/2026. Ambiente: Windows, Node 24, Microsoft Edge headless via Playwright.
 
 ## Comandos executados
 
@@ -42,4 +42,4 @@ Capturas da vila continuam cobertas em 1920×1080, 1366×768, 1024×768, 430×93
 - Não foi feito ensaio de performance em aparelho de entrada ou sessão longa.
 - Missão completa do chefe, baú e guilda ainda precisam de E2E dedicado.
 - Teste de fuga teve inicialmente uma falha no fixture: o save automático de saída substituía o estado inserido com a página ativa. O cenário passou a preparar o save na tela inicial.
-- A publicação da `v23.09.2003.12` depende da integração desta branch; a produção permanece em `v23.09.2003.11` neste registro.
+- A `v23.09.2003.12` foi integrada pelo PR #5; a Vercel aprovou o deployment e o domínio fixo respondeu HTTP 200 com o bundle desta versão.

@@ -29,7 +29,7 @@ npm install
 npm run dev
 ```
 
-Build para Vercel: `npm run build`, saída `dist`. A produção permanece em `v23.09.2003.11` até a integração desta versão em [fizzi-quest.vercel.app](https://fizzi-quest.vercel.app).
+Build para Vercel: `npm run build`, saída `dist`. A versão `v23.09.2003.12` está publicada em [fizzi-quest.vercel.app](https://fizzi-quest.vercel.app).
 
 Validação: `npm test` e `npm run test:e2e` (Edge via Playwright). Evidências e limites em [`docs/VALIDATION.md`](docs/VALIDATION.md).
 
