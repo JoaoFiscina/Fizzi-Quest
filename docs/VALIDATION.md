@@ -1,4 +1,4 @@
-# Validação — v23.09.2003.10
+# Validação — v23.09.2003.11
 
 Data: 15/09/2026. Ambiente: Windows, Node 24, Microsoft Edge headless via Playwright.
 
@@ -6,7 +6,7 @@ Data: 15/09/2026. Ambiente: Windows, Node 24, Microsoft Edge headless via Playwr
 
 - `npm test`: 34 testes unitários e de integração de domínio aprovados.
 - `npm run build`: TypeScript estrito e Vite concluídos; saída em `dist`.
-- `npm run test:e2e`: 8 testes aprovados para jornada, toque, combate, animações e matriz visual (1,1 min na execução final).
+- `npm run test:e2e`: 9 testes aprovados para jornada, mochila, tutorial, toque, combate, animações e matriz visual.
 
 O build emite avisos sobre comentários PURE no Zod e tamanho do bundle do Phaser (~332 KB gzip). Não são erros de compilação.
 
@@ -23,6 +23,8 @@ O build emite avisos sobre comentários PURE no Zod e tamanho do bundle do Phase
 - Combate: defesa prioritária, morte antes da ação, preparo sem dano, habilidades sem recursos, loot único, cura limitada, ordem dos eventos.
 - Rotas e pontos interativos alcançáveis; spawn seguro e paredes bloqueadas.
 - UI: modelo da IA → JSON → prévia → confirmação → histórico → personagem → reload persistente.
+- UI: mochila com tipos, agrupamento por slot, conjunto equipado e ordenação da peça ativa.
+- UI: tutorial pelo menu e ajuda contextual de Defesa durante um encontro.
 - UI: jornada antiga → bosque → Broto → recompensa → retorno → backup → remoção → restauração.
 - UI: compra de poção e descanso; continuação de batalha salva; reload durante animação e vitória sem recompensa duplicada.
 - UI: fuga, derrota e redimensionamento durante efeito.
@@ -30,7 +32,7 @@ O build emite avisos sobre comentários PURE no Zod e tamanho do bundle do Phase
 
 ## Inspeção visual
 
-Capturas da vila continuam cobertas em 1920×1080, 1366×768, 1024×768, 430×932 e 390×844. As novas telas de treino e personagem foram verificadas em desktop e em 390×844. A evidência final desta versão fica em `docs/evidence/v23.09.2003.10/`; os testes também geram cópias descartáveis em `test-results/`.
+Capturas da vila continuam cobertas em 1920×1080, 1366×768, 1024×768, 430×932 e 390×844. Mochila, tutorial e loja foram verificadas em desktop e 390×844. A evidência final desta versão fica em `docs/evidence/v23.09.2003.11/`; os testes também geram cópias descartáveis em `test-results/`.
 
 ## Limites
 
@@ -38,4 +40,4 @@ Capturas da vila continuam cobertas em 1920×1080, 1366×768, 1024×768, 430×93
 - Não foi feito ensaio de performance em aparelho de entrada ou sessão longa.
 - Missão completa do chefe, baú e guilda ainda precisam de E2E dedicado.
 - Teste de fuga teve inicialmente uma falha no fixture: o save automático de saída substituía o estado inserido com a página ativa. O cenário passou a preparar o save na tela inicial.
-- A PR `#2` foi integrada à `main` no commit `30b3323`. A Vercel concluiu o deployment e a URL fixa respondeu `HTTP 200`; o bundle servido contém `v23.09.2003.10`.
+- A publicação da `v23.09.2003.11` depende da integração desta branch; a produção permanece em `v23.09.2003.10` neste registro.

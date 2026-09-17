@@ -4,20 +4,22 @@ O plano detalhado e os critérios de aceite ficam em [`ROADMAP_IMPLEMENTACOES.md
 
 ## Próxima etapa recomendada
 
-### v23.09.2003.11 — mochila e clareza dos sistemas
-
-1. Exibir a categoria de cada item: Arma, Escudo, Armadura ou Pingente.
-2. Organizar a mochila por categoria e destacar o que está equipado.
-3. Criar a aba Tutorial, começando por defesa, fôlego, atributos, equipamentos e treinos.
-4. Preservar IDs, catálogo e saves atuais; usar o `slot` existente como fonte das categorias.
-
-## Etapas seguintes
-
 ### v23.09.2003.12 — câmera e personagem
 
 1. Adicionar zoom personalizável com opções seguras e persistidas.
 2. Adicionar escolha cosmética de personagem masculino ou feminino.
 3. Preservar a caminhada existente e criar os dois conjuntos visuais com a mesma hitbox.
+4. Migrar saves antigos com o visual atual como padrão.
+5. Verificar centralização e ausência de áreas vazias em 390×844, 430×932, 1366×768 e 1920×1080.
+
+## Concluído na v23.09.2003.11
+
+1. Tipos visíveis: Arma, Escudo, Armadura, Broche, Pingente e Consumível.
+2. Mochila agrupada por slot e conjunto equipado destacado.
+3. Tutorial consultável, com explicação detalhada de Defesa.
+4. Ajuda de Defesa disponível também durante o combate.
+
+## Etapas seguintes
 
 ### v23.09.2003.13 — ambientação viva
 

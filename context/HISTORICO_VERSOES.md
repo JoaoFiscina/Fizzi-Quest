@@ -1,5 +1,9 @@
 # Histórico de versões
 
+## v23.09.2003.11 — 17/09/2026
+
+O catálogo passou a identificar Armas, Escudos, Armaduras, Broches e Pingentes sem alterar os IDs do save. A mochila mostra o conjunto equipado, agrupa peças pelo slot e prioriza a peça ativa. A loja também exibe os tipos. O novo Manual do aventureiro explica Defesa, intenção inimiga, Fôlego, habilidades, atributos, equipamentos, treinos e exploração; a explicação de Defesa pode ser aberta durante o combate. Foram aprovados 34 testes de domínio, build e 9 jornadas E2E, com inspeção visual em desktop e mobile.
+
 ## v23.09.2003.10 — 15/09/2026
 
 O treino real passou a usar um fluxo principal único: o jogador copia o modelo do jogo, envia o treino a uma IA externa e cola o JSON recebido. O Fizzi Quest valida a estrutura, reduz a confiança sem evidências, aplica limites por sessão e por dia, usa retornos decrescentes, bloqueia duplicatas e só então concede XP, ouro e atributos. O histórico antigo permanece compatível. A tela do personagem agora mostra progressão fracionária, origem dos atributos, equipamentos e ganhos recentes.
