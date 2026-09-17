@@ -246,8 +246,12 @@ describe("treino principal analisado por IA", () => {
     previous.shield = "wood_shield";
     previous.armor = "leather_armor";
     delete previous.trainingRewards;
+    delete previous.appearance;
+    delete previous.cameraZoom;
     const migrated = validateSave(previous);
     expect(migrated.trainingRewards).toEqual([]);
+    expect(migrated.appearance).toBe("masculine");
+    expect(migrated.cameraZoom).toBe("auto");
     expect(migrated.gold).toBe(44);
     expect(migrated.adventureXpTotal).toBe(125);
     expect(migrated.shield).toBe("wood_shield");

@@ -4,7 +4,7 @@ Esta pasta é a memória operacional do jogo. Atualize-a a cada versão antes de
 
 ## Versão corrente
 
-`v23.09.2003.11` — mochila organizada, tipos visíveis de equipamento e Manual do aventureiro com ajuda contextual de Defesa.
+`v23.09.2003.12` — aparência masculina/feminina, zoom personalizável e movimento diagonal normalizado em teclado e toque.
 
 ## Árvore lógica
 

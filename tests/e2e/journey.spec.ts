@@ -158,6 +158,87 @@ test("mochila organizada, tipos de item e tutorial consultável", async ({
   ).toBe(true);
   await page.screenshot({ path: "test-results/mobile-tutorial.png" });
 });
+test("aparência, zoom e movimento diagonal persistem", async ({ page }) => {
+  await page.setViewportSize({ width: 1366, height: 768 });
+  await page.goto("/");
+  await page
+    .getByRole("button", { name: "Nova aventura", exact: true })
+    .click();
+  await expect(page.locator("html")).toHaveAttribute("data-camera-zoom", "3");
+  await page.getByRole("button", { name: "Ajustes", exact: true }).click();
+  await page.getByRole("button", { name: "Afastado", exact: true }).click();
+  await expect(page.locator("html")).toHaveAttribute("data-camera-zoom", "2");
+  await page.getByRole("button", { name: "Feminino", exact: true }).click();
+  await page.getByRole("button", { name: "Próximo", exact: true }).click();
+  await expect(
+    page.getByRole("button", { name: "Feminino", exact: true }),
+  ).toHaveAttribute("aria-pressed", "true");
+  await expect(
+    page.getByRole("button", { name: "Próximo", exact: true }),
+  ).toHaveAttribute("aria-pressed", "true");
+  await page.screenshot({ path: "test-results/desktop-customization.png" });
+  await page.getByRole("button", { name: "Fechar menu" }).click();
+  await expect(page.locator(".vitals strong")).toContainText("Aventureira");
+  await expect(page.locator("html")).toHaveAttribute("data-camera-zoom", "4");
+  expect(
+    await page.evaluate(() => {
+      // @ts-expect-error exposed only for browser diagnostics
+      const scene = window.__PHASER_GAME__.scene.scenes[0];
+      return scene.player.texture.key.startsWith("hero-f-");
+    }),
+  ).toBe(true);
+  const before = await page.evaluate(() => {
+    // @ts-expect-error exposed only for browser diagnostics
+    const player = window.__PHASER_GAME__.scene.scenes[0].player;
+    return { x: player.x, y: player.y };
+  });
+  await page.keyboard.down("s");
+  await page.keyboard.down("d");
+  await page.waitForTimeout(500);
+  await page.keyboard.up("s");
+  await page.keyboard.up("d");
+  const afterKeyboard = await page.evaluate(() => {
+    // @ts-expect-error exposed only for browser diagnostics
+    const player = window.__PHASER_GAME__.scene.scenes[0].player;
+    return { x: player.x, y: player.y };
+  });
+  expect(afterKeyboard.x).toBeGreaterThan(before.x + 8);
+  expect(afterKeyboard.y).toBeGreaterThan(before.y + 8);
+  expect(
+    Math.hypot(afterKeyboard.x - before.x, afterKeyboard.y - before.y),
+  ).toBeLessThan(40);
+  const diagonal = page.getByRole("button", {
+    name: "Mover na diagonal para cima e esquerda",
+  });
+  const box = await diagonal.boundingBox();
+  await page.mouse.move(box!.x + box!.width / 2, box!.y + box!.height / 2);
+  await page.mouse.down();
+  await page.waitForTimeout(300);
+  await page.mouse.up();
+  const afterTouch = await page.evaluate(() => {
+    // @ts-expect-error exposed only for browser diagnostics
+    const player = window.__PHASER_GAME__.scene.scenes[0].player;
+    return { x: player.x, y: player.y };
+  });
+  expect(afterTouch.x).toBeLessThan(afterKeyboard.x - 4);
+  expect(afterTouch.y).toBeLessThan(afterKeyboard.y - 4);
+  await page.screenshot({ path: "test-results/desktop-feminine-near.png" });
+  await page.reload();
+  await page.getByRole("button", { name: "Continuar aventura" }).click();
+  await expect(page.locator(".vitals strong")).toContainText("Aventureira");
+  await expect(page.locator("html")).toHaveAttribute("data-camera-zoom", "4");
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(page.locator("html")).toHaveAttribute("data-camera-zoom", "3");
+  await page.getByRole("button", { name: "Ajustes", exact: true }).click();
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth,
+    ),
+  ).toBe(true);
+  await page.screenshot({ path: "test-results/mobile-customization.png" });
+  await page.getByRole("button", { name: "Fechar menu" }).click();
+  await page.screenshot({ path: "test-results/mobile-feminine-near.png" });
+});
 test("rodada salva antes da animação, reload sem duplicação e layout de combate", async ({
   page,
 }) => {

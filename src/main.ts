@@ -105,19 +105,27 @@ for (const [key, label, cls] of [
   nav.append(b);
 }
 for (const [key, label, cls] of [
+  ["w+a", "↖", "up-left"],
   ["w", "↑", "up"],
+  ["w+d", "↗", "up-right"],
   ["a", "←", "left"],
-  ["s", "↓", "down"],
   ["d", "→", "right"],
+  ["s+a", "↙", "down-left"],
+  ["s", "↓", "down"],
+  ["s+d", "↘", "down-right"],
 ]) {
   const b = button(label, () => {}, cls);
   b.setAttribute(
     "aria-label",
     {
+      "w+a": "Mover na diagonal para cima e esquerda",
       w: "Mover para cima",
+      "w+d": "Mover na diagonal para cima e direita",
       a: "Mover para esquerda",
-      s: "Mover para baixo",
       d: "Mover para direita",
+      "s+a": "Mover na diagonal para baixo e esquerda",
+      s: "Mover para baixo",
+      "s+d": "Mover na diagonal para baixo e direita",
     }[key]!,
   );
   b.onpointerdown = (e) => {
@@ -174,7 +182,12 @@ function renderHUD() {
   hud.replaceChildren();
   const crest = el("div", "FQ", "crest");
   const info = el("div", "", "vitals");
-  info.append(el("strong", `Aventureiro · Nv. ${a.level}`));
+  info.append(
+    el(
+      "strong",
+      `${s.appearance === "feminine" ? "Aventureira" : "Aventureiro"} · Nv. ${a.level}`,
+    ),
+  );
 
   const hp = el("div", "", "resource");
   const hpLabel = el("span", "Vida", "hud-icon");
@@ -226,9 +239,11 @@ function renderHUD() {
 }
 store.subscribe(renderHUD);
 function character() {
-  openModal("Seu aventureiro");
-  const s = store.state,
-    a = stats(s);
+  const s = store.state;
+  openModal(
+    s.appearance === "feminine" ? "Sua aventureira" : "Seu aventureiro",
+  );
+  const a = stats(s);
   content.classList.add("character-sheet");
   const overview = el("section", "", "character-overview");
   const levelCopy = el("div");
@@ -520,7 +535,87 @@ function tutorial(openTopic = "defense") {
 }
 function settings() {
   openModal("Configurações");
+  const personalization = el("section", "", "personalization-settings");
+  personalization.append(
+    el("small", "APARÊNCIA E CÂMERA", "eyebrow-inline"),
+    el("h3", "Sua forma de explorar"),
+  );
+  const appearanceChoices = el("div", "", "appearance-choices");
+  appearanceChoices.setAttribute("role", "group");
+  appearanceChoices.setAttribute("aria-label", "Aparência do personagem");
+  for (const [value, label] of [
+    ["masculine", "Masculino"],
+    ["feminine", "Feminino"],
+  ] as const) {
+    const choice = button(
+      "",
+      () => {
+        store.transact((s) => (s.appearance = value));
+        settings();
+      },
+      `appearance-choice${store.state.appearance === value ? " selected" : ""}`,
+    );
+    choice.setAttribute(
+      "aria-pressed",
+      String(store.state.appearance === value),
+    );
+    const preview = el("canvas", "", "appearance-preview");
+    preview.width = 40;
+    preview.height = 56;
+    preview.setAttribute("aria-hidden", "true");
+    const key = value === "feminine" ? "hero-f-0-0" : "hero-0-0";
+    const context = preview.getContext("2d");
+    if (context && game.textures.exists(key)) {
+      context.imageSmoothingEnabled = false;
+      context.drawImage(
+        game.textures.get(key).getSourceImage() as CanvasImageSource,
+        0,
+        0,
+        20,
+        28,
+        0,
+        0,
+        40,
+        56,
+      );
+    }
+    choice.append(preview, el("strong", label));
+    appearanceChoices.append(choice);
+  }
+  const zoomChoices = el("div", "", "zoom-settings");
+  zoomChoices.append(
+    el("strong", "Zoom do mundo"),
+    el(
+      "small",
+      "O jogo mantém pixels inteiros e centraliza o mapa em todos os modos.",
+    ),
+  );
+  const zoomButtons = el("div", "", "zoom-choices");
+  zoomButtons.setAttribute("role", "group");
+  zoomButtons.setAttribute("aria-label", "Zoom do mundo");
+  for (const [value, label] of [
+    ["far", "Afastado"],
+    ["auto", "Padrão"],
+    ["near", "Próximo"],
+  ] as const) {
+    const choice = button(
+      label,
+      () => {
+        store.transact((s) => (s.cameraZoom = value));
+        settings();
+      },
+      store.state.cameraZoom === value ? "selected" : "",
+    );
+    choice.setAttribute(
+      "aria-pressed",
+      String(store.state.cameraZoom === value),
+    );
+    zoomButtons.append(choice);
+  }
+  zoomChoices.append(zoomButtons);
+  personalization.append(appearanceChoices, zoomChoices);
   content.append(
+    personalization,
     el("h3", "Seu progresso, com você"),
     el(
       "p",
@@ -571,7 +666,7 @@ function settings() {
     el("h3", "Controles"),
     el(
       "p",
-      "WASD ou setas: mover. E ou Espaço: interagir. Esc: fechar menus. No celular, use o direcional.",
+      "WASD ou setas: mover, inclusive em diagonais ao combinar duas direções. E ou Espaço: interagir. Esc: fechar menus. No celular, use o direcional de oito posições.",
     ),
     button("Iniciar nova aventura", () => {
       content.replaceChildren(

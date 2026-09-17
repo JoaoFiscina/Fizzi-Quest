@@ -269,6 +269,76 @@ button.alloc-btn:not(:disabled):hover {
   padding: 7px 9px;
   font-size: 10px;
 }
+.personalization-settings {
+  margin-bottom: 18px;
+  padding: 14px;
+  border: 1px solid #aa9865;
+  border-radius: 9px;
+  background: #e8ddba;
+}
+.personalization-settings > h3 {
+  margin: 2px 0 10px;
+  font:
+    22px "MedievalSharp",
+    Georgia,
+    serif;
+}
+.appearance-choices {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+.appearance-choice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 74px;
+  margin: 0;
+  border-color: #a89c73;
+  background: #f4e9c9;
+  color: #315448;
+}
+.appearance-choice.selected,
+.zoom-choices button.selected {
+  border-color: #557a5e;
+  background: #dce5bf;
+  box-shadow: inset 0 0 0 2px #789461;
+}
+.appearance-preview {
+  width: 40px;
+  height: 56px;
+  image-rendering: pixelated;
+}
+.zoom-settings {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid #c5b78e;
+}
+.zoom-settings > strong,
+.zoom-settings > small {
+  display: block;
+}
+.zoom-settings > small {
+  margin-top: 2px;
+  color: #68705b;
+  font-size: 10px;
+}
+.zoom-choices {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  margin-top: 8px;
+}
+.zoom-choices button {
+  margin: 0;
+  min-height: 40px;
+  padding: 7px;
+  border-color: #a89c73;
+  background: #f4e9c9;
+  color: #315448;
+  font-size: 10px;
+}
 .tutorial-intro {
   margin-bottom: 12px;
   padding: 14px 16px;
@@ -750,7 +820,7 @@ button.alloc-btn:not(:disabled):hover {
     min-height: 44px;
   }
   .toast {
-    bottom: 130px;
+    bottom: 190px;
   }
   .intro h1 {
     font-size: 59px;

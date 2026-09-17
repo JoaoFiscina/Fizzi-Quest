@@ -2,7 +2,7 @@
 
 RPG pessoal de exploração em pixel art, construído com Phaser, TypeScript e Vite para o marco **Treino à aventura**.
 
-## Estado atual — v23.09.2003.11
+## Estado atual — v23.09.2003.12
 
 Já estão implementados os blocos principais do domínio e da experiência:
 
@@ -14,6 +14,9 @@ Já estão implementados os blocos principais do domínio e da experiência:
 - tela do personagem com atributos fracionários, origem dos pontos, equipamentos e ganhos recentes;
 - mochila agrupada por slot, tipos visíveis em cada equipamento e conjunto equipado em destaque;
 - manual do aventureiro com Defesa, Fôlego, atributos, equipamentos, treinos e exploração;
+- escolha cosmética de personagem masculino ou feminino, preservada no save;
+- zoom Afastado, Padrão e Próximo com escala inteira e adaptação à viewport;
+- movimento diagonal normalizado por teclado e direcional móvel de oito posições;
 - pontuação diária por regrasVersion 1, maestrias separadas de XP de aventura;
 - inventário, loja, equipamento, baú, fogueira, missão da guilda e melhoria da sede;
 - save versionado em localStorage, cópia anterior, exportação e restauração de backup;
@@ -26,11 +29,11 @@ npm install
 npm run dev
 ```
 
-Build para Vercel: `npm run build`, saída `dist`. A versão `v23.09.2003.11` está na `main` e publicada em [fizzi-quest.vercel.app](https://fizzi-quest.vercel.app).
+Build para Vercel: `npm run build`, saída `dist`. A produção permanece em `v23.09.2003.11` até a integração desta versão em [fizzi-quest.vercel.app](https://fizzi-quest.vercel.app).
 
 Validação: `npm test` e `npm run test:e2e` (Edge via Playwright). Evidências e limites em [`docs/VALIDATION.md`](docs/VALIDATION.md).
 
-Esta versão organiza equipamentos por categoria e inclui um tutorial consultável sem alterar o formato do save. A versão pública usa `v23.09.2003.x`; a versão npm equivalente usa SemVer (`23.9.2003-11`).
+Esta versão adiciona preferências compatíveis de aparência e câmera e movimento em oito direções. A versão pública usa `v23.09.2003.x`; a versão npm equivalente usa SemVer (`23.9.2003-12`).
 
 ## Contexto vivo
 
