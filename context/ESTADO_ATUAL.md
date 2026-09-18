@@ -1,51 +1,61 @@
-# Estado atual — v23.09.2003.12
+# Estado atual — v23.09.2003.13
+
+## Classificação
+
+P2 — complexidade média, concentrada em apresentação ambiental e desempenho.
 
 ## Feito nesta versão
 
-- escolha cosmética de personagem masculino ou feminino em Configurações;
-- dois conjuntos de pixel art com idle e caminhada nas quatro direções;
-- mesma hitbox, velocidade, atributos e equipamentos para os dois visuais;
-- zoom Afastado, Padrão e Próximo com escala inteira e centralização recalculada;
-- preferências de aparência e zoom persistidas no save;
-- migração automática: saves antigos recebem aparência masculina e zoom padrão;
-- movimento diagonal por combinações de WASD ou setas;
-- velocidade diagonal normalizada para não superar a caminhada reta;
-- colisão por eixo, permitindo deslizar ao longo de paredes;
-- direcional móvel com oito posições e alvos de toque de 44 px;
-- tutorial atualizado com aparência, câmera e movimento composto.
+- controlador ambiental reutilizável com um único timer por mapa;
+- ciclos finitos e ocasionais para água, fogo, árvores, tufos de grama, vento e bandeiras;
+- atrasos iniciais e intervalos diferentes entre objetos semelhantes;
+- limite rígido de dois efeitos simultâneos no modo normal;
+- folhas no bosque e poeira na vila reutilizam sprites pré-criados e aparecem raramente;
+- `prefers-reduced-motion` desativa folhas, poeira, árvores, vegetação e bandeiras animadas;
+- movimento reduzido mantém apenas água e fogo, com menor probabilidade, intervalos 2,8 vezes maiores e limite de um ciclo;
+- troca de mapa e encerramento da cena removem o timer anterior;
+- diagnósticos testáveis expõem modo, quantidade ativa, limite e estado do timer;
+- nenhuma biblioteca foi adicionada.
 
-## Estado funcional preservado
+## Preservação confirmada
 
-- fluxo de treino real por IA externa com validação, prévia e histórico;
-- mochila organizada, tipos de item e Manual do aventureiro;
-- vila e bosque, colisões, transição, NPCs e encontros;
-- combate determinístico e recompensa única;
-- pontuação, maestria, XP, loja, missão e backup;
-- Vite, TypeScript e Phaser com saída `dist` para Vercel.
+- formato do save e versão de save inalterados;
+- posições lógicas, hitboxes, colisões e spawns inalterados;
+- velocidade reta, velocidade diagonal e zoom inalterados;
+- encontros, combate, recompensas, inventário, equipamentos e progressão inalterados;
+- animações ambientais não movimentam entidades lógicas.
+
+## Frequência e limites
+
+- água: intervalo individual de 7 a 15 segundos, 55% de ativação;
+- fogo: 3,2 a 7,2 segundos, 82% de ativação;
+- árvores: 9 a 19 segundos, 48% de ativação;
+- grama e vento: 6,5 a 14,5 segundos, 58% de ativação;
+- bandeiras: 5,2 a 12,5 segundos, 68% de ativação;
+- folhas e poeira: 12 a 22 segundos, 35% de ativação;
+- máximo normal: dois ciclos ativos; máximo reduzido: um ciclo essencial.
+
+Cada objeto possui seu próprio próximo horário. Falhar a probabilidade agenda uma nova tentativa, preservando pausas reais.
 
 ## Verificação
 
 - `npm test`: 34 testes aprovados;
-- `npm run build`: aprovado;
-- `npm run test:e2e`: 10 testes aprovados;
-- migração de save antigo verifica os padrões de aparência e zoom;
-- E2E confirma zoom 2/3/4, troca para o visual feminino e persistência após reload;
-- E2E confirma deslocamento nos dois eixos e limita a distância diagonal;
-- direcional móvel e Configurações inspecionados em 390×844;
-- PR [#5](https://github.com/JoaoFiscina/Fizzi-Quest/pull/5) integrado à `main` no commit `f57b19a`;
-- deployment de produção aprovado pela Vercel;
-- domínio fixo respondeu HTTP 200 com o bundle da `v23.09.2003.12`.
+- `npm run build`: aprovado, sem dependências novas;
+- `npm run test:e2e`: 12 testes aprovados, incluindo controlador, fases, limpeza de timer, movimento reduzido, movimento diagonal e matriz visual;
+- evidências finais: `docs/evidence/v23.09.2003.13/`;
+- branch: `feat/terreno-vivo-v23.09.2003.13`;
+- produção permanece em `v23.09.2003.12` até integração e deployment.
 
 ## Riscos e limites
 
 - navegador móvel emulado não substitui Safari/iOS e Android físicos;
-- no celular, Afastado e Padrão podem coincidir quando 2× já é o mínimo seguro;
-- personagens usam quatro direções visuais; diagonais reutilizam a orientação vertical correspondente;
-- o bundle principal do Phaser permanece grande, embora o build seja válido;
-- o mapa prévio funcional ainda precisa de uma passada estética própria.
+- os ciclos são propositalmente discretos e podem não aparecer em toda captura isolada;
+- o bundle principal do Phaser continua grande; a ambientação acrescentou apenas código e texturas Canvas pequenas;
+- a configuração de redução de movimento é lida ao iniciar a cena e exige reload se a preferência do sistema mudar durante a sessão;
+- monstros e mapa prévio foram preservados para a próxima versão.
 
 ## Próxima etapa
 
-A `v23.09.2003.13` deve melhorar ambientação, identidade dos monstros, ataques e mapa prévio. Novos slots por nível foram divididos entre as versões 15 a 17 para respeitar o limite de complexidade por entrega.
+A `v23.09.2003.14` deve tratar exclusivamente das criaturas e do mapa prévio: pixel art, identidade de idle, reações, ataques visuais, transições e centralização das regiões bloqueadas.
 
-Consulte `docs/VALIDATION.md` para os comandos e `context/PROXIMOS_PASSOS.md` para o backlog.
+Consulte `docs/VALIDATION.md` para os comandos e `context/PROXIMOS_PASSOS.md` para a fila.

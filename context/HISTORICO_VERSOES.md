@@ -1,5 +1,9 @@
 # Histórico de versões
 
+## v23.09.2003.13 — 17/09/2026
+
+O terreno passou a usar um controlador ambiental único por mapa, com pausas e fases determinísticas diferentes entre objetos semelhantes. Água, fogo, árvores, tufos, vento e bandeiras executam ciclos finitos; folhas no bosque e poeira na vila aparecem raramente, sem criação durante `update` e com no máximo dois efeitos simultâneos. `prefers-reduced-motion` desativa detalhes decorativos, limita a um ciclo e mantém apenas água e fogo em frequência reduzida. Trocas de mapa cancelam o timer anterior. Save, colisões, posições e gameplay permanecem inalterados.
+
 ## v23.09.2003.12 — 17/09/2026
 
 Configurações agora permitem escolher personagem masculino ou feminino e zoom Afastado, Padrão ou Próximo. Os dois visuais possuem idle e caminhada nas quatro direções, com a mesma hitbox, velocidade e atributos. Teclado aceita duas direções simultâneas e o direcional móvel passou a oito posições; a velocidade diagonal é normalizada para não superar a caminhada reta. Saves antigos recebem aparência masculina e zoom padrão. Foram aprovados 34 testes de domínio, build e 10 jornadas E2E.

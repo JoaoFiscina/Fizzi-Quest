@@ -1,6 +1,6 @@
 # Roadmap auditado de implementações futuras
 
-Data da organização: 15/09/2026. Base atual: `v23.09.2003.12`.
+Data da organização: 17/09/2026. Base atual: `v23.09.2003.13`.
 
 Este documento registra intenções futuras. Um item só muda para concluído depois de implementação, testes e inspeção visual. Cada etapa deve manter saves existentes e receber uma versão `v23.09.2003.x` própria.
 
@@ -86,25 +86,46 @@ Objetivo: oferecer conforto visual e escolha cosmética sem mudar colisões ou a
 - Os dois personagens caminham nas quatro direções sem alterar colisão ou velocidade.
 - Teclado e toque percorrem diagonais sem bônus de velocidade.
 
-## Etapa 3 — ambientação, monstros e mapa
+## Etapa 3 — terreno vivo — concluída na v23.09.2003.13
 
-Objetivo: deixar o mundo mais vivo sem produzir ruído visual ou custo excessivo.
+Objetivo: deixar o mundo mais vivo sem produzir ruído visual, mudar gameplay ou elevar o custo em aparelhos modestos.
 
-- Manter animações ambientais ocasionais, com intervalos e fases variadas em vez de movimento contínuo sincronizado.
-- Dar a cada monstro idle reconhecível, pequenas reações e ataque visual próprio.
-- Refinar silhueta e detalhes em pixel art dentro da escala atual.
-- Preservar hitboxes, posição, tempo de encontro e resultado determinístico do combate.
-- Respeitar `prefers-reduced-motion` e limitar quadros para aparelhos modestos.
-- Melhorar o mapa prévio, a centralização e a leitura das áreas bloqueadas.
-- Integrar o antigo plano de animação de ataque nesta etapa.
+- Água, fogo, árvores, tufos, vento e bandeiras usam ciclos finitos com fases e pausas individuais.
+- O controlador mantém um único timer por mapa, agenda intervalos variados e limita a dois ciclos simultâneos.
+- Folhas e poeira usam sprites pré-criados; nenhum objeto é criado continuamente em `update`.
+- `prefers-reduced-motion` desativa detalhes decorativos e vegetação animada, limita a um ciclo e mantém apenas água/fogo em frequência reduzida.
+- Troca de mapa e encerramento da cena destroem o controlador e removem seu timer.
+- Save, colisões, posições, velocidade, zoom, combate e progressão não foram alterados.
+
+### Aceite comprovado
+
+- objetos semelhantes possuem fases diferentes;
+- efeitos ativos nunca ultrapassam o limite configurado;
+- troca de mapa retorna a um único timer ambiental;
+- modo reduzido não mostra folhas ou poeira;
+- desktop e 390×844 mantêm HUD, mapa e direcional legíveis.
+
+## Etapa 4 — criaturas e mapa — v23.09.2003.14
+
+Objetivo: reforçar a identidade das criaturas e a leitura do mapa sem misturar mudanças de combate ou progressão.
+
+- Refinar silhueta e detalhes dos quatro monstros dentro da escala atual.
+- Dar idle, pausa e reação visual reconhecíveis para cada espécie.
+- Criar ataques visuais que reproduzam eventos já calculados, sem alterar dano, ordem ou persistência.
+- Melhorar transições de entrada e saída do combate.
+- Respeitar `prefers-reduced-motion` nas reações e transições.
+- Remodelar o mapa prévio, centralizar a rota e manter as regiões futuras bloqueadas.
+- Preservar hitboxes, posições lógicas, spawns e resultado determinístico.
 
 ### Aceite
 
-- Capturas estáticas continuam legíveis e os monstros são distinguíveis pela forma.
-- As animações alteram quadros de verdade, mas não deslocam a entidade lógica.
-- Reload durante apresentação de combate não duplica dano nem recompensa.
+- capturas estáticas distinguem as criaturas pela forma;
+- cada espécie possui ritmo visual próprio;
+- reload durante apresentação não duplica dano nem recompensa;
+- mapa prévio permanece legível em desktop e celular;
+- áreas inexistentes continuam bloqueadas.
 
-## Etapa 4 — balanceamento dos treinos e habilidades
+## Etapa 5 — balanceamento dos treinos e habilidades — v23.09.2003.15
 
 Objetivo: fazer o treino participar mais da identidade física do personagem sem substituir a aventura.
 
@@ -122,72 +143,62 @@ Objetivo: fazer o treino participar mais da identidade física do personagem sem
 
 - Testar redução de aproximadamente 35% a 45% no XP de treino.
 - Testar aumento de aproximadamente 20% a 30% nos limites de atributos de confiança média/alta.
-- Comparar cenários com o mesmo treino nos níveis 1, 10 e 20, com e sem equipamentos.
-- Confirmar que o ganho bruto do treino não muda entre esses cenários.
-- Confirmar que caps diários ainda impedem progressão excessiva por repetição.
+- Comparar o mesmo treino nos níveis 1, 10 e 20, com e sem equipamentos.
+- Confirmar que o ganho bruto não muda entre esses cenários e que caps diários continuam funcionando.
 
 Essas faixas são hipóteses para teste, não valores finais aprovados.
 
 ### Habilidades progressivas
 
-- Manter os desbloqueios atuais como base: Corte veloz no nível 2 e Impacto firme no nível 3.
-- Mostrar habilidades bloqueadas, requisito e próximo desbloqueio na tela do personagem ou tutorial.
+- Manter Corte veloz no nível 2 e Impacto firme no nível 3.
+- Mostrar habilidades bloqueadas, requisito e próximo desbloqueio.
 - Explicar custo de fôlego e função tática de cada ação.
-- Avaliar novos desbloqueios somente após chefe, missão e conteúdo existentes estarem validados.
-- Evitar várias habilidades equivalentes que apenas mudem o multiplicador de dano.
+- Avaliar novas habilidades somente após o conteúdo existente estar validado.
 
-### Aceite
-
-- Testes registram os valores antes e depois do balanceamento.
-- Nível e equipamento não reduzem a recompensa bruta de um mesmo treino.
-- Treino influencia atributos mais do que XP, sem ultrapassar os limites diários.
-- O jogador sabe qual habilidade será desbloqueada e como usar Defesa e fôlego.
-
-## Etapa 5 — mundo persistente e conteúdo existente
+## Etapa 6 — mundo persistente e conteúdo existente
 
 - Implementar respawn somente após definir tempo, limites e pontos caminháveis.
 - Variar levemente a posição de retorno sem permitir spawn em obstáculos ou sobre o jogador.
-- Adicionar patrulhamento curto sem alterar a posição lógica durante efeitos visuais.
+- Adicionar patrulhamento curto sem misturar estado lógico e efeitos visuais.
 - Completar e testar rota bifurcada, baú, chefe, guilda e recompensas únicas.
 - Reavaliar a velocidade por Agilidade junto ao zoom e ao tamanho das áreas.
 
-## Etapas 6 a 8 — novos slots liberados por nível
+## Etapas 7 a 9 — novos slots liberados por nível
 
-Esta expansão será dividida para que cada versão mantenha complexidade média, migração verificável e balanceamento compreensível. Os níveis abaixo são hipóteses iniciais para teste.
+Esta expansão será dividida para que cada versão mantenha complexidade média, migração verificável e balanceamento compreensível. Os níveis são hipóteses iniciais para teste.
 
-### v23.09.2003.15 — fundação de desbloqueios e Anel
+### v23.09.2003.16 — fundação de desbloqueios e Anel
 
 Complexidade alvo: média.
 
 - Criar metadados de requisito de nível por slot sem armazenar regras duplicadas no save.
 - Mostrar slots futuros bloqueados, nível necessário e prévia do benefício.
 - Manter o slot atual de Acessório para Broches e Pingentes.
-- Adicionar somente o slot **Anel** e um conjunto pequeno de itens para validar compra, equipar, backup e migração.
+- Adicionar somente o slot **Anel** e um catálogo pequeno para validar compra, equipar, backup e migração.
 - Definir tratamento compatível para peças antigas que já estejam equipadas.
 
-### v23.09.2003.16 — Botas e Capa
+### v23.09.2003.17 — Botas e Capa
 
 Complexidade alvo: média.
 
 - Adicionar **Botas** e **Capa** sobre a fundação validada na versão anterior.
-- Relacionar Botas principalmente a deslocamento/Agilidade e Capas a defesa ou utilidade, sem criar bônus dominantes.
+- Relacionar Botas principalmente a deslocamento/Agilidade e Capas a defesa ou utilidade, sem bônus dominantes.
 - Atualizar mochila, HUD resumido, personagem, loja e testes de combinações.
-- Limitar esta versão aos novos slots e ao balanceamento dos itens; não incluir runas.
+- Limitar esta versão aos novos slots e ao balanceamento; não incluir runas.
 
-### v23.09.2003.17 — Runas
+### v23.09.2003.18 — Runas
 
 Complexidade alvo: média-alta e isolada.
 
-- Tratar Runas separadamente porque podem introduzir efeitos passivos, condições e combinações.
-- Começar com um único slot e efeitos simples que reutilizem regras existentes.
+- Começar com um único slot e efeitos passivos simples que reutilizem regras existentes.
 - Evitar empilhamento livre ou efeitos que alterem a ordem determinística do combate sem testes próprios.
-- Só definir nível de desbloqueio e catálogo final depois das simulações das versões 15 e 16.
+- Definir nível de desbloqueio e catálogo final depois das simulações das versões 16 e 17.
 
 ### Regra de complexidade por versão
 
-- Uma versão adiciona no máximo um sistema estrutural novo ou dois slots simples apoiados em uma fundação já testada.
-- Mudança de save, regra de combate e grande expansão visual não entram juntas na mesma versão.
-- Cada novo slot precisa de migração, catálogo, loja, mochila, tela do personagem, backup e E2E antes do próximo.
+- Uma versão adiciona no máximo um sistema estrutural novo ou dois slots simples apoiados em fundação testada.
+- Mudança de save, regra de combate e grande expansão visual não entram juntas.
+- Cada novo slot precisa de migração, catálogo, loja, mochila, personagem, backup e E2E antes do próximo.
 
 ## Verificação exigida em cada versão
 
