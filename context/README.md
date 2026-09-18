@@ -15,6 +15,7 @@ fizzi-quest/
 │   ├── ESTADO_ATUAL.md           ← o que funciona e o que está incompleto
 │   ├── PROXIMOS_PASSOS.md        ← fila priorizada para a próxima sessão
 │   ├── ROADMAP_IMPLEMENTACOES.md ← plano auditado das próximas melhorias
+│   ├── DIAGNOSTICO_GRAFICO_V13.md ← causa da regressão visual e nova régua de aceite
 │   ├── DECISOES.md               ← escolhas de produto e engenharia
 │   └── HISTORICO_VERSOES.md       ← linha do tempo das versões
 ├── docs/GAME_SPEC.md             ← contrato original do produto

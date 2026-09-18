@@ -53,10 +53,11 @@ Cada objeto possui seu próprio próximo horário. Falhar a probabilidade agenda
 - os ciclos são propositalmente discretos e podem não aparecer em toda captura isolada;
 - o bundle principal do Phaser continua grande; a ambientação acrescentou apenas código e texturas Canvas pequenas;
 - a configuração de redução de movimento é lida ao iniciar a cena e exige reload se a preferência do sistema mudar durante a sessão;
-- monstros e mapa prévio foram preservados para a próxima versão.
+- a auditoria posterior encontrou uma regressão perceptiva: na prévia inspecionada, movimento reduzido estava ativo e suprimiu quase toda a ambientação;
+- as evidências parado/ciclo do bosque são byte a byte idênticas; consulte `DIAGNOSTICO_GRAFICO_V13.md`.
 
 ## Próxima etapa
 
-A `v23.09.2003.14` deve tratar exclusivamente das criaturas e do mapa prévio: pixel art, identidade de idle, reações, ataques visuais, transições e centralização das regiões bloqueadas.
+A `v23.09.2003.14` deve recuperar a fundação visual: água e fogo contínuos, categorias de movimento separadas, escolha explícita de animações e validação temporal perceptível. Criaturas e mapa passam para a versão 15.
 
 Consulte `docs/VALIDATION.md` para os comandos e `context/PROXIMOS_PASSOS.md` para a fila.

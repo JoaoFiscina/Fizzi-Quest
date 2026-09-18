@@ -4,14 +4,15 @@ O plano detalhado e os critérios de aceite ficam em [`ROADMAP_IMPLEMENTACOES.md
 
 ## Próxima etapa recomendada
 
-### v23.09.2003.14 — criaturas e mapa
+### v23.09.2003.14 — recuperação da fundação visual
 
-1. Refinar a pixel art dos monstros sem aumentar a escala ou mudar hitboxes.
-2. Dar idle, pausa e reação visual próprios para cada espécie.
-3. Adicionar animações visuais de ataque sem alterar a lógica do combate.
-4. Melhorar transições de combate e respeitar movimento reduzido.
-5. Remodelar esteticamente o mapa prévio, mantendo regiões futuras bloqueadas e centralizadas.
-6. Não alterar treinos, equipamentos, spawns ou patrulhamento nesta versão.
+1. Separar movimentos-base, reações ocasionais e partículas raras.
+2. Restaurar água e fogo contínuos no modo completo, com fases diferentes.
+3. Limitar somente reações e partículas, sem interromper movimentos-base.
+4. Adicionar escolha Completa, Usar sistema ou Reduzida em Ajustes.
+5. Tornar os quadros mais legíveis e validar 30 segundos na cadência real.
+6. Exigir comparação temporal com diferença visual mensurável.
+7. Consultar [`DIAGNOSTICO_GRAFICO_V13.md`](DIAGNOSTICO_GRAFICO_V13.md).
 
 ## Concluído na v23.09.2003.13
 
@@ -24,31 +25,38 @@ O plano detalhado e os critérios de aceite ficam em [`ROADMAP_IMPLEMENTACOES.md
 
 ## Etapas seguintes
 
-### v23.09.2003.15 — progressão e treino
+### v23.09.2003.15 — criaturas e mapa
+
+1. Refinar a pixel art dos monstros sem aumentar a escala ou mudar hitboxes.
+2. Dar idle, pausa, reação e ataque visual próprios para cada espécie.
+3. Melhorar transições do combate e respeitar movimento reduzido.
+4. Remodelar o mapa prévio com áreas futuras bloqueadas e centralizadas.
+
+### v23.09.2003.16 — progressão e treino
 
 1. Reduzir o XP concedido pelos treinos e aumentar moderadamente a participação deles nos atributos.
 2. Remover o redutor baseado no atributo total do personagem.
 3. Manter confiança, limites por sessão/dia e bloqueio de duplicatas.
 4. Melhorar a apresentação dos desbloqueios progressivos de habilidades.
 
-### v23.09.2003.16 — desbloqueios de slots e Anel
+### v23.09.2003.17 — desbloqueios de slots e Anel
 
 1. Criar a fundação de slots liberados por nível.
 2. Mostrar slots bloqueados e requisitos sem conceder itens inexistentes.
 3. Manter Broches e Pingentes no slot atual de Acessório.
 4. Adicionar somente Anel para validar migração e balanceamento.
 
-### v23.09.2003.17 — Botas e Capa
+### v23.09.2003.18 — Botas e Capa
 
 1. Adicionar dois slots simples sobre a fundação já testada.
 2. Atualizar mochila, loja, personagem, HUD e combinações de bônus.
 3. Não incluir Runas nesta versão.
 
-### v23.09.2003.18 — Runas
+### v23.09.2003.19 — Runas
 
 1. Criar um único slot de Runa com efeitos passivos simples.
 2. Isolar condições e combinações para proteger o combate determinístico.
-3. Definir níveis e valores finais após simular as versões 16 e 17.
+3. Definir níveis e valores finais após simular as versões 17 e 18.
 
 ### Etapa posterior — mundo e conteúdo
 

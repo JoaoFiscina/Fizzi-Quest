@@ -105,7 +105,21 @@ Objetivo: deixar o mundo mais vivo sem produzir ruído visual, mudar gameplay ou
 - modo reduzido não mostra folhas ou poeira;
 - desktop e 390×844 mantêm HUD, mapa e direcional legíveis.
 
-## Etapa 4 — criaturas e mapa — v23.09.2003.14
+## Etapa 4 — recuperação da fundação visual — v23.09.2003.14
+
+Objetivo: corrigir a regressão perceptiva da v13 antes de adicionar mais arte.
+
+- Separar movimentos-base, reações ocasionais e partículas raras.
+- Água e fogo repetem continuamente no modo completo, com fases diferentes entre instâncias.
+- O limite simultâneo se aplica a árvores, vegetação, bandeiras e partículas, não aos movimentos-base.
+- Ajustes oferece **Completa**, **Usar sistema** e **Reduzida**, mostrando a opção ativa.
+- Quadros precisam alterar forma, brilho ou ritmo de maneira legível na escala real.
+- Testes medem pelo menos 30 segundos sem aceleração e comparam regiões entre quadros.
+- Capturas parado/movimento idênticas reprovam a versão visual.
+
+O diagnóstico e a nova régua de aceite estão em [`DIAGNOSTICO_GRAFICO_V13.md`](DIAGNOSTICO_GRAFICO_V13.md).
+
+## Etapa 5 — criaturas e mapa — v23.09.2003.15
 
 Objetivo: reforçar a identidade das criaturas e a leitura do mapa sem misturar mudanças de combate ou progressão.
 
@@ -125,7 +139,7 @@ Objetivo: reforçar a identidade das criaturas e a leitura do mapa sem misturar 
 - mapa prévio permanece legível em desktop e celular;
 - áreas inexistentes continuam bloqueadas.
 
-## Etapa 5 — balanceamento dos treinos e habilidades — v23.09.2003.15
+## Etapa 6 — balanceamento dos treinos e habilidades — v23.09.2003.16
 
 Objetivo: fazer o treino participar mais da identidade física do personagem sem substituir a aventura.
 
@@ -155,7 +169,7 @@ Essas faixas são hipóteses para teste, não valores finais aprovados.
 - Explicar custo de fôlego e função tática de cada ação.
 - Avaliar novas habilidades somente após o conteúdo existente estar validado.
 
-## Etapa 6 — mundo persistente e conteúdo existente
+## Etapa 7 — mundo persistente e conteúdo existente
 
 - Implementar respawn somente após definir tempo, limites e pontos caminháveis.
 - Variar levemente a posição de retorno sem permitir spawn em obstáculos ou sobre o jogador.
@@ -163,11 +177,11 @@ Essas faixas são hipóteses para teste, não valores finais aprovados.
 - Completar e testar rota bifurcada, baú, chefe, guilda e recompensas únicas.
 - Reavaliar a velocidade por Agilidade junto ao zoom e ao tamanho das áreas.
 
-## Etapas 7 a 9 — novos slots liberados por nível
+## Etapas 8 a 10 — novos slots liberados por nível
 
 Esta expansão será dividida para que cada versão mantenha complexidade média, migração verificável e balanceamento compreensível. Os níveis são hipóteses iniciais para teste.
 
-### v23.09.2003.16 — fundação de desbloqueios e Anel
+### v23.09.2003.17 — fundação de desbloqueios e Anel
 
 Complexidade alvo: média.
 
@@ -177,7 +191,7 @@ Complexidade alvo: média.
 - Adicionar somente o slot **Anel** e um catálogo pequeno para validar compra, equipar, backup e migração.
 - Definir tratamento compatível para peças antigas que já estejam equipadas.
 
-### v23.09.2003.17 — Botas e Capa
+### v23.09.2003.18 — Botas e Capa
 
 Complexidade alvo: média.
 
@@ -186,13 +200,13 @@ Complexidade alvo: média.
 - Atualizar mochila, HUD resumido, personagem, loja e testes de combinações.
 - Limitar esta versão aos novos slots e ao balanceamento; não incluir runas.
 
-### v23.09.2003.18 — Runas
+### v23.09.2003.19 — Runas
 
 Complexidade alvo: média-alta e isolada.
 
 - Começar com um único slot e efeitos passivos simples que reutilizem regras existentes.
 - Evitar empilhamento livre ou efeitos que alterem a ordem determinística do combate sem testes próprios.
-- Definir nível de desbloqueio e catálogo final depois das simulações das versões 16 e 17.
+- Definir nível de desbloqueio e catálogo final depois das simulações das versões 17 e 18.
 
 ### Regra de complexidade por versão
 
