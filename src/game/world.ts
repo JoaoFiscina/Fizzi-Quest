@@ -3,6 +3,11 @@ import { createArt } from "./art";
 import { makeMap, walkable, type Entity, type MapData } from "./maps";
 import { enemies, stats, type CombatEvent } from "../domain/game";
 import { BattlePresentation } from "./battlePresentation";
+import {
+  AmbientController,
+  type AmbientDiagnostics,
+  type AmbientKind,
+} from "./ambient";
 import type { Store } from "../application/store";
 export class World extends Phaser.Scene {
   private player!: Phaser.GameObjects.Sprite;
@@ -21,9 +26,15 @@ export class World extends Phaser.Scene {
     .matches;
   private flags: Phaser.GameObjects.Sprite[] = [];
   private chest?: Phaser.GameObjects.Sprite;
-  private ambientTimer?: Phaser.Time.TimerEvent;
+  private ambience?: AmbientController;
   private terrainSprites: Phaser.GameObjects.Sprite[] = [];
+  private waterSprites: Phaser.GameObjects.Sprite[] = [];
   private treeSprites: Phaser.GameObjects.Sprite[] = [];
+  private fireSprites: Phaser.GameObjects.Sprite[] = [];
+  private effectSprites: Array<{
+    sprite: Phaser.GameObjects.Sprite;
+    kind: "leaf" | "dust";
+  }> = [];
   private appliedCameraZoom = "";
   paused = true;
   touch = "";
@@ -59,6 +70,7 @@ export class World extends Phaser.Scene {
     window.addEventListener("keyup", up);
     window.addEventListener("blur", blur);
     this.events.once("shutdown", () => {
+      this.ambience?.destroy();
       window.removeEventListener("keydown", down);
       window.removeEventListener("keyup", up);
       window.removeEventListener("blur", blur);
@@ -76,11 +88,15 @@ export class World extends Phaser.Scene {
   }
   build() {
     if (!this.root) return;
+    this.ambience?.destroy();
+    this.ambience = undefined;
     this.root.removeAll(true);
     this.enemySprites.clear();
-    this.ambientTimer?.remove();
     this.terrainSprites = [];
+    this.waterSprites = [];
     this.treeSprites = [];
+    this.fireSprites = [];
+    this.effectSprites = [];
     this.flags = [];
     this.chest = undefined;
     this.near = undefined;
@@ -103,7 +119,11 @@ export class World extends Phaser.Scene {
           )
           .setOrigin(0);
         this.root.add(tile);
-        if (m.tiles[y][x] === 2 && !this.reduced) tile.play("ambient-water");
+        if (m.tiles[y][x] === 2) {
+          const phase = (x * 5 + y * 7) % 4;
+          tile.setTexture(`water-${phase}`).setData("ambientPhase", phase);
+          this.waterSprites.push(tile);
+        }
         if (m.tiles[y][x] === 1) {
           const edge = (key: string) => {
             const overlay = this.add.sprite(x * 16, y * 16, key).setOrigin(0);
@@ -143,6 +163,7 @@ export class World extends Phaser.Scene {
               )
               .setOrigin(0);
             this.root.add(decor);
+            if (detail === 13) this.terrainSprites.push(decor);
           }
         }
       }
@@ -177,7 +198,7 @@ export class World extends Phaser.Scene {
         if (!this.reduced) sprite.play(`monster-${e.kind}-idle`);
       }
       if (e.kind === "tree") this.treeSprites.push(sprite);
-      if (e.kind === "fire" && !this.reduced) sprite.play("ambient-fire");
+      if (e.kind === "fire") this.fireSprites.push(sprite);
       if (e.kind === "chest") this.chest = sprite;
       this.foreground.add(sprite);
       if (e.label && !(e.kind in enemies)) {
@@ -215,6 +236,7 @@ export class World extends Phaser.Scene {
         this.flags.push(flag);
       }
     }
+    this.createAmbientEffects();
     if (!walkable(m, s.x, s.y)) {
       s.x = s.map === "village" ? 200 : 40;
       s.y = 232;
@@ -230,25 +252,147 @@ export class World extends Phaser.Scene {
     this.cameras.main.setBounds(0, 0, m.width * 16, m.height * 16);
     this.cameras.main.startFollow(this.player, true, 0.15, 0.15);
     this.resizeCamera();
-    if (!this.reduced) {
-      let cycle = 0;
-      this.ambientTimer = this.time.addEvent({
-        delay: 3600,
-        loop: true,
-        callback: () => {
-          const terrain =
-            this.terrainSprites[cycle % this.terrainSprites.length];
-          const tree = this.treeSprites[(cycle * 3) % this.treeSprites.length];
-          terrain?.play("ambient-grass-wind");
-          tree?.play("ambient-tree");
-          if (cycle % 2 === 0)
-            this.flags[cycle % this.flags.length]?.play("ambient-flag");
-          cycle++;
-        },
-      });
-    }
+    this.setupAmbience();
     if (!this.reduced) this.cameras.main.fadeIn(200, 24, 61, 53);
     this.sync();
+  }
+  private createAmbientEffects() {
+    const specs =
+      this.store.state.map === "forest"
+        ? [
+            { kind: "leaf" as const, x: 118, y: 112 },
+            { kind: "leaf" as const, x: 310, y: 264 },
+            { kind: "leaf" as const, x: 520, y: 168 },
+          ]
+        : [
+            { kind: "dust" as const, x: 174, y: 171 },
+            { kind: "dust" as const, x: 238, y: 157 },
+          ];
+    for (const effect of specs) {
+      const sprite = this.add
+        .sprite(effect.x, effect.y, `ambient-${effect.kind}-0`)
+        .setOrigin(0.5)
+        .setDepth(effect.y - 20)
+        .setVisible(false);
+      this.foreground.add(sprite);
+      this.effectSprites.push({ sprite, kind: effect.kind });
+    }
+  }
+  private setupAmbience() {
+    const fast = Boolean(
+      (window as Window & { __FIZZI_TEST_AMBIENCE__?: boolean })
+        .__FIZZI_TEST_AMBIENCE__,
+    );
+    const seed = this.store.state.map === "forest" ? 0x5f3759df : 0x13579bdf;
+    const controller = new AmbientController(
+      this,
+      this.reduced,
+      seed,
+      this.reduced ? 1 : 2,
+      fast,
+    );
+    const phase = (index: number, salt: number, spread: number) =>
+      700 + ((index * 977 + salt * 613) % spread);
+    const add = (
+      sprites: Phaser.GameObjects.Sprite[],
+      kind: AmbientKind,
+      animation: string,
+      baseTexture: (sprite: Phaser.GameObjects.Sprite, index: number) => string,
+      options: {
+        min: number;
+        max: number;
+        duration: number;
+        probability: number;
+        essential?: boolean;
+        reducedAnimation?: string;
+      },
+    ) =>
+      sprites.forEach((sprite, index) =>
+        controller.add({
+          id: `${kind}-${index}`,
+          kind,
+          sprite,
+          animation,
+          reducedAnimation: options.reducedAnimation,
+          baseTexture: baseTexture(sprite, index),
+          minInterval: options.min,
+          maxInterval: options.max,
+          duration: options.duration,
+          initialDelay: phase(index, kind.length, options.max - options.min),
+          probability: options.probability,
+          essential: options.essential,
+        }),
+      );
+
+    add(
+      this.waterSprites,
+      "water",
+      "ambient-water",
+      (sprite) => sprite.texture.key,
+      {
+        min: 7000,
+        max: 15000,
+        duration: 2200,
+        probability: 0.55,
+        essential: true,
+        reducedAnimation: "ambient-water-reduced",
+      },
+    );
+    add(this.fireSprites, "fire", "ambient-fire", () => "fire", {
+      min: 3200,
+      max: 7200,
+      duration: 1100,
+      probability: 0.82,
+      essential: true,
+      reducedAnimation: "ambient-fire-reduced",
+    });
+    add(this.treeSprites, "tree", "ambient-tree", () => "tree", {
+      min: 9000,
+      max: 19000,
+      duration: 2300,
+      probability: 0.48,
+    });
+    this.terrainSprites.forEach((sprite, index) => {
+      const tuft = sprite.texture.key === "grass-tuft";
+      controller.add({
+        id: `grass-${index}`,
+        kind: "grass",
+        sprite,
+        animation: tuft ? "ambient-grass-tuft" : "ambient-grass-wind",
+        baseTexture: tuft ? "grass-tuft" : "grass-wind-0",
+        minInterval: 6500,
+        maxInterval: 14500,
+        duration: tuft ? 1600 : 1900,
+        initialDelay: phase(index, 17, 7200),
+        probability: 0.58,
+      });
+    });
+    add(this.flags, "flag", "ambient-flag", () => "flag-0", {
+      min: 5200,
+      max: 12500,
+      duration: 1800,
+      probability: 0.68,
+    });
+    this.effectSprites.forEach(({ sprite, kind }, index) =>
+      controller.add({
+        id: `${kind}-${index}`,
+        kind,
+        sprite,
+        animation: `ambient-${kind}`,
+        baseTexture: `ambient-${kind}-0`,
+        minInterval: 12000,
+        maxInterval: 22000,
+        duration: kind === "leaf" ? 900 : 1300,
+        initialDelay: phase(index, 31 + kind.length, 9000),
+        probability: 0.35,
+        decorative: true,
+      }),
+    );
+    this.ambience = controller;
+    controller.start();
+  }
+  getAmbientDiagnostics(): AmbientDiagnostics | undefined {
+    return this.ambience?.diagnostics();
   }
   resizeCamera() {
     if (!this.player) return;

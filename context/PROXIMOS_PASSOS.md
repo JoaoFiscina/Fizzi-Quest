@@ -1,52 +1,54 @@
 # Próximos passos
 
-O plano detalhado e os critérios de aceite ficam em [`ROADMAP_IMPLEMENTACOES.md`](ROADMAP_IMPLEMENTACOES.md). Esta página mantém somente a ordem prática de execução.
+O plano detalhado e os critérios de aceite ficam em [`ROADMAP_IMPLEMENTACOES.md`](ROADMAP_IMPLEMENTACOES.md). Esta página mantém a ordem prática de execução.
 
 ## Próxima etapa recomendada
 
-### v23.09.2003.13 — ambientação viva
+### v23.09.2003.14 — criaturas e mapa
 
-1. Melhorar ciclos ocasionais do cenário e a identidade de movimento de cada monstro.
-2. Refinar pixel art dos monstros sem aumentar a escala.
-3. Melhorar animações de ataque e transições visuais sem alterar o domínio do combate.
-4. Melhorar o mapa prévio mantendo rota legível e áreas bloqueadas.
-5. Manter a complexidade concentrada em apresentação; não adicionar novos slots nesta versão.
+1. Refinar a pixel art dos monstros sem aumentar a escala ou mudar hitboxes.
+2. Dar idle, pausa e reação visual próprios para cada espécie.
+3. Adicionar animações visuais de ataque sem alterar a lógica do combate.
+4. Melhorar transições de combate e respeitar movimento reduzido.
+5. Remodelar esteticamente o mapa prévio, mantendo regiões futuras bloqueadas e centralizadas.
+6. Não alterar treinos, equipamentos, spawns ou patrulhamento nesta versão.
 
-## Concluído na v23.09.2003.12
+## Concluído na v23.09.2003.13
 
-1. Zoom Afastado, Padrão e Próximo persistido.
-2. Escolha cosmética masculino/feminino com migração de saves antigos.
-3. Idle e caminhada para os dois visuais com a mesma hitbox.
-4. Movimento diagonal normalizado por teclado.
-5. Direcional móvel de oito posições.
+1. Água, fogo, árvores, vegetação e bandeiras usam ciclos finitos e dessincronizados.
+2. Folhas e poeira aparecem raramente por sprites pré-criados.
+3. Um controlador mantém pausas, probabilidade e limite de efeitos.
+4. Troca de mapa cancela o timer anterior.
+5. Movimento reduzido elimina detalhes decorativos e limita ciclos essenciais.
+6. Gameplay, colisões e save foram preservados.
 
 ## Etapas seguintes
 
-### v23.09.2003.14 — progressão e treino
+### v23.09.2003.15 — progressão e treino
 
 1. Reduzir o XP concedido pelos treinos e aumentar moderadamente a participação deles nos atributos.
 2. Remover o redutor baseado no atributo total do personagem.
 3. Manter confiança, limites por sessão/dia e bloqueio de duplicatas.
 4. Melhorar a apresentação dos desbloqueios progressivos de habilidades.
 
-### v23.09.2003.15 — desbloqueios de slots e Anel
+### v23.09.2003.16 — desbloqueios de slots e Anel
 
 1. Criar a fundação de slots liberados por nível.
 2. Mostrar slots bloqueados e requisitos sem conceder itens inexistentes.
 3. Manter Broches e Pingentes no slot atual de Acessório.
-4. Adicionar somente Anel nesta versão para validar migração e balanceamento.
+4. Adicionar somente Anel para validar migração e balanceamento.
 
-### v23.09.2003.16 — Botas e Capa
+### v23.09.2003.17 — Botas e Capa
 
 1. Adicionar dois slots simples sobre a fundação já testada.
 2. Atualizar mochila, loja, personagem, HUD e combinações de bônus.
 3. Não incluir Runas nesta versão.
 
-### v23.09.2003.17 — Runas
+### v23.09.2003.18 — Runas
 
 1. Criar um único slot de Runa com efeitos passivos simples.
-2. Isolar esta etapa porque condições e combinações aumentam a complexidade do combate.
-3. Definir níveis e valores finais após simular as versões 15 e 16.
+2. Isolar condições e combinações para proteger o combate determinístico.
+3. Definir níveis e valores finais após simular as versões 16 e 17.
 
 ### Etapa posterior — mundo e conteúdo
 

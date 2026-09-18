@@ -173,6 +173,34 @@ export function polishArt(scene: Phaser.Scene) {
       if (f > 0) dot(c, "#c4ca86", x + 1, y, 1, 1);
     }
     wind.refresh();
+
+    const tuft = scene.textures.createCanvas(`grass-tuft-${f}`, 16, 16)!;
+    const tuftContext = tuft.context;
+    const sway = f === 1 ? 1 : f === 3 ? -1 : 0;
+    tuftContext.drawImage(
+      scene.textures.get("grass-tuft").getSourceImage() as HTMLCanvasElement,
+      sway,
+      0,
+    );
+    if (f === 2) dot(tuftContext, "#b6c780", 8, 7, 1, 1);
+    tuft.refresh();
+
+    for (const effect of ["leaf", "dust"] as const) {
+      const detail = scene.textures.createCanvas(
+        `ambient-${effect}-${f}`,
+        16,
+        16,
+      )!;
+      const detailContext = detail.context;
+      if (effect === "leaf") {
+        dot(detailContext, "#789a55", 2 + f * 3, 3 + f * 2, 2, 1);
+        dot(detailContext, "#a6b96d", 3 + f * 3, 4 + f * 2, 1, 1);
+      } else {
+        dot(detailContext, "#ddc99a", 3 + f * 2, 12 - (f % 2), 1, 1);
+        dot(detailContext, "#bda97c", 9 + f, 10 + (f % 2), 1, 1);
+      }
+      detail.refresh();
+    }
   }
   scene.anims.create({
     key: "ambient-grass-wind",
@@ -181,6 +209,22 @@ export function polishArt(scene: Phaser.Scene) {
     repeat: 0,
     yoyo: true,
   });
+  scene.anims.create({
+    key: "ambient-grass-tuft",
+    frames: Array.from({ length: 4 }, (_, i) => ({ key: `grass-tuft-${i}` })),
+    frameRate: 4,
+    repeat: 0,
+    yoyo: true,
+  });
+  for (const effect of ["leaf", "dust"] as const)
+    scene.anims.create({
+      key: `ambient-${effect}`,
+      frames: Array.from({ length: 4 }, (_, i) => ({
+        key: `ambient-${effect}-${i}`,
+      })),
+      frameRate: effect === "leaf" ? 5 : 3,
+      repeat: 0,
+    });
   for (const [key, rate] of [
     ["water", 3],
     ["fire", 6],
@@ -191,8 +235,16 @@ export function polishArt(scene: Phaser.Scene) {
       key: `ambient-${key}`,
       frames: Array.from({ length: 4 }, (_, i) => ({ key: `${key}-${i}` })),
       frameRate: rate,
-      repeat: key === "water" || key === "fire" ? -1 : 0,
-      yoyo: key === "tree" || key === "flag",
+      repeat: 0,
+      yoyo: true,
+    });
+  for (const key of ["water", "fire"] as const)
+    scene.anims.create({
+      key: `ambient-${key}-reduced`,
+      frames: [{ key: `${key}-0` }, { key: `${key}-1` }],
+      frameRate: 1,
+      repeat: 0,
+      yoyo: true,
     });
 
   // Personagens mantêm o desenho compacto e recebem ciclos próprios.

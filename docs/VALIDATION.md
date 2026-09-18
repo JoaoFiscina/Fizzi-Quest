@@ -1,45 +1,54 @@
-# Validação — v23.09.2003.12
+# Validação — v23.09.2003.13
 
 Data: 17/09/2026. Ambiente: Windows, Node 24, Microsoft Edge headless via Playwright.
+
+## Classificação e escopo
+
+P2 — complexidade média. A entrega altera somente apresentação ambiental. Save, colisões, posições, velocidade, zoom, combate, recompensas, inventário e progressão permanecem iguais.
 
 ## Comandos executados
 
 - `npm test`: 34 testes unitários e de integração de domínio aprovados.
 - `npm run build`: TypeScript estrito e Vite concluídos; saída em `dist`.
-- `npm run test:e2e`: 10 testes aprovados para jornada, customização, diagonais, mochila, tutorial, toque, combate, animações e matriz visual.
+- `npm run test:e2e`: 12 jornadas de navegador aprovadas.
 
-O build emite avisos sobre comentários PURE no Zod e tamanho do bundle do Phaser (~332 KB gzip). Não são erros de compilação.
+O build mantém o aviso conhecido sobre comentários PURE no Zod e o chunk do Phaser (~332 KB gzip). A ambientação não adiciona bibliotecas; o JavaScript próprio passou de aproximadamente 52,7 KB para 54,6 KB gzip.
 
-## Cobertura
+## Cobertura ambiental
 
-- Formato de IA válido, JSON/data inválidos e redução de confiança sem evidências.
-- Limites por sessão e por dia, retornos decrescentes e redução proporcional exata de atributos.
-- Aplicação e persistência de XP, ouro e atributos; duplicata por ID ou conteúdo bloqueada.
-- Migração de save antigo preservando progresso, ouro, arma, escudo e armadura.
-- Fixture original: revisão obrigatória, 78 pontos e volume conferido de 2540 kg.
-- Limite diário, arredondamento, ordem invertida, aquecimento e carga ausente.
-- Rejeição de JSON/versão/data/número inválidos e limite de exercícios.
-- Duplicata, edição e remoção com recálculo, backup válido e inválido, falha de quota.
-- Combate: defesa prioritária, morte antes da ação, preparo sem dano, habilidades sem recursos, loot único, cura limitada, ordem dos eventos.
-- Rotas e pontos interativos alcançáveis; spawn seguro e paredes bloqueadas.
-- UI: modelo da IA → JSON → prévia → confirmação → histórico → personagem → reload persistente.
-- UI: mochila com tipos, agrupamento por slot, conjunto equipado e ordenação da peça ativa.
-- UI: tutorial pelo menu e ajuda contextual de Defesa durante um encontro.
-- UI: aparência feminina, zoom afastado/próximo e persistência após reload.
-- Movimento: diagonal por duas teclas e por controle de toque, com distância normalizada.
-- UI: jornada antiga → bosque → Broto → recompensa → retorno → backup → remoção → restauração.
-- UI: compra de poção e descanso; continuação de batalha salva; reload durante animação e vitória sem recompensa duplicada.
-- UI: fuga, derrota e redimensionamento durante efeito.
-- UI: mapa prévio com três regiões bloqueadas, câmera com padding simétrico, loja compacta e HUD de recursos.
+- Registro único das animações compartilhadas de água, fogo, árvores, vegetação, bandeiras, folhas e poeira.
+- Fases individuais diferentes entre objetos semelhantes.
+- Intervalos, probabilidades e durações controlados por um único agendador por mapa.
+- Máximo de dois ciclos simultâneos no modo normal.
+- Troca real da vila para o bosque remove o timer antigo e mantém somente um timer ambiental.
+- Reload e reconstruções não multiplicam sprites, animações ou timers.
+- `prefers-reduced-motion` desativa folhas, poeira e ciclos não essenciais, usa limite de um efeito e reduz água/fogo.
+- Efeitos ambientais usam sprites pré-criados e não criam objetos durante `update`.
+
+## Regressão de gameplay e interface
+
+- 34 testes preservam domínio, save, progressão, treino, combate, inventário e backup.
+- Jornada E2E preserva movimento diagonal normalizado por teclado e toque.
+- Zoom Afastado, Padrão e Próximo continua centralizado e persistente.
+- Transição de mapa, colisões, encontros, compra, descanso, batalha, fuga e derrota continuam aprovados.
+- Matriz visual continua cobrindo 1920×1080, 1366×768, 1024×768, 430×932 e 390×844.
 
 ## Inspeção visual
 
-Capturas da vila continuam cobertas em 1920×1080, 1366×768, 1024×768, 430×932 e 390×844. Configurações, os dois visuais e o direcional de oito posições foram verificados em desktop e 390×844. A evidência final desta versão fica em `docs/evidence/v23.09.2003.12/`; os testes também geram cópias descartáveis em `test-results/`.
+Foram inspecionados:
+
+- vila parada e durante ciclo em 1366×768;
+- bosque parado e durante ciclo em 1366×768;
+- vila com movimento reduzido;
+- vila em 390×844 com zoom afastado e ciclo ativo.
+
+As capturas mantêm pixel art nítida, limites do mapa, HUD e direcional sem sobreposição. Os ciclos são discretos e não alteram a leitura quando parados. Evidências: `docs/evidence/v23.09.2003.13/`.
 
 ## Limites
 
-- Viewport móvel em Edge não prova comportamento em Safari/iOS ou telefone físico.
-- Não foi feito ensaio de performance em aparelho de entrada ou sessão longa.
-- Missão completa do chefe, baú e guilda ainda precisam de E2E dedicado.
-- Teste de fuga teve inicialmente uma falha no fixture: o save automático de saída substituía o estado inserido com a página ativa. O cenário passou a preparar o save na tela inicial.
-- A `v23.09.2003.12` foi integrada pelo PR #5; a Vercel aprovou o deployment e o domínio fixo respondeu HTTP 200 com o bundle desta versão.
+- Viewport móvel em Edge não prova comportamento em Safari/iOS ou telefone Android físico.
+- A preferência de movimento reduzido é lida ao criar a cena; uma mudança feita no sistema durante a sessão requer reload.
+- Um ciclo ocasional pode não aparecer em qualquer captura isolada; os testes também verificam o estado ativo e o contador de ativações.
+- Não foi feito ensaio longo de consumo de bateria em aparelho de entrada.
+- Criaturas, ataques e mapa prévio permanecem reservados para `v23.09.2003.14`.
+- A publicação da `v23.09.2003.13` depende da integração desta branch; a produção permanece em `v23.09.2003.12` neste registro.

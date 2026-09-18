@@ -4,7 +4,7 @@ Esta pasta é a memória operacional do jogo. Atualize-a a cada versão antes de
 
 ## Versão corrente
 
-`v23.09.2003.12` — aparência masculina/feminina, zoom personalizável e movimento diagonal normalizado em teclado e toque.
+`v23.09.2003.13` — terreno vivo com ciclos ambientais finitos, fases variadas, efeitos limitados e suporte a movimento reduzido.
 
 ## Árvore lógica
 
