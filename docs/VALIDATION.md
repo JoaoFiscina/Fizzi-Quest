@@ -51,4 +51,4 @@ As capturas mantêm pixel art nítida, limites do mapa, HUD e direcional sem sob
 - Um ciclo ocasional pode não aparecer em qualquer captura isolada; os testes também verificam o estado ativo e o contador de ativações.
 - Não foi feito ensaio longo de consumo de bateria em aparelho de entrada.
 - Criaturas, ataques e mapa prévio permanecem reservados para `v23.09.2003.14`.
-- A publicação da `v23.09.2003.13` depende da integração desta branch; a produção permanece em `v23.09.2003.12` neste registro.
+- A `v23.09.2003.13` foi integrada pelo PR #6; a Vercel aprovou o deployment e o domínio fixo respondeu HTTP 200 com a versão e o controlador ambiental no bundle.

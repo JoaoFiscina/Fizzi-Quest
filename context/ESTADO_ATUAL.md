@@ -43,8 +43,9 @@ Cada objeto possui seu próprio próximo horário. Falhar a probabilidade agenda
 - `npm run build`: aprovado, sem dependências novas;
 - `npm run test:e2e`: 12 testes aprovados, incluindo controlador, fases, limpeza de timer, movimento reduzido, movimento diagonal e matriz visual;
 - evidências finais: `docs/evidence/v23.09.2003.13/`;
-- branch: `feat/terreno-vivo-v23.09.2003.13`;
-- produção permanece em `v23.09.2003.12` até integração e deployment.
+- PR [#6](https://github.com/JoaoFiscina/Fizzi-Quest/pull/6) integrado à `main` no commit `7eac6d8`;
+- deployment de produção aprovado pela Vercel;
+- domínio fixo respondeu HTTP 200 com a versão e o controlador ambiental no bundle.
 
 ## Riscos e limites
 
