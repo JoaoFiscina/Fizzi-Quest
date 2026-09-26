@@ -18,4 +18,4 @@ Validação da v20: 49 testes de regras, build e 26 cenários E2E aprovados; cap
 
 ## Retomada
 
-Abrir a v21 de movimentação de monstros com raio, ciclos variáveis e spawn raro de bosses. Usar o modo DEV para testar o Impulso nos níveis 10 e 20. Roadmap e fila em `PROXIMOS_PASSOS.md` e `ROADMAP_IMPLEMENTACOES.md`.
+Abrir a v21 de movimentação dos monstros comuns com raio, ciclos variáveis e troca de pontos de repouso, conforme `PLANO_V21_MOVIMENTACAO_MONSTROS.md`. O encontro raro de boss fica para etapa posterior porque exige identidade de instância. Em versão futura de balanceamento, elevar o teto de velocidade por Agilidade. Usar o modo DEV para medir deslocamento e Impulso nos níveis 10 e 20. Roadmap e fila em `PROXIMOS_PASSOS.md` e `ROADMAP_IMPLEMENTACOES.md`.
