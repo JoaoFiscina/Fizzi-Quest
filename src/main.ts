@@ -29,6 +29,7 @@ import {
   type Save,
   type CombatEvent,
 } from "./domain/game";
+import { trailImpulse } from "./domain/game";
 import { attributes } from "./domain/workouts";
 import { el, button, bar, labels, fmt } from "./ui/dom";
 import { workoutsUI } from "./ui/workouts";
@@ -145,7 +146,25 @@ for (const [key, label, cls] of [
   b.onpointerup = b.onpointercancel = () => (world.touch = "");
   dpad.append(b);
 }
-controls.append(dpad, interact);
+const trailButton = button(
+  "Impulso · Nv. 5",
+  () =>
+    safe(() => {
+      if (world.activateTrailImpulse()) {
+        const active = world.getTrailImpulseStatus();
+        if (active)
+          notify(
+            `Impulso da Trilha: +${active.bonus * 100}% por ${active.durationSeconds}s.`,
+          );
+      } else
+        notify("Impulso indisponível: alcance o nível 5 e tenha 1 fôlego.");
+    }),
+  "trail-impulse-button",
+);
+trailButton.setAttribute("aria-label", "Ativar Impulso da Trilha");
+const actionGroup = el("div", "", "action-group");
+actionGroup.append(trailButton, interact);
+controls.append(dpad, actionGroup);
 app.append(hud, place, nav, controls, toast, storageError, modal);
 let started = false,
   busy = false;
@@ -156,7 +175,9 @@ const nextSkillUnlock = (level: number) =>
     ? { name: "Corte veloz", level: 2 }
     : level < 3
       ? { name: "Impacto firme", level: 3 }
-      : null;
+      : level < 5
+        ? { name: "Impulso da Trilha", level: 5 }
+        : null;
 function notify(text: string) {
   toast.textContent = text;
   toast.classList.add("show");
@@ -177,6 +198,7 @@ function openModal(title: string) {
   content.replaceChildren();
   content.className = "modal-content";
   if (!modal.open) modal.showModal();
+  renderHUD();
 }
 function closeModal() {
   if (busy) return;
@@ -186,6 +208,7 @@ function closeModal() {
     world.showBattle();
     battle();
   }
+  renderHUD();
 }
 modal.addEventListener("cancel", (e) => {
   e.preventDefault();
@@ -235,6 +258,11 @@ function renderHUD() {
       s.armor ? items[s.armor].name : "Sem armadura",
       Boolean(s.armor),
     ),
+    equipped(
+      "BOT",
+      s.boots ? items[s.boots].name : "Sem botas",
+      Boolean(s.boots),
+    ),
   );
   if (isSlotUnlocked(s, "ring")) {
     equipment.classList.add("with-ring");
@@ -252,6 +280,15 @@ function renderHUD() {
     el("span", `Mat. ${s.materials}`, "materials-icon"),
     el("span", `Poções ${s.potions}`, "potions-icon"),
   );
+  const impulseStatus = world.getTrailImpulseStatus();
+  if (impulseStatus)
+    loot.append(
+      el(
+        "span",
+        `Impulso +${Math.round(impulseStatus.bonus * 100)}% · ${Math.ceil(impulseStatus.remainingMs / 1000)}s`,
+        "trail-impulse-active",
+      ),
+    );
 
   hud.append(crest, info, equipment, loot);
   place.replaceChildren(
@@ -260,6 +297,22 @@ function renderHUD() {
   );
   storageError.textContent = store.error;
   storageError.hidden = !store.error;
+  const impulse = trailImpulse(a.level);
+  const activeImpulse = world.getTrailImpulseStatus();
+  trailButton.hidden = !started || Boolean(store.state.battle);
+  trailButton.disabled =
+    !impulse ||
+    world.paused ||
+    Boolean(activeImpulse) ||
+    s.stamina < (impulse?.cost ?? 1);
+  trailButton.textContent = activeImpulse
+    ? `Impulso · ${Math.ceil(activeImpulse.remainingMs / 1000)}s`
+    : impulse
+      ? `Impulso · +${impulse.bonus * 100}%`
+      : "Impulso · Nv. 5";
+  trailButton.title = impulse
+    ? `Custa ${impulse.cost} fôlego · rank ${impulse.rank} · ${impulse.durationSeconds}s`
+    : "Libera no nível 5";
   world.sync();
 }
 store.subscribe(renderHUD);
@@ -293,9 +346,21 @@ function character() {
     el("small", "HABILIDADES", "eyebrow-inline"),
     el(
       "strong",
-      nextSkill
-        ? `Próximo desbloqueio: ${nextSkill.name} no nível ${nextSkill.level}`
-        : "Todas as habilidades atuais liberadas",
+      trailImpulse(a.level)
+        ? `Impulso da Trilha · Rank ${trailImpulse(a.level)!.rank}`
+        : nextSkill
+          ? `Próximo desbloqueio: ${nextSkill.name} no nível ${nextSkill.level}`
+          : "Todas as habilidades atuais liberadas",
+    ),
+  );
+  const impulse = trailImpulse(a.level);
+  abilities.append(
+    el(
+      "p",
+      impulse
+        ? `Ativa no mapa: +${impulse.bonus * 100}% de velocidade por ${impulse.durationSeconds}s, por 1 fôlego.`
+        : "Impulso da Trilha libera no nível 5: +5% de velocidade por 5s, por 1 fôlego.",
+      "muted",
     ),
   );
   const equipmentLine = el("section", "", "character-equipment");
@@ -303,7 +368,7 @@ function character() {
     el("small", "EQUIPAMENTOS", "eyebrow-inline"),
     el(
       "p",
-      `${items[s.weapon].name} · ${s.shield ? items[s.shield].name : "sem escudo"} · ${s.armor ? items[s.armor].name : "sem armadura"} · ${s.accessory ? items[s.accessory].name : "sem acessório"} · ${isSlotUnlocked(s, "ring") ? (s.ring ? items[s.ring].name : "sem anel") : "Anel no nível 4"}`,
+      `${items[s.weapon].name} · ${s.shield ? items[s.shield].name : "sem escudo"} · ${s.armor ? items[s.armor].name : "sem armadura"} · ${s.boots ? items[s.boots].name : "sem botas"} · ${s.accessory ? items[s.accessory].name : "sem acessório"} · ${isSlotUnlocked(s, "ring") ? (s.ring ? items[s.ring].name : "sem anel") : "Anel no nível 4"}`,
     ),
   );
   content.append(
@@ -384,13 +449,23 @@ const ITEM_GROUPS: { slot: ItemSlot; label: string; short: string }[] = [
   { slot: "weapon", label: "Armas", short: "ARMA" },
   { slot: "shield", label: "Escudos", short: "ESCUDO" },
   { slot: "armor", label: "Armaduras", short: "ARMADURA" },
+  { slot: "boots", label: "Botas", short: "BOTAS" },
   { slot: "accessory", label: "Acessórios", short: "ACESSÓRIO" },
   { slot: "ring", label: "Anéis", short: "ANEL" },
 ];
+const SLOT_LABEL: Record<ItemSlot, string> = {
+  weapon: "Arma",
+  shield: "Escudo",
+  armor: "Armadura",
+  boots: "Bota",
+  accessory: "Acessório",
+  ring: "Anel",
+};
 function equippedItem(s: Save, slot: ItemSlot): ItemId | null {
   if (slot === "weapon") return s.weapon;
   if (slot === "shield") return s.shield;
   if (slot === "armor") return s.armor;
+  if (slot === "boots") return s.boots;
   if (slot === "ring") return s.ring;
   return s.accessory;
 }
@@ -500,7 +575,8 @@ function equipment(shop = false) {
           if (right === active) return 1;
           return items[left].price - items[right].price;
         });
-      if (!owned.length && group.slot !== "ring") continue;
+      if (!owned.length && group.slot !== "ring" && group.slot !== "boots")
+        continue;
       const section = el("section", "", "inventory-group");
       const heading = el("div", "", "inventory-group-heading");
       heading.append(
@@ -514,8 +590,8 @@ function equipment(shop = false) {
           el(
             "p",
             isSlotUnlocked(s, group.slot)
-              ? "Nenhum Anel na mochila. Confira a loja da vila."
-              : "Slot de Anel bloqueado até o nível 4.",
+              ? `Nenhum${group.slot === "boots" ? "a" : ""} ${SLOT_LABEL[group.slot].toLowerCase()} na mochila. Confira a loja da vila.`
+              : `Slot de ${SLOT_LABEL[group.slot]} bloqueado até o nível ${slotUnlockLevel[group.slot]}.`,
             "muted",
           ),
         );
@@ -555,7 +631,7 @@ function equipment(shop = false) {
   content.append(
     el(
       "p",
-      "Em planejamento: Botas para mobilidade e Capa para proteção. Ainda não podem ser equipadas.",
+      "Capa e Runas continuam em planejamento para versões futuras.",
       "muted",
     ),
   );
@@ -1314,6 +1390,9 @@ window.setInterval(
   },
   5 * 60 * 1000,
 );
+window.setInterval(() => {
+  if (started) renderHUD();
+}, 250);
 window.addEventListener("pagehide", () => {
   if (started) store.persist();
 });

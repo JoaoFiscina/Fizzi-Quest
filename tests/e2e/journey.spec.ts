@@ -421,10 +421,10 @@ test("rodada salva antes da animação, reload sem duplicação e layout de comb
     ),
   ).toBe(5);
 });
-test("habilidades são liberadas nos níveis 2 e 3", async ({ page }) => {
+test("habilidades são liberadas nos níveis 2, 3 e 5", async ({ page }) => {
   for (const [xp, nextUnlock, impactEnabled] of [
     [50, "Próximo desbloqueio: Impacto firme no nível 3", false],
-    [125, "Todas as habilidades atuais liberadas", true],
+    [125, "Próximo desbloqueio: Impulso da Trilha no nível 5", true],
   ] as const) {
     const save = freshSave();
     save.adventureXpTotal = xp;

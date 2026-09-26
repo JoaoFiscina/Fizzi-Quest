@@ -214,6 +214,16 @@ Complexidade alvo: média-alta, limitada a um slot e uma habilidade temporária 
 - Manter o efeito em runtime, fora do save, e testar reload, troca de mapa, batalha, diagonais e expiração.
 - Limitar esta versão a Botas, habilidade ativa e balanceamento; não incluir Capa, Runas, novas áreas ou nova camada de animações.
 
+### Próxima etapa — movimentação de monstros
+
+Complexidade alvo: alta, por envolver simulação, colisões e equilíbrio de encontros. Não misturar com novo slot de equipamento.
+
+- Dar a cada monstro comum uma área de movimentação predefinida, com centro, raio e pontos caminháveis.
+- Executar ciclos variáveis de descanso e caminhada, mantendo o monstro dentro do raio e evitando obstáculos/jogador.
+- Permitir troca de ponto de spawn entre monstros comuns ao descansar, com regras determinísticas e sem duplicação indevida.
+- Após a morte, registrar bosses numa tabela rara de spawn comum; a raridade e a persistência devem ser testadas antes de liberar.
+- Validar em mapa, combate, reload, movimento reduzido e 30 segundos de observação real antes de integrar.
+
 ### v23.09.2003.20 — Capa
 
 Complexidade alvo: média. Adicionar o slot **Capa** com bônus defensivo moderado, após validar Botas em saves antigos e no celular. A loja, a ficha e o HUD devem continuar compactos.

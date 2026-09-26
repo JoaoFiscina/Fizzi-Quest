@@ -1,5 +1,9 @@
 # Histórico de versões
 
+## v23.09.2003.19 — 26/09/2026
+
+Botas liberadas no nível 5, com dois itens, bônus de Agilidade/Fôlego, migração, loja, mochila, ficha e HUD. Impulso da Trilha libera no nível 5, custa 1 fôlego, aumenta a velocidade no mapa em 5% por 5 segundos no rank 1 e cresce a cada cinco níveis; o efeito não acumula, não entra no combate e expira pelo relógio do navegador. Plano: `PLANO_V19_BOTAS_E_IMPULSO.md`; validação: `docs/VALIDATION_V19.md`.
+
 ## v23.09.2003.18 — 26/09/2026
 
 O jogo agora explica quando a preferência de movimento reduzido do aparelho pausa monstros/folhas e suaviza água/fogo, com acesso direto a animações completas. Os Ajustes exibem o estado e permitem verificar a versão; um manifesto gerado no build anuncia versões novas e oferece recarga com URL renovada, preservando o save. Arte, cadências, regras e formato de save não mudaram. Plano: `PLANO_V18_ATUALIZACAO_E_MOVIMENTO.md`. Validação e publicação em `docs/VALIDATION.md`.

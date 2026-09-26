@@ -4,7 +4,7 @@ Esta pasta é a memória operacional do jogo. Atualize-a a cada versão antes de
 
 ## Versão corrente
 
-`v23.09.2003.18` — aviso de movimento reduzido no PC e verificação de versão para recarregar arquivos novos sem apagar o progresso. Estado da integração em `ESTADO_ATUAL.md`. Plano em `PLANO_V18_ATUALIZACAO_E_MOVIMENTO.md`. Próxima etapa planejada: `PLANO_V19_BOTAS_E_IMPULSO.md`.
+`v23.09.2003.19` — Botas e Impulso da Trilha, com atualização de versão, tempo real de exploração e validação de expiração. Estado da integração em `ESTADO_ATUAL.md`. Plano em `PLANO_V19_BOTAS_E_IMPULSO.md`. Próximo sistema planejado: movimentação de monstros.
 
 ## Árvore lógica
 
@@ -45,7 +45,9 @@ fizzi-quest/
 
 - Continuar a estética do mundo quando novas áreas jogáveis forem planejadas.
 - Avaliar futuro refinamento do protagonista e de tiles secundários na escala atual.
-- Após a primeira morte do monstro, implementar spawn espalhado e movimento de patrulha.
+- Próxima prioridade de ambientação: movimentação dos monstros. Cada monstro terá uma área/raio predefinido e, em ciclos variáveis, caminhará dentro desse limite.
+- Ao descansar, monstros comuns poderão trocar entre si pontos de spawn compatíveis, sem sobrepor obstáculos ou o jogador.
+- Um boss derrotado entrará numa tabela rara de spawn de monstros comuns, com probabilidade menor e registro determinístico.
 
 ## Regra de continuidade
 
