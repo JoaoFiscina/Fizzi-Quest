@@ -21,4 +21,4 @@ PR #9 integrado à `main` no commit `5aeca54e447bfd23cab4615f71f3a251257ee549`. 
 
 ## Próximo passo
 
-v23.09.2003.17: Anel liberado por nível, com compra, equipamento, migração e interface, conforme `PLANO_V17.md`. As animações da v15 permanecem fora do escopo.
+v23.09.2003.17: Anel liberado por nível e, conforme novo pedido em 26/09/2026, resposta compacta da IA e bônus explícito de PR. Planejamento em `PLANO_V17.md` e `PLANO_IMPORTACAO_COMPACTA_PR.md`; implementação da v17 ainda não iniciada. As animações da v15 permanecem fora do escopo.

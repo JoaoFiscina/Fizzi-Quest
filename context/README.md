@@ -16,7 +16,8 @@ fizzi-quest/
 │   ├── PROXIMOS_PASSOS.md        ← fila priorizada para a próxima sessão
 │   ├── PLANO_V15_COMPOSICAO_ESTETICA.md ← plano executado da v15
 │   ├── PLANO_V16.md             ← balanço de treino e habilidades
-│   ├── PLANO_V17.md             ← próximo slot: Anel
+│   ├── PLANO_V17.md             ← Anel e integração do treino compacto
+│   ├── PLANO_IMPORTACAO_COMPACTA_PR.md ← resposta curta da IA e bônus de recorde
 │   ├── MOLDE_EXPANSAO.md         ← roteiro reutilizável para novas versões
 │   ├── ROADMAP_IMPLEMENTACOES.md ← plano auditado das próximas melhorias
 │   ├── DIAGNOSTICO_GRAFICO_V13.md ← causa da regressão visual e nova régua de aceite

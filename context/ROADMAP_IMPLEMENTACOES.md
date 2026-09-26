@@ -187,15 +187,17 @@ Resultado da calibração: XP por sessão 60/132/216 (baixa/média/alta) e 270 p
 
 Esta expansão será dividida para que cada versão mantenha complexidade média, migração verificável e balanceamento compreensível. Os níveis são hipóteses iniciais para teste.
 
-### v23.09.2003.17 — fundação de desbloqueios e Anel
+### v23.09.2003.17 — Anel, importação compacta e PR
 
-Complexidade alvo: média.
+Complexidade revisada: média-alta. Em 26/09/2026, o usuário pediu incluir resposta curta da IA e bônus de PR junto ao próximo passo. Executar dois blocos verificáveis, conforme `PLANO_V17.md` e `PLANO_IMPORTACAO_COMPACTA_PR.md`. Ainda não implementado.
 
 - Criar metadados de requisito de nível por slot sem armazenar regras duplicadas no save.
 - Mostrar slots futuros bloqueados, nível necessário e prévia do benefício.
 - Manter o slot atual de Acessório para Broches e Pingentes.
 - Adicionar somente o slot **Anel** e um catálogo pequeno para validar compra, equipar, backup e migração.
 - Definir tratamento compatível para peças antigas que já estejam equipadas.
+- IA analisa o relato fora do jogo e devolve somente ganhos e metadados mínimos em JSON compacto. Conservar importação v1 e recompensas históricas.
+- Bônus de recorde pessoal aparece separado na prévia; proposta inicial de +0,02 atributo e +5 XP por PR, limitado a três no dia. Calibrar antes de publicar.
 
 ### v23.09.2003.18 — Botas e Capa
 
