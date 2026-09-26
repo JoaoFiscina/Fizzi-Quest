@@ -25,7 +25,7 @@ A IA interpreta o treino e propõe valores. O Fizzi Quest é a autoridade final 
     "modality": "strength"
   },
   "rewards": {
-    "xp": 340,
+    "xp": 204,
     "gold": 72,
     "attributes": {
       "strength": 0.18,
@@ -52,11 +52,13 @@ O jogo calcula novamente a confiança. Uma declaração `high` sem evidências �
 
 | Confiança efetiva | XP por sessão | Ouro por sessão | Atributos por sessão | Por atributo |
 | ----------------- | ------------: | --------------: | -------------------: | -----------: |
-| Baixa             |           100 |              18 |                 0,02 |         0,02 |
-| Média             |           220 |              45 |                 0,18 |         0,12 |
-| Alta              |           360 |              80 |                 0,40 |         0,22 |
+| Baixa             |            60 |              18 |                 0,02 |         0,02 |
+| Média             |           132 |              45 |                 0,23 |         0,15 |
+| Alta              |           216 |              80 |                 0,50 |         0,28 |
 
-Limites diários: 450 XP, 100 de ouro e 0,50 somando todos os atributos. Acima do valor 10, cada atributo recebe redução gradual até o fator mínimo de 55%. Se a soma ultrapassar o limite, o jogo reduz os ganhos proporcionalmente.
+Limites para novas recompensas no mesmo dia: 270 XP, 100 de ouro e 0,60 somando todos os atributos. Em treinos de confiança média ou alta, a proposta de atributos recebe um fator de 1,25 antes dos limites por atributo, sessão e dia. O valor atual do personagem e os equipamentos não reduzem esse ganho. Se a soma ultrapassar o limite, o jogo reduz os ganhos proporcionalmente.
+
+Recompensas já registradas sob limites anteriores permanecem no save e não são recalculadas. Elas continuam contando para o total daquele dia; quando já excedem um limite novo, um treino adicional recebe zero para o recurso correspondente.
 
 ## Proteção e persistência
 

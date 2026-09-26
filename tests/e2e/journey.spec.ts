@@ -29,9 +29,9 @@ test("modelo da IA, importação, recompensa, histórico e reload", async ({
   await page
     .getByRole("button", { name: "Validar e visualizar", exact: true })
     .click();
-  await expect(page.getByText("+340", { exact: true })).toBeVisible();
+  await expect(page.getByText("+204", { exact: true })).toBeVisible();
   await expect(page.getByText("+72", { exact: true })).toBeVisible();
-  await expect(page.getByText("+0,18", { exact: true })).toBeVisible();
+  await expect(page.getByText("+0,23", { exact: true })).toBeVisible();
   await page.screenshot({ path: "test-results/desktop-training-preview.png" });
   await page
     .getByRole("button", { name: "Confirmar treino", exact: true })
@@ -46,9 +46,9 @@ test("modelo da IA, importação, recompensa, histórico e reload", async ({
   await page.reload();
   await page.getByRole("button", { name: "Continuar aventura" }).click();
   await page.getByRole("button", { name: "Personagem", exact: true }).click();
-  await expect(page.getByText("5,18", { exact: true })).toBeVisible();
+  await expect(page.getByText("5,23", { exact: true })).toBeVisible();
   await expect(
-    page.getByText("+0,18 · Treino de membros inferiores"),
+    page.getByText("+0,23 · Treino de membros inferiores"),
   ).toBeVisible();
   await page.screenshot({ path: "test-results/desktop-character.png" });
   await page.getByRole("button", { name: "Fechar menu" }).click();
@@ -286,6 +286,16 @@ test("rodada salva antes da animação, reload sem duplicação e layout de comb
     page.getByRole("button", { name: "Atacar", exact: true }),
   ).toBeEnabled();
   await page.getByRole("button", { name: "Habilidades", exact: true }).click();
+  await expect(
+    page.getByText("Próximo desbloqueio: Corte veloz no nível 2"),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Corte veloz · 2", exact: true }),
+  ).toBeDisabled();
+  await expect(
+    page.getByRole("button", { name: "Impacto firme · 4", exact: true }),
+  ).toBeDisabled();
+  await page.screenshot({ path: "test-results/mobile-skills-v16.png" });
   await page
     .getByRole("button", { name: "Golpe pesado · 3", exact: true })
     .click();
@@ -302,6 +312,38 @@ test("rodada salva antes da animação, reload sem duplicação e layout de comb
     ),
   ).toBe(5);
 });
+test("habilidades são liberadas nos níveis 2 e 3", async ({ page }) => {
+  for (const [xp, nextUnlock, impactEnabled] of [
+    [50, "Próximo desbloqueio: Impacto firme no nível 3", false],
+    [125, "Todas as habilidades atuais liberadas", true],
+  ] as const) {
+    const save = freshSave();
+    save.adventureXpTotal = xp;
+    startBattle(save, "sprout");
+    await page.goto("/");
+    await page.evaluate(
+      (state) =>
+        localStorage.setItem("fizzi-quest.save.v1", JSON.stringify(state)),
+      save,
+    );
+    await page.reload();
+    await page.getByRole("button", { name: "Continuar aventura" }).click();
+    await page
+      .getByRole("button", { name: "Habilidades", exact: true })
+      .click();
+    await expect(page.getByText(nextUnlock)).toBeVisible();
+    await expect(
+      page.getByRole("button", { name: "Corte veloz · 2", exact: true }),
+    ).toBeEnabled();
+    const impact = page.getByRole("button", {
+      name: "Impacto firme · 4",
+      exact: true,
+    });
+    if (impactEnabled) await expect(impact).toBeEnabled();
+    else await expect(impact).toBeDisabled();
+  }
+});
+
 test("câmera desktop usa o enquadramento amplo e monstros têm ciclo próprio", async ({
   page,
 }) => {

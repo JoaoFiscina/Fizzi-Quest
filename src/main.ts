@@ -142,6 +142,12 @@ let started = false,
   busy = false;
 let toastTimer: ReturnType<typeof setTimeout>;
 let visualState: Save | null = null;
+const nextSkillUnlock = (level: number) =>
+  level < 2
+    ? { name: "Corte veloz", level: 2 }
+    : level < 3
+      ? { name: "Impacto firme", level: 3 }
+      : null;
 function notify(text: string) {
   toast.textContent = text;
   toast.classList.add("show");
@@ -262,6 +268,17 @@ function character() {
     ),
   );
   overview.append(levelCopy, wealth);
+  const nextSkill = nextSkillUnlock(a.level);
+  const abilities = el("section", "", "character-abilities");
+  abilities.append(
+    el("small", "HABILIDADES", "eyebrow-inline"),
+    el(
+      "strong",
+      nextSkill
+        ? `Próximo desbloqueio: ${nextSkill.name} no nível ${nextSkill.level}`
+        : "Todas as habilidades atuais liberadas",
+    ),
+  );
   const equipmentLine = el("section", "", "character-equipment");
   equipmentLine.append(
     el("small", "EQUIPAMENTOS", "eyebrow-inline"),
@@ -272,6 +289,7 @@ function character() {
   );
   content.append(
     overview,
+    abilities,
     equipmentLine,
     el("p", `${a.free} ponto(s) livre(s). A alocação é permanente.`, "muted"),
   );
@@ -937,6 +955,7 @@ function battle() {
   }
   world.setPaused(true);
   battlePanel.hidden = false;
+  battlePanel.classList.remove("skills-open");
   nav.hidden = true;
   controls.hidden = true;
   place.hidden = true;
@@ -995,11 +1014,69 @@ function battle() {
   choice("Atacar", "attack");
   const skill = button("Habilidades", () => {
     actions.replaceChildren();
-    choice("Golpe pesado · 3", "heavy", s.stamina < 3);
-    choice("Recuperar fôlego +4", "recover");
-    if (stats(s).level >= 2) choice("Corte veloz · 2", "quick", s.stamina < 2);
-    if (stats(s).level >= 3)
-      choice("Impacto firme · 4", "impact", s.stamina < 4);
+    battlePanel.classList.add("skills-open");
+    actions.classList.add("skill-menu");
+    const level = stats(s).level;
+    const next = nextSkillUnlock(level);
+    actions.append(
+      el(
+        "p",
+        next
+          ? `Próximo desbloqueio: ${next.name} no nível ${next.level}`
+          : "Todas as habilidades atuais liberadas",
+        "skill-progress",
+      ),
+    );
+    const skillChoice = (
+      text: string,
+      action: Action,
+      description: string,
+      unlockLevel: number,
+      cost = 0,
+    ) => {
+      const locked = level < unlockLevel;
+      const card = el("div", "", "skill-card" + (locked ? " locked" : ""));
+      const option = button(text, () => void resolveRound(action));
+      option.disabled = locked || s.stamina < cost;
+      card.append(
+        option,
+        el(
+          "p",
+          locked
+            ? `Libera no nível ${unlockLevel}. ${description}`
+            : description,
+          "skill-description",
+        ),
+      );
+      actions.append(card);
+    };
+    skillChoice(
+      "Golpe pesado · 3",
+      "heavy",
+      "Dano maior por 3 de fôlego. Bom contra um alvo exposto.",
+      1,
+      3,
+    );
+    skillChoice(
+      "Recuperar fôlego +4",
+      "recover",
+      "Recupera até 4 de fôlego e usa a rodada.",
+      1,
+    );
+    skillChoice(
+      "Corte veloz · 2",
+      "quick",
+      "Aumenta a chance de agir primeiro e causa mais dano por 2 de fôlego.",
+      2,
+      2,
+    );
+    skillChoice(
+      "Impacto firme · 4",
+      "impact",
+      "Ignora a defesa do alvo e causa mais dano por 4 de fôlego.",
+      3,
+      4,
+    );
     actions.append(button("Voltar", battle));
   });
   skill.disabled = busy;

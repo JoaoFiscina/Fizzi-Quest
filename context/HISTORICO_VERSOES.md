@@ -1,8 +1,12 @@
 # Histórico de versões
 
+## v23.09.2003.16 — 26/09/2026
+
+XP de treino reduzido para 60/132/216 por sessão e 270 por dia; ganhos de atributos médios/altos aumentados com fator 1,25 e tetos moderados. Removido o redutor por atributo total, de modo que nível e equipamento não enfraquecem o treino. Registros antigos continuam válidos e contam para os tetos do dia. Habilidades passam a exibir próximo desbloqueio, custo e explicação tática. Animações, arte, mapa e combate não foram alterados. Plano: `PLANO_V16.md`; validação: `docs/VALIDATION.md`.
+
 ## v23.09.2003.15 — 26/09/2026
 
-Composição estática da vila e do bosque refinada; Broto, Besouro, Mariposa e Guardião redesenhados no tamanho anterior, com ciclos e poses próprias. Combate apresenta carapaça, preparo, ataque e reação por textura, após resolver e persistir o resultado. Mapa regional foi reorganizado com Posto como marco do bosque e três regiões futuras claramente bloqueadas. Plano: `PLANO_V15_COMPOSICAO_ESTETICA.md`; evidências: `docs/evidence/v23.09.2003.15/`; validação: `docs/VALIDATION.md`.
+Composição estática da vila e do bosque refinada; Broto, Besouro, Mariposa e Guardião redesenhados no tamanho anterior, com ciclos e poses próprias. Combate apresenta carapaça, preparo, ataque e reação por textura, após resolver e persistir o resultado. Mapa regional foi reorganizado com Posto como marco do bosque e três regiões futuras claramente bloqueadas. Plano: `PLANO_V15_COMPOSICAO_ESTETICA.md`; evidências: `docs/evidence/v23.09.2003.15/`; validação: `docs/VALIDATION_V15.md`.
 
 ## v23.09.2003.14 — 26/09/2026
 

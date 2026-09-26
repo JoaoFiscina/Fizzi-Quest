@@ -418,6 +418,55 @@ button.alloc-btn:not(:disabled):hover {
   color: #d7e2cf;
   font-size: 10px;
 }
+.character-abilities {
+  margin: 12px 0;
+  padding: 11px 13px;
+  border: 1px solid #c5b98f;
+  border-radius: 7px;
+  background: #eee4c7;
+}
+.character-abilities strong {
+  display: block;
+  font-size: 12px;
+  line-height: 1.45;
+}
+.battle-actions.skill-menu {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.skill-progress {
+  grid-column: 1 / -1;
+  margin: 0 0 2px;
+  color: #e7ca7e;
+  font-size: 11px;
+}
+.skill-card {
+  min-width: 0;
+  padding: 6px;
+  border: 1px solid #718c76;
+  border-radius: 6px;
+  background: #23483c;
+}
+.skill-card.locked {
+  background: #21392f;
+}
+.skill-card button {
+  width: 100%;
+  min-height: 44px;
+}
+.skill-description {
+  margin: 6px 1px 1px;
+  color: #d8e0ce;
+  font-size: 11px;
+  line-height: 1.35;
+}
+@media (max-width: 700px) {
+  .battle-panel.skills-open {
+    max-height: 70dvh;
+  }
+  .battle-panel.skills-open .battle-log {
+    display: none;
+  }
+}
 .world-map {
   display: grid;
   gap: 12px;
