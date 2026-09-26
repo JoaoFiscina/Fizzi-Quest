@@ -70,4 +70,4 @@ Estado da integração/publicação:
 Próximo passo após esta versão:
 ```
 
-Para a v23.09.2003.16, iniciar com as simulações de treino dos níveis 1, 10 e 20. As faixas de XP e atributos no roadmap são hipóteses de calibração, não números aprovados.
+Para a v23.09.2003.17, iniciar com um save sintético da v16 nos níveis 3 e 4, com e sem Acessório equipado. Validar a economia antes de fixar preço e requisito do Anel.

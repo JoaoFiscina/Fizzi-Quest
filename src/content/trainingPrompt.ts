@@ -9,7 +9,7 @@ Classifique a qualidade dos dados como "low", "medium" ou "high":
 - medium: duração e algumas métricas verificáveis;
 - high: dados que permitem avaliar volume, intensidade ou progressão com segurança.
 
-Sugira XP, ouro e ganhos nos atributos atuais do jogo: strength (Força), vigor (Vigor), agility (Agilidade) e breath (Fôlego). Não converta carga diretamente em atributo. Valorize progressão e PRs, use retornos decrescentes e seja conservador nos atributos. Um registro low pode receber XP e ouro, mas deve receber pouco ou nenhum atributo.
+Sugira XP moderado, ouro e ganhos nos atributos atuais do jogo: strength (Força), vigor (Vigor), agility (Agilidade) e breath (Fôlego). Não converta carga diretamente em atributo. Valorize progressão e PRs e seja conservador nos atributos. Não reduza a sugestão conforme o nível ou os equipamentos do personagem. Um registro low pode receber XP e ouro, mas deve receber pouco ou nenhum atributo.
 
 O Fizzi Quest recalculará e limitará todas as recompensas. Use números sem unidades nos campos numéricos e ponto como separador decimal.
 
@@ -43,7 +43,7 @@ No final, responda SOMENTE com um JSON válido neste formato, sem markdown e sem
     "notes": "Somente observações presentes na fonte"
   },
   "rewards": {
-    "xp": 340,
+    "xp": 204,
     "gold": 72,
     "attributes": {
       "strength": 0.18,

@@ -81,11 +81,14 @@ export type TrainingRewardRecord = {
 
 const rank: Record<Confidence, number> = { low: 0, medium: 1, high: 2 };
 const capByConfidence = {
-  low: { xp: 100, gold: 18, attribute: 0.02, perAttribute: 0.02 },
-  medium: { xp: 220, gold: 45, attribute: 0.18, perAttribute: 0.12 },
-  high: { xp: 360, gold: 80, attribute: 0.4, perAttribute: 0.22 },
+  low: { xp: 60, gold: 18, attribute: 0.02, perAttribute: 0.02 },
+  medium: { xp: 132, gold: 45, attribute: 0.23, perAttribute: 0.15 },
+  high: { xp: 216, gold: 80, attribute: 0.5, perAttribute: 0.28 },
 } as const;
-export const DAILY_TRAINING_CAPS = { xp: 450, gold: 100, attribute: 0.5 };
+export const DAILY_TRAINING_CAPS = { xp: 270, gold: 100, attribute: 0.6 };
+// Existing records can retain the v15 XP cap; validation must not recalculate them.
+export const SAVED_TRAINING_CAPS = { xp: 450, gold: 100, attribute: 0.6 };
+const ATTRIBUTE_TRAINING_FACTOR = 1.25;
 
 export function parseAiWorkout(text: string): AiWorkout {
   if (new TextEncoder().encode(text).length > 256 * 1024)
@@ -148,7 +151,6 @@ export function fingerprintAiWorkout(input: AiWorkout): string {
 export function balanceAiWorkout(
   input: AiWorkout,
   records: TrainingRewardRecord[],
-  currentAttributes: Vector,
 ): AppliedWorkoutReward {
   const evidence = evidenceConfidence(input);
   const effectiveConfidence =
@@ -179,15 +181,13 @@ export function balanceAiWorkout(
     ),
   );
   const result = zero();
+  const attributeFactor =
+    effectiveConfidence === "low" ? 1 : ATTRIBUTE_TRAINING_FACTOR;
   for (const attribute of attributes) {
-    const diminishing = Math.max(
-      0.55,
-      1 - Math.max(0, currentAttributes[attribute] - 10) * 0.04,
-    );
     result[attribute] = rounded(
       Math.min(
-        input.rewards.attributes[attribute],
-        caps.perAttribute * diminishing,
+        input.rewards.attributes[attribute] * attributeFactor,
+        caps.perAttribute,
       ),
     );
   }
@@ -232,7 +232,9 @@ export function balanceAiWorkout(
         result[attribute] !== rounded(input.rewards.attributes[attribute]),
     )
   )
-    adjustments.push("Atributos ajustados pelos limites da sessão e do dia.");
+    adjustments.push(
+      "Atributos recalculados conforme a confiança e os limites da sessão e do dia.",
+    );
   return {
     xp,
     gold,
@@ -249,8 +251,8 @@ export const trainingRewardRecordSchema = z.object({
   fingerprint: z.string().min(1).max(300_000),
   workout: aiWorkoutSchema,
   reward: z.object({
-    xp: z.number().int().nonnegative().max(DAILY_TRAINING_CAPS.xp),
-    gold: z.number().int().nonnegative().max(DAILY_TRAINING_CAPS.gold),
+    xp: z.number().int().nonnegative().max(SAVED_TRAINING_CAPS.xp),
+    gold: z.number().int().nonnegative().max(SAVED_TRAINING_CAPS.gold),
     attributes: z.object({
       strength: finite.max(1),
       vigor: finite.max(1),

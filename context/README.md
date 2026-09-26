@@ -4,7 +4,7 @@ Esta pasta é a memória operacional do jogo. Atualize-a a cada versão antes de
 
 ## Versão corrente
 
-`v23.09.2003.15` — composição de vila/bosque, quatro criaturas com silhuetas próprias e mapa regional reorganizado. Plano em PLANO_V15_COMPOSICAO_ESTETICA.md.
+`v23.09.2003.16` — calibração do treino e apresentação dos desbloqueios de habilidades. Código implementado em branch; integração e deploy registrados em `ESTADO_ATUAL.md` assim que confirmados. Planos em `PLANO_V16.md` e `PLANO_V17.md`.
 
 ## Árvore lógica
 
@@ -15,6 +15,8 @@ fizzi-quest/
 │   ├── ESTADO_ATUAL.md           ← o que funciona e o que está incompleto
 │   ├── PROXIMOS_PASSOS.md        ← fila priorizada para a próxima sessão
 │   ├── PLANO_V15_COMPOSICAO_ESTETICA.md ← plano executado da v15
+│   ├── PLANO_V16.md             ← balanço de treino e habilidades
+│   ├── PLANO_V17.md             ← próximo slot: Anel
 │   ├── MOLDE_EXPANSAO.md         ← roteiro reutilizável para novas versões
 │   ├── ROADMAP_IMPLEMENTACOES.md ← plano auditado das próximas melhorias
 │   ├── DIAGNOSTICO_GRAFICO_V13.md ← causa da regressão visual e nova régua de aceite
@@ -25,6 +27,7 @@ fizzi-quest/
 ├── docs/VISUAL_POLISH_SPEC.md    ← pedido de continuação visual
 ├── docs/VISUAL_AUDIT_ANTIGRAVITY.md ← auditoria e decisões da restauração
 ├── docs/VALIDATION.md            ← evidências e limites da verificação
+├── docs/VALIDATION_V15.md        ← validação arquivada da versão anterior
 ├── docs/DECISIONS.md             ← decisões técnicas e ponto de retomada
 └── src/
     ├── domain/                   ← regras puras: treino, progressão, combate

@@ -19,7 +19,7 @@ import {
   balanceAiWorkout,
   fingerprintAiWorkout,
   trainingRewardRecordSchema,
-  DAILY_TRAINING_CAPS,
+  SAVED_TRAINING_CAPS,
   type AiWorkout,
   type AppliedWorkoutReward,
 } from "../domain/aiWorkouts";
@@ -135,9 +135,9 @@ export function validateSave(raw: unknown): Save {
       0,
     );
     if (
-      xp > DAILY_TRAINING_CAPS.xp ||
-      gold > DAILY_TRAINING_CAPS.gold ||
-      attribute > DAILY_TRAINING_CAPS.attribute + 0.001
+      xp > SAVED_TRAINING_CAPS.xp ||
+      gold > SAVED_TRAINING_CAPS.gold ||
+      attribute > SAVED_TRAINING_CAPS.attribute + 0.001
     )
       throw Error("Backup excede os limites diários de treino.");
   }
@@ -285,11 +285,7 @@ export class Store {
   }
   previewAiWorkout(input: AiWorkout): AppliedWorkoutReward {
     const normalized = aiWorkoutSchema.parse(input);
-    return balanceAiWorkout(
-      normalized,
-      this.state.trainingRewards,
-      stats(this.state).attributes,
-    );
+    return balanceAiWorkout(normalized, this.state.trainingRewards);
   }
   recordAiWorkout(input: AiWorkout): AppliedWorkoutReward {
     if (this.state.battle) throw Error("Termine o encontro antes de importar.");

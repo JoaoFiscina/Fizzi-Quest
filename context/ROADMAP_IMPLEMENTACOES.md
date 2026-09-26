@@ -143,7 +143,7 @@ Objetivo: reforçar a identidade das criaturas e a leitura do mapa sem misturar 
 - mapa prévio permanece legível em desktop e celular;
 - áreas inexistentes continuam bloqueadas.
 
-## Etapa 6 — balanceamento dos treinos e habilidades — v23.09.2003.16
+## Etapa 6 — balanceamento dos treinos e habilidades — implementada na v23.09.2003.16
 
 Objetivo: fazer o treino participar mais da identidade física do personagem sem substituir a aventura.
 
@@ -165,6 +165,8 @@ Objetivo: fazer o treino participar mais da identidade física do personagem sem
 - Confirmar que o ganho bruto não muda entre esses cenários e que caps diários continuam funcionando.
 
 Essas faixas são hipóteses para teste, não valores finais aprovados.
+
+Resultado da calibração: XP por sessão 60/132/216 (baixa/média/alta) e 270 por dia; teto de atributos 0,23 na média, 0,50 na alta e 0,60 por dia, com fator 1,25 para propostas média/alta. O redutor por atributo total foi retirado. Saves antigos conservam recompensas históricas. Simulações de níveis 1, 10 e 20 com e sem equipamento, 37 testes de domínio e 18 jornadas E2E passaram. Arte e animações não mudaram. Ver `PLANO_V16.md` e `docs/VALIDATION.md`.
 
 ### Habilidades progressivas
 

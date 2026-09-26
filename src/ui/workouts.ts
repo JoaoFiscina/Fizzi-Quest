@@ -41,7 +41,7 @@ const sample: AiWorkout = {
     ],
   },
   rewards: {
-    xp: 340,
+    xp: 204,
     gold: 72,
     attributes: { strength: 0.18, vigor: 0.11, agility: 0.04, breath: 0 },
   },
