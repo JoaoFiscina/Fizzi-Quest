@@ -915,3 +915,22 @@ button.alloc-btn:not(:disabled):hover {
     padding-top: 3px;
   }
 }
+
+.motion-settings {
+  margin-top: 18px;
+  padding-top: 12px;
+  border-top: 1px solid #bcae80;
+}
+.motion-settings p {
+  line-height: 1.5;
+  font-size: 13px;
+}
+.motion-settings .zoom-choices {
+  display: flex;
+  gap: 6px;
+}
+.motion-settings button {
+  flex: 1;
+  min-width: 0;
+  min-height: 44px;
+}

@@ -89,6 +89,7 @@ const schema = z.object({
   kills: int.default(0),
   appearance: z.enum(["masculine", "feminine"]).default("masculine"),
   cameraZoom: z.enum(["far", "auto", "near"]).default("auto"),
+  motion: z.enum(["system", "full", "reduced"]).default("system"),
 });
 export function validateSave(raw: unknown): Save {
   const r = schema.safeParse(raw);

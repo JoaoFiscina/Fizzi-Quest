@@ -1,5 +1,9 @@
 # Histórico de versões
 
+## v23.09.2003.14 — 26/09/2026
+
+Água e fogo voltam a ciclos contínuos com fases diferentes; ondas, chama e copa recebem quadros mais legíveis. Preferência Completa/Usar sistema/Reduzida persistente e compatível com saves antigos. Efeitos ocasionais priorizam a câmera e completam seus ciclos. Ver plano PLANO_V14.md e validação temporal real em docs/VALIDATION.md.
+
 ## v23.09.2003.13 — 17/09/2026
 
 O terreno passou a usar um controlador ambiental único por mapa, com pausas e fases determinísticas diferentes entre objetos semelhantes. Água, fogo, árvores, tufos, vento e bandeiras executam ciclos finitos; folhas no bosque e poeira na vila aparecem raramente, sem criação durante `update` e com no máximo dois efeitos simultâneos. `prefers-reduced-motion` desativa detalhes decorativos, limita a um ciclo e mantém apenas água e fogo em frequência reduzida. Trocas de mapa cancelam o timer anterior. Save, colisões, posições e gameplay permanecem inalterados.

@@ -35,6 +35,7 @@ export type AmbientDiagnostics = {
   targetCount: number;
   enabledTargetCount: number;
   activeCount: number;
+  continuousCount: number;
   maxActive: number;
   timerActive: boolean;
   activations: number;
@@ -75,12 +76,22 @@ export class AmbientController {
     this.targets.push({ ...target, nextAt: phase, activeUntil: 0 });
   }
 
+  private continuous: ScheduledTarget[] = [];
   start() {
     if (this.destroyed || this.timer) return;
     const startedAt = this.scene.time.now;
     const scale = this.fast ? 0.025 : 1;
-    for (const target of this.targets)
+    for (const target of this.targets) {
       target.nextAt = startedAt + Math.max(40, target.initialDelay * scale);
+      if (target.essential) {
+        const key = this.reduced ? target.reducedAnimation! : target.animation;
+        target.sprite.play({
+          key,
+          startFrame: Math.round(target.initialDelay) % (this.reduced ? 2 : 4),
+        });
+        this.continuous.push(target);
+      }
+    }
     this.timer = this.scene.time.addEvent({
       delay: this.fast ? 40 : 200,
       loop: true,
@@ -94,7 +105,9 @@ export class AmbientController {
     this.destroyed = true;
     this.timer?.remove(false);
     this.timer = undefined;
-    for (const target of this.active) this.reset(target);
+    for (const target of [...this.active, ...this.continuous])
+      this.reset(target);
+    this.continuous = [];
     this.active.clear();
     document.documentElement.dataset.ambientActive = "0";
     document.documentElement.dataset.ambientTimer = "stopped";
@@ -107,6 +120,7 @@ export class AmbientController {
       targetCount: this.targets.length,
       enabledTargetCount: enabled.length,
       activeCount: this.active.size,
+      continuousCount: this.continuous.length,
       maxActive: this.maxActive,
       timerActive: Boolean(this.timer && !this.destroyed),
       activations: this.activations,
@@ -127,7 +141,12 @@ export class AmbientController {
       const eligible = this.targets
         .filter(
           (target) =>
+            !target.essential &&
             this.isEnabled(target) &&
+            Phaser.Geom.Intersects.RectangleToRectangle(
+              this.scene.cameras.main.worldView,
+              target.sprite.getBounds(),
+            ) &&
             !this.active.has(target) &&
             now >= target.nextAt,
         )
@@ -156,8 +175,7 @@ export class AmbientController {
         : target.animation;
     target.sprite.setVisible(true).play(animation, true);
     target.sprite.setData("ambientActive", true);
-    target.activeUntil =
-      now + Math.max(80, target.duration * (this.fast ? 0.18 : 1));
+    target.activeUntil = now + target.sprite.anims.currentAnim!.duration * 2;
     this.active.add(target);
     this.activations++;
     this.kindsActivated.add(target.kind);
@@ -170,7 +188,7 @@ export class AmbientController {
   }
 
   private isEnabled(target: ScheduledTarget) {
-    return !this.reduced || (Boolean(target.essential) && !target.decorative);
+    return !this.reduced || Boolean(target.essential);
   }
 
   private random() {

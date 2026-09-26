@@ -164,6 +164,7 @@ export type Save = {
   kills: number;
   appearance: Appearance;
   cameraZoom: CameraZoom;
+  motion: "system" | "full" | "reduced";
 };
 export function freshSave(): Save {
   return {
@@ -195,6 +196,7 @@ export function freshSave(): Save {
     kills: 0,
     appearance: "masculine",
     cameraZoom: "auto",
+    motion: "system",
   };
 }
 export function level(xp: number) {
