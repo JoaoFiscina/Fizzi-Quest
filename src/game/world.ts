@@ -2,10 +2,20 @@ import Phaser from "phaser";
 import { createArt } from "./art";
 import { makeMap, walkable, type Entity, type MapData } from "./maps";
 import {
+  advancePatrol,
+  assignedHome,
+  commonMonsters,
+  isCommonMonster,
+  makePatrol,
+  type CommonMonster,
+  type Patrol,
+} from "./monsterMovement";
+import {
   enemies,
   stats,
   trailImpulse,
   type CombatEvent,
+  type EnemyId,
   type TrailImpulseConfig,
 } from "../domain/game";
 import { BattlePresentation } from "./battlePresentation";
@@ -26,6 +36,11 @@ export class World extends Phaser.Scene {
   private speed = 56;
   private root!: Phaser.GameObjects.Container;
   private enemySprites = new Map<string, Phaser.GameObjects.Sprite>();
+  private patrolActors = new Map<
+    CommonMonster,
+    { patrol: Patrol; sprite: Phaser.GameObjects.Sprite; entity: Entity }
+  >();
+  private builtRestCycle = 0;
   private presentation?: BattlePresentation;
   private foreground!: Phaser.GameObjects.Container;
   private motionMedia = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -110,6 +125,7 @@ export class World extends Phaser.Scene {
     this.ambience = undefined;
     this.root.removeAll(true);
     this.enemySprites.clear();
+    this.patrolActors.clear();
     this.terrainSprites = [];
     this.waterSprites = [];
     this.treeSprites = [];
@@ -121,9 +137,17 @@ export class World extends Phaser.Scene {
     this.onNear(undefined);
     const s = this.store.state;
     this.worldKey = s.map;
+    this.builtRestCycle = s.monsterRestCycle;
     this.mapData = makeMap(s.map === "forest");
     const m = this.mapData;
     const encounters = m.entities.filter((entry) => entry.kind in enemies);
+    const commonAnchors = (s.map === "forest" ? commonMonsters : []).map(
+      (kind) => {
+        const anchor = encounters.find((entry) => entry.kind === kind);
+        if (!anchor) throw Error(`Ponto de repouso ausente: ${kind}`);
+        return { x: anchor.x, y: anchor.y };
+      },
+    );
     for (let y = 0; y < m.height; y++)
       for (let x = 0; x < m.width; x++) {
         const tile = this.add
@@ -223,9 +247,16 @@ export class World extends Phaser.Scene {
     const sorted = [...m.entities].sort((a, b) => a.y - b.y);
     for (const e of sorted) {
       const npc = e.kind === "master" || e.kind === "merchant";
+      const common =
+        e.kind in enemies && isCommonMonster(e.kind as EnemyId)
+          ? (e.kind as CommonMonster)
+          : null;
+      const home = common
+        ? assignedHome(common, s.monsterRestCycle, commonAnchors)
+        : e;
       let ox = 0,
         oy = 0;
-      if (e.kind in enemies) {
+      if (e.kind in enemies && !common) {
         ox = ((e.x * 7 + e.y * 13 + e.kind.charCodeAt(0)) % 11) - 5;
         oy =
           ((e.x * 11 + e.y * 17 + e.kind.charCodeAt(e.kind.length - 1)) % 11) -
@@ -236,16 +267,24 @@ export class World extends Phaser.Scene {
         }
       }
       const sprite = this.add
-        .sprite(e.x + ox, e.y + oy, npc ? `${e.kind}-0-idle-0` : e.kind)
+        .sprite(home.x + ox, home.y + oy, npc ? `${e.kind}-0-idle-0` : e.kind)
         .setOrigin(0.5, 1)
-        .setDepth(e.y);
+        .setDepth(home.y);
       if (npc && !this.reduced) {
         sprite.play(`${e.kind}-idle-0`);
       }
       if (e.kind in enemies) {
         this.enemySprites.set(e.kind, sprite);
         sprite.setVisible(!s.defeated.includes(e.kind as keyof typeof enemies));
-        sprite.setData("baseY", e.y);
+        sprite.setData("baseY", home.y);
+        if (common) {
+          const patrol = makePatrol(common, home, s.monsterRestCycle);
+          this.patrolActors.set(common, {
+            patrol,
+            sprite,
+            entity: { ...e, x: home.x, y: home.y },
+          });
+        }
         if (!this.reduced) sprite.play(`monster-${e.kind}-idle`);
       }
       if (e.kind === "tree") this.treeSprites.push(sprite);
@@ -525,6 +564,14 @@ export class World extends Phaser.Scene {
       this.build();
       return;
     }
+    if (
+      s.map === "forest" &&
+      this.builtRestCycle !== s.monsterRestCycle &&
+      !this.presentation
+    ) {
+      this.build();
+      return;
+    }
     const baseSpeed = 56 + Math.min(18, stats(s).speed * 1.2);
     this.speed =
       baseSpeed *
@@ -599,6 +646,23 @@ export class World extends Phaser.Scene {
     if (walkable(this.mapData, nx, s.y)) s.x = nx;
     if (walkable(this.mapData, s.x, ny)) s.y = ny;
     this.player.setPosition(Math.round(s.x), Math.round(s.y)).setDepth(s.y);
+    if (!this.reduced) {
+      for (const actor of this.patrolActors.values()) {
+        if (s.defeated.includes(actor.patrol.kind)) continue;
+        const others = [...this.patrolActors.values()]
+          .filter(
+            (other) =>
+              other !== actor && !s.defeated.includes(other.patrol.kind),
+          )
+          .map((other) => other.patrol);
+        advancePatrol(actor.patrol, delta, this.mapData, s, others);
+        actor.entity.x = actor.patrol.x;
+        actor.entity.y = actor.patrol.y;
+        actor.sprite
+          .setPosition(Math.round(actor.patrol.x), Math.round(actor.patrol.y))
+          .setDepth(actor.patrol.y);
+      }
+    }
     if (this.reduced) {
       const hero = this.player.getData("heroKey") as string;
       this.player.setTexture(`${hero}-${this.direction}-${dx || dy ? 1 : 0}`);
@@ -614,6 +678,11 @@ export class World extends Phaser.Scene {
     }
     this.foreground.sort("depth");
     const near = this.mapData.entities
+      .map((e) =>
+        e.kind in enemies && isCommonMonster(e.kind as EnemyId)
+          ? (this.patrolActors.get(e.kind as CommonMonster)?.entity ?? e)
+          : e,
+      )
       .filter(
         (e) =>
           e.label &&

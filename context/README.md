@@ -4,7 +4,7 @@ Esta pasta é a memória operacional do jogo. Atualize-a a cada versão antes de
 
 ## Versão corrente
 
-`v23.09.2003.20` — modo desenvolvedor `DEV23` integrado à `main` e confirmado no domínio oficial. Estado em `ESTADO_ATUAL.md` e plano em `PLANO_V20_MODO_DESENVOLVEDOR.md`. Próximo sistema: movimentação de monstros.
+`v23.09.2003.21` — movimentação dos monstros comuns em validação nesta branch. A versão oficial permanece `v23.09.2003.20` até integração e verificação do domínio. Estado em `ESTADO_ATUAL.md` e plano em `PLANO_V21_MOVIMENTACAO_MONSTROS.md`.
 
 ## Árvore lógica
 

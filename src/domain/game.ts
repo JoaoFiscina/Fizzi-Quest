@@ -219,6 +219,7 @@ export type Save = {
   x: number;
   y: number;
   defeated: EnemyId[];
+  monsterRestCycle: number;
   quest: "not_started" | "active" | "emblem_recovered" | "completed";
   guild: boolean;
   chest: boolean;
@@ -258,6 +259,7 @@ export function freshSave(): Save {
     x: 200,
     y: 232,
     defeated: [],
+    monsterRestCycle: 0,
     quest: "not_started",
     guild: false,
     chest: false,
@@ -349,6 +351,7 @@ export function rest(s: Save) {
   s.hp = a.maxHp;
   s.stamina = a.maxStamina;
   s.defeated = s.defeated.filter((e) => e === "guardian");
+  s.monsterRestCycle = (s.monsterRestCycle + 1) % 6;
 }
 export function allocate(s: Save, a: Attribute) {
   if (s.battle || stats(s).free <= 0) throw Error("Nenhum ponto disponível.");

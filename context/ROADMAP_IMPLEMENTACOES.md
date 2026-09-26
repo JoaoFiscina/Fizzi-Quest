@@ -220,7 +220,7 @@ Plano detalhado: [`PLANO_V20_MODO_DESENVOLVEDOR.md`](PLANO_V20_MODO_DESENVOLVEDO
 
 ### v23.09.2003.21 — movimentação de monstros
 
-Plano detalhado: [`PLANO_V21_MOVIMENTACAO_MONSTROS.md`](PLANO_V21_MOVIMENTACAO_MONSTROS.md). Complexidade alvo: alta, por envolver simulação, colisões, interação e migração mínima do save. Não misturar com novo slot de equipamento.
+Plano detalhado: [`PLANO_V21_MOVIMENTACAO_MONSTROS.md`](PLANO_V21_MOVIMENTACAO_MONSTROS.md). Implementação em validação nesta branch. Complexidade alvo: alta, por envolver simulação, colisões, interação e migração mínima do save. Não misturar com novo slot de equipamento.
 
 - Dar a cada monstro comum uma área de movimentação predefinida, com centro, raio e pontos caminháveis; o Guardião permanece fixo.
 - Executar ciclos variáveis de descanso e caminhada, mantendo o monstro dentro do raio e evitando obstáculos/jogador.

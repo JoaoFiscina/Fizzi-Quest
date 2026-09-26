@@ -1,6 +1,6 @@
 # Plano de execução — v23.09.2003.21: movimentação dos monstros
 
-Estado: **planejado, sem código jogável alterado**. Base oficial confirmada: v23.09.2003.20. Objetivo central: fazer os três monstros comuns do bosque caminharem em pequenas áreas próprias, com pausas de duração variável, e redistribuir seus pontos de repouso após descansar. Manter o Guardião no posto de vigia nesta etapa.
+Estado: **implementado nesta branch, em validação**. Base oficial confirmada: v23.09.2003.20. Objetivo central: fazer os três monstros comuns do bosque caminharem em pequenas áreas próprias, com pausas de duração variável, e redistribuir seus pontos de repouso após descansar. Manter o Guardião no posto de vigia nesta etapa.
 
 ## Problema observável e resultado esperado
 

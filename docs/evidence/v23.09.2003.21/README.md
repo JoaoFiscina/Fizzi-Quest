@@ -1,0 +1,3 @@
+# Evidências — v23.09.2003.21
+
+O plano e a referência comportamental da v20 estão em `context/PLANO_V21_MOVIMENTACAO_MONSTROS.md`: posições fixas dos quatro encontros no código, com um deslocamento inicial de até cinco pixels e sem caminhada contínua. Esta pasta reúne capturas e amostras temporais da v21; o JSON de 30 segundos registra posições dos monstros, quadros de animação e estado de água/fogo. Nessa amostra, os três monstros comuns mudaram de posição e o Guardião ficou no posto. As capturas vêm de saves sintéticos no navegador desktop e em viewport móvel emulado; não representam teste em telefone físico.
