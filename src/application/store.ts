@@ -55,6 +55,8 @@ const item = z.enum([
   "chainmail",
   "copper_ring",
   "breeze_ring",
+  "walking_boots",
+  "wind_boots",
 ]);
 const enemy = z.enum(["sprout", "beetle", "moth", "guardian"]);
 const schema = z.object({
@@ -81,12 +83,13 @@ const schema = z.object({
   gold: int,
   materials: int,
   potions: int,
-  owned: z.array(item).min(1).max(12),
+  owned: z.array(item).min(1).max(14),
   weapon: item,
   shield: item.nullable().default(null),
   armor: item.nullable().default(null),
   accessory: item.nullable(),
   ring: item.nullable().default(null),
+  boots: item.nullable().default(null),
   hp: int,
   stamina: int,
   map: z.enum(["village", "forest"]),
@@ -134,6 +137,10 @@ export function validateSave(raw: unknown): Save {
       (!s.owned.includes(s.ring) ||
         items[s.ring].slot !== "ring" ||
         !isSlotUnlocked(s, "ring"))) ||
+    (s.boots &&
+      (!s.owned.includes(s.boots) ||
+        items[s.boots].slot !== "boots" ||
+        !isSlotUnlocked(s, "boots"))) ||
     new Set(s.owned).size !== s.owned.length ||
     s.hp > stats(s).maxHp ||
     s.stamina > stats(s).maxStamina ||

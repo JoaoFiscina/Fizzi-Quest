@@ -4,7 +4,7 @@ Esta pasta é a memória operacional do jogo. Atualize-a a cada versão antes de
 
 ## Versão corrente
 
-`v23.09.2003.18` — aviso de movimento reduzido no PC e verificação de versão para recarregar arquivos novos sem apagar o progresso. Estado da integração em `ESTADO_ATUAL.md`. Plano em `PLANO_V18_ATUALIZACAO_E_MOVIMENTO.md`.
+`v23.09.2003.19` — Botas e Impulso da Trilha, com atualização de versão, tempo real de exploração e validação de expiração. Estado da integração em `ESTADO_ATUAL.md`. Plano em `PLANO_V19_BOTAS_E_IMPULSO.md`. Próximo sistema planejado: movimentação de monstros.
 
 ## Árvore lógica
 
@@ -18,6 +18,7 @@ fizzi-quest/
 │   ├── PLANO_V16.md             ← balanço de treino e habilidades
 │   ├── PLANO_V17.md             ← Anel e integração do treino compacto
 │   ├── PLANO_V18_ATUALIZACAO_E_MOVIMENTO.md ← diagnóstico PC/celular e atualização
+│   ├── PLANO_V19_BOTAS_E_IMPULSO.md ← Botas e habilidade ativa de velocidade
 │   ├── PLANO_IMPORTACAO_COMPACTA_PR.md ← resposta curta da IA e bônus de recorde
 │   ├── MOLDE_EXPANSAO.md         ← roteiro reutilizável para novas versões
 │   ├── ROADMAP_IMPLEMENTACOES.md ← plano auditado das próximas melhorias
@@ -44,7 +45,9 @@ fizzi-quest/
 
 - Continuar a estética do mundo quando novas áreas jogáveis forem planejadas.
 - Avaliar futuro refinamento do protagonista e de tiles secundários na escala atual.
-- Após a primeira morte do monstro, implementar spawn espalhado e movimento de patrulha.
+- Próxima prioridade de ambientação: movimentação dos monstros. Cada monstro terá uma área/raio predefinido e, em ciclos variáveis, caminhará dentro desse limite.
+- Ao descansar, monstros comuns poderão trocar entre si pontos de spawn compatíveis, sem sobrepor obstáculos ou o jogador.
+- Um boss derrotado entrará numa tabela rara de spawn de monstros comuns, com probabilidade menor e registro determinístico.
 
 ## Regra de continuidade
 

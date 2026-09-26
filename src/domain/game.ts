@@ -93,6 +93,20 @@ export const items = {
     price: 40,
     bonus: { ...zero(), agility: 1 },
   },
+  walking_boots: {
+    name: "Botas de caminhada",
+    kind: "Botas",
+    slot: "boots",
+    price: 45,
+    bonus: { ...zero(), agility: 1 },
+  },
+  wind_boots: {
+    name: "Botas do vento",
+    kind: "Botas",
+    slot: "boots",
+    price: 70,
+    bonus: { ...zero(), agility: 2, breath: 1 },
+  },
 } as const;
 export type ItemId = keyof typeof items;
 export type ItemSlot = (typeof items)[ItemId]["slot"];
@@ -102,9 +116,29 @@ export const slotUnlockLevel: Record<ItemSlot, number> = {
   armor: 1,
   accessory: 1,
   ring: 4,
+  boots: 5,
 };
 export function isSlotUnlocked(s: Save, slot: ItemSlot) {
   return level(s.adventureXpTotal).level >= slotUnlockLevel[slot];
+}
+export type TrailImpulseConfig = {
+  rank: number;
+  bonus: number;
+  durationSeconds: number;
+  durationMs: number;
+  cost: 1;
+};
+export function trailImpulse(levelNumber: number): TrailImpulseConfig | null {
+  if (levelNumber < 5) return null;
+  const rank = Math.floor((levelNumber - 5) / 5) + 1;
+  const durationSeconds = 5 + (rank - 1) * 2;
+  return {
+    rank,
+    bonus: Math.round(rank * 5) / 100,
+    durationSeconds,
+    durationMs: durationSeconds * 1000,
+    cost: 1,
+  };
 }
 export const enemies = {
   sprout: {
@@ -178,6 +212,7 @@ export type Save = {
   armor: ItemId | null;
   accessory: ItemId | null;
   ring: ItemId | null;
+  boots: ItemId | null;
   hp: number;
   stamina: number;
   map: "village" | "forest";
@@ -212,6 +247,7 @@ export function freshSave(): Save {
     armor: null,
     accessory: null,
     ring: null,
+    boots: null,
     hp: 50,
     stamina: 8,
     map: "village",
@@ -263,12 +299,13 @@ export function stats(s: Save) {
       (s.armor ? items[s.armor].bonus[k] : 0) +
       (s.accessory ? items[s.accessory].bonus[k] : 0);
     const ringBonus = s.ring ? items[s.ring].bonus[k] : 0;
+    const bootsBonus = s.boots ? items[s.boots].bonus[k] : 0;
     attributeBreakdown[k] = {
       base: 5,
       legacy: Math.round((m[k] / 10000) * 100) / 100,
       training: training[k],
       allocated: s.allocated[k],
-      equipment: equipment + ringBonus,
+      equipment: equipment + ringBonus + bootsBonus,
     };
     a[k] =
       Math.round(
@@ -277,7 +314,8 @@ export function stats(s: Save) {
           training[k] +
           s.allocated[k] +
           equipment +
-          ringBonus) *
+          ringBonus +
+          bootsBonus) *
           100,
       ) / 100;
   });
@@ -333,6 +371,7 @@ export function equip(s: Save, id: ItemId) {
   if (slot === "weapon") s.weapon = id;
   else if (slot === "shield") s.shield = id;
   else if (slot === "armor") s.armor = id;
+  else if (slot === "boots") s.boots = id;
   else if (slot === "ring") s.ring = id;
   else s.accessory = id;
   clampResources(s);

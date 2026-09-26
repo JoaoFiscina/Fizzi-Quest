@@ -53,6 +53,10 @@
 .hud-loot .potions-icon {
   color: #90c6ca;
 }
+.trail-impulse-active {
+  color: #b8e0cf;
+  font-weight: 700;
+}
 /* botão "Equipado" — estado conclusão, não competem com primário */
 button:disabled.equipped-state {
   opacity: 1;
@@ -171,6 +175,9 @@ button.alloc-btn:not(:disabled):hover {
   background: #eadcb8;
 }
 .hud-equipment.with-ring {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+.hud-equipment:not(.with-ring) {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 .item-kind-consumable {

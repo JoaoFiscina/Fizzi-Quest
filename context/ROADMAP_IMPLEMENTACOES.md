@@ -205,12 +205,24 @@ Ver `PLANO_V18_ATUALIZACAO_E_MOVIMENTO.md`: versão publicada detectável, botã
 
 ### v23.09.2003.19 — Botas
 
-Complexidade alvo: média.
+Complexidade alvo: média-alta, limitada a um slot e uma habilidade temporária de exploração.
 
 - Adicionar somente **Botas** sobre a fundação validada na versão anterior.
 - Relacionar Botas a Agilidade sem alterar novamente a fórmula de deslocamento; validar o ganho real no mapa.
 - Atualizar mochila, HUD resumido, personagem, loja e testes de combinações.
-- Limitar esta versão aos novos slots e ao balanceamento; não incluir runas.
+- Adicionar **Impulso da Trilha** no nível 5, com rank a cada cinco níveis: +5% de velocidade e 5 s no primeiro rank, acrescentando +5% e +2 s por rank; custo de 1 fôlego, somente no mapa e sem acumular.
+- Manter o efeito em runtime, fora do save, e testar reload, troca de mapa, batalha, diagonais e expiração.
+- Limitar esta versão a Botas, habilidade ativa e balanceamento; não incluir Capa, Runas, novas áreas ou nova camada de animações.
+
+### Próxima etapa — movimentação de monstros
+
+Complexidade alvo: alta, por envolver simulação, colisões e equilíbrio de encontros. Não misturar com novo slot de equipamento.
+
+- Dar a cada monstro comum uma área de movimentação predefinida, com centro, raio e pontos caminháveis.
+- Executar ciclos variáveis de descanso e caminhada, mantendo o monstro dentro do raio e evitando obstáculos/jogador.
+- Permitir troca de ponto de spawn entre monstros comuns ao descansar, com regras determinísticas e sem duplicação indevida.
+- Após a morte, registrar bosses numa tabela rara de spawn comum; a raridade e a persistência devem ser testadas antes de liberar.
+- Validar em mapa, combate, reload, movimento reduzido e 30 segundos de observação real antes de integrar.
 
 ### v23.09.2003.20 — Capa
 

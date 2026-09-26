@@ -25,6 +25,7 @@ import {
   equip,
   stats,
   allocate,
+  trailImpulse,
 } from "../src/domain/game";
 import { Store, SAVE_KEY, validateSave } from "../src/application/store";
 import { parseCompactWorkout } from "../src/domain/compactWorkouts";
@@ -457,6 +458,47 @@ describe("equipamentos e migração", () => {
     expect(s.weapon).toBe("dagger");
     expect(a.attributes.vigor).toBe(10); // 5 base + 3 escudo + 2 armadura
     expect(a.attributes.agility).toBe(6); // 5 base - 1 escudo + 2 adaga + 0 armadura
+  });
+  it("migra saves sem Botas e libera o slot no nível 5", () => {
+    const old = freshSave() as any;
+    delete old.boots;
+    const migrated = validateSave(old);
+    expect(migrated.boots).toBeNull();
+    migrated.adventureXpTotal = 349;
+    migrated.gold = 100;
+    expect(() => buy(migrated, "walking_boots")).toThrow("nível 5");
+    migrated.adventureXpTotal = 350;
+    buy(migrated, "walking_boots");
+    equip(migrated, "walking_boots");
+    expect(migrated.boots).toBe("walking_boots");
+    expect(stats(migrated).attributes.agility).toBe(6);
+  });
+});
+describe("Impulso da Trilha", () => {
+  it("desbloqueia no nível 5 e sobe 5%/2s a cada cinco níveis", () => {
+    expect(trailImpulse(4)).toBeNull();
+    expect(trailImpulse(5)).toMatchObject({
+      rank: 1,
+      bonus: 0.05,
+      durationSeconds: 5,
+      durationMs: 5000,
+      cost: 1,
+    });
+    expect(trailImpulse(10)).toMatchObject({
+      rank: 2,
+      bonus: 0.1,
+      durationSeconds: 7,
+    });
+    expect(trailImpulse(15)).toMatchObject({
+      rank: 3,
+      bonus: 0.15,
+      durationSeconds: 9,
+    });
+    expect(trailImpulse(20)).toMatchObject({
+      rank: 4,
+      bonus: 0.2,
+      durationSeconds: 11,
+    });
   });
 });
 describe("v17: Anel e resposta curta", () => {

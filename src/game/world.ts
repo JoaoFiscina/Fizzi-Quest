@@ -1,7 +1,13 @@
 import Phaser from "phaser";
 import { createArt } from "./art";
 import { makeMap, walkable, type Entity, type MapData } from "./maps";
-import { enemies, stats, type CombatEvent } from "../domain/game";
+import {
+  enemies,
+  stats,
+  trailImpulse,
+  type CombatEvent,
+  type TrailImpulseConfig,
+} from "../domain/game";
 import { BattlePresentation } from "./battlePresentation";
 import {
   AmbientController,
@@ -37,6 +43,7 @@ export class World extends Phaser.Scene {
   private waterSprites: Phaser.GameObjects.Sprite[] = [];
   private treeSprites: Phaser.GameObjects.Sprite[] = [];
   private fireSprites: Phaser.GameObjects.Sprite[] = [];
+  private trailImpulseState?: { until: number; config: TrailImpulseConfig };
   private effectSprites: Array<{
     sprite: Phaser.GameObjects.Sprite;
     kind: "leaf" | "dust";
@@ -47,6 +54,7 @@ export class World extends Phaser.Scene {
   near: Entity | undefined;
   onNear: (e: Entity | undefined) => void = () => {};
   onInteract: (e: Entity) => void = () => {};
+  onTrailImpulseChange: () => void = () => {};
   constructor(public store: Store) {
     super("World");
   }
@@ -97,6 +105,7 @@ export class World extends Phaser.Scene {
   build() {
     if (!this.root) return;
     this.reduced = this.resolveReduced();
+    this.trailImpulseState = undefined;
     this.ambience?.destroy();
     this.ambience = undefined;
     this.root.removeAll(true);
@@ -436,6 +445,42 @@ export class World extends Phaser.Scene {
   getAmbientDiagnostics(): AmbientDiagnostics | undefined {
     return this.ambience?.diagnostics();
   }
+  getTrailImpulseStatus() {
+    const state = this.trailImpulseState;
+    if (!state) return undefined;
+    if (Date.now() >= state.until) {
+      this.clearTrailImpulse();
+      return undefined;
+    }
+    return {
+      rank: state.config.rank,
+      bonus: state.config.bonus,
+      remainingMs: Math.max(0, state.until - Date.now()),
+      durationSeconds: state.config.durationSeconds,
+    };
+  }
+  activateTrailImpulse() {
+    if (this.paused || this.presentation || this.getTrailImpulseStatus())
+      return false;
+    const config = trailImpulse(stats(this.store.state).level);
+    if (!config || this.store.state.stamina < config.cost) return false;
+    this.store.transact((s) => {
+      if (s.stamina < config.cost) throw Error("Fôlego insuficiente.");
+      s.stamina -= config.cost;
+    });
+    this.trailImpulseState = {
+      config,
+      until: Date.now() + config.durationMs,
+    };
+    this.sync();
+    this.onTrailImpulseChange();
+    return true;
+  }
+  private clearTrailImpulse() {
+    if (!this.trailImpulseState) return;
+    this.trailImpulseState = undefined;
+    this.onTrailImpulseChange();
+  }
   resizeCamera() {
     if (!this.player) return;
     if (this.presentation) {
@@ -473,12 +518,19 @@ export class World extends Phaser.Scene {
   }
   sync() {
     if (!this.player) return;
+    if (this.trailImpulseState && Date.now() >= this.trailImpulseState.until)
+      this.clearTrailImpulse();
     const s = this.store.state;
     if (this.reduced !== this.resolveReduced() && !this.presentation) {
       this.build();
       return;
     }
-    this.speed = 56 + Math.min(18, stats(s).speed * 1.2);
+    const baseSpeed = 56 + Math.min(18, stats(s).speed * 1.2);
+    this.speed =
+      baseSpeed *
+      (this.trailImpulseState?.config.bonus
+        ? 1 + this.trailImpulseState.config.bonus
+        : 1);
     if (this.worldKey !== s.map && !s.battle) this.build();
     const hero = s.appearance === "feminine" ? "hero-f" : "hero";
     if (this.player.getData("heroKey") !== hero) {
@@ -496,6 +548,7 @@ export class World extends Phaser.Scene {
     this.flags.forEach((f) => f.setTint(s.guild ? 0xffffff : 0x889978));
   }
   showBattle() {
+    this.clearTrailImpulse();
     this.presentation?.destroy();
     const b = this.store.state.battle;
     if (!b) return;
