@@ -14,7 +14,8 @@ fizzi-quest/
 │   ├── README.md                 ← este mapa e regras de continuidade
 │   ├── ESTADO_ATUAL.md           ← o que funciona e o que está incompleto
 │   ├── PROXIMOS_PASSOS.md        ← fila priorizada para a próxima sessão
-│   ├── PLANO_V15_COMPOSICAO_ESTETICA.md ← guia detalhado da próxima etapa; somente planejado
+│   ├── PLANO_V15_COMPOSICAO_ESTETICA.md ← plano executado da v15
+│   ├── MOLDE_EXPANSAO.md         ← roteiro reutilizável para novas versões
 │   ├── ROADMAP_IMPLEMENTACOES.md ← plano auditado das próximas melhorias
 │   ├── DIAGNOSTICO_GRAFICO_V13.md ← causa da regressão visual e nova régua de aceite
 │   ├── DECISOES.md               ← escolhas de produto e engenharia
@@ -35,9 +36,8 @@ fizzi-quest/
 
 ## Backlog visual e de gameplay
 
-- Melhorar a estética do mapa prévio sem perder a leitura da rota principal.
-- Novas áreas bloqueadas e pixel art mais definida dos monstros e personagens.
-- Refinar os tiles e texturas originais geradas no código.
+- Continuar a estética do mundo quando novas áreas jogáveis forem planejadas.
+- Avaliar futuro refinamento do protagonista e de tiles secundários na escala atual.
 - Após a primeira morte do monstro, implementar spawn espalhado e movimento de patrulha.
 
 ## Regra de continuidade
@@ -47,6 +47,7 @@ fizzi-quest/
 3. Executar validações reais; registrar falhas, não suposições.
 4. Incrementar a versão no README, no histórico e na interface quando uma etapa for concluída.
 5. Atualizar o próximo passo antes de parar.
+6. Abrir a próxima versão com `MOLDE_EXPANSAO.md` e adaptar sua validação ao tipo de mudança.
 
 ## Limites
 

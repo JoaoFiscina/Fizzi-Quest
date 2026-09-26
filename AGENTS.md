@@ -2,6 +2,8 @@
 
 Antes de alterar o projeto, leia `context/README.md`, `context/ESTADO_ATUAL.md` e `context/PROXIMOS_PASSOS.md`. O contrato do produto está em `docs/GAME_SPEC.md`; a continuação está em `docs/VISUAL_POLISH_SPEC.md`.
 
+Para novas versões, seguir `context/MOLDE_EXPANSAO.md`: referência verificável, piloto representativo, validação adequada e registro do deploy oficial.
+
 - Fonte da versão pública: `src/version.ts`, formato `v23.09.2003.x`. Incremente x por entrega, mantendo README e histórico coerentes. Save e regras têm versões independentes.
 - Preserve saves compatíveis; nenhuma migração destrutiva silenciosa.
 - Domínio síncrono e determinístico. Persista a rodada inteira antes de reproduzir `CombatEvent[]`; efeitos não mudam o estado salvo.

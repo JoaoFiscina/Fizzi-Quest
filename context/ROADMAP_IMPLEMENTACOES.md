@@ -4,6 +4,8 @@ Data da organização: 26/09/2026. Base de implementação: `v23.09.2003.15`.
 
 Este documento registra intenções futuras. Um item só muda para concluído depois de implementação, testes e inspeção visual. Cada etapa deve manter saves existentes e receber uma versão `v23.09.2003.x` própria.
 
+O roteiro de execução e publicação de cada etapa está em [`MOLDE_EXPANSAO.md`](MOLDE_EXPANSAO.md).
+
 ## Diagnóstico da base atual
 
 | Área             | O que já existe                                                                       | Próxima evolução                                                                        |

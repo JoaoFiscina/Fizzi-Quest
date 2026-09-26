@@ -2,6 +2,8 @@
 
 O plano detalhado da v15 está em [`PLANO_V15_COMPOSICAO_ESTETICA.md`](PLANO_V15_COMPOSICAO_ESTETICA.md). O roadmap completo fica em [`ROADMAP_IMPLEMENTACOES.md`](ROADMAP_IMPLEMENTACOES.md).
 
+Para executar qualquer etapa, usar [`MOLDE_EXPANSAO.md`](MOLDE_EXPANSAO.md): referência antes, piloto, validação adequada e confirmação da versão oficial.
+
 ## Entrega atual — v23.09.2003.15
 
 1. Composição estática da vila e do bosque, com rota e pontos de interesse mais legíveis.
