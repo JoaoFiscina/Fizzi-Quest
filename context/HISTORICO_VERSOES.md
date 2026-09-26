@@ -2,7 +2,7 @@
 
 ## v23.09.2003.20 — 26/09/2026
 
-Modo desenvolvedor ativado por `DEV23` nos Ajustes, com save de teste independente, editor de XP/ouro, bônus dos quatro atributos e multiplicador de XP de combate/missão. Selo no HUD, prévia, desfazer e retorno ao save normal. Treinos mantêm as regras atuais. Plano: `PLANO_V20_MODO_DESENVOLVEDOR.md`; validação: `docs/VALIDATION_V20.md`. Integração e publicação aguardam confirmação.
+Modo desenvolvedor ativado por `DEV23` nos Ajustes, com save de teste independente, editor de XP/ouro, bônus dos quatro atributos e multiplicador de XP de combate/missão. Selo no HUD, prévia, desfazer e retorno ao save normal. Treinos mantêm as regras atuais. Plano: `PLANO_V20_MODO_DESENVOLVEDOR.md`; validação: `docs/VALIDATION_V20.md`. PR #13 integrado e versão pública confirmada no domínio oficial.
 
 ## v23.09.2003.19 — 26/09/2026
 

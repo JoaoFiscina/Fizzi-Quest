@@ -1,6 +1,6 @@
 # Plano de execução — v23.09.2003.20: modo desenvolvedor
 
-Estado: **implementado neste ramo, aguardando integração**. Base: v23.09.2003.19 publicada. O jogador pediu aplicar o plano agora; por isso, DEV23 ocupa a v20 e a movimentação dos monstros passa para a v21.
+Estado: **implementado, validado e publicado** pelo PR #13. Base: v23.09.2003.19. DEV23 ocupou a v20 e a movimentação dos monstros passou para a v21.
 
 ## Problema e resultado desejado
 
