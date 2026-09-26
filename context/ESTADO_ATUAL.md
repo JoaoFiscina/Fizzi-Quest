@@ -1,28 +1,29 @@
-# Estado atual — v23.09.2003.14
+# Estado atual — v23.09.2003.15
 
-Implementação na branch feat/fundacao-visual-v14. Produção ainda não atualizada por esta entrega.
+Implementação na branch `feat/composicao-v15`, baseada na v14 integrada à `main`. O estado público deve ser conferido após a integração e deploy da v15.
 
 ## Resultado
-- Água e fogo agora são loops permanentes, fora do limite de dois efeitos ocasionais.
-- Ondas redesenhadas com cristas e sombras; fogo com duas línguas variáveis.
-- Árvores balançam a copa um pixel dentro da textura; o tronco fica fixo.
-- Efeitos ocasionais priorizam objetos dentro da câmera e completam seu ciclo.
-- Ajustes oferece Completa, Usar sistema e Reduzida, persistidos no save.
-- Saves anteriores recebem Usar sistema sem perder progresso.
-- Mudanças de preferência são aplicadas imediatamente; modo sistema acompanha alterações do navegador.
-- Reduzida mantém água/fogo a 1 FPS e desativa reações decorativas.
-- Registro de texturas/animações protegido contra duplicação em reinício.
-- Limpeza de timer e listener de redimensionamento ao encerrar a cena.
+
+- Vila e bosque com piso, caminhos, pedras, musgo e pontos de referência revistos dentro das dimensões atuais.
+- Broto, Besouro, Mariposa e Guardião redesenhados em pixel art original; pose neutra e quatro quadros de idle por espécie.
+- Poses de ataque, impacto, carapaça e preparo consomem apenas os eventos e estados de combate já existentes.
+- Preferência de movimento da v14 é respeitada: modo reduzido conserva poses informativas, sem ciclo de idle dos monstros.
+- Mapa de consulta agrupa Vila e Bosque na trilha existente; Posto de Vigia aparece como marco do Bosque.
+- Mina, Ruínas e Costa seguem como prévias futuras bloqueadas, sem interação ou viagem.
+- Save, colisões, posições de encontro, zoom e regras de combate mantidos.
 
 ## Plano e evidências
-Plano detalhado: PLANO_V14.md.
-Evidências: docs/evidence/v23.09.2003.14/.
-Verificações e limitações: docs/VALIDATION.md.
+
+Plano detalhado: `PLANO_V15_COMPOSICAO_ESTETICA.md`.
+Comparações e folhas de quadros: `docs/evidence/v23.09.2003.15/`.
+Testes e limitações: `docs/VALIDATION.md`.
 
 ## Limites
-- Sem teste físico em Android/iOS ou bateria.
-- Esta versão melhora continuidade e leitura dos quadros ambientais; a remodelagem dos monstros pertence à versão 15.
-- O aviso de tamanho do chunk Phaser permanece.
+
+- Sem regiões jogáveis novas ou respawn variável.
+- Sem ensaio em telefone físico ou medição de bateria.
+- Transições amplas do combate foram adiadas; poses curtas cobrem os estados existentes.
 
 ## Próximo passo
-v23.09.2003.15: criaturas e mapa prévio. Ver PROXIMOS_PASSOS.md.
+
+v23.09.2003.16: progressão e treino, conforme `PROXIMOS_PASSOS.md`. Primeiro conferir o deploy da v15 no endereço oficial.

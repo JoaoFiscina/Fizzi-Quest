@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import { polishArt } from "./polishArt";
+import { createMonsterArt } from "./monsterArt";
 export function createArt(scene: Phaser.Scene) {
   if (scene.textures.exists("water-0") && scene.anims.exists("ambient-water"))
     return;
@@ -85,6 +86,24 @@ export function createArt(scene: Phaser.Scene) {
     rect(c, "#9ba088", 4, 9, 2, 1);
     rect(c, "#59675b", 10, 6, 3, 2);
     rect(c, "#a9aa91", 10, 5, 2, 1);
+  });
+  texture("courtyard-stone", 16, 16, (c) => {
+    rect(c, "#a9956c", 2, 11, 6, 2);
+    rect(c, "#e6d1a1", 3, 11, 4, 1);
+    rect(c, "#af9c71", 10, 3, 4, 2);
+    rect(c, "#ebd7aa", 10, 3, 3, 1);
+  });
+  texture("forest-moss", 16, 16, (c) => {
+    rect(c, "#476b48", 2, 12, 8, 2);
+    rect(c, "#658b55", 4, 11, 7, 1);
+    rect(c, "#86a264", 6, 10, 3, 1);
+    rect(c, "#4d7552", 11, 6, 3, 2);
+  });
+  texture("forest-stone", 16, 16, (c) => {
+    rect(c, "#586b60", 3, 11, 7, 3);
+    rect(c, "#a1ad8e", 4, 10, 5, 2);
+    rect(c, "#61756a", 11, 5, 3, 2);
+    rect(c, "#b4b99a", 11, 5, 2, 1);
   });
   texture("water", 16, 16, (c) => {
     rect(c, "#387b80", 0, 0, 16, 16);
@@ -228,48 +247,6 @@ export function createArt(scene: Phaser.Scene) {
             rect(c, "#c1cfb5", 17, 16 + bob, 2, 8);
           }
         });
-  texture("sprout", 32, 32, (c) => {
-    rect(c, "#476140", 4, 26, 24, 4);
-    rect(c, "#304e36", 6, 13, 21, 15);
-    rect(c, "#9ca96a", 9, 13, 16, 13);
-    rect(c, "#becc87", 11, 14, 10, 3);
-    rect(c, "#254b37", 13, 4, 3, 11);
-    rect(c, "#487e48", 3, 5, 12, 7);
-    rect(c, "#7da556", 17, 2, 12, 8);
-    rect(c, "#91b862", 18, 2, 8, 3);
-    rect(c, "#1e3b32", 11, 20, 3, 3);
-    rect(c, "#1e3b32", 21, 19, 3, 3);
-    rect(c, "#5a7044", 9, 28, 5, 3);
-    rect(c, "#5a7044", 22, 27, 5, 3);
-  });
-  texture("beetle", 32, 32, (c) => {
-    rect(c, "#38483c", 2, 12, 28, 15);
-    rect(c, "#69776a", 6, 7, 21, 19);
-    rect(c, "#9ca286", 10, 6, 12, 15);
-    rect(c, "#445744", 16, 7, 2, 17);
-    rect(c, "#e3c786", 7, 24, 3, 2);
-    rect(c, "#e3c786", 23, 24, 3, 2);
-  });
-  texture("moth", 32, 32, (c) => {
-    rect(c, "#8787a3", 2, 7, 11, 17);
-    rect(c, "#c2b8cd", 4, 9, 8, 10);
-    rect(c, "#8787a3", 19, 7, 11, 17);
-    rect(c, "#c2b8cd", 21, 9, 7, 10);
-    rect(c, "#4a565f", 13, 10, 6, 19);
-    rect(c, "#e8d3a5", 14, 12, 4, 3);
-  });
-  texture("guardian", 48, 52, (c) => {
-    rect(c, "#264c37", 7, 13, 35, 32);
-    rect(c, "#718757", 12, 9, 25, 34);
-    rect(c, "#405e39", 4, 22, 10, 24);
-    rect(c, "#405e39", 36, 22, 10, 24);
-    rect(c, "#426b40", 8, 2, 32, 13);
-    rect(c, "#91aa62", 13, 0, 22, 7);
-    rect(c, "#e8ce81", 16, 19, 4, 4);
-    rect(c, "#e8ce81", 29, 19, 4, 4);
-    rect(c, "#344c35", 19, 32, 12, 3);
-    rect(c, "#405e39", 11, 40, 10, 10);
-    rect(c, "#405e39", 28, 40, 10, 10);
-  });
+  createMonsterArt(scene);
   polishArt(scene);
 }

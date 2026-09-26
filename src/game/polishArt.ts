@@ -17,6 +17,29 @@ export function polishArt(scene: Phaser.Scene) {
     c.fillStyle = color;
     c.fillRect(x, y, w, h);
   };
+  edit("path", (c) => {
+    dot(c, "#d3bd8c", 0, 0, 16, 16);
+    dot(c, "#dfcb99", 2, 3, 9, 2);
+    dot(c, "#c6af7e", 9, 12, 5, 1);
+    dot(c, "#ead7a7", 4, 9, 5, 1);
+    dot(c, "#bba575", 13, 5, 2, 1);
+  });
+  for (let variant = 0; variant < 4; variant++)
+    edit(`grass${variant}`, (c) => {
+      // Quiet clustered values keep the route and actors above the background.
+      dot(
+        c,
+        ["#779657", "#79995a", "#7a995b", "#759455"][variant],
+        0,
+        0,
+        16,
+        16,
+      );
+      dot(c, "#729052", 2 + variant, 4, 4, 2);
+      dot(c, "#86a362", 3 + variant, 4, 2, 1);
+      dot(c, "#6b8c50", 10 - (variant % 2), 12, 3, 1);
+      dot(c, "#8aa565", 11 - (variant % 2), 12, 1, 1);
+    });
   edit("tree", (c) => {
     for (const [x, y] of [
       [11, 11],
@@ -41,17 +64,24 @@ export function polishArt(scene: Phaser.Scene) {
     dot(c, "#344e3a", 58, 32, 1, 7);
     for (let i = 0; i < 7; i++)
       dot(c, "#62804c", 17 + i * 11, 71 - (i % 2), 5, 3);
+    // Roof rim, timber columns and threshold reinforce the guild entrance.
+    dot(c, "#6c4636", 5, 27, 102, 2);
+    dot(c, "#e5ba78", 11, 29, 92, 1);
+    dot(c, "#8d6b45", 18, 34, 2, 38);
+    dot(c, "#8d6b45", 92, 34, 2, 38);
+    dot(c, "#f1e5bf", 45, 77, 23, 2);
   });
-  edit("sprout", (c) => {
-    dot(c, "#dde4ae", 11, 14, 5, 2);
-    dot(c, "#788747", 23, 17, 2, 8);
-    dot(c, "#eef0ce", 11, 20);
-    dot(c, "#eef0ce", 21, 19);
-    dot(c, "#b66a49", 9, 24, 3, 1);
-    dot(c, "#b66a49", 23, 23, 2, 1);
-    dot(c, "#516942", 16, 25, 3, 1);
-    dot(c, "#c0ce80", 20, 4, 6, 1);
-    dot(c, "#a4bd71", 5, 7, 7, 1);
+  edit("stall", (c) => {
+    dot(c, "#704432", 3, 21, 58, 2);
+    dot(c, "#edd6a7", 5, 22, 54, 1);
+    dot(c, "#5a7548", 10, 35, 44, 2);
+    dot(c, "#dfb96d", 14, 29, 7, 2);
+    dot(c, "#dfb96d", 40, 29, 9, 2);
+  });
+  edit("rock", (c) => {
+    dot(c, "#4f5d53", 6, 15, 14, 2);
+    dot(c, "#c0bea0", 8, 4, 7, 1);
+    dot(c, "#637870", 17, 8, 2, 7);
   });
   for (const hero of ["hero", "hero-f"])
     for (let d = 0; d < 4; d++)
@@ -145,48 +175,6 @@ export function polishArt(scene: Phaser.Scene) {
     dot(c, "#d7b768", 5, 11, 3, 2);
     dot(c, "#a27c45", 3, 2, 18, 4);
   });
-  const monsterFrames = {
-    sprout: { w: 32, h: 32 },
-    beetle: { w: 32, h: 32 },
-    moth: { w: 32, h: 32 },
-    guardian: { w: 48, h: 52 },
-  } as const;
-  for (const [key, size] of Object.entries(monsterFrames)) {
-    for (let f = 0; f < 4; f++)
-      clone(key, `${key}-idle-${f}`, size.w, size.h, (c) => {
-        if (key === "sprout") {
-          dot(c, "#183d35", 13, f === 2 ? 21 : 20, 3, f === 2 ? 1 : 3);
-          dot(c, "#183d35", 21, f === 2 ? 20 : 19, 3, f === 2 ? 1 : 3);
-          dot(c, f % 2 ? "#91aa62" : "#7da556", 19 + (f % 2), 2, 8, 2);
-          dot(c, "#b9c979", 5 + (f % 2), 6, 7, 1);
-        } else if (key === "beetle") {
-          dot(c, "#263b34", 2, 25 - (f % 2), 7, 2);
-          dot(c, "#263b34", 23, 24 + (f % 2), 7, 2);
-          dot(c, f === 2 ? "#bec29e" : "#8c987f", 11, 8, 9, 2);
-          dot(c, "#d7b768", 7 + f, 20, 2, 1);
-        } else if (key === "moth") {
-          const wing = f === 1 || f === 3 ? "#d1c8da" : "#aaa5bc";
-          dot(c, wing, 3, 8 + (f % 2), 8, 5);
-          dot(c, wing, 21, 8 + (f % 2), 8, 5);
-          dot(c, "#f1e6ca", 6, 11 + (f % 2), 2, 2);
-          dot(c, "#f1e6ca", 24, 11 + (f % 2), 2, 2);
-        } else {
-          dot(c, f === 2 ? "#f1e6ca" : "#d7b768", 16, 19, 4, f === 2 ? 1 : 4);
-          dot(c, f === 2 ? "#f1e6ca" : "#d7b768", 29, 19, 4, f === 2 ? 1 : 4);
-          dot(c, f % 2 ? "#91aa62" : "#719557", 9 + (f % 2), 4, 12, 2);
-          dot(c, "#4e7443", 35 - (f % 2), 7, 8, 3);
-        }
-      });
-    scene.anims.create({
-      key: `monster-${key}-idle`,
-      frames: Array.from({ length: 4 }, (_, i) => ({
-        key: `${key}-idle-${i}`,
-      })),
-      frameRate: key === "moth" ? 5 : 3,
-      repeat: -1,
-      yoyo: true,
-    });
-  }
   for (let f = 0; f < 4; f++) {
     const wind = scene.textures.createCanvas(`grass-wind-${f}`, 32, 16)!;
     const c = wind.context;

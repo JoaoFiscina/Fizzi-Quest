@@ -4,7 +4,7 @@ Esta pasta é a memória operacional do jogo. Atualize-a a cada versão antes de
 
 ## Versão corrente
 
-`v23.09.2003.14` — recuperação visual: loops contínuos de água/fogo, quadros refinados e preferência de movimento explícita. Plano em PLANO_V14.md.
+`v23.09.2003.15` — composição de vila/bosque, quatro criaturas com silhuetas próprias e mapa regional reorganizado. Plano em PLANO_V15_COMPOSICAO_ESTETICA.md.
 
 ## Árvore lógica
 
@@ -14,6 +14,7 @@ fizzi-quest/
 │   ├── README.md                 ← este mapa e regras de continuidade
 │   ├── ESTADO_ATUAL.md           ← o que funciona e o que está incompleto
 │   ├── PROXIMOS_PASSOS.md        ← fila priorizada para a próxima sessão
+│   ├── PLANO_V15_COMPOSICAO_ESTETICA.md ← guia detalhado da próxima etapa; somente planejado
 │   ├── ROADMAP_IMPLEMENTACOES.md ← plano auditado das próximas melhorias
 │   ├── DIAGNOSTICO_GRAFICO_V13.md ← causa da regressão visual e nova régua de aceite
 │   ├── DECISOES.md               ← escolhas de produto e engenharia

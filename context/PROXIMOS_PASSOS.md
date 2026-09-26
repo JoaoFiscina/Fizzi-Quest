@@ -1,37 +1,16 @@
 # Próximos passos
 
-O plano detalhado e os critérios de aceite ficam em [`ROADMAP_IMPLEMENTACOES.md`](ROADMAP_IMPLEMENTACOES.md). Esta página mantém a ordem prática de execução.
+O plano detalhado da v15 está em [`PLANO_V15_COMPOSICAO_ESTETICA.md`](PLANO_V15_COMPOSICAO_ESTETICA.md). O roadmap completo fica em [`ROADMAP_IMPLEMENTACOES.md`](ROADMAP_IMPLEMENTACOES.md).
 
-## Entrega atual
+## Entrega atual — v23.09.2003.15
 
-### v23.09.2003.14 — implementada; validação em docs/VALIDATION.md
-
-1. Separar movimentos-base, reações ocasionais e partículas raras.
-2. Restaurar água e fogo contínuos no modo completo, com fases diferentes.
-3. Limitar somente reações e partículas, sem interromper movimentos-base.
-4. Adicionar escolha Completa, Usar sistema ou Reduzida em Ajustes.
-5. Tornar os quadros mais legíveis e validar 30 segundos na cadência real.
-6. Exigir comparação temporal com diferença visual mensurável.
-7. Consultar [`DIAGNOSTICO_GRAFICO_V13.md`](DIAGNOSTICO_GRAFICO_V13.md).
-
-## Concluído na v23.09.2003.13
-
-1. Água, fogo, árvores, vegetação e bandeiras usam ciclos finitos e dessincronizados.
-2. Folhas e poeira aparecem raramente por sprites pré-criados.
-3. Um controlador mantém pausas, probabilidade e limite de efeitos.
-4. Troca de mapa cancela o timer anterior.
-5. Movimento reduzido elimina detalhes decorativos e limita ciclos essenciais.
-6. Gameplay, colisões e save foram preservados.
+1. Composição estática da vila e do bosque, com rota e pontos de interesse mais legíveis.
+2. Quatro monstros redesenhados com ciclos e poses próprios, sem mudar encontros ou combate.
+3. Mapa regional responsivo, com Posto como marco do bosque e três regiões futuras bloqueadas.
+4. Evidências antes/depois, testes temporais e validação em `docs/VALIDATION.md`.
+5. Conferir integração e deploy no endereço oficial; registrar falha real antes de avançar.
 
 ## Etapas seguintes
-
-### Próxima: v23.09.2003.15 — criaturas e mapa
-
-1. Refinar a pixel art dos monstros sem aumentar a escala ou mudar hitboxes.
-2. Dar idle, pausa, reação e ataque visual próprios para cada espécie.
-3. Melhorar transições do combate e respeitar movimento reduzido.
-4. Remodelar o mapa prévio com áreas futuras bloqueadas e centralizadas.
-
 ### v23.09.2003.16 — progressão e treino
 
 1. Reduzir o XP concedido pelos treinos e aumentar moderadamente a participação deles nos atributos.
