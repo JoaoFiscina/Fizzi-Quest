@@ -1,6 +1,6 @@
 # Guia de composição estética e execução — v23.09.2003.15
 
-Data: 26/09/2026. Estado: **implementado na branch feat/composicao-v15; validação em docs/VALIDATION.md**.
+Data: 26/09/2026. Estado: **implementado e integrado à main; produção v15 confirmada; validação em docs/VALIDATION.md**.
 Base de trabalho: implementação v23.09.2003.14. Confirmar integração da base antes de iniciar.
 Objetivo: tornar o mundo mais legível e reconhecível em uma imagem parada e dar identidade aos movimentos das criaturas, preservando a escala e o jogo existente.
 
@@ -223,6 +223,6 @@ Ordem de corte: partículas novas (não necessárias), transições adicionais, 
 
 ## 11. Ponto de retomada
 
-Este documento foi a guia da execução da v15. As fases 0 a 5 foram realizadas, com capturas, sprites autorais, mapa reorganizado e testes. O registro final consta em `docs/VALIDATION.md`; publicação depende do resultado da integração na main.
+Este documento foi a guia da execução da v15. As fases 0 a 6 foram realizadas, com capturas, sprites autorais, mapa reorganizado, testes e publicação verificada. O registro final consta em `docs/VALIDATION.md`.
 
-Retomada: conferir o estado da main e do deploy oficial; em seguida iniciar a v16 de progressão e treino, sem misturar mudanças visuais adicionais.
+Retomada: iniciar a v16 de progressão e treino, sem misturar mudanças visuais adicionais.

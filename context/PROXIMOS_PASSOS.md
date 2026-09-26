@@ -8,7 +8,7 @@ O plano detalhado da v15 está em [`PLANO_V15_COMPOSICAO_ESTETICA.md`](PLANO_V15
 2. Quatro monstros redesenhados com ciclos e poses próprios, sem mudar encontros ou combate.
 3. Mapa regional responsivo, com Posto como marco do bosque e três regiões futuras bloqueadas.
 4. Evidências antes/depois, testes temporais e validação em `docs/VALIDATION.md`.
-5. Conferir integração e deploy no endereço oficial; registrar falha real antes de avançar.
+5. Integração concluída no PR #8 e deploy confirmado no endereço oficial.
 
 ## Etapas seguintes
 ### v23.09.2003.16 — progressão e treino

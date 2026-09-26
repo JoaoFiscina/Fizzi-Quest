@@ -6,4 +6,6 @@
 
 `after/monster-frames.png` reúne os quatro quadros de idle de Broto, Besouro, Mariposa e Guardião em ampliação inteira sem interpolação. `after/battle-beetle.png` e `after/battle-guardian.png` mostram as poses de carapaça e preparo. `after/monster-cadence.json` contém 31 amostras em intervalos de um segundo, com chave de textura, posição lógica e estado da animação de água/fogo.
 
+`after/live-production.png` registra a versão v15 aberta no domínio oficial após a integração do PR #8.
+
 Inspeção: as criaturas se separam melhor por forma; o mapa esclarece Vila → Bosque → Posto e reúne regiões futuras em uma faixa bloqueada. Caminhos e personagens permanecem legíveis na escala normal. O ganho de cenário é moderado; uma ampliação do mundo ou novos biomas não fazia parte desta entrega.

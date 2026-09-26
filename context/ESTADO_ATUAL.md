@@ -1,6 +1,6 @@
 # Estado atual — v23.09.2003.15
 
-Implementação na branch `feat/composicao-v15`, baseada na v14 integrada à `main`. O estado público deve ser conferido após a integração e deploy da v15.
+Implementação integrada à `main` pelo PR #8 (`0fed77f`). Produção confirmada em `https://fizzi-quest.vercel.app/`: título e rodapé exibem v23.09.2003.15, e o canvas inicia.
 
 ## Resultado
 
@@ -26,4 +26,4 @@ Testes e limitações: `docs/VALIDATION.md`.
 
 ## Próximo passo
 
-v23.09.2003.16: progressão e treino, conforme `PROXIMOS_PASSOS.md`. Primeiro conferir o deploy da v15 no endereço oficial.
+v23.09.2003.16: progressão e treino, conforme `PROXIMOS_PASSOS.md`.

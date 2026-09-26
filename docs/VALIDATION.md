@@ -34,3 +34,7 @@ A folha ampliada em escala inteira `after/monster-frames.png` permite avaliar os
 - Transições amplas de entrada e saída do combate foram adiadas para evitar um novo sistema nesta versão. Os eventos existentes ganharam poses curtas.
 - O aviso de chunk grande do Phaser permanece; o build é aprovado.
 - Histórico da validação anterior: `VALIDATION_V14.md`.
+
+## Produção
+
+PR #8 integrado à `main` no commit `0fed77f`. O check da Vercel passou. Consulta ao endereço oficial retornou HTTP 200 e o bundle serviu `v23.09.2003.15`. Em Edge headless, o título foi `Fizzi Quest · v23.09.2003.15`, o rodapé mostrou a mesma versão e o canvas iniciou após Nova aventura. Captura: `evidence/v23.09.2003.15/after/live-production.png`.
