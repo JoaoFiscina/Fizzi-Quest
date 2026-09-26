@@ -27,4 +27,4 @@ Capturas em [`evidence/v23.09.2003.17/`](evidence/v23.09.2003.17/) mostram a pr�
 
 ## Produção
 
-Pendente de integração à `main` e verificação do domínio oficial. O último build público confirmado antes da v17 era v23.09.2003.16.
+PR #10 integrado à `main` no commit `932bf7d67388728b3274d3f799747317b6dba643`. O check Vercel da branch passou. Em 26/09/2026, o endereço `https://fizzi-quest.vercel.app/` exibiu título e rodapé `v23.09.2003.17`; a vila carregou, a aventura iniciou e o Diário abriu o novo prompt com ID/data. A navegação de produção foi feita em uma sessão limpa do navegador interno. Não foi importado treino sintético no domínio público.

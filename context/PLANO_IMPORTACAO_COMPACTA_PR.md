@@ -1,6 +1,6 @@
 # v23.09.2003.17 — importação compacta e bônus de recorde pessoal
 
-Estado: **implementado e em validação para publicação em 26/09/2026**. Complementa `PLANO_V17.md`, que mantém Anel por nível. Base publicada: v23.09.2003.16, PR #9. O contrato efetivo está em `docs/TRAINING_AI_FORMAT.md`; evidências em `docs/VALIDATION.md`.
+Estado: **implementado e publicado em 26/09/2026**. Complementa `PLANO_V17.md`, que mantém Anel por nível. PR #10 integrado à `main`. O contrato efetivo está em `docs/TRAINING_AI_FORMAT.md`; evidências em `docs/VALIDATION.md`.
 
 ## Experiência desejada
 

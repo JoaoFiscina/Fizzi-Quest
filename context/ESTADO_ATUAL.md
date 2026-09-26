@@ -1,6 +1,6 @@
 # Estado atual — v23.09.2003.17
 
-Implementação da v17 concluída na branch `feat/v23.09.2003.17-anel`. A integração à `main` e a publicação oficial devem ser verificadas antes de marcar esta versão como pública. Base oficial anterior: v23.09.2003.16, PR #9.
+Versão v17 integrada à `main` pelo PR #10 (`932bf7d67388728b3274d3f799747317b6dba643`) e confirmada no domínio oficial em 26/09/2026. Base anterior: v23.09.2003.16, PR #9.
 
 ## O que funciona
 
@@ -17,4 +17,4 @@ Planos: `PLANO_V17.md` e `PLANO_IMPORTACAO_COMPACTA_PR.md`. Contrato em `docs/TR
 
 ## Integração e produção
 
-Pendente de confirmação após a validação final. O endereço fixo é `https://fizzi-quest.vercel.app/`; a última versão verificada antes deste trabalho era v23.09.2003.16.
+O endereço fixo `https://fizzi-quest.vercel.app/` exibiu `Fizzi Quest · v23.09.2003.17` no título e `v23.09.2003.17` no rodapé. A vila renderizou, **Nova aventura** iniciou normalmente e o Diário mostrou o fluxo novo **Escolha a data do treino → Criar modelo → prompt com ID**. O check Vercel do commit da branch passou antes do merge. Não foi feita uma análise real por IA externa na produção.
