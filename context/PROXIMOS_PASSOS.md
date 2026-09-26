@@ -8,19 +8,15 @@ Use [`MOLDE_EXPANSAO.md`](MOLDE_EXPANSAO.md) em cada entrega. O roadmap completo
 
 ## v23.09.2003.17 — Anel, importação compacta e PR
 
-Plano detalhado: [`PLANO_V17.md`](PLANO_V17.md). Complemento pedido em 26/09/2026: [`PLANO_IMPORTACAO_COMPACTA_PR.md`](PLANO_IMPORTACAO_COMPACTA_PR.md). Complexidade média-alta, organizada em dois blocos verificáveis; ainda não implementada.
+Plano detalhado: [`PLANO_V17.md`](PLANO_V17.md). Complemento: [`PLANO_IMPORTACAO_COMPACTA_PR.md`](PLANO_IMPORTACAO_COMPACTA_PR.md). Dois blocos implementados; validação e integração registradas em `docs/VALIDATION.md` e `ESTADO_ATUAL.md`.
 
-1. Conferir a economia após a v16 e testar o nível 4 (225 XP acumulados) como requisito do Anel.
-2. Migrar saves sem o campo `ring` para `null`; manter Broches e Pingentes no Acessório.
-3. Bloquear compra e equipamento antes do nível exigido no domínio e na interface.
-4. Mostrar estado do slot em mochila, loja, personagem e HUD; Botas e Capa aparecem apenas como prévia futura.
-5. Testar combinações, backup/reload, níveis 3/4 e telas móveis. Preservar todas as animações atuais.
-6. Substituir a resposta longa da IA por JSON curto com XP, atributos e metadados mínimos; a análise detalhada fica na conversa externa.
-7. Acrescentar bônus explícito de recorde pessoal, com limite e prévia separada. Proposta para teste: +0,02 atributo e +5 XP por PR, até três por dia.
-8. Validar importação antiga e nova, sessão persistida, duplicatas, teto diário e recuperação de backups antes da publicação.
+- Anel no nível 4, dois itens, migração de saves, loja, mochila, ficha e HUD implementados.
+- Modelo de treino com ID persistente, resposta curta v2, bônus de até três PRs por dia e prévia separada implementados. Formato v1 preservado.
+- Testes de domínio, backup, jornada móvel e desktop em `docs/VALIDATION.md`. A avaliação da IA externa com treinos reais ainda depende de observação; o jogo não consegue conferir o relato omitido no código curto.
 
 ## Depois da v17
 
-- v18: Botas e Capa sobre a fundação validada.
-- v19: um slot de Runa e efeitos passivos simples.
+- v18: Botas como um único slot, após observar o balanceamento do Anel e do treino compacto em uso real.
+- v19: Capa, separada de Botas para controlar a complexidade por versão.
+- v20: um slot de Runa e efeitos passivos simples.
 - Futuro: respawn variável em pontos caminháveis, patrulhamento e áreas novas; revisar proposta e complexidade antes de abrir cada etapa.

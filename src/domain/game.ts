@@ -7,6 +7,7 @@ import {
   type Vector,
 } from "./workouts";
 import { trainingTotals, type TrainingRewardRecord } from "./aiWorkouts";
+import type { TrainingDraft } from "./compactWorkouts";
 export const items = {
   blade: {
     name: "Lâmina de aprendiz",
@@ -78,8 +79,33 @@ export const items = {
     price: 60,
     bonus: { ...zero(), vigor: 4, agility: -2 },
   },
+  copper_ring: {
+    name: "Anel de cobre",
+    kind: "Anel",
+    slot: "ring",
+    price: 35,
+    bonus: { ...zero(), strength: 1 },
+  },
+  breeze_ring: {
+    name: "Anel da brisa",
+    kind: "Anel",
+    slot: "ring",
+    price: 40,
+    bonus: { ...zero(), agility: 1 },
+  },
 } as const;
 export type ItemId = keyof typeof items;
+export type ItemSlot = (typeof items)[ItemId]["slot"];
+export const slotUnlockLevel: Record<ItemSlot, number> = {
+  weapon: 1,
+  shield: 1,
+  armor: 1,
+  accessory: 1,
+  ring: 4,
+};
+export function isSlotUnlocked(s: Save, slot: ItemSlot) {
+  return level(s.adventureXpTotal).level >= slotUnlockLevel[slot];
+}
 export const enemies = {
   sprout: {
     name: "Broto Errante",
@@ -140,6 +166,7 @@ export type Save = {
   rulesVersion: 1;
   workouts: RecordEntry[];
   trainingRewards: TrainingRewardRecord[];
+  pendingTraining: TrainingDraft | null;
   adventureXpTotal: number;
   allocated: Vector;
   gold: number;
@@ -150,6 +177,7 @@ export type Save = {
   shield: ItemId | null;
   armor: ItemId | null;
   accessory: ItemId | null;
+  ring: ItemId | null;
   hp: number;
   stamina: number;
   map: "village" | "forest";
@@ -172,6 +200,7 @@ export function freshSave(): Save {
     rulesVersion: 1,
     workouts: [],
     trainingRewards: [],
+    pendingTraining: null,
     adventureXpTotal: 0,
     allocated: zero(),
     gold: 0,
@@ -182,6 +211,7 @@ export function freshSave(): Save {
     shield: null,
     armor: null,
     accessory: null,
+    ring: null,
     hp: 50,
     stamina: 8,
     map: "village",
@@ -232,12 +262,13 @@ export function stats(s: Save) {
       (s.shield ? items[s.shield].bonus[k] : 0) +
       (s.armor ? items[s.armor].bonus[k] : 0) +
       (s.accessory ? items[s.accessory].bonus[k] : 0);
+    const ringBonus = s.ring ? items[s.ring].bonus[k] : 0;
     attributeBreakdown[k] = {
       base: 5,
       legacy: Math.round((m[k] / 10000) * 100) / 100,
       training: training[k],
       allocated: s.allocated[k],
-      equipment,
+      equipment: equipment + ringBonus,
     };
     a[k] =
       Math.round(
@@ -245,7 +276,8 @@ export function stats(s: Save) {
           attributeBreakdown[k].legacy +
           training[k] +
           s.allocated[k] +
-          equipment) *
+          equipment +
+          ringBonus) *
           100,
       ) / 100;
   });
@@ -280,6 +312,10 @@ export function allocate(s: Save, a: Attribute) {
 }
 export function buy(s: Save, id: ItemId | "potion") {
   if (s.battle) throw Error("Finalize o encontro.");
+  if (id !== "potion" && !isSlotUnlocked(s, items[id].slot))
+    throw Error(
+      `Este item desbloqueia no nível ${slotUnlockLevel[items[id].slot]}.`,
+    );
   const price = id === "potion" ? 8 : items[id].price;
   if (s.gold < price) throw Error("Ouro insuficiente.");
   if (id !== "potion" && s.owned.includes(id))
@@ -292,9 +328,12 @@ export function equip(s: Save, id: ItemId) {
   if (s.battle || !s.owned.includes(id))
     throw Error("Equipamento indisponível.");
   const slot = items[id].slot;
+  if (!isSlotUnlocked(s, slot))
+    throw Error(`Este slot desbloqueia no nível ${slotUnlockLevel[slot]}.`);
   if (slot === "weapon") s.weapon = id;
   else if (slot === "shield") s.shield = id;
   else if (slot === "armor") s.armor = id;
+  else if (slot === "ring") s.ring = id;
   else s.accessory = id;
   clampResources(s);
 }

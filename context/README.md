@@ -4,7 +4,7 @@ Esta pasta é a memória operacional do jogo. Atualize-a a cada versão antes de
 
 ## Versão corrente
 
-`v23.09.2003.16` — calibração do treino e apresentação dos desbloqueios de habilidades. Integração e deploy confirmados em `ESTADO_ATUAL.md`. Planos em `PLANO_V16.md` e `PLANO_V17.md`.
+`v23.09.2003.17` — Anel no nível 4, resposta curta do treino e bônus de PR. Implementação e validação local em `ESTADO_ATUAL.md`; conferir a seção de produção para saber se a integração já foi confirmada. Planos em `PLANO_V17.md` e `PLANO_IMPORTACAO_COMPACTA_PR.md`.
 
 ## Árvore lógica
 
@@ -29,6 +29,7 @@ fizzi-quest/
 ├── docs/VISUAL_AUDIT_ANTIGRAVITY.md ← auditoria e decisões da restauração
 ├── docs/VALIDATION.md            ← evidências e limites da verificação
 ├── docs/VALIDATION_V15.md        ← validação arquivada da versão anterior
+├── docs/VALIDATION_V16.md        ← validação arquivada da v16
 ├── docs/DECISIONS.md             ← decisões técnicas e ponto de retomada
 └── src/
     ├── domain/                   ← regras puras: treino, progressão, combate

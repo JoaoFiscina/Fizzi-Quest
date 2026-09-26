@@ -4,6 +4,7 @@ import {
   stats,
   clampResources,
   items,
+  isSlotUnlocked,
   enemies,
   type Save,
 } from "../domain/game";
@@ -19,10 +20,21 @@ import {
   balanceAiWorkout,
   fingerprintAiWorkout,
   trainingRewardRecordSchema,
+  recordDate,
+  baseRewardOf,
+  prBonusOf,
   SAVED_TRAINING_CAPS,
   type AiWorkout,
   type AppliedWorkoutReward,
 } from "../domain/aiWorkouts";
+import {
+  compactWorkoutSchema,
+  trainingDraftSchema,
+  compactTrainingRewardRecordSchema,
+  balanceCompactWorkout,
+  type CompactWorkout,
+  type CompactPreview,
+} from "../domain/compactWorkouts";
 const int = z.number().int().nonnegative().max(100000000);
 const vector = z.object({
   strength: int,
@@ -41,6 +53,8 @@ const item = z.enum([
   "iron_shield",
   "leather_armor",
   "chainmail",
+  "copper_ring",
+  "breeze_ring",
 ]);
 const enemy = z.enum(["sprout", "beetle", "moth", "guardian"]);
 const schema = z.object({
@@ -55,17 +69,24 @@ const schema = z.object({
       }),
     )
     .max(5000),
-  trainingRewards: z.array(trainingRewardRecordSchema).max(5000).default([]),
+  trainingRewards: z
+    .array(
+      z.union([trainingRewardRecordSchema, compactTrainingRewardRecordSchema]),
+    )
+    .max(5000)
+    .default([]),
+  pendingTraining: trainingDraftSchema.nullable().default(null),
   adventureXpTotal: int,
   allocated: vector,
   gold: int,
   materials: int,
   potions: int,
-  owned: z.array(item).min(1).max(10),
+  owned: z.array(item).min(1).max(12),
   weapon: item,
   shield: item.nullable().default(null),
   armor: item.nullable().default(null),
   accessory: item.nullable(),
+  ring: item.nullable().default(null),
   hp: int,
   stamina: int,
   map: z.enum(["village", "forest"]),
@@ -109,6 +130,10 @@ export function validateSave(raw: unknown): Save {
       (!s.owned.includes(s.shield) || items[s.shield].slot !== "shield")) ||
     (s.armor &&
       (!s.owned.includes(s.armor) || items[s.armor].slot !== "armor")) ||
+    (s.ring &&
+      (!s.owned.includes(s.ring) ||
+        items[s.ring].slot !== "ring" ||
+        !isSlotUnlocked(s, "ring"))) ||
     new Set(s.owned).size !== s.owned.length ||
     s.hp > stats(s).maxHp ||
     s.stamina > stats(s).maxStamina ||
@@ -125,19 +150,67 @@ export function validateSave(raw: unknown): Save {
       s.trainingRewards.length
   )
     throw Error("Backup contém treinos de IA duplicados.");
-  for (const date of new Set(s.trainingRewards.map((r) => r.workout.date))) {
-    const records = s.trainingRewards.filter((r) => r.workout.date === date);
-    const xp = records.reduce((n, r) => n + r.reward.xp, 0);
+  for (const record of s.trainingRewards) {
+    if (!("format" in record)) continue;
+    const base = record.baseReward,
+      bonus = record.prBonus;
+    if (
+      record.externalSessionId !== record.compact.id ||
+      record.fingerprint !== `compact:${record.compact.id}` ||
+      record.reward.xp !== base.xp + bonus.xp ||
+      record.reward.gold !== base.gold ||
+      bonus.xp !== bonus.count * 5 ||
+      Math.abs(
+        attributes.reduce((n, k) => n + bonus.attributes[k], 0) -
+          bonus.count * 0.02,
+      ) > 0.001 ||
+      attributes.some(
+        (k) =>
+          Math.abs(
+            bonus.attributes[k] * 50 - Math.round(bonus.attributes[k] * 50),
+          ) > 0.001,
+      ) ||
+      bonus.attributes.strength > record.compact.pr.forca * 0.02 + 0.001 ||
+      bonus.attributes.vigor > record.compact.pr.vigor * 0.02 + 0.001 ||
+      bonus.attributes.agility > record.compact.pr.agilidade * 0.02 + 0.001 ||
+      bonus.attributes.breath > record.compact.pr.folego * 0.02 + 0.001 ||
+      attributes.some(
+        (k) =>
+          Math.abs(
+            record.reward.attributes[k] -
+              base.attributes[k] -
+              bonus.attributes[k],
+          ) > 0.001,
+      ) ||
+      attributes.reduce((n, k) => n + bonus.attributes[k], 0) > 0.061 ||
+      (record.compact.c === "baixa" && bonus.count > 0)
+    )
+      throw Error("Backup contém recompensa compacta inconsistente.");
+  }
+  if (
+    s.pendingTraining &&
+    s.trainingRewards.some((r) => r.externalSessionId === s.pendingTraining?.id)
+  )
+    throw Error("Backup contém rascunho já aplicado.");
+  for (const date of new Set(s.trainingRewards.map(recordDate))) {
+    const records = s.trainingRewards.filter((r) => recordDate(r) === date);
+    const xp = records.reduce((n, r) => n + baseRewardOf(r).xp, 0);
     const gold = records.reduce((n, r) => n + r.reward.gold, 0);
     const attribute = records.reduce(
       (n, r) =>
-        n + attributes.reduce((sum, key) => sum + r.reward.attributes[key], 0),
+        n +
+        attributes.reduce(
+          (sum, key) => sum + baseRewardOf(r).attributes[key],
+          0,
+        ),
       0,
     );
     if (
       xp > SAVED_TRAINING_CAPS.xp ||
       gold > SAVED_TRAINING_CAPS.gold ||
-      attribute > SAVED_TRAINING_CAPS.attribute + 0.001
+      attribute > SAVED_TRAINING_CAPS.attribute + 0.001 ||
+      records.reduce((n, r) => n + prBonusOf(r).count, 0) > 3 ||
+      records.reduce((n, r) => n + prBonusOf(r).xp, 0) > 15
     )
       throw Error("Backup excede os limites diários de treino.");
   }
@@ -286,6 +359,66 @@ export class Store {
   previewAiWorkout(input: AiWorkout): AppliedWorkoutReward {
     const normalized = aiWorkoutSchema.parse(input);
     return balanceAiWorkout(normalized, this.state.trainingRewards);
+  }
+  createTrainingDraft(date: string) {
+    const validDate = trainingDraftSchema.shape.date.parse(date);
+    if (this.state.battle)
+      throw Error("Termine o encontro antes de preparar o treino.");
+    const previous = this.state;
+    this.transact((s) => {
+      s.pendingTraining = {
+        id: crypto.randomUUID(),
+        date: validDate,
+        rules: 2,
+      };
+    });
+    if (this.error) {
+      this.state = previous;
+      this.emit();
+      throw Error(this.error);
+    }
+    return this.state.pendingTraining!;
+  }
+  previewCompactWorkout(input: CompactWorkout): CompactPreview {
+    const normalized = compactWorkoutSchema.parse(input);
+    if (!this.state.pendingTraining)
+      throw Error(
+        "Rascunho não encontrado. Prepare e copie o modelo antes de importar.",
+      );
+    return balanceCompactWorkout(
+      normalized,
+      this.state.pendingTraining,
+      this.state.trainingRewards,
+    );
+  }
+  recordCompactWorkout(input: CompactWorkout): CompactPreview {
+    if (this.state.battle) throw Error("Termine o encontro antes de importar.");
+    const normalized = compactWorkoutSchema.parse(input);
+    const preview = this.previewCompactWorkout(normalized);
+    const previous = this.state;
+    this.transact((s) => {
+      const draft = s.pendingTraining!;
+      s.adventureXpTotal += preview.reward.xp;
+      s.gold += preview.reward.gold;
+      s.trainingRewards.push({
+        format: 2,
+        id: crypto.randomUUID(),
+        externalSessionId: normalized.id,
+        fingerprint: `compact:${normalized.id}`,
+        date: draft.date,
+        compact: normalized,
+        baseReward: preview.baseReward,
+        prBonus: preview.prBonus,
+        reward: preview.reward,
+      });
+      s.pendingTraining = null;
+    });
+    if (this.error) {
+      this.state = previous;
+      this.emit();
+      throw Error(this.error);
+    }
+    return preview;
   }
   recordAiWorkout(input: AiWorkout): AppliedWorkoutReward {
     if (this.state.battle) throw Error("Termine o encontro antes de importar.");

@@ -189,7 +189,7 @@ Esta expansão será dividida para que cada versão mantenha complexidade média
 
 ### v23.09.2003.17 — Anel, importação compacta e PR
 
-Complexidade revisada: média-alta. Em 26/09/2026, o usuário pediu incluir resposta curta da IA e bônus de PR junto ao próximo passo. Executar dois blocos verificáveis, conforme `PLANO_V17.md` e `PLANO_IMPORTACAO_COMPACTA_PR.md`. Ainda não implementado.
+Complexidade revisada: média-alta. Implementação da v17 concluída em dois blocos: Anel no nível 4 e importação compacta com bônus de PR. Testes e publicação devem ser conferidos em `docs/VALIDATION.md` e `ESTADO_ATUAL.md`.
 
 - Criar metadados de requisito de nível por slot sem armazenar regras duplicadas no save.
 - Mostrar slots futuros bloqueados, nível necessário e prévia do benefício.
@@ -199,22 +199,26 @@ Complexidade revisada: média-alta. Em 26/09/2026, o usuário pediu incluir resp
 - IA analisa o relato fora do jogo e devolve somente ganhos e metadados mínimos em JSON compacto. Conservar importação v1 e recompensas históricas.
 - Bônus de recorde pessoal aparece separado na prévia; proposta inicial de +0,02 atributo e +5 XP por PR, limitado a três no dia. Calibrar antes de publicar.
 
-### v23.09.2003.18 — Botas e Capa
+### v23.09.2003.18 — Botas
 
 Complexidade alvo: média.
 
-- Adicionar **Botas** e **Capa** sobre a fundação validada na versão anterior.
-- Relacionar Botas principalmente a deslocamento/Agilidade e Capas a defesa ou utilidade, sem bônus dominantes.
+- Adicionar somente **Botas** sobre a fundação validada na versão anterior.
+- Relacionar Botas a Agilidade sem alterar novamente a fórmula de deslocamento; validar o ganho real no mapa.
 - Atualizar mochila, HUD resumido, personagem, loja e testes de combinações.
 - Limitar esta versão aos novos slots e ao balanceamento; não incluir runas.
 
-### v23.09.2003.19 — Runas
+### v23.09.2003.19 — Capa
+
+Complexidade alvo: média. Adicionar o slot **Capa** com bônus defensivo moderado, após validar Botas em saves antigos e no celular. A loja, a ficha e o HUD devem continuar compactos.
+
+### v23.09.2003.20 — Runas
 
 Complexidade alvo: média-alta e isolada.
 
 - Começar com um único slot e efeitos passivos simples que reutilizem regras existentes.
 - Evitar empilhamento livre ou efeitos que alterem a ordem determinística do combate sem testes próprios.
-- Definir nível de desbloqueio e catálogo final depois das simulações das versões 17 e 18.
+- Definir nível de desbloqueio e catálogo final depois das simulações das versões 17 a 19.
 
 ### Regra de complexidade por versão
 

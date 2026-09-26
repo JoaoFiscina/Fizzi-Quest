@@ -27,6 +27,8 @@ import {
   allocate,
 } from "../src/domain/game";
 import { Store, SAVE_KEY, validateSave } from "../src/application/store";
+import { parseCompactWorkout } from "../src/domain/compactWorkouts";
+import { trainingPrompt } from "../src/content/trainingPrompt";
 import { makeMap, walkable } from "../src/game/maps";
 const workout = () => {
   const w = parseWorkout(JSON.stringify(fixture));
@@ -455,6 +457,207 @@ describe("equipamentos e migração", () => {
     expect(s.weapon).toBe("dagger");
     expect(a.attributes.vigor).toBe(10); // 5 base + 3 escudo + 2 armadura
     expect(a.attributes.agility).toBe(6); // 5 base - 1 escudo + 2 adaga + 0 armadura
+  });
+});
+describe("v17: Anel e resposta curta", () => {
+  it("migra save v16 sem Anel ou rascunho e preserva equipamento antigo", () => {
+    const old = freshSave() as any;
+    old.gold = 42;
+    old.owned.push("moss");
+    old.accessory = "moss";
+    delete old.ring;
+    delete old.pendingTraining;
+    const migrated = validateSave(old);
+    expect(migrated.ring).toBeNull();
+    expect(migrated.pendingTraining).toBeNull();
+    expect(migrated.gold).toBe(42);
+    expect(migrated.accessory).toBe("moss");
+  });
+  it("bloqueia compra/equipamento no nível 3 e libera no nível 4 sem empilhar anéis", () => {
+    const s = freshSave();
+    s.gold = 120;
+    s.adventureXpTotal = 224;
+    expect(() => buy(s, "copper_ring")).toThrow("nível 4");
+    s.owned.push("copper_ring");
+    expect(() => equip(s, "copper_ring")).toThrow("nível 4");
+    s.ring = "copper_ring";
+    expect(() => validateSave(s)).toThrow();
+    s.ring = null;
+    s.adventureXpTotal = 225;
+    equip(s, "copper_ring");
+    expect(stats(s).attributes.strength).toBe(6);
+    buy(s, "breeze_ring");
+    equip(s, "breeze_ring");
+    expect(stats(s).attributes.strength).toBe(5);
+    expect(stats(s).attributes.agility).toBe(6);
+    expect(s.gold).toBe(80);
+    s.owned.push("moss");
+    equip(s, "moss");
+    expect(stats(s).attributes.vigor).toBe(7);
+    expect(validateSave(s).ring).toBe("breeze_ring");
+  });
+  it("gera ID estável, importa JSON curto, soma PR e impede repetição após recarga", () => {
+    const port = memory();
+    const store = new Store(port);
+    const draft = store.createTrainingDraft("2026-09-26");
+    expect(trainingPrompt(draft)).toContain(draft.id);
+    const input = parseCompactWorkout(
+      JSON.stringify({
+        v: 2,
+        id: draft.id,
+        c: "alta",
+        xp: 140,
+        atributos: { forca: 0.22, vigor: 0.1, folego: 0.06 },
+        pr: { forca: 1 },
+      }),
+    );
+    expect(store.previewCompactWorkout(input).reward.xp).toBe(145);
+    expect(store.state.adventureXpTotal).toBe(0);
+    expect(store.recordCompactWorkout(input).prBonus).toEqual({
+      xp: 5,
+      count: 1,
+      attributes: { strength: 0.02, vigor: 0, agility: 0, breath: 0 },
+    });
+    expect(store.state.adventureXpTotal).toBe(145);
+    expect(store.state.trainingRewards).toHaveLength(1);
+    const reloaded = new Store(port);
+    expect(reloaded.state.pendingTraining).toBeNull();
+    expect(() => reloaded.recordCompactWorkout(input)).toThrow();
+    expect(reloaded.state.adventureXpTotal).toBe(145);
+    expect(
+      validateSave(JSON.parse(reloaded.export())).trainingRewards,
+    ).toHaveLength(1);
+  });
+  it("limita PRs por sessão e dia, sem consumir o teto base", () => {
+    const store = new Store(memory());
+    const first = store.createTrainingDraft("2026-09-26");
+    const input = (id: string, c = "alta", pr = 10) =>
+      parseCompactWorkout(
+        JSON.stringify({
+          v: 2,
+          id,
+          c,
+          xp: 1_000,
+          atributos: { forca: 1, vigor: 1 },
+          pr: { forca: pr },
+        }),
+      );
+    const a = store.recordCompactWorkout(input(first.id));
+    expect(a.baseReward.xp).toBe(216);
+    expect(a.prBonus.count).toBe(3);
+    expect(a.reward.xp).toBe(231);
+    const second = store.createTrainingDraft("2026-09-26");
+    const b = store.recordCompactWorkout(input(second.id));
+    expect(b.baseReward.xp).toBe(54);
+    expect(b.prBonus.count).toBe(0);
+    expect(store.state.adventureXpTotal).toBe(285);
+    expect(
+      validateSave(JSON.parse(store.export())).trainingRewards,
+    ).toHaveLength(2);
+    const low = store.createTrainingDraft("2026-09-27");
+    expect(
+      store.previewCompactWorkout(input(low.id, "baixa", 2)).prBonus.count,
+    ).toBe(0);
+  });
+  it("aceita histórico legado de 450 XP com bônus novo, mas sem base adicional", () => {
+    const port = memory();
+    const store = new Store(port);
+    const old = aiWorkout({
+      rewards: {
+        xp: 450,
+        gold: 0,
+        attributes: { strength: 0.5, vigor: 0, agility: 0, breath: 0 },
+      },
+    });
+    store.transact((s) =>
+      s.trainingRewards.push({
+        id: crypto.randomUUID(),
+        externalSessionId: old.id,
+        fingerprint: fingerprintAiWorkout(old),
+        workout: old,
+        reward: {
+          xp: 450,
+          gold: 0,
+          attributes: { strength: 0.5, vigor: 0, agility: 0, breath: 0 },
+          declaredConfidence: "high",
+          effectiveConfidence: "high",
+          adjustments: [],
+        },
+      }),
+    );
+    const draft = store.createTrainingDraft(old.date);
+    const result = store.recordCompactWorkout(
+      parseCompactWorkout(
+        JSON.stringify({
+          v: 2,
+          id: draft.id,
+          c: "alta",
+          xp: 100,
+          atributos: { forca: 0.1 },
+          pr: { forca: 1 },
+        }),
+      ),
+    );
+    expect(result.baseReward.xp).toBe(0);
+    expect(result.prBonus.xp).toBe(5);
+    expect(
+      validateSave(JSON.parse(store.export())).trainingRewards,
+    ).toHaveLength(2);
+  });
+  it("rejeita campos extras, ID estranho e falha de gravação sem conceder XP", () => {
+    const store = new Store(memory());
+    const draft = store.createTrainingDraft("2026-09-26");
+    expect(() =>
+      parseCompactWorkout(
+        JSON.stringify({ v: 2, id: draft.id, c: "alta", xp: 10, extras: 1 }),
+      ),
+    ).toThrow("extras");
+    const input = parseCompactWorkout(
+      JSON.stringify({ v: 2, id: crypto.randomUUID(), c: "alta", xp: 100 }),
+    );
+    expect(() => store.previewCompactWorkout(input)).toThrow("ID diferente");
+    const storage = {
+      getItem: (_: string) => null,
+      setItem: (_: string, __: string) => {
+        throw Error("quota");
+      },
+    };
+    const failing = new Store(storage);
+    expect(() => failing.createTrainingDraft("2026-09-26")).toThrow(
+      "Não foi possível salvar",
+    );
+    expect(failing.state.pendingTraining).toBeNull();
+  });
+  it("restaura backup v16 e preserva rascunho quando a confirmação não cabe no armazenamento", () => {
+    const values = new Map<string, string>();
+    let fail = false;
+    const port = {
+      getItem: (k: string) => values.get(k) ?? null,
+      setItem: (k: string, v: string) => {
+        if (fail && k === SAVE_KEY) throw Error("quota");
+        values.set(k, v);
+      },
+    };
+    const store = new Store(port);
+    const old = freshSave() as any;
+    delete old.ring;
+    delete old.pendingTraining;
+    old.gold = 12;
+    store.restore(JSON.stringify(old));
+    expect(store.state.ring).toBeNull();
+    expect(store.state.gold).toBe(12);
+    const draft = store.createTrainingDraft("2026-09-26");
+    const input = parseCompactWorkout(
+      JSON.stringify({ v: 2, id: draft.id, c: "media", xp: 60 }),
+    );
+    fail = true;
+    expect(() => store.recordCompactWorkout(input)).toThrow(
+      "Não foi possível salvar",
+    );
+    expect(store.state.adventureXpTotal).toBe(0);
+    expect(store.state.pendingTraining?.id).toBe(draft.id);
+    fail = false;
+    expect(new Store(port).state.pendingTraining?.id).toBe(draft.id);
   });
 });
 describe("rodadas determinísticas", () => {

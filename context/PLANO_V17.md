@@ -1,6 +1,6 @@
 # Fizzi Quest — plano da v23.09.2003.17: Anel, treino compacto e PR
 
-Estado: **planejado, ampliado a pedido do usuário em 26/09/2026**. A v16 está publicada pelo PR #9. Este documento define o trabalho; não registra implementação, testes ou publicação da v17. O novo fluxo de treino e bônus de recorde pessoal está detalhado em [`PLANO_IMPORTACAO_COMPACTA_PR.md`](PLANO_IMPORTACAO_COMPACTA_PR.md).
+Estado: **implementado e em validação para publicação em 26/09/2026**. A v16 foi publicada pelo PR #9. Esta versão acrescenta Anel no nível 4 e o fluxo compacto descrito em [`PLANO_IMPORTACAO_COMPACTA_PR.md`](PLANO_IMPORTACAO_COMPACTA_PR.md). Resultados e limites ficam em `docs/VALIDATION.md`; o status do domínio oficial fica em `ESTADO_ATUAL.md`.
 
 ## Objetivo e limite da versão
 

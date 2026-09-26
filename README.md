@@ -2,7 +2,7 @@
 
 RPG pessoal de exploração em pixel art, construído com Phaser, TypeScript e Vite para o marco **Treino à aventura**.
 
-## Implementação atual — v23.09.2003.16
+## Implementação atual — v23.09.2003.17
 
 Já estão implementados os blocos principais do domínio e da experiência:
 
@@ -10,11 +10,13 @@ Já estão implementados os blocos principais do domínio e da experiência:
 - Broto Errante, Besouro de Pedra, Mariposa da Névoa e Guardião de Musgo com combate determinístico por turnos;
 - atacar, golpe pesado, recuperar fôlego, defender, poção, fugir e habilidades desbloqueadas por nível;
 - fluxo principal de treino real: copiar o modelo para uma IA externa, colar o JSON devolvido, revisar e confirmar a recompensa;
+- o modelo novo gera uma resposta curta com XP, atributos e PRs; a análise detalhada fica na conversa com a IA, e o jogo soma um bônus moderado por recorde pessoal;
 - validação local de confiança, limites por sessão e por dia e bloqueio de duplicatas; ganhos de treino não diminuem por nível ou equipamento;
 - treinos concedem menos XP de aventura e contribuem mais para atributos em confiança média/alta;
 - habilidades bloqueadas aparecem com nível, custo de fôlego e função tática antes do desbloqueio;
 - tela do personagem com atributos fracionários, origem dos pontos, equipamentos e ganhos recentes;
 - mochila agrupada por slot, tipos visíveis em cada equipamento e conjunto equipado em destaque;
+- Anel liberado no nível 4, com duas opções na loja, slot próprio na mochila e indicação no HUD;
 - manual do aventureiro com Defesa, Fôlego, atributos, equipamentos, treinos e exploração;
 - escolha cosmética de personagem masculino ou feminino, preservada no save;
 - zoom Afastado, Padrão e Próximo com escala inteira e adaptação à viewport;
@@ -39,7 +41,7 @@ Build para Vercel: `npm run build`, saída `dist`. O endereço oficial é [fizzi
 
 Validação: `npm test` e `npm run test:e2e` (Edge via Playwright). Evidências e limites em [`docs/VALIDATION.md`](docs/VALIDATION.md).
 
-Esta versão calibra os treinos e esclarece a progressão das habilidades, sem modificar a arte ou as animações da v15. A versão pública usa `v23.09.2003.x`; a versão npm equivalente usa SemVer (`23.9.2003-16`).
+Esta versão adiciona Anel e importação compacta com bônus de PR, sem modificar a arte ou as animações da v15. A versão pública usa `v23.09.2003.x`; a versão npm equivalente usa SemVer (`23.9.2003-17`).
 
 ## Contexto vivo
 

@@ -1,24 +1,20 @@
-# Estado atual — v23.09.2003.16
+# Estado atual — v23.09.2003.17
 
-Implementação integrada à `main` pelo PR #9 (`5aeca54`). Produção confirmada em `https://fizzi-quest.vercel.app/`: título e rodapé exibem v23.09.2003.16, e o cenário carrega.
+Implementação da v17 concluída na branch `feat/v23.09.2003.17-anel`. A integração à `main` e a publicação oficial devem ser verificadas antes de marcar esta versão como pública. Base oficial anterior: v23.09.2003.16, PR #9.
 
-## Resultado da v16
+## O que funciona
 
-- XP por treino limitado a 60/132/216 por sessão e 270 por dia conforme confiança efetiva.
-- Atributos de treinos médios/altos recebem fator 1,25 antes dos novos limites por sessão; o teto diário é 0,60.
-- O mesmo treino concede os mesmos atributos brutos nos níveis 1, 10 e 20, com e sem equipamentos, quando o histórico diário é igual.
-- Saves v15 com recompensas até 450 XP no mesmo dia permanecem aceitos e não são recalculados.
-- Tela de combate mostra habilidades bloqueadas, nível, custo e uso. A ficha mostra o próximo desbloqueio.
-- Nenhum arquivo de sprites, mapa, movimento ou animação foi alterado.
+- Anel tem slot próprio, visível na mochila desde o início e liberado no nível 4 (225 XP acumulados). Loja e domínio bloqueiam compra/equipamento antes do nível. Anel de cobre dá +1 Força por 35 ouro; Anel da brisa dá +1 Agilidade por 40 ouro. Broches e Pingentes continuam em Acessório.
+- Save v16 sem `ring` ou `pendingTraining` migra com `null`; chave e versões do save continuam iguais. Backups inválidos não substituem o progresso. Combate, XP antigo e animações não foram recalculados.
+- O jogo cria um rascunho com ID/data, copia um modelo preciso e aceita JSON compacto v2. Prévia separa treino, bônus de PR, ajustes e total. Confirmar aplica a recompensa e consome o rascunho no mesmo save; duplicatas por ID são barradas.
+- PR elegível sugerido pela IA dá +5 XP e +0,02 no atributo relacionado, limitado a três por sessão e dia. Confiança baixa não recebe bônus. Importação detalhada v1 e histórico anterior continuam aceitos.
 
-## Evidência e limites
+## Limites e retomada
 
-Plano: `PLANO_V16.md`. Testes e capturas: `docs/VALIDATION.md` e `docs/evidence/v23.09.2003.16/`. A regra de treino continua usando o modelo JSON v1 e IA externa; a validação do jogo decide a recompensa final.
+O código curto omite o treino original. O jogo valida estrutura, ID, limites e persistência, mas a evidência de PR depende da análise externa; não há autenticação do treino. O prompt e os testes foram verificados com dados sintéticos, sem consulta real a uma IA externa. Observar o balanceamento antes de abrir Botas na v18.
+
+Planos: `PLANO_V17.md` e `PLANO_IMPORTACAO_COMPACTA_PR.md`. Contrato em `docs/TRAINING_AI_FORMAT.md`. Validação em `docs/VALIDATION.md`. Próxima etapa em `PROXIMOS_PASSOS.md`.
 
 ## Integração e produção
 
-PR #9 integrado à `main` no commit `5aeca54e447bfd23cab4615f71f3a251257ee549`. O check Vercel passou. Em 26/09/2026, o navegador abriu o domínio fixo e mostrou `Fizzi Quest · v23.09.2003.16` no título, `v23.09.2003.16` no rodapé e a vila renderizada atrás da tela inicial.
-
-## Próximo passo
-
-v23.09.2003.17: Anel liberado por nível e, conforme novo pedido em 26/09/2026, resposta compacta da IA e bônus explícito de PR. Planejamento em `PLANO_V17.md` e `PLANO_IMPORTACAO_COMPACTA_PR.md`; implementação da v17 ainda não iniciada. As animações da v15 permanecem fora do escopo.
+Pendente de confirmação após a validação final. O endereço fixo é `https://fizzi-quest.vercel.app/`; a última versão verificada antes deste trabalho era v23.09.2003.16.

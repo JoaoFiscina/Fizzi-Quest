@@ -11,12 +11,15 @@ import {
   equip,
   enemies,
   items,
+  isSlotUnlocked,
+  slotUnlockLevel,
   rest,
   startBattle,
   stats,
   intent,
   type Action,
   type ItemId,
+  type ItemSlot,
   type EnemyId,
   type Save,
   type CombatEvent,
@@ -25,6 +28,7 @@ import { attributes } from "./domain/workouts";
 import { el, button, bar, labels, fmt } from "./ui/dom";
 import { workoutsUI } from "./ui/workouts";
 import { TUTORIAL_TOPICS } from "./content/tutorial";
+import { recordDate, recordSummary } from "./domain/aiWorkouts";
 let storage: Storage;
 try {
   storage = localStorage;
@@ -227,6 +231,16 @@ function renderHUD() {
       Boolean(s.armor),
     ),
   );
+  if (isSlotUnlocked(s, "ring")) {
+    equipment.classList.add("with-ring");
+    equipment.append(
+      equipped(
+        "ANEL",
+        s.ring ? items[s.ring].name : "Sem anel",
+        Boolean(s.ring),
+      ),
+    );
+  }
   const loot = el("div", "", "hud-loot");
   loot.append(
     el("span", `Ouro ${s.gold}`, "gold"),
@@ -284,7 +298,7 @@ function character() {
     el("small", "EQUIPAMENTOS", "eyebrow-inline"),
     el(
       "p",
-      `${items[s.weapon].name} · ${s.shield ? items[s.shield].name : "sem escudo"} · ${s.armor ? items[s.armor].name : "sem armadura"}`,
+      `${items[s.weapon].name} · ${s.shield ? items[s.shield].name : "sem escudo"} · ${s.armor ? items[s.armor].name : "sem armadura"} · ${s.accessory ? items[s.accessory].name : "sem acessório"} · ${isSlotUnlocked(s, "ring") ? (s.ring ? items[s.ring].name : "sem anel") : "Anel no nível 4"}`,
     ),
   );
   content.append(
@@ -321,9 +335,7 @@ function character() {
     );
     row.append(source);
     const recent = [...s.trainingRewards]
-      .sort((left, right) =>
-        right.workout.date.localeCompare(left.workout.date),
-      )
+      .sort((left, right) => recordDate(right).localeCompare(recordDate(left)))
       .filter((record) => record.reward.attributes[k] > 0)
       .slice(0, 3);
     if (recent.length) {
@@ -333,7 +345,7 @@ function character() {
         gains.append(
           el(
             "p",
-            `+${fmt(record.reward.attributes[k])} · ${record.workout.summary}`,
+            `+${fmt(record.reward.attributes[k])} · ${recordSummary(record)}`,
           ),
         );
       row.append(gains);
@@ -363,17 +375,18 @@ function character() {
     content.append(row);
   });
 }
-type ItemSlot = (typeof items)[ItemId]["slot"];
 const ITEM_GROUPS: { slot: ItemSlot; label: string; short: string }[] = [
   { slot: "weapon", label: "Armas", short: "ARMA" },
   { slot: "shield", label: "Escudos", short: "ESCUDO" },
   { slot: "armor", label: "Armaduras", short: "ARMADURA" },
   { slot: "accessory", label: "Acessórios", short: "ACESSÓRIO" },
+  { slot: "ring", label: "Anéis", short: "ANEL" },
 ];
 function equippedItem(s: Save, slot: ItemSlot): ItemId | null {
   if (slot === "weapon") return s.weapon;
   if (slot === "shield") return s.shield;
   if (slot === "armor") return s.armor;
+  if (slot === "ring") return s.ring;
   return s.accessory;
 }
 function equipment(shop = false) {
@@ -396,7 +409,14 @@ function equipment(shop = false) {
       const slot = el("div", "", `inventory-slot${id ? " filled" : ""}`);
       slot.append(
         el("small", group.short),
-        el("strong", id ? items[id].name : "Vazio"),
+        el(
+          "strong",
+          !isSlotUnlocked(s, group.slot)
+            ? `Desbloqueia no nível ${slotUnlockLevel[group.slot]}`
+            : id
+              ? items[id].name
+              : "Vazio",
+        ),
       );
       slots.append(slot);
     }
@@ -430,6 +450,14 @@ function equipment(shop = false) {
           .join(" · ") || "Equipamento inicial",
       ),
     );
+    if (!isSlotUnlocked(s, item.slot))
+      copy.append(
+        el(
+          "small",
+          `Desbloqueia no nível ${slotUnlockLevel[item.slot]}`,
+          "muted",
+        ),
+      );
     const b = button(
       shopCard
         ? s.owned.includes(id)
@@ -444,9 +472,9 @@ function equipment(shop = false) {
           equipment(shopCard);
         }),
     );
-    b.disabled = shopCard
-      ? s.owned.includes(id) || s.gold < item.price
-      : equipped;
+    b.disabled =
+      !isSlotUnlocked(s, item.slot) ||
+      (shopCard ? s.owned.includes(id) || s.gold < item.price : equipped);
     if (!shopCard && equipped) b.classList.add("equipped-state");
     row.append(copy, b);
     return row;
@@ -467,7 +495,7 @@ function equipment(shop = false) {
           if (right === active) return 1;
           return items[left].price - items[right].price;
         });
-      if (!owned.length) continue;
+      if (!owned.length && group.slot !== "ring") continue;
       const section = el("section", "", "inventory-group");
       const heading = el("div", "", "inventory-group-heading");
       heading.append(
@@ -476,6 +504,16 @@ function equipment(shop = false) {
       );
       const grid = el("div", "", "inventory-group-grid");
       for (const id of owned) grid.append(card(id, false));
+      if (!owned.length)
+        grid.append(
+          el(
+            "p",
+            isSlotUnlocked(s, group.slot)
+              ? "Nenhum Anel na mochila. Confira a loja da vila."
+              : "Slot de Anel bloqueado até o nível 4.",
+            "muted",
+          ),
+        );
       section.append(heading, grid);
       list.append(section);
     }
@@ -509,6 +547,13 @@ function equipment(shop = false) {
       ),
     );
   content.append(list);
+  content.append(
+    el(
+      "p",
+      "Em planejamento: Botas para mobilidade e Capa para proteção. Ainda não podem ser equipadas.",
+      "muted",
+    ),
+  );
 }
 function download() {
   const url = URL.createObjectURL(
