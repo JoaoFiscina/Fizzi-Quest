@@ -197,12 +197,14 @@ test("poses de carapaça e preparo refletem o combate salvo", async ({
   guardian.motion = "reduced";
   startBattle(guardian, "guardian");
   guardian.battle!.round = 2;
-  await page.evaluate(
+  const context = page.context();
+  await page.close();
+  const guardianPage = await context.newPage();
+  await guardianPage.addInitScript(
     (state) =>
       localStorage.setItem("fizzi-quest.save.v1", JSON.stringify(state)),
     guardian,
   );
-  const guardianPage = await page.context().newPage();
   await guardianPage.goto("/");
   await guardianPage
     .getByRole("button", { name: "Continuar aventura" })

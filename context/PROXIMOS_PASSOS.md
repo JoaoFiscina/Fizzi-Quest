@@ -6,18 +6,17 @@ Use [`MOLDE_EXPANSAO.md`](MOLDE_EXPANSAO.md) em cada entrega. O roadmap completo
 
 37 testes de regras, build e 18 jornadas E2E aprovados. Capturas de treino/habilidades conferidas, PR #9 integrado e versão v23.09.2003.16 confirmada no domínio oficial.
 
-## v23.09.2003.17 — Anel e desbloqueio por nível
+## v23.09.2003.17 — Anel, importação compacta e PR
 
-Plano detalhado: [`PLANO_V17.md`](PLANO_V17.md). Complexidade média; um slot funcional novo, dois itens modestos, fundação de requisitos por nível e save compatível.
+Plano detalhado: [`PLANO_V17.md`](PLANO_V17.md). Complemento: [`PLANO_IMPORTACAO_COMPACTA_PR.md`](PLANO_IMPORTACAO_COMPACTA_PR.md). Dois blocos implementados; validação e integração registradas em `docs/VALIDATION.md` e `ESTADO_ATUAL.md`.
 
-1. Conferir a economia após a v16 e testar o nível 4 (225 XP acumulados) como requisito do Anel.
-2. Migrar saves sem o campo `ring` para `null`; manter Broches e Pingentes no Acessório.
-3. Bloquear compra e equipamento antes do nível exigido no domínio e na interface.
-4. Mostrar estado do slot em mochila, loja, personagem e HUD; Botas e Capa aparecem apenas como prévia futura.
-5. Testar combinações, backup/reload, níveis 3/4 e telas móveis. Preservar todas as animações atuais.
+- Anel no nível 4, dois itens, migração de saves, loja, mochila, ficha e HUD implementados.
+- Modelo de treino com ID persistente, resposta curta v2, bônus de até três PRs por dia e prévia separada implementados. Formato v1 preservado.
+- Testes de domínio, backup, jornada móvel e desktop em `docs/VALIDATION.md`. A avaliação da IA externa com treinos reais ainda depende de observação; o jogo não consegue conferir o relato omitido no código curto.
 
 ## Depois da v17
 
-- v18: Botas e Capa sobre a fundação validada.
-- v19: um slot de Runa e efeitos passivos simples.
+- v18: Botas como um único slot, após observar o balanceamento do Anel e do treino compacto em uso real.
+- v19: Capa, separada de Botas para controlar a complexidade por versão.
+- v20: um slot de Runa e efeitos passivos simples.
 - Futuro: respawn variável em pontos caminháveis, patrulhamento e áreas novas; revisar proposta e complexidade antes de abrir cada etapa.

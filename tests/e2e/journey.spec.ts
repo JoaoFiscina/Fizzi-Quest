@@ -18,37 +18,52 @@ test("modelo da IA, importação, recompensa, histórico e reload", async ({
   await page
     .getByRole("button", { name: "Copiar modelo para a IA", exact: true })
     .click();
+  await page.getByRole("button", { name: "Criar modelo" }).click();
   await expect(
     page.getByLabel("Prompt para analisar treino com IA"),
-  ).toContainText("responda SOMENTE com um JSON válido");
+  ).toContainText("Retorne SOMENTE um JSON válido");
+  const prompt = await page
+    .getByLabel("Prompt para analisar treino com IA")
+    .inputValue();
+  const id = prompt.match(/ID da sessão: ([0-9a-f-]+)/)?.[1];
+  expect(id).toBeTruthy();
   await page.screenshot({ path: "test-results/desktop-training-prompt.png" });
   await page
     .getByRole("button", { name: "Já tenho o resultado — importar" })
     .click();
-  await page.getByRole("button", { name: "Carregar exemplo" }).click();
+  await page.getByLabel("JSON do treino analisado").fill(
+    JSON.stringify({
+      v: 2,
+      id,
+      c: "alta",
+      xp: 140,
+      atributos: { forca: 0.22, vigor: 0.1, folego: 0.06 },
+      pr: { forca: 1 },
+    }),
+  );
   await page
     .getByRole("button", { name: "Validar e visualizar", exact: true })
     .click();
-  await expect(page.getByText("+204", { exact: true })).toBeVisible();
-  await expect(page.getByText("+72", { exact: true })).toBeVisible();
-  await expect(page.getByText("+0,23", { exact: true })).toBeVisible();
+  await expect(page.getByText(/Treino: \+140 XP/)).toBeVisible();
+  await expect(page.getByText(/Bônus de PR \(1\): \+5 XP/)).toBeVisible();
+  await expect(page.getByText(/Total: \+145 XP/)).toBeVisible();
   await page.screenshot({ path: "test-results/desktop-training-preview.png" });
   await page
-    .getByRole("button", { name: "Confirmar treino", exact: true })
+    .getByRole("button", { name: "Confirmar recompensa", exact: true })
     .click();
   await expect(
     page.getByRole("heading", { name: "Treino concluído" }),
   ).toBeVisible();
   await page.getByRole("button", { name: "Voltar ao histórico" }).click();
-  await expect(page.getByText("Treino de membros inferiores")).toBeVisible();
+  await expect(page.getByText("Treino importado · código curto")).toBeVisible();
   await page.getByRole("button", { name: "Fechar menu" }).click();
-  await expect(page.locator(".gold")).toContainText("72");
+  await expect(page.locator(".gold")).toContainText("46");
   await page.reload();
   await page.getByRole("button", { name: "Continuar aventura" }).click();
   await page.getByRole("button", { name: "Personagem", exact: true }).click();
-  await expect(page.getByText("5,23", { exact: true })).toBeVisible();
+  await expect(page.getByText("5,24", { exact: true })).toBeVisible();
   await expect(
-    page.getByText("+0,23 · Treino de membros inferiores"),
+    page.getByText("+0,24 · Treino importado · código curto"),
   ).toBeVisible();
   await page.screenshot({ path: "test-results/desktop-character.png" });
   await page.getByRole("button", { name: "Fechar menu" }).click();
@@ -70,16 +85,33 @@ test("tela vertical, menus e movimento por ponteiro", async ({ page }) => {
   await page.screenshot({ path: "test-results/mobile-village.png" });
   await page.getByRole("button", { name: "Treinos", exact: true }).click();
   await page
-    .getByRole("button", { name: "Importar resultado da IA", exact: true })
+    .getByRole("button", { name: "Copiar modelo para a IA", exact: true })
+    .click();
+  await page.getByRole("button", { name: "Criar modelo" }).click();
+  const mobilePrompt = await page
+    .getByLabel("Prompt para analisar treino com IA")
+    .inputValue();
+  const mobileId = mobilePrompt.match(/ID da sessão: ([0-9a-f-]+)/)?.[1];
+  await page
+    .getByRole("button", { name: "Já tenho o resultado — importar" })
     .click();
   await page.screenshot({ path: "test-results/mobile-import.png" });
-  await page.getByRole("button", { name: "Carregar exemplo" }).click();
+  await page.getByLabel("JSON do treino analisado").fill(
+    JSON.stringify({
+      v: 2,
+      id: mobileId,
+      c: "media",
+      xp: 80,
+      atributos: { forca: 0.08, vigor: 0.06, folego: 0.02 },
+      pr: {},
+    }),
+  );
   await page
     .getByRole("button", { name: "Validar e visualizar", exact: true })
     .click();
   await page.screenshot({ path: "test-results/mobile-training-preview.png" });
   await page
-    .getByRole("button", { name: "Confirmar treino", exact: true })
+    .getByRole("button", { name: "Confirmar recompensa", exact: true })
     .click();
   await page.screenshot({ path: "test-results/mobile-training-feedback.png" });
   await page.getByRole("button", { name: "Ver personagem" }).click();
@@ -157,6 +189,83 @@ test("mochila organizada, tipos de item e tutorial consultável", async ({
     ),
   ).toBe(true);
   await page.screenshot({ path: "test-results/mobile-tutorial.png" });
+});
+test("Anel bloqueado no nível 3 e comprado/equipado no nível 4", async ({
+  page,
+}) => {
+  const s = freshSave();
+  s.adventureXpTotal = 224;
+  s.gold = 100;
+  s.x = 104;
+  s.y = 216;
+  await page.goto("/");
+  await page.evaluate(
+    (save) => localStorage.setItem("fizzi-quest.save.v1", JSON.stringify(save)),
+    s,
+  );
+  await page.reload();
+  await page.getByRole("button", { name: "Continuar aventura" }).click();
+  await page.getByRole("button", { name: "Mochila", exact: true }).click();
+  await expect(
+    page.getByText("Slot de Anel bloqueado até o nível 4."),
+  ).toBeVisible();
+  await page.screenshot({ path: "test-results/v17-ring-locked-desktop.png" });
+  await page.getByRole("button", { name: "Fechar menu" }).click();
+  await page.keyboard.press("e");
+  const ring = page.locator(".shop-item", { hasText: "Anel de cobre" });
+  await expect(ring.getByRole("button")).toBeDisabled();
+  await expect(ring.getByText("Desbloqueia no nível 4")).toBeVisible();
+  await page.getByRole("button", { name: "Fechar menu" }).click();
+  const unlocked = { ...s, adventureXpTotal: 225 };
+  await page.addInitScript((save) => {
+    if (!sessionStorage.getItem("v17-level-seeded")) {
+      localStorage.setItem("fizzi-quest.save.v1", JSON.stringify(save));
+      sessionStorage.setItem("v17-level-seeded", "1");
+    }
+  }, unlocked);
+  await page.reload();
+  await page.getByRole("button", { name: "Continuar aventura" }).click();
+  await expect(page.locator(".vitals strong")).toContainText("Nv. 4");
+  await page.keyboard.press("e");
+  await page
+    .locator(".shop-item", { hasText: "Anel de cobre" })
+    .getByRole("button", { name: "35 ouro · Comprar" })
+    .click();
+  await page.getByRole("button", { name: "Fechar menu" }).click();
+  await page.getByRole("button", { name: "Mochila", exact: true }).click();
+  await page
+    .locator(".inventory-item", { hasText: "Anel de cobre" })
+    .getByRole("button", { name: "Equipar" })
+    .click();
+  await expect(
+    page.locator(".inventory-slot", { hasText: "Anel de cobre" }),
+  ).toBeVisible();
+  await page.screenshot({ path: "test-results/v17-ring-equipped-desktop.png" });
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBe(true);
+  await page.screenshot({ path: "test-results/v17-ring-equipped-mobile.png" });
+  await page.setViewportSize({ width: 430, height: 932 });
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBe(true);
+  await page.screenshot({ path: "test-results/v17-ring-equipped-430.png" });
+  await page.setViewportSize({ width: 1920, height: 1080 });
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBe(true);
+  await page.screenshot({ path: "test-results/v17-ring-equipped-1920.png" });
+  await page.reload();
+  await page.getByRole("button", { name: "Continuar aventura" }).click();
+  await expect(page.locator(".hud-equipment")).toContainText("ANEL");
+  await expect(page.locator(".hud-equipment")).toContainText("Anel de cobre");
 });
 test("aparência, zoom e movimento diagonal persistem", async ({ page }) => {
   await page.setViewportSize({ width: 1366, height: 768 });

@@ -38,7 +38,7 @@ export const TUTORIAL_TOPICS: TutorialTopic[] = [
     title: "Equipamentos e mochila",
     summary: "Slots, bônus e troca de peças.",
     paragraphs: [
-      "Cada equipamento ocupa um slot: Arma, Escudo, Armadura ou Acessório. Broches e pingentes usam o slot de Acessório. Equipar uma peça substitui somente a peça do mesmo slot.",
+      "Cada equipamento ocupa um slot: Arma, Escudo, Armadura, Acessório ou Anel. Broches e pingentes usam Acessório; os anéis ocupam outro slot, liberado no nível 4. Equipar uma peça substitui somente a peça do mesmo slot.",
       "Os bônus aparecem no cartão do item. Algumas peças fortes podem reduzir Agilidade, então compare os efeitos antes de equipar.",
     ],
   },
@@ -47,8 +47,8 @@ export const TUTORIAL_TOPICS: TutorialTopic[] = [
     title: "Treinos reais",
     summary: "Como transformar o treino em progressão segura.",
     paragraphs: [
-      "Copie o modelo do Diário de treinos, envie à IA externa junto com seu treino e cole no jogo o JSON recebido. A prévia não altera o save.",
-      "O Fizzi Quest recalcula confiança, aplica limites por sessão e por dia e bloqueia duplicatas antes de conceder XP, ouro e atributos.",
+      "Escolha a data e copie o modelo do Diário de treinos. Envie à IA externa junto com seu treino e cole no jogo o JSON curto recebido. A prévia não altera o save.",
+      "O Fizzi Quest aplica limites por sessão e por dia e bloqueia o mesmo ID antes de conceder XP, ouro e atributos. Um PR comprovado na conversa com a IA pode gerar bônus separado; o jogo não vê o treino original para verificar essa prova.",
     ],
   },
   {

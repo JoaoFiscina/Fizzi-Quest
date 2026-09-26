@@ -71,13 +71,26 @@ export type AppliedWorkoutReward = {
   effectiveConfidence: Confidence;
   adjustments: string[];
 };
-export type TrainingRewardRecord = {
+export type LegacyTrainingRewardRecord = {
   id: string;
   externalSessionId: string;
   fingerprint: string;
   workout: AiWorkout;
   reward: AppliedWorkoutReward;
 };
+export type TrainingRewardRecord =
+  | LegacyTrainingRewardRecord
+  | import("./compactWorkouts").CompactTrainingRewardRecord;
+export const recordDate = (record: TrainingRewardRecord) =>
+  "format" in record ? record.date : record.workout.date;
+export const recordSummary = (record: TrainingRewardRecord) =>
+  "format" in record
+    ? "Treino importado · código curto"
+    : record.workout.summary;
+export const baseRewardOf = (record: TrainingRewardRecord) =>
+  "format" in record ? record.baseReward : record.reward;
+export const prBonusOf = (record: TrainingRewardRecord) =>
+  "format" in record ? record.prBonus : { xp: 0, attributes: zero(), count: 0 };
 
 const rank: Record<Confidence, number> = { low: 0, medium: 1, high: 2 };
 const capByConfidence = {
@@ -156,16 +169,17 @@ export function balanceAiWorkout(
   const effectiveConfidence =
     rank[input.confidence] <= rank[evidence] ? input.confidence : evidence;
   const caps = capByConfidence[effectiveConfidence];
-  const sameDay = records.filter(
-    (record) => record.workout.date === input.date,
+  const sameDay = records.filter((record) => recordDate(record) === input.date);
+  const usedXp = sameDay.reduce(
+    (total, record) => total + baseRewardOf(record).xp,
+    0,
   );
-  const usedXp = sameDay.reduce((total, record) => total + record.reward.xp, 0);
   const usedGold = sameDay.reduce(
     (total, record) => total + record.reward.gold,
     0,
   );
   const usedAttributes = sameDay.reduce(
-    (total, record) => total + sumAttributes(record.reward.attributes),
+    (total, record) => total + sumAttributes(baseRewardOf(record).attributes),
     0,
   );
   const xp = Math.max(

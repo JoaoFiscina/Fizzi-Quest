@@ -8,45 +8,19 @@ import {
 import {
   fingerprintAiWorkout,
   parseAiWorkout,
+  recordDate,
+  recordSummary,
   type AiWorkout,
   type AppliedWorkoutReward,
   type TrainingRewardRecord,
 } from "../domain/aiWorkouts";
-import { TRAINING_AI_PROMPT } from "../content/trainingPrompt";
+import {
+  parseCompactWorkout,
+  type CompactWorkout,
+  type CompactPreview,
+} from "../domain/compactWorkouts";
+import { trainingPrompt } from "../content/trainingPrompt";
 import { el, button, fmt, labels } from "./dom";
-
-const sample: AiWorkout = {
-  type: "fizzi_workout",
-  version: 1,
-  id: "workout-2026-09-15-1928",
-  date: "2026-09-15",
-  summary: "Treino de membros inferiores",
-  confidence: "high",
-  workout: {
-    modality: "strength",
-    duration_min: 55,
-    sets: 20,
-    volume_kg: 6165.5,
-    prs: 9,
-    intensity_rpe: 8,
-    exercises: [
-      {
-        name: "Agachamento hack",
-        sets: [
-          { weight: 20, reps: 10 },
-          { weight: 30, reps: 10 },
-          { weight: 40, reps: 10 },
-        ],
-      },
-    ],
-  },
-  rewards: {
-    xp: 204,
-    gold: 72,
-    attributes: { strength: 0.18, vigor: 0.11, agility: 0.04, breath: 0 },
-  },
-  progression: { prs: 9, notes: "Progressão positiva de carga e volume" },
-};
 
 const confidenceLabel = { low: "Baixa", medium: "Média", high: "Alta" };
 const modalityLabel = {
@@ -100,6 +74,28 @@ export function workoutsUI(
   };
 
   const detailCurrent = (record: TrainingRewardRecord) => {
+    if ("format" in record) {
+      host.replaceChildren(
+        el("p", record.date.split("-").reverse().join("/"), "eyebrow-inline"),
+        el("h3", "Treino importado · código curto"),
+        el(
+          "p",
+          "O relato detalhado ficou na conversa com a IA. O jogo guardou apenas o código e os ganhos aplicados.",
+          "muted",
+        ),
+        metric(
+          "Confiança declarada",
+          confidenceLabel[record.reward.effectiveConfidence],
+        ),
+        compactSummary({
+          baseReward: record.baseReward,
+          prBonus: record.prBonus,
+          reward: record.reward,
+        }),
+        button("Voltar ao histórico", show),
+      );
+      return;
+    }
     const workout = record.workout;
     host.replaceChildren(
       el("p", workout.date.split("-").reverse().join("/"), "eyebrow-inline"),
@@ -189,6 +185,56 @@ export function workoutsUI(
     return wrap;
   }
 
+  const compactSummary = (preview: CompactPreview) => {
+    const wrap = el("section", "", "training-rewards");
+    const line = (
+      name: string,
+      xp: number,
+      gold: number,
+      values: typeof preview.reward.attributes,
+    ) => {
+      const p = el(
+        "p",
+        `${name}: +${xp} XP · +${gold} ouro${attributes
+          .filter((k) => values[k])
+          .map((k) => ` · +${fmt(values[k])} ${labels[k]}`)
+          .join("")}`,
+        "training-note",
+      );
+      return p;
+    };
+    wrap.append(
+      el("h3", "Prévia da recompensa"),
+      line(
+        "Treino",
+        preview.baseReward.xp,
+        preview.baseReward.gold,
+        preview.baseReward.attributes,
+      ),
+      line(
+        `Bônus de PR (${preview.prBonus.count})`,
+        preview.prBonus.xp,
+        0,
+        preview.prBonus.attributes,
+      ),
+    );
+    for (const adjustment of preview.baseReward.adjustments)
+      wrap.append(
+        el("p", `Ajuste de limite: ${adjustment}`, "balance-adjustment"),
+      );
+    if (!preview.baseReward.adjustments.length)
+      wrap.append(el("p", "Ajuste de limite: nenhum.", "muted"));
+    wrap.append(
+      line(
+        "Total",
+        preview.reward.xp,
+        preview.reward.gold,
+        preview.reward.attributes,
+      ),
+    );
+    return wrap;
+  };
+
   const show = () => {
     host.replaceChildren();
     const hero = el("section", "", "training-hero");
@@ -206,7 +252,7 @@ export function workoutsUI(
 
     const history = [
       ...store.state.trainingRewards.map((record) => ({
-        date: record.workout.date,
+        date: recordDate(record),
         kind: "current" as const,
         record,
       })),
@@ -230,8 +276,8 @@ export function workoutsUI(
       if (entry.kind === "current") {
         const record = entry.record;
         row.append(
-          el("small", record.workout.date.split("-").reverse().join("/")),
-          el("h3", record.workout.summary),
+          el("small", recordDate(record).split("-").reverse().join("/")),
+          el("h3", recordSummary(record)),
           el(
             "p",
             `+${record.reward.xp} XP · +${record.reward.gold} ouro · confiança ${confidenceLabel[record.reward.effectiveConfidence].toLowerCase()}`,
@@ -255,17 +301,58 @@ export function workoutsUI(
     }
   };
 
+  const prepare = () => {
+    host.replaceChildren(
+      el("small", "NOVO TREINO", "eyebrow-inline"),
+      el("h3", "Escolha a data do treino"),
+      el(
+        "p",
+        "O jogo vai criar um ID para este treino. Guarde o mesmo modelo até confirmar a recompensa.",
+        "muted",
+      ),
+    );
+    const date = el("input") as HTMLInputElement;
+    date.type = "date";
+    const today = new Date();
+    date.value = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+    date.setAttribute("aria-label", "Data do treino");
+    const error = el("p", "", "error");
+    host.append(
+      date,
+      error,
+      button(
+        "Criar modelo",
+        () => {
+          try {
+            store.createTrainingDraft(date.value);
+            guide();
+          } catch (cause) {
+            error.textContent = (cause as Error).message;
+          }
+        },
+        "primary",
+      ),
+      button("Voltar", show, "quiet"),
+    );
+  };
+
   const guide = () => {
+    const draft = store.state.pendingTraining;
+    if (!draft) {
+      prepare();
+      return;
+    }
+    const promptText = trainingPrompt(draft);
     host.replaceChildren(
       el("small", "ETAPA 1 DE 2", "eyebrow-inline"),
       el("h3", "Copie o prompt para sua IA"),
       el(
         "p",
-        "Cole este texto no ChatGPT e envie junto seus prints ou a descrição do treino.",
+        `Treino de ${draft.date.split("-").reverse().join("/")}. Cole este texto na IA e envie junto seus prints ou a descrição do treino. Copiar novamente conserva o ID.`,
         "muted",
       ),
     );
-    const prompt = el("textarea", TRAINING_AI_PROMPT, "ai-prompt");
+    const prompt = el("textarea", promptText, "ai-prompt");
     prompt.readOnly = true;
     prompt.rows = 12;
     prompt.setAttribute("aria-label", "Prompt para analisar treino com IA");
@@ -275,7 +362,7 @@ export function workoutsUI(
         "Copiar prompt",
         async () => {
           try {
-            await navigator.clipboard.writeText(TRAINING_AI_PROMPT);
+            await navigator.clipboard.writeText(promptText);
             notify("Prompt copiado. Envie-o à IA junto com seu treino.");
           } catch {
             prompt.select();
@@ -286,6 +373,7 @@ export function workoutsUI(
         "primary",
       ),
       button("Já tenho o resultado — importar", paste),
+      button("Preparar outro treino", prepare),
       button("Voltar ao histórico", show, "quiet"),
     );
   };
@@ -302,7 +390,8 @@ export function workoutsUI(
     );
     const input = el("textarea");
     input.rows = 14;
-    input.placeholder = '{ "type": "fizzi_workout", "version": 1, … }';
+    input.placeholder =
+      '{"v":2,"id":"ID_COPIADO_DO_JOGO","c":"alta","xp":140,"atributos":{...},"pr":{}}';
     input.setAttribute("aria-label", "JSON do treino analisado");
     const error = el("p", "", "error");
     host.append(
@@ -312,17 +401,75 @@ export function workoutsUI(
         "Validar e visualizar",
         () => {
           try {
-            review(parseAiWorkout(input.value));
+            const raw = input.value.trim();
+            const json =
+              raw.startsWith("```json") && raw.endsWith("```")
+                ? raw.slice(7, -3).trim()
+                : raw;
+            let value: unknown;
+            try {
+              value = JSON.parse(json);
+            } catch {
+              throw Error(
+                "JSON inválido. Cole um único objeto, sem explicações.",
+              );
+            }
+            if (value && typeof value === "object" && "v" in value)
+              reviewCompact(parseCompactWorkout(raw));
+            else review(parseAiWorkout(json));
           } catch (cause) {
             error.textContent = (cause as Error).message;
           }
         },
         "primary",
       ),
-      button("Carregar exemplo", () => {
-        input.value = JSON.stringify(sample, null, 2);
-      }),
       button("Voltar", show, "quiet"),
+    );
+  };
+
+  const reviewCompact = (workout: CompactWorkout) => {
+    const preview = store.previewCompactWorkout(workout);
+    host.replaceChildren(
+      el("small", "PRÉVIA — NADA APLICADO AINDA", "eyebrow-inline"),
+      el("h3", "Treino analisado pela IA"),
+      el(
+        "p",
+        `Confiança declarada: ${confidenceLabel[preview.reward.effectiveConfidence]}. O jogo confere estrutura e limites; não tem acesso ao relato original para comprovar o PR.`,
+        "muted",
+      ),
+      compactSummary(preview),
+    );
+    const error = el("p", "", "error");
+    host.append(
+      error,
+      button(
+        "Confirmar recompensa",
+        () => {
+          try {
+            const applied = store.recordCompactWorkout(workout);
+            host.replaceChildren(
+              el("small", "REGISTRO CONFIRMADO", "eyebrow-inline"),
+              el("h3", "Treino concluído"),
+              compactSummary(applied),
+              button(
+                "Ver personagem",
+                () =>
+                  document
+                    .querySelector<HTMLButtonElement>(
+                      '.nav button[data-section="character"]',
+                    )
+                    ?.click(),
+                "primary",
+              ),
+              button("Voltar ao histórico", show, "primary"),
+            );
+          } catch (cause) {
+            error.textContent = (cause as Error).message;
+          }
+        },
+        "primary",
+      ),
+      button("Corrigir JSON", paste),
     );
   };
 

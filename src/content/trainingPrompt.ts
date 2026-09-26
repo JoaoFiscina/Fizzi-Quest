@@ -1,61 +1,24 @@
-export const TRAINING_AI_PROMPT = `ANALISE ESTE TREINO PARA O FIZZI QUEST.
+import type { TrainingDraft } from "../domain/compactWorkouts";
 
-Leia apenas as informações realmente presentes nas imagens ou no texto que eu enviar. Não invente carga, repetição, duração, distância, pace, intensidade, PR ou progressão.
+/** Contract v2: the detailed workout stays in the AI conversation. */
+export function trainingPrompt(draft: TrainingDraft) {
+  return `FIZZI QUEST — ANALISE MEU TREINO REAL E DEVOLVA SOMENTE O CÓDIGO CURTO.
 
-Considere, quando existirem: modalidade, duração, exercícios, séries, cargas, repetições, volume, distância, pace, velocidade, inclinação, intensidade/RPE, PRs e comparação com treinos anteriores.
+ID da sessão: ${draft.id}
+Data já escolhida no jogo: ${draft.date}
 
-Classifique a qualidade dos dados como "low", "medium" ou "high":
-- low: descrição curta, sem métricas suficientes;
-- medium: duração e algumas métricas verificáveis;
-- high: dados que permitem avaliar volume, intensidade ou progressão com segurança.
+Se ainda não enviei o relato, print ou dados do treino, peça esses dados antes de gerar o código. Use apenas informações presentes. Não invente duração, séries, cargas, distância, resultados anteriores nem recordes. Isto é progressão de um jogo, não prescrição de exercício. Não premie dor, intensidade extrema ou excesso.
 
-Sugira XP moderado, ouro e ganhos nos atributos atuais do jogo: strength (Força), vigor (Vigor), agility (Agilidade) e breath (Fôlego). Não converta carga diretamente em atributo. Valorize progressão e PRs e seja conservador nos atributos. Não reduza a sugestão conforme o nível ou os equipamentos do personagem. Um registro low pode receber XP e ouro, mas deve receber pouco ou nenhum atributo.
+Confiança: "baixa" para relato vago; "media" quando modalidade e duração ou volume estão claros; "alta" quando existem detalhes suficientes como séries/cargas/repetições ou tempo/distância. Nunca eleve a confiança por suposição.
 
-O Fizzi Quest recalculará e limitará todas as recompensas. Use números sem unidades nos campos numéricos e ponto como separador decimal.
+Orçamento base (XP / soma dos atributos): baixa 20 / 0.01, media 60 / 0.12, alta 100 / 0.30. Duração informada acrescenta: menos de 20 min ou ausente +0 / 0; 20–39 min +20 / 0.04; 40–59 min +40 / 0.08; 60 min ou mais +60 / 0.12. Duração acima de 60 não aumenta o orçamento. Tetos finais por confiança: baixa 60 XP / 0.02 atributo / 0.02 por atributo; media 132 / 0.23 / 0.15; alta 216 / 0.50 / 0.28. Use centésimos nos atributos.
 
-No final, responda SOMENTE com um JSON válido neste formato, sem markdown e sem explicações depois dele:
+Distribua o orçamento UMA vez conforme o treino: musculação 60% Força, 30% Vigor, 10% Fôlego; corrida ou ciclismo 60% Fôlego, 25% Vigor, 15% Agilidade; caminhada 50% Fôlego, 50% Vigor. Treino misto divide o orçamento entre modalidades pela duração conhecida ou igualmente se ela faltar. Não conceda orçamento completo para cada modalidade. Se a modalidade não permitir associação, peça esclarecimento.
 
-{
-  "type": "fizzi_workout",
-  "version": 1,
-  "id": "workout-AAAA-MM-DD-HHMM",
-  "date": "AAAA-MM-DD",
-  "summary": "Resumo curto do treino",
-  "confidence": "low | medium | high",
-  "workout": {
-    "modality": "strength | running | walking | cycling | hybrid | other",
-    "duration_min": 55,
-    "sets": 20,
-    "volume_kg": 6165.5,
-    "prs": 9,
-    "distance_km": 5,
-    "pace": "5:24 min/km",
-    "intensity_rpe": 8,
-    "exercises": [
-      {
-        "name": "Agachamento hack",
-        "sets": [
-          { "weight": 20, "reps": 10 },
-          { "weight": 30, "reps": 10 }
-        ]
-      }
-    ],
-    "notes": "Somente observações presentes na fonte"
-  },
-  "rewards": {
-    "xp": 204,
-    "gold": 72,
-    "attributes": {
-      "strength": 0.18,
-      "vigor": 0.11,
-      "agility": 0.04,
-      "breath": 0
-    }
-  },
-  "progression": {
-    "prs": 9,
-    "notes": "Progressão observada, se houver"
-  }
+PR significa recorde pessoal. Conte apenas recorde explícito no relato ou melhora demonstrada contra resultado anterior comparável. Primeiro registro não é PR automático; carga maior com menos repetições não basta. Conte cada melhora uma vez por exercício/atividade. Relacione carga/força a forca e resistência/tempo a folego. Não embuta bônus de PR em xp ou atributos: o jogo soma +5 XP e +0.02 no atributo correspondente por PR elegível, até 3 no dia. Se não houver prova, omita pr ou use {}.
+
+Retorne SOMENTE um JSON válido, sem markdown, texto ou descrição do treino. Copie o ID literalmente. Use ponto decimal e apenas estas chaves:
+{"v":2,"id":"${draft.id}","c":"alta","xp":140,"atributos":{"forca":0.22,"vigor":0.10,"agilidade":0,"folego":0.06},"pr":{}}
+
+O exemplo de números serve só para mostrar a estrutura. Calcule os números a partir do treino que eu enviar. Atributos ausentes podem ser omitidos. Não repita o exemplo se ainda não houver treino.`;
 }
-
-Remova campos opcionais sem informação em vez de preenchê-los por suposição. Mantenha sempre type, version, id, date, summary, confidence, workout.modality, rewards e progression.`;

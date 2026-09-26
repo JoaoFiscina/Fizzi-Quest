@@ -1,12 +1,12 @@
-# Fizzi Quest — plano da v23.09.2003.17: Anel e desbloqueio de slots
+# Fizzi Quest — plano da v23.09.2003.17: Anel, treino compacto e PR
 
-Estado: **planejado**. Executar após concluir e validar a v23.09.2003.16. Este documento define o trabalho; não registra implementação, testes ou publicação.
+Estado: **implementado e em validação para publicação em 26/09/2026**. A v16 foi publicada pelo PR #9. Esta versão acrescenta Anel no nível 4 e o fluxo compacto descrito em [`PLANO_IMPORTACAO_COMPACTA_PR.md`](PLANO_IMPORTACAO_COMPACTA_PR.md). Resultados e limites ficam em `docs/VALIDATION.md`; o status do domínio oficial fica em `ESTADO_ATUAL.md`.
 
 ## Objetivo e limite da versão
 
 Dar ao jogador um próximo marco de equipamento depois das habilidades iniciais: o slot **Anel** aparece desde o início, explica seu requisito e pode ser usado a partir do nível 4. A fundação de requisitos por nível deve servir às próximas versões sem gravar regras duplicadas no save. Broches e Pingentes continuam compartilhando o slot **Acessório**. O jogo recebe somente um novo slot funcional e dois anéis; Botas, Capa e Runas aparecem apenas como prévia do plano futuro.
 
-Complexidade: **média**, por envolver regra, catálogo, migração de save e quatro superfícies de interface. Não alterar sprites, ciclos de animação, movimento, mapas, encontros, ordem de combate ou recompensas de treino nesta versão.
+Complexidade revisada: **média-alta**, por combinar Anel com a importação compacta e o bônus de PR solicitados. Executar os dois blocos em commits verificáveis, seguindo o complemento do plano. Preservar sprites, ciclos de animação, regras de movimento, mapas, encontros, ordem de combate e recompensas já gravadas. Não acrescentar outros slots funcionais nesta versão.
 
 ## Referência e decisão de progressão
 
@@ -52,8 +52,9 @@ Complexidade: **média**, por envolver regra, catálogo, migração de save e qu
 2. Integrar o segundo Anel; verificar soma de bônus, substituição sem empilhamento e custo/posse. Cobrir tentativa direta de compra/equipamento bloqueado e backup inconsistente.
 3. Atualizar mochila e loja; conferir fluxo manual em desktop e celular emulado. Completar personagem, HUD e tutorial depois que o piloto estiver legível.
 4. Adicionar testes E2E para save antigo, estado bloqueado, subida ao nível 4, compra, equipar, troca, exportação/recarga e Acessório simultâneo. Não depender de dados pessoais ou do servidor de IA externa.
-5. Rodar `npm test`, `npm run build` e `npm run test:e2e`; revisar capturas nas resoluções 390×844, 430×932, 1366×768 e 1920×1080. Usar saves sintéticos idênticos para antes/depois e registrar resultados reais em `docs/VALIDATION.md`.
-6. Revisar diff para garantir que `src/game/ambient.ts`, `src/game/art.ts`, `src/game/monsterArt.ts`, `src/game/polishArt.ts` e as regras de movimento não foram alterados. Atualizar versão e contexto somente depois da validação; conferir PR, integração e link oficial conforme `context/MOLDE_EXPANSAO.md`.
+5. Implementar e verificar o bloco de importação compacta/PR conforme `PLANO_IMPORTACAO_COMPACTA_PR.md`. Confirmar que um treino pode liberar o Anel ao alcançar nível 4, e que equipá-lo não reduz recompensas futuras.
+6. Rodar `npm test`, `npm run build` e `npm run test:e2e`; revisar capturas nas resoluções 390×844, 430×932, 1366×768 e 1920×1080. Usar saves sintéticos idênticos para antes/depois e registrar resultados reais em `docs/VALIDATION.md`.
+7. Revisar diff para garantir que `src/game/ambient.ts`, `src/game/art.ts`, `src/game/monsterArt.ts`, `src/game/polishArt.ts` e as regras de movimento não foram alterados. Atualizar versão e contexto somente depois da validação; conferir PR, integração e link oficial conforme `context/MOLDE_EXPANSAO.md`.
 
 ## Critérios de aceite
 
@@ -61,5 +62,6 @@ Complexidade: **média**, por envolver regra, catálogo, migração de save e qu
 - Apenas um Anel contribui para atributos. Ele combina com Acessório sem trocar Broche ou Pingente; os demais equipamentos continuam intactos.
 - Saves v16 sem `ring` abrem com `ring: null`; save novo e backup restaurado mantêm o item comprado e equipado; backup incoerente é rejeitado sem perda de progresso.
 - Mochila, loja, personagem e HUD apresentam estado correto em desktop e celular emulado, sem rolagem horizontal nem controle encoberto.
-- Botas e Capa aparecem somente como planos futuros. Animações, mapa, encontros, velocidade e recompensas de treino não mudam.
+- Botas e Capa aparecem somente como planos futuros. Animações, mapa, encontros e regras de deslocamento permanecem. Bônus de Agilidade usam a fórmula existente. Recompensas antigas não são recalculadas; novas importações seguem o contrato versionado.
+- Modelo da IA devolve resposta curta, importador conserva compatibilidade v1 e prévia apresenta base, bônus de PR e total. O detalhe do treino não precisa voltar ao jogo.
 - Testes de domínio, build e jornadas E2E aprovados, com evidências e status de publicação registrados antes de chamar a v17 de oficial.

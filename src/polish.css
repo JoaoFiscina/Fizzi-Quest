@@ -166,6 +166,13 @@ button.alloc-btn:not(:disabled):hover {
   border-color: #81709a;
   background: #ddd0df;
 }
+.item-kind-ring {
+  border-color: #9c8054;
+  background: #eadcb8;
+}
+.hud-equipment.with-ring {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
 .item-kind-consumable {
   border-color: #9b705e;
   background: #edd0bc;
@@ -179,7 +186,7 @@ button.alloc-btn:not(:disabled):hover {
 }
 .inventory-slots {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(105px, 1fr));
   gap: 7px;
 }
 .inventory-slot {

@@ -1,5 +1,9 @@
 # Histórico de versões
 
+## v23.09.2003.17 — 26/09/2026
+
+Anel liberado no nível 4 com duas escolhas moderadas, slot próprio e migração de saves antigos. O fluxo principal de treino passa a usar um prompt com ID persistente e uma resposta JSON curta; bônus de PR fica separado dos ganhos base e limitado a três por sessão/dia. Histórico e importação detalhada v1 permanecem compatíveis. Arte, animações, mapa, movimento e combate não foram alterados. Plano: `PLANO_V17.md` e `PLANO_IMPORTACAO_COMPACTA_PR.md`; validação: `docs/VALIDATION.md`. Status de publicação em `ESTADO_ATUAL.md`.
+
 ## v23.09.2003.16 — 26/09/2026
 
 XP de treino reduzido para 60/132/216 por sessão e 270 por dia; ganhos de atributos médios/altos aumentados com fator 1,25 e tetos moderados. Removido o redutor por atributo total, de modo que nível e equipamento não enfraquecem o treino. Registros antigos continuam válidos e contam para os tetos do dia. Habilidades passam a exibir próximo desbloqueio, custo e explicação tática. Animações, arte, mapa e combate não foram alterados. PR #9 integrado e domínio oficial verificado. Plano: `PLANO_V16.md`; validação: `docs/VALIDATION.md`.
