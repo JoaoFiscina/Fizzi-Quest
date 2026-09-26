@@ -36,4 +36,4 @@ Quando o Playwright iniciava Vite como processo filho, os 18 casos terminavam, m
 
 ## Produção
 
-Integração à `main` e versão no endereço `https://fizzi-quest.vercel.app/` pendentes de confirmação. Até lá, a versão pública anterior permanece v23.09.2003.15.
+PR #9 integrado à `main` no commit `5aeca54e447bfd23cab4615f71f3a251257ee549`. O check Vercel passou. Em 26/09/2026, o domínio `https://fizzi-quest.vercel.app/` exibiu título e rodapé `v23.09.2003.16`, com a vila renderizada na tela inicial. Não iniciei uma aventura nesse navegador para evitar alterar um save existente.

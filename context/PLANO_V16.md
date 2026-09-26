@@ -1,6 +1,6 @@
 # Fizzi Quest — plano da v23.09.2003.16: treinos e habilidades
 
-Estado: **implementado e validado localmente; publicação pendente**. Base: `v23.09.2003.15` em `main`. Esta etapa altera progressão e explicações de combate, sem editar sprites, mapas, movimento ou ciclos de animação.
+Estado: **concluído e publicado** pelo PR #9. Base: `v23.09.2003.15` em `main`. Esta etapa altera progressão e explicações de combate, sem editar sprites, mapas, movimento ou ciclos de animação.
 
 ## Problema e resultado esperado
 

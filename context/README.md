@@ -4,7 +4,7 @@ Esta pasta é a memória operacional do jogo. Atualize-a a cada versão antes de
 
 ## Versão corrente
 
-`v23.09.2003.16` — calibração do treino e apresentação dos desbloqueios de habilidades. Código implementado em branch; integração e deploy registrados em `ESTADO_ATUAL.md` assim que confirmados. Planos em `PLANO_V16.md` e `PLANO_V17.md`.
+`v23.09.2003.16` — calibração do treino e apresentação dos desbloqueios de habilidades. Integração e deploy confirmados em `ESTADO_ATUAL.md`. Planos em `PLANO_V16.md` e `PLANO_V17.md`.
 
 ## Árvore lógica
 

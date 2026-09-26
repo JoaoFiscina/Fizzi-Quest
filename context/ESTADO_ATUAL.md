@@ -1,6 +1,6 @@
 # Estado atual — v23.09.2003.16
 
-Implementação concluída na branch `feat/v23.09.2003.16-treinos`; integração à `main` e deploy são confirmados separadamente abaixo. O último endereço oficial verificado antes desta etapa servia a v23.09.2003.15 em `https://fizzi-quest.vercel.app/`.
+Implementação integrada à `main` pelo PR #9 (`5aeca54`). Produção confirmada em `https://fizzi-quest.vercel.app/`: título e rodapé exibem v23.09.2003.16, e o cenário carrega.
 
 ## Resultado da v16
 
@@ -17,7 +17,7 @@ Plano: `PLANO_V16.md`. Testes e capturas: `docs/VALIDATION.md` e `docs/evidence/
 
 ## Integração e produção
 
-Pendente de confirmação do PR, commit de `main` e deploy. Não tratar a v16 como versão pública até `https://fizzi-quest.vercel.app/` mostrar a versão correta e iniciar o jogo.
+PR #9 integrado à `main` no commit `5aeca54e447bfd23cab4615f71f3a251257ee549`. O check Vercel passou. Em 26/09/2026, o navegador abriu o domínio fixo e mostrou `Fizzi Quest · v23.09.2003.16` no título, `v23.09.2003.16` no rodapé e a vila renderizada atrás da tela inicial.
 
 ## Próximo passo
 

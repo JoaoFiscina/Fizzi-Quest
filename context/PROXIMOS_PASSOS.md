@@ -2,12 +2,9 @@
 
 Use [`MOLDE_EXPANSAO.md`](MOLDE_EXPANSAO.md) em cada entrega. O roadmap completo está em [`ROADMAP_IMPLEMENTACOES.md`](ROADMAP_IMPLEMENTACOES.md).
 
-## Fechamento da v23.09.2003.16
+## v23.09.2003.16 — concluída
 
-1. 37 testes de regras, build e 18 jornadas E2E aprovados em servidor isolado.
-2. Capturas de treino/habilidades conferidas; evidências antigas regravadas pela suíte foram restauradas.
-3. Integrar a branch da v16 à `main` e confirmar título, rodapé e abertura do jogo no endereço oficial.
-4. Registrar PR, commit e deploy em `ESTADO_ATUAL.md` e `docs/VALIDATION.md`.
+37 testes de regras, build e 18 jornadas E2E aprovados. Capturas de treino/habilidades conferidas, PR #9 integrado e versão v23.09.2003.16 confirmada no domínio oficial.
 
 ## v23.09.2003.17 — Anel e desbloqueio por nível
 
