@@ -3,6 +3,11 @@ import "./style.css";
 import "./polish.css";
 import { GAME_VERSION } from "./version";
 import { Store } from "./application/store";
+import {
+  publishedVersion,
+  updateUrl,
+  isNewVersion,
+} from "./application/versionCheck";
 import { World } from "./game/world";
 import {
   act,
@@ -598,6 +603,7 @@ function tutorial(openTopic = "defense") {
 }
 function settings() {
   openModal("Configurações");
+  content.classList.add("settings-content");
   const personalization = el("section", "", "personalization-settings");
   personalization.append(
     el("small", "APARÊNCIA E CÂMERA", "eyebrow-inline"),
@@ -686,7 +692,9 @@ function settings() {
     el(
       "p",
       effectiveReduced
-        ? "Ativo: movimento reduzido. Água e fogo suaves; vegetação parada."
+        ? store.state.motion === "system"
+          ? "Este aparelho pediu movimento reduzido. Por isso monstros e folhas param; água e fogo ficam mais discretos. Escolha Completa para ver todos os ciclos neste aparelho."
+          : "Ativo: movimento reduzido. Monstros e folhas param; água e fogo ficam mais discretos."
         : "Ativo: movimento completo. Água e fogo contínuos; brisas ocasionais.",
     ),
   );
@@ -700,6 +708,7 @@ function settings() {
       label,
       () => {
         store.transact((s) => (s.motion = value));
+        renderMotionNotice();
         settings();
       },
       store.state.motion === value ? "selected" : "",
@@ -709,8 +718,20 @@ function settings() {
   }
   motionChoices.append(motionButtons);
   personalization.append(appearanceChoices, zoomChoices, motionChoices);
+  const updateSettings = el("section", "", "update-settings");
+  updateSettings.append(
+    el("h3", "Versão do jogo"),
+    el("p", `Instalada neste navegador: ${GAME_VERSION}`),
+    button("Verificar atualização", () => void checkVersion(true), "quiet"),
+    el(
+      "p",
+      "A atualização mantém o progresso salvo neste navegador.",
+      "update-help",
+    ),
+  );
   content.append(
     personalization,
+    updateSettings,
     el("h3", "Seu progresso, com você"),
     el(
       "p",
@@ -1211,6 +1232,88 @@ const versionLabel = el("small", GAME_VERSION, "version-label");
 app.append(versionLabel);
 intro.append(el("small", GAME_VERSION, "intro-version"));
 document.title = `Fizzi Quest · ${GAME_VERSION}`;
+const updateBanner = el("aside", "", "update-banner");
+updateBanner.setAttribute("role", "status");
+updateBanner.hidden = true;
+app.append(updateBanner);
+const motionNotice = el("div", "", "motion-notice");
+intro.insertBefore(motionNotice, begin);
+function renderMotionNotice() {
+  motionNotice.replaceChildren();
+  const systemReduced =
+    store.state.motion === "system" &&
+    matchMedia("(prefers-reduced-motion: reduce)").matches;
+  motionNotice.hidden = !systemReduced;
+  if (!systemReduced) return;
+  motionNotice.append(
+    el(
+      "p",
+      "Este aparelho pediu movimento reduzido: monstros e folhas ficam parados, e água e fogo mais suaves.",
+    ),
+    button(
+      "Ativar animações completas",
+      () => {
+        store.transact((save) => (save.motion = "full"));
+        renderMotionNotice();
+        notify("Animações completas ativadas neste aparelho.");
+      },
+      "primary",
+    ),
+  );
+}
+renderMotionNotice();
+matchMedia("(prefers-reduced-motion: reduce)").addEventListener(
+  "change",
+  renderMotionNotice,
+);
+let checkingVersion = false;
+function showUpdate(version: string) {
+  updateBanner.hidden = false;
+  updateBanner.replaceChildren(
+    el("strong", `Nova versão ${version} disponível`),
+    el("span", "Atualize os arquivos do jogo. Seu progresso fica salvo."),
+    button(
+      "Atualizar jogo",
+      () => {
+        if (started) store.persist();
+        if (store.error) {
+          notify(store.error);
+          return;
+        }
+        window.location.replace(updateUrl(version));
+      },
+      "primary",
+    ),
+  );
+}
+async function checkVersion(manual = false) {
+  if (checkingVersion) return;
+  checkingVersion = true;
+  try {
+    const version = await publishedVersion();
+    if (isNewVersion(version)) showUpdate(version);
+    else {
+      updateBanner.hidden = true;
+      if (manual) notify(`Você já está na versão ${GAME_VERSION}.`);
+    }
+  } catch {
+    if (manual)
+      notify("Não foi possível verificar agora. Tente novamente mais tarde.");
+  } finally {
+    checkingVersion = false;
+  }
+}
+void checkVersion();
+window.addEventListener("focus", () => void checkVersion());
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) void checkVersion();
+});
+window.setInterval(
+  () => {
+    if (!document.hidden) void checkVersion();
+  },
+  5 * 60 * 1000,
+);
 window.addEventListener("pagehide", () => {
   if (started) store.persist();
 });

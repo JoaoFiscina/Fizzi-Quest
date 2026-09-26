@@ -2,7 +2,7 @@
 
 RPG pessoal de exploração em pixel art, construído com Phaser, TypeScript e Vite para o marco **Treino à aventura**.
 
-## Implementação atual — v23.09.2003.17
+## Implementação atual — v23.09.2003.18
 
 Já estão implementados os blocos principais do domínio e da experiência:
 
@@ -25,6 +25,8 @@ Já estão implementados os blocos principais do domínio e da experiência:
 - quatro criaturas redesenhadas com silhuetas e ciclos próprios; poses de combate acompanham os eventos já calculados;
 - vila e bosque com caminho, texturas e pontos de referência refinados; mapa regional responsivo distingue locais atuais de regiões futuras;
 - folhas e poeira ocasionais com limite de dois efeitos e modo de movimento reduzido;
+- aviso quando o aparelho pede movimento reduzido, com atalho para ativar os ciclos completos;
+- verificação da versão publicada e botão de atualização quando há arquivos novos, preservando o save local;
 - pontuação diária por regrasVersion 1, maestrias separadas de XP de aventura;
 - inventário, loja, equipamento, baú, fogueira, missão da guilda e melhoria da sede;
 - save versionado em localStorage, cópia anterior, exportação e restauração de backup;
@@ -41,7 +43,7 @@ Build para Vercel: `npm run build`, saída `dist`. O endereço oficial é [fizzi
 
 Validação: `npm test` e `npm run test:e2e` (Edge via Playwright). Evidências e limites em [`docs/VALIDATION.md`](docs/VALIDATION.md).
 
-Esta versão adiciona Anel e importação compacta com bônus de PR, sem modificar a arte ou as animações da v15. A versão pública usa `v23.09.2003.x`; a versão npm equivalente usa SemVer (`23.9.2003-17`).
+Esta versão torna visível a causa provável das animações diferentes no PC e acrescenta atualização dos arquivos do jogo. A arte e as cadências da v15 permanecem iguais. A versão pública usa `v23.09.2003.x`; a versão npm equivalente usa SemVer (`23.9.2003-18`).
 
 ## Contexto vivo
 

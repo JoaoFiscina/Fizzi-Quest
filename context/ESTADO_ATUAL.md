@@ -1,20 +1,18 @@
-# Estado atual — v23.09.2003.17
+# Estado atual — v23.09.2003.18
 
-Versão v17 integrada à `main` pelo PR #10 (`932bf7d67388728b3274d3f799747317b6dba643`) e confirmada no domínio oficial em 26/09/2026. Base anterior: v23.09.2003.16, PR #9.
+Base: v23.09.2003.17 integrada à `main` pelo PR #10. A v18 está na branch `fix/v23.09.2003.18-atualizacao` enquanto ocorre a validação/publicação.
 
 ## O que funciona
 
-- Anel tem slot próprio, visível na mochila desde o início e liberado no nível 4 (225 XP acumulados). Loja e domínio bloqueiam compra/equipamento antes do nível. Anel de cobre dá +1 Força por 35 ouro; Anel da brisa dá +1 Agilidade por 40 ouro. Broches e Pingentes continuam em Acessório.
-- Save v16 sem `ring` ou `pendingTraining` migra com `null`; chave e versões do save continuam iguais. Backups inválidos não substituem o progresso. Combate, XP antigo e animações não foram recalculados.
-- O jogo cria um rascunho com ID/data, copia um modelo preciso e aceita JSON compacto v2. Prévia separa treino, bônus de PR, ajustes e total. Confirmar aplica a recompensa e consome o rascunho no mesmo save; duplicatas por ID são barradas.
-- PR elegível sugerido pela IA dá +5 XP e +0,02 no atributo relacionado, limitado a três por sessão e dia. Confiança baixa não recebe bônus. Importação detalhada v1 e histórico anterior continuam aceitos.
+- Anel no nível 4, treino com resposta JSON curta e bônus limitado de PR da v17 continuam iguais. Não houve mudança no save, nas regras, nos sprites ou nas cadências gráficas.
+- Preferência inicial `motion: system`: se o navegador do PC pede movimento reduzido, o jogo explica na intro e nos Ajustes que monstros e folhas param e água/fogo ficam discretos. **Ativar animações completas** escolhe `full` no save e o mundo é reconstruído no modo normal sem recarregar a página.
+- `version.json` é gerado pelo build a partir de `src/version.ts`. No início, ao voltar à aba e a cada cinco minutos, o cliente compara a versão publicada. Se for mais nova, exibe **Atualizar jogo**; o clique salva o progresso e abre uma URL renovada. Os Ajustes permitem verificar manualmente.
+- Falha de rede na consulta não impede jogar. O botão de atualização não apaga `localStorage`.
 
-## Limites e retomada
+## Evidência e limites
 
-O código curto omite o treino original. O jogo valida estrutura, ID, limites e persistência, mas a evidência de PR depende da análise externa; não há autenticação do treino. O prompt e os testes foram verificados com dados sintéticos, sem consulta real a uma IA externa. Observar o balanceamento antes de abrir Botas na v18.
+44 testes de regras, build e 22 jornadas E2E passaram. A reprodução no Edge emulado confirmou movimento reduzido e retomada dos ciclos; a recarga com manifesto novo simulado preservou o save. Capturas e detalhes em `docs/VALIDATION.md` e `docs/evidence/v23.09.2003.18/`. O modo do PC real do jogador não foi lido; conferir nele se a preferência do navegador é reduzida. O cliente v17 não tem o verificador e precisa de uma recarga inicial para recebê-lo.
 
-Planos: `PLANO_V17.md` e `PLANO_IMPORTACAO_COMPACTA_PR.md`. Contrato em `docs/TRAINING_AI_FORMAT.md`. Validação em `docs/VALIDATION.md`. Próxima etapa em `PROXIMOS_PASSOS.md`.
+## Retomada
 
-## Integração e produção
-
-O endereço fixo `https://fizzi-quest.vercel.app/` exibiu `Fizzi Quest · v23.09.2003.17` no título e `v23.09.2003.17` no rodapé. A vila renderizou, **Nova aventura** iniciou normalmente e o Diário mostrou o fluxo novo **Escolha a data do treino → Criar modelo → prompt com ID**. O check Vercel do commit da branch passou antes do merge. Não foi feita uma análise real por IA externa na produção.
+Concluir integração e verificação de `https://fizzi-quest.vercel.app/` antes de chamar a v18 de oficial. Depois, observar o equilíbrio do Anel/treino e planejar Botas na v19. Roadmap e plano em `PROXIMOS_PASSOS.md` e `PLANO_V18_ATUALIZACAO_E_MOVIMENTO.md`.

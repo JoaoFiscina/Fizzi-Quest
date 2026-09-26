@@ -199,7 +199,11 @@ Complexidade revisada: média-alta. Implementação da v17 concluída em dois bl
 - IA analisa o relato fora do jogo e devolve somente ganhos e metadados mínimos em JSON compacto. Conservar importação v1 e recompensas históricas.
 - Bônus de recorde pessoal aparece separado na prévia; proposta inicial de +0,02 atributo e +5 XP por PR, limitado a três no dia. Calibrar antes de publicar.
 
-### v23.09.2003.18 — Botas
+### v23.09.2003.18 — atualização e diagnóstico de animações
+
+Ver `PLANO_V18_ATUALIZACAO_E_MOVIMENTO.md`: versão publicada detectável, botão de atualização e explicação da preferência de movimento reduzido no PC. Sem alteração da arte e do save.
+
+### v23.09.2003.19 — Botas
 
 Complexidade alvo: média.
 
@@ -208,11 +212,11 @@ Complexidade alvo: média.
 - Atualizar mochila, HUD resumido, personagem, loja e testes de combinações.
 - Limitar esta versão aos novos slots e ao balanceamento; não incluir runas.
 
-### v23.09.2003.19 — Capa
+### v23.09.2003.20 — Capa
 
 Complexidade alvo: média. Adicionar o slot **Capa** com bônus defensivo moderado, após validar Botas em saves antigos e no celular. A loja, a ficha e o HUD devem continuar compactos.
 
-### v23.09.2003.20 — Runas
+### v23.09.2003.21 — Runas
 
 Complexidade alvo: média-alta e isolada.
 

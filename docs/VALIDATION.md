@@ -1,30 +1,28 @@
-# Validação — v23.09.2003.17
+# Validação — v23.09.2003.18
 
-Data: 26/09/2026. Ambiente: Windows, Edge headless, Phaser/TypeScript/Vite. Base arquivada em [`VALIDATION_V16.md`](VALIDATION_V16.md).
+Data: 26/09/2026. Ambiente: Windows, Edge headless, Phaser/TypeScript/Vite. A validação anterior está em [`VALIDATION_V17.md`](VALIDATION_V17.md).
 
 ## Resultado técnico
 
-- `npm test`: **44 testes aprovados**. Cobre migração de save v16, compra e equipamento bloqueados no nível 3, liberação aos 225 XP do nível 4, troca de Anel sem empilhar bônus, convivência com Acessório, ID persistente, bônus e limites de PR, dia misto com 450 XP antigos, duplicata, backup, recarga e falha de armazenamento.
-- `npm run build`: aprovado com `v23.09.2003.17`. O chunk próprio tem cerca de 59,85 KB gzip; Phaser 332,17 KB gzip. Avisos de comentários Zod e chunk Phaser grande são não bloqueantes.
-- `npm run test:e2e`: **19/19 jornadas aprovadas em 3,6 min** com Vite separado na porta 5188. Cobre importação v2, prévia e reload, Anel nível 3/4 e layout, além da suíte anterior de combate, mapa e animação. A primeira execução terminou 18/19 por corrida de estado em um teste visual antigo: a página anterior sobrescreveu o save sintético do Guardião. O teste foi isolado corretamente e a suíte inteira passou. Depois, um teste focal de Anel validou também 430×932 e 1920×1080; dois testes focais validaram as capturas finais de treino.
-- `git diff --check`: aprovado. A revisão do diff confirmou que `src/game/`, sprites, mapas e regras de movimento não foram alterados.
+- `npm test`: **44/44** regras aprovadas; save, treino e combate preservados.
+- `npm run build`: aprovado. `dist/version.json` contém `v23.09.2003.18`, a mesma constante do título e rodapé; Vite gera arquivos CSS/JS com hash. Avisos anteriores de Zod e chunk Phaser grande continuam não bloqueantes.
+- `npm run test:e2e`: **22/22** jornadas aprovadas em 4,2 min, incluindo os três cenários novos. Após ajustar o layout dos Ajustes, os três cenários novos passaram novamente.
+- `git diff --check`: aprovado antes do PR.
 
-## Regras verificadas
+## Diagnóstico e comportamento verificado
 
-O nível 4 começa em 225 XP acumulados. Anel de cobre custa 35 ouro e Anel da brisa custa 40. Um treino de alta confiança proposto com 140 XP, +0,22 Força, +0,10 Vigor e +0,06 Fôlego, mais um PR de Força, mostrou **140 XP e 46 ouro base**, **+5 XP e +0,02 Força de PR**, total **145 XP, 46 ouro e +0,24 Força**. A confirmação persistiu os valores após reload; repetir o mesmo ID foi bloqueado. A prévia não concedeu nada.
+Com o navegador em `prefers-reduced-motion: reduce` e preferência do save `system`, a página informa por que monstros e folhas param e água/fogo ficam suaves. Clicar **Ativar animações completas** põe o controlador ambiental no modo normal sem reiniciar o jogo; no bosque, o sprite de monstro volta a executar seu ciclo. A escolha persiste após reload. O teste anterior de 30 segundos confirmou que água/fogo continuam mudando quadros e retornando à pose, sem multiplicar timers.
 
-Simulação com dez PRs propostos concedeu apenas três (+15 XP/+0,06 atributo). Um segundo treino no mesmo dia respeitou 270 XP base diário, sem novo bônus de PR. Um dia legado com 450 XP preservou esse histórico, bloqueou XP base novo e permitiu somente a reserva de bônus novo. O prompt não reduz ganhos por nível/equipamento; a lógica de importação também não usa esses valores.
+O teste de versão simulou um manifesto `v23.09.2003.19` e encontrou o aviso **Atualizar jogo**. O clique navegou para URL com parâmetro de versão e timestamp, e o `localStorage` do save permaneceu idêntico. Com manifesto da versão instalada, não há aviso e a verificação manual responde que ela já está atualizada. Falha de consulta não bloqueia o jogo. Esses testes usam manifesto simulado; publicação no Vercel ainda exige verificação no domínio oficial.
 
 ## Inspeção visual
 
-Capturas em [`evidence/v23.09.2003.17/`](evidence/v23.09.2003.17/) mostram a prévia curta e o Anel em 390×844, 430×932, 1366×768 e 1920×1080. O slot bloqueado explica o nível exigido; após a compra ele aparece na mochila e no HUD. A prévia móvel mantém o botão de confirmação visível, com base, PR, ajuste e total em ordem. Não houve rolagem horizontal nos tamanhos testados. Emulação de viewport não equivale a teste em telefone físico.
+Capturas em [`evidence/v23.09.2003.18/`](evidence/v23.09.2003.18/) mostram intro e Ajustes com movimento reduzido no PC, aviso de atualização em 1366×768 e 390×844, e verificação manual em desktop e móvel. O botão de backup deixou de cobrir a seção de versão. Não houve alteração nos sprites, cadências ou layouts do mundo. Viewport emulado não equivale ao aparelho físico do jogador.
 
 ## Limites
 
-- A IA externa não foi consultada com treinos reais. O contrato e os limites foram verificados com entradas sintéticas; a precisão da análise da IA precisa de observação no uso real.
-- O jogo não recebe o relato original no formato v2. Ele não verifica se o recorde declarado foi realmente demonstrado; apenas limita e registra a sugestão. Um novo ID pode representar a mesma atividade, portanto a proteção de duplicata evita reaplicação acidental do mesmo código, não autentica exercícios.
-- Os 35/40 ouro e o nível 4 foram avaliados com ganhos sintéticos de treino e combate, mas ainda precisam de avaliação do ritmo de jogo real.
+A preferência real de movimento no PC do jogador e seus cabeçalhos de cache não são acessíveis neste ambiente; a causa foi reproduzida por emulação e combina com o relato, mas precisa ser conferida naquele navegador. Um cliente antigo que ainda não contém o verificador precisa ser recarregado uma vez para receber este recurso. O aviso detecta uma versão mais nova do manifesto; ele não verifica separadamente se cada arquivo local do navegador foi servido do cache.
 
-## Produção
+## Integração e produção
 
-PR #10 integrado à `main` no commit `932bf7d67388728b3274d3f799747317b6dba643`. O check Vercel da branch passou. Em 26/09/2026, o endereço `https://fizzi-quest.vercel.app/` exibiu título e rodapé `v23.09.2003.17`; a vila carregou, a aventura iniciou e o Diário abriu o novo prompt com ID/data. A navegação de produção foi feita em uma sessão limpa do navegador interno. Não foi importado treino sintético no domínio público.
+Pendente: registrar PR, commit de merge, verificação do manifesto e título no domínio oficial.
