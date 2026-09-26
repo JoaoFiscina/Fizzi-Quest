@@ -92,7 +92,7 @@ test("tela vertical, menus e movimento por ponteiro", async ({ page }) => {
   await page.getByRole("button", { name: "Fechar menu" }).click();
   await page.getByRole("button", { name: "Mapa", exact: true }).click();
   await expect(page.getByText("Mina do Eco")).toBeVisible();
-  await expect(page.getByText("🔒 BLOQUEADA")).toHaveCount(3);
+  await expect(page.getByText("BLOQUEADA", { exact: true })).toHaveCount(3);
   await page.screenshot({ path: "test-results/mobile-map.png" });
   expect(
     await page.evaluate(() => document.documentElement.dataset.cameraZoom),

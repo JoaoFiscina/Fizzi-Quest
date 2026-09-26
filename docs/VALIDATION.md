@@ -1,30 +1,36 @@
-# Validação — v23.09.2003.14
-Data: 26/09/2026. Windows, Edge headless, Phaser/TypeScript/Vite.
+# Validação — v23.09.2003.15
 
-## Resultado
-- npm test: 34 testes aprovados; inclui migração da preferência ausente para system.
-- npm run build: aprovado; JavaScript próprio 55,16 KB gzip (v13: 54,58 KB).
-- npm run test:e2e: 13 testes aprovados.
-- Teste temporal adicional sem aceleração: 55 amostras a intervalos de 557 ms, total superior a 30 segundos.
-- Todas as amostras mantiveram água/fogo em reprodução; cada sprite essencial mudou de quadro.
-- Posições e quantidade de objetos constantes; um timer e no máximo dois ciclos ocasionais.
-- Escolha Completa funciona mesmo com preferência de sistema reduzida; persiste após reload.
-- Usar sistema acompanha mudança de preferência do navegador sem reload.
-- Reduzida mantém efeitos essenciais suaves e desativa partículas.
-- Comparação dos pixels das texturas comprova quadros diferentes para água, fogo, árvore, grama e bandeira.
-- Inspeção desktop/mobile e folha de sprites.
+Data: 26/09/2026. Ambiente: Windows, Edge headless, Phaser/TypeScript/Vite.
 
-## Evidências
-docs/evidence/v23.09.2003.14/:
-- cadence.json: amostras temporais reais;
-- sprite-reference.png: folha dos quadros autorais;
-- desktop-time-10.png e desktop-time-11.png: estados temporais;
-- water-*.png e fire-*.png: recortes renderizados usados no teste de diferença;
-- desktop-settings.png, mobile-world.png, mobile-reduced-settings.png.
+## Resultado técnico
+
+- `npm test`: 34 testes aprovados.
+- `npm run build`: aprovado; JavaScript próprio 56,44 KB gzip e Phaser 332,17 KB gzip.
+- `npm run test:e2e`: 17 testes aprovados em 3,5 minutos.
+- Teste temporal da v15: 31 amostras em intervalos de 1 segundo, cobrindo mais de 30 segundos. Os quatro monstros trocaram de quadro e conservaram a posição lógica; água/fogo continuaram animados.
+- Estados de carapaça do Besouro e preparo do Guardião foram conferidos a partir do combate salvo.
+- Mapa conferido em 390×844, 430×932, 1366×768 e 1920×1080, com marcadores atuais e regiões futuras bloqueadas.
+- Testes legados cobrem save/reload no meio da apresentação, diagonais, zoom, compra, treino e modo de movimento reduzido.
+
+## Inspeção estética
+
+Capturas antes/depois usam o mesmo save sintético, posição, zoom Afastado e preferência Reduzida. Vila, bosque, bifurcação e mapa foram comparados na escala real de jogo. A vila ganhou hierarquia mais clara no piso e nos serviços; o bosque mostra pedra no ramo alto e musgo no ramo baixo. O Broto tem folhas separadas do rosto; o Besouro, carapaça e patas; a Mariposa, asas que mudam de contorno; o Guardião, massa corporal e preparação legível. O mapa elimina a falsa passagem para o Posto e isola as regiões que ainda não existem.
+
+A folha ampliada em escala inteira `after/monster-frames.png` permite avaliar os quatro quadros de cada criatura. Comparação de pixels demonstra mudança, mas o julgamento de leitura foi feito nas capturas de jogo. Centro das rotas e personagens continuam visíveis. Não foi necessário alterar hitbox, matriz de colisão ou escala do mundo.
+
+## Arquivos de evidência
+
+`docs/evidence/v23.09.2003.15/`:
+
+- `before/`: vila, bosque, bifurcação e mapa capturados na base v14;
+- `after/`: mesmas capturas na v15; mapa e mundo no celular emulado; poses de combate; folha de quadros;
+- `after/monster-cadence.json`: sequência temporal real dos sprites e do ambiente.
 
 ## Limites
-- Mobile emulado não comprova Safari/iOS ou Android físico.
-- Sem ensaio de bateria ou benchmark de aparelho de entrada.
-- Água/fogo reduzidos têm somente dois quadros a 1 FPS; esta é uma escolha acessível explícita.
-- Avisos conhecidos de comentários PURE do Zod e chunk Phaser permanecem.
-- Esta entrega está preparada em branch; o domínio público ainda não foi atualizado.
+
+- Emulação de viewport não equivale a teste em aparelho Android/iOS físico.
+- Não houve benchmark confiável de bateria ou FPS em aparelho de entrada.
+- Composição de terreno foi refinada dentro da geometria atual; áreas jogáveis novas, patrulhamento e respawn variável pertencem a etapas futuras.
+- Transições amplas de entrada e saída do combate foram adiadas para evitar um novo sistema nesta versão. Os eventos existentes ganharam poses curtas.
+- O aviso de chunk grande do Phaser permanece; o build é aprovado.
+- Histórico da validação anterior: `VALIDATION_V14.md`.

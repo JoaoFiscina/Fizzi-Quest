@@ -2,7 +2,7 @@
 
 RPG pessoal de exploração em pixel art, construído com Phaser, TypeScript e Vite para o marco **Treino à aventura**.
 
-## Implementação atual — v23.09.2003.14
+## Implementação atual — v23.09.2003.15
 
 Já estão implementados os blocos principais do domínio e da experiência:
 
@@ -18,6 +18,8 @@ Já estão implementados os blocos principais do domínio e da experiência:
 - zoom Afastado, Padrão e Próximo com escala inteira e adaptação à viewport;
 - movimento diagonal normalizado por teclado e direcional móvel de oito posições;
 - ciclos ambientais leves e dessincronizados para água, fogo, árvores, vegetação e bandeiras;
+- quatro criaturas redesenhadas com silhuetas e ciclos próprios; poses de combate acompanham os eventos já calculados;
+- vila e bosque com caminho, texturas e pontos de referência refinados; mapa regional responsivo distingue locais atuais de regiões futuras;
 - folhas e poeira ocasionais com limite de dois efeitos e modo de movimento reduzido;
 - pontuação diária por regrasVersion 1, maestrias separadas de XP de aventura;
 - inventário, loja, equipamento, baú, fogueira, missão da guilda e melhoria da sede;
@@ -31,7 +33,7 @@ npm install
 npm run dev
 ```
 
-Build para Vercel: `npm run build`, saída `dist`. A versão `v23.09.2003.13` está publicada em [fizzi-quest.vercel.app](https://fizzi-quest.vercel.app).
+Build para Vercel: `npm run build`, saída `dist`. O endereço oficial é [fizzi-quest.vercel.app](https://fizzi-quest.vercel.app); confirme a versão exibida no rodapé após cada integração à `main`.
 
 Validação: `npm test` e `npm run test:e2e` (Edge via Playwright). Evidências e limites em [`docs/VALIDATION.md`](docs/VALIDATION.md).
 

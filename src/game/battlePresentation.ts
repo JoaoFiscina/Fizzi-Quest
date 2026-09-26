@@ -6,6 +6,7 @@ export class BattlePresentation {
   readonly root: Phaser.GameObjects.Container;
   private hero: Phaser.GameObjects.Sprite;
   private enemy: Phaser.GameObjects.Sprite;
+  private enemyKind: Battle["enemy"];
   private shield: Phaser.GameObjects.Arc;
   private cue: Phaser.GameObjects.Text;
   private active = true;
@@ -15,6 +16,7 @@ export class BattlePresentation {
     battle: Battle,
     private reduced = false,
   ) {
+    this.enemyKind = battle.enemy;
     const w = scene.scale.width,
       h = scene.scale.height,
       mobile = w < 700;
@@ -76,6 +78,11 @@ export class BattlePresentation {
     const prepare = b.enemy === "guardian" && b.round % 3 === 2;
     const strong = b.enemy === "guardian" && b.round % 3 === 0;
     this.enemy.setTint(shell ? 0xb6c9bb : strong ? 0xe9af6b : 0xffffff);
+    if (shell || prepare) {
+      this.enemy
+        .stop()
+        .setTexture(`${this.enemyKind}-${shell ? "guard" : "prepare"}`);
+    } else this.restoreEnemy();
     this.cue.setText(
       b.status !== "awaiting_player"
         ? ""
@@ -87,6 +94,10 @@ export class BattlePresentation {
               ? "! RAÍZES"
               : "! INVESTIDA",
     );
+  }
+  private restoreEnemy() {
+    this.enemy.stop().setTexture(this.enemyKind);
+    if (!this.reduced) this.enemy.play(`monster-${this.enemyKind}-idle`);
   }
   private tween(targets: object, props: object, duration = 130) {
     return new Promise<void>((resolve) => {
@@ -139,13 +150,18 @@ export class BattlePresentation {
       if (event.kind === "damage") {
         const x = actor.x,
           delta = (event.actor === "hero" ? 1 : -1) * (event.heavy ? 26 : 14);
+        if (event.actor === "enemy")
+          this.enemy.stop().setTexture(`${this.enemyKind}-attack`);
         await this.tween(actor, { x: x + delta }, 100);
         if (!this.active) return;
+        if (event.actor === "hero")
+          this.enemy.stop().setTexture(`${this.enemyKind}-hurt`);
         target.setTintFill(0xf1e6ca);
         this.number(target, `−${event.amount}`, "#ffe4ba");
         onEvent(event);
         await this.tween(actor, { x }, 120);
         target.clearTint();
+        this.restoreEnemy();
       } else if (event.kind === "heal" || event.kind === "recover") {
         actor.setTint(0xa2dfb3);
         this.number(
@@ -164,10 +180,13 @@ export class BattlePresentation {
         await this.tween(this.shield, { alpha: 0.6 }, 120);
         this.shield.setAlpha(1);
       } else if (event.kind === "prepare") {
+        if (event.actor === "enemy")
+          this.enemy.stop().setTexture(`${this.enemyKind}-prepare`);
         this.number(actor, "PREPARA", "#e3cb85");
         onEvent(event);
         await this.tween(actor, { alpha: 0.7 }, 110);
         await this.tween(actor, { alpha: 1 }, 110);
+        this.restoreEnemy();
       } else if (event.kind === "flee") {
         onEvent(event);
         await this.tween(actor, { x: actor.x - 70, alpha: 0 }, 200);

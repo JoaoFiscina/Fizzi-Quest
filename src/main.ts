@@ -733,9 +733,13 @@ function worldMap() {
     note: string,
     className: string,
     status: string,
+    glyph: string,
   ) => {
     const node = el("section", "", `map-area ${className}`);
+    const icon = el("span", glyph, "map-glyph");
+    icon.setAttribute("aria-hidden", "true");
     node.append(
+      icon,
       el("span", status, "map-status"),
       el("strong", name),
       el("small", note),
@@ -744,12 +748,14 @@ function worldMap() {
   };
   const villageStatus = s.map === "village" ? "VOCÊ ESTÁ AQUI" : "DESCOBERTA";
   const forestStatus = s.map === "forest" ? "VOCÊ ESTÁ AQUI" : "TRILHA ABERTA";
-  map.append(
+  const known = el("div", "", "map-known");
+  known.append(
     area(
       "Vila da Guilda",
       "Descanso · loja · treinos",
       "village",
       villageStatus,
+      "⌂",
     ),
     el("div", "Trilha leste", "map-route open-route"),
     area(
@@ -757,8 +763,9 @@ function worldMap() {
       "Criaturas · baú · bifurcação",
       "forest",
       forestStatus,
+      "♣",
     ),
-    el("div", "Passagem tomada", "map-route locked-route"),
+    el("div", "Marco do bosque", "map-route watch-route"),
     area(
       "Posto de Vigia",
       s.defeated.includes("guardian")
@@ -766,10 +773,38 @@ function worldMap() {
         : "Guardião de Musgo",
       `watch ${s.defeated.includes("guardian") ? "cleared" : "danger"}`,
       s.defeated.includes("guardian") ? "RECUPERADO" : "PERIGO",
+      "▣",
     ),
-    area("Mina do Eco", "Região futura", "locked mine", "🔒 BLOQUEADA"),
-    area("Ruínas Altas", "Região futura", "locked ruins", "🔒 BLOQUEADA"),
-    area("Costa Dourada", "Região futura", "locked coast", "🔒 BLOQUEADA"),
+  );
+  const future = el("div", "", "map-future");
+  future.append(
+    area(
+      "Mina do Eco",
+      "Região futura · indisponível",
+      "locked mine",
+      "BLOQUEADA",
+      "",
+    ),
+    area(
+      "Ruínas Altas",
+      "Região futura · indisponível",
+      "locked ruins",
+      "BLOQUEADA",
+      "",
+    ),
+    area(
+      "Costa Dourada",
+      "Região futura · indisponível",
+      "locked coast",
+      "BLOQUEADA",
+      "",
+    ),
+  );
+  map.append(
+    el("p", "CAMINHO CONHECIDO", "map-section-title"),
+    known,
+    el("p", "REGIÕES FUTURAS", "map-section-title"),
+    future,
   );
   content.append(
     el(

@@ -4,7 +4,7 @@ Esta pasta é a memória operacional do jogo. Atualize-a a cada versão antes de
 
 ## Versão corrente
 
-`v23.09.2003.14` — recuperação visual: loops contínuos de água/fogo, quadros refinados e preferência de movimento explícita. Plano em PLANO_V14.md.
+`v23.09.2003.15` — composição de vila/bosque, quatro criaturas com silhuetas próprias e mapa regional reorganizado. Plano em PLANO_V15_COMPOSICAO_ESTETICA.md.
 
 ## Árvore lógica
 

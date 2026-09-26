@@ -5,7 +5,7 @@ test("cadência real por 30 segundos, escolha persistente e pixels ambientais", 
   page,
 }) => {
   test.setTimeout(90000);
-  const output = "docs/evidence/v23.09.2003.14";
+  const output = "test-results/visual-v14-regression";
   mkdirSync(output, { recursive: true });
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");
@@ -58,14 +58,27 @@ test("cadência real por 30 segundos, escolha persistente e pixels ambientais", 
     const clip = await page.evaluate((kind) => {
       // @ts-expect-error diagnostic scene
       const scene = window.__PHASER_GAME__.scene.scenes[0];
-      const sprite = kind === "water" ? scene.waterSprites[0] : scene.fireSprites[0];
-      const b = sprite.getBounds(), c = scene.cameras.main;
-      return { x: Math.round((b.x-c.worldView.x)*c.zoom), y: Math.round((b.y-c.worldView.y)*c.zoom),
-        width: Math.round(b.width*c.zoom), height: Math.round(b.height*c.zoom) };
-    },kind);
+      const sprite =
+        kind === "water" ? scene.waterSprites[0] : scene.fireSprites[0];
+      const b = sprite.getBounds(),
+        c = scene.cameras.main;
+      return {
+        x: Math.round((b.x - c.worldView.x) * c.zoom),
+        y: Math.round((b.y - c.worldView.y) * c.zoom),
+        width: Math.round(b.width * c.zoom),
+        height: Math.round(b.height * c.zoom),
+      };
+    }, kind);
     const frames = [];
-    for(let f=0;f<4;f++){
-      frames.push((await page.screenshot({clip,path:output+"/"+kind+"-"+f+".png"})).toString("base64"));
+    for (let f = 0; f < 4; f++) {
+      frames.push(
+        (
+          await page.screenshot({
+            clip,
+            path: output + "/" + kind + "-" + f + ".png",
+          })
+        ).toString("base64"),
+      );
       await page.waitForTimeout(173);
     }
     expect(new Set(frames).size).toBeGreaterThan(1);

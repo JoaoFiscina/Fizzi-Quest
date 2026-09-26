@@ -1,5 +1,9 @@
 # Histórico de versões
 
+## v23.09.2003.15 — 26/09/2026
+
+Composição estática da vila e do bosque refinada; Broto, Besouro, Mariposa e Guardião redesenhados no tamanho anterior, com ciclos e poses próprias. Combate apresenta carapaça, preparo, ataque e reação por textura, após resolver e persistir o resultado. Mapa regional foi reorganizado com Posto como marco do bosque e três regiões futuras claramente bloqueadas. Plano: `PLANO_V15_COMPOSICAO_ESTETICA.md`; evidências: `docs/evidence/v23.09.2003.15/`; validação: `docs/VALIDATION.md`.
+
 ## v23.09.2003.14 — 26/09/2026
 
 Água e fogo voltam a ciclos contínuos com fases diferentes; ondas, chama e copa recebem quadros mais legíveis. Preferência Completa/Usar sistema/Reduzida persistente e compatível com saves antigos. Efeitos ocasionais priorizam a câmera e completam seus ciclos. Ver plano PLANO_V14.md e validação temporal real em docs/VALIDATION.md.

@@ -114,6 +114,7 @@ export class World extends Phaser.Scene {
     this.worldKey = s.map;
     this.mapData = makeMap(s.map === "forest");
     const m = this.mapData;
+    const encounters = m.entities.filter((entry) => entry.kind in enemies);
     for (let y = 0; y < m.height; y++)
       for (let x = 0; x < m.width; x++) {
         const tile = this.add
@@ -148,6 +149,21 @@ export class World extends Phaser.Scene {
               .setOrigin(0);
             this.root.add(stones);
           }
+          if (s.map === "village" && (x * 9 + y * 5) % 11 === 0) {
+            this.root.add(
+              this.add.sprite(x * 16, y * 16, "courtyard-stone").setOrigin(0),
+            );
+          }
+          if (
+            s.map === "forest" &&
+            y < 13 &&
+            x > 19 &&
+            (x * 3 + y * 7) % 9 === 0
+          ) {
+            this.root.add(
+              this.add.sprite(x * 16, y * 16, "forest-stone").setOrigin(0),
+            );
+          }
         }
         if (
           m.tiles[y][x] === 0 &&
@@ -163,7 +179,14 @@ export class World extends Phaser.Scene {
         }
         if (m.tiles[y][x] === 0) {
           const detail = (x * 19 + y * 3) % 41;
-          if (detail === 0 || detail === 13) {
+          const nearEncounter =
+            s.map === "forest" &&
+            encounters.some(
+              (entry) =>
+                entry.kind in enemies &&
+                Math.hypot(entry.x - x * 16, entry.y - y * 16) < 45,
+            );
+          if (!nearEncounter && (detail === 0 || detail === 13)) {
             const decor = this.add
               .sprite(
                 x * 16,
@@ -174,6 +197,16 @@ export class World extends Phaser.Scene {
             this.root.add(decor);
             if (detail === 13) this.terrainSprites.push(decor);
           }
+          if (
+            s.map === "forest" &&
+            x > 19 &&
+            y > 15 &&
+            !nearEncounter &&
+            (x * 11 + y * 7) % 29 === 0
+          )
+            this.root.add(
+              this.add.sprite(x * 16, y * 16, "forest-moss").setOrigin(0),
+            );
         }
       }
     this.foreground = this.add.container(0, 0);
