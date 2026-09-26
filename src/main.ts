@@ -613,7 +613,39 @@ function settings() {
     zoomButtons.append(choice);
   }
   zoomChoices.append(zoomButtons);
-  personalization.append(appearanceChoices, zoomChoices);
+  const motionChoices = el("div", "", "motion-settings");
+  motionChoices.append(el("h3", "Animações do mundo"));
+  const effectiveReduced =
+    store.state.motion === "reduced" ||
+    (store.state.motion === "system" &&
+      matchMedia("(prefers-reduced-motion: reduce)").matches);
+  motionChoices.append(
+    el(
+      "p",
+      effectiveReduced
+        ? "Ativo: movimento reduzido. Água e fogo suaves; vegetação parada."
+        : "Ativo: movimento completo. Água e fogo contínuos; brisas ocasionais.",
+    ),
+  );
+  const motionButtons = el("div", "", "zoom-choices");
+  for (const [value, label] of [
+    ["full", "Completa"],
+    ["system", "Usar sistema"],
+    ["reduced", "Reduzida"],
+  ] as const) {
+    const choice = button(
+      label,
+      () => {
+        store.transact((s) => (s.motion = value));
+        settings();
+      },
+      store.state.motion === value ? "selected" : "",
+    );
+    choice.setAttribute("aria-pressed", String(store.state.motion === value));
+    motionButtons.append(choice);
+  }
+  motionChoices.append(motionButtons);
+  personalization.append(appearanceChoices, zoomChoices, motionChoices);
   content.append(
     personalization,
     el("h3", "Seu progresso, com você"),

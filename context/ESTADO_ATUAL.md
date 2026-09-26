@@ -1,63 +1,28 @@
-# Estado atual — v23.09.2003.13
+# Estado atual — v23.09.2003.14
 
-## Classificação
+Implementação na branch feat/fundacao-visual-v14. Produção ainda não atualizada por esta entrega.
 
-P2 — complexidade média, concentrada em apresentação ambiental e desempenho.
+## Resultado
+- Água e fogo agora são loops permanentes, fora do limite de dois efeitos ocasionais.
+- Ondas redesenhadas com cristas e sombras; fogo com duas línguas variáveis.
+- Árvores balançam a copa um pixel dentro da textura; o tronco fica fixo.
+- Efeitos ocasionais priorizam objetos dentro da câmera e completam seu ciclo.
+- Ajustes oferece Completa, Usar sistema e Reduzida, persistidos no save.
+- Saves anteriores recebem Usar sistema sem perder progresso.
+- Mudanças de preferência são aplicadas imediatamente; modo sistema acompanha alterações do navegador.
+- Reduzida mantém água/fogo a 1 FPS e desativa reações decorativas.
+- Registro de texturas/animações protegido contra duplicação em reinício.
+- Limpeza de timer e listener de redimensionamento ao encerrar a cena.
 
-## Feito nesta versão
+## Plano e evidências
+Plano detalhado: PLANO_V14.md.
+Evidências: docs/evidence/v23.09.2003.14/.
+Verificações e limitações: docs/VALIDATION.md.
 
-- controlador ambiental reutilizável com um único timer por mapa;
-- ciclos finitos e ocasionais para água, fogo, árvores, tufos de grama, vento e bandeiras;
-- atrasos iniciais e intervalos diferentes entre objetos semelhantes;
-- limite rígido de dois efeitos simultâneos no modo normal;
-- folhas no bosque e poeira na vila reutilizam sprites pré-criados e aparecem raramente;
-- `prefers-reduced-motion` desativa folhas, poeira, árvores, vegetação e bandeiras animadas;
-- movimento reduzido mantém apenas água e fogo, com menor probabilidade, intervalos 2,8 vezes maiores e limite de um ciclo;
-- troca de mapa e encerramento da cena removem o timer anterior;
-- diagnósticos testáveis expõem modo, quantidade ativa, limite e estado do timer;
-- nenhuma biblioteca foi adicionada.
+## Limites
+- Sem teste físico em Android/iOS ou bateria.
+- Esta versão melhora continuidade e leitura dos quadros ambientais; a remodelagem dos monstros pertence à versão 15.
+- O aviso de tamanho do chunk Phaser permanece.
 
-## Preservação confirmada
-
-- formato do save e versão de save inalterados;
-- posições lógicas, hitboxes, colisões e spawns inalterados;
-- velocidade reta, velocidade diagonal e zoom inalterados;
-- encontros, combate, recompensas, inventário, equipamentos e progressão inalterados;
-- animações ambientais não movimentam entidades lógicas.
-
-## Frequência e limites
-
-- água: intervalo individual de 7 a 15 segundos, 55% de ativação;
-- fogo: 3,2 a 7,2 segundos, 82% de ativação;
-- árvores: 9 a 19 segundos, 48% de ativação;
-- grama e vento: 6,5 a 14,5 segundos, 58% de ativação;
-- bandeiras: 5,2 a 12,5 segundos, 68% de ativação;
-- folhas e poeira: 12 a 22 segundos, 35% de ativação;
-- máximo normal: dois ciclos ativos; máximo reduzido: um ciclo essencial.
-
-Cada objeto possui seu próprio próximo horário. Falhar a probabilidade agenda uma nova tentativa, preservando pausas reais.
-
-## Verificação
-
-- `npm test`: 34 testes aprovados;
-- `npm run build`: aprovado, sem dependências novas;
-- `npm run test:e2e`: 12 testes aprovados, incluindo controlador, fases, limpeza de timer, movimento reduzido, movimento diagonal e matriz visual;
-- evidências finais: `docs/evidence/v23.09.2003.13/`;
-- PR [#6](https://github.com/JoaoFiscina/Fizzi-Quest/pull/6) integrado à `main` no commit `7eac6d8`;
-- deployment de produção aprovado pela Vercel;
-- domínio fixo respondeu HTTP 200 com a versão e o controlador ambiental no bundle.
-
-## Riscos e limites
-
-- navegador móvel emulado não substitui Safari/iOS e Android físicos;
-- os ciclos são propositalmente discretos e podem não aparecer em toda captura isolada;
-- o bundle principal do Phaser continua grande; a ambientação acrescentou apenas código e texturas Canvas pequenas;
-- a configuração de redução de movimento é lida ao iniciar a cena e exige reload se a preferência do sistema mudar durante a sessão;
-- a auditoria posterior encontrou uma regressão perceptiva: na prévia inspecionada, movimento reduzido estava ativo e suprimiu quase toda a ambientação;
-- as evidências parado/ciclo do bosque são byte a byte idênticas; consulte `DIAGNOSTICO_GRAFICO_V13.md`.
-
-## Próxima etapa
-
-A `v23.09.2003.14` deve recuperar a fundação visual: água e fogo contínuos, categorias de movimento separadas, escolha explícita de animações e validação temporal perceptível. Criaturas e mapa passam para a versão 15.
-
-Consulte `docs/VALIDATION.md` para os comandos e `context/PROXIMOS_PASSOS.md` para a fila.
+## Próximo passo
+v23.09.2003.15: criaturas e mapa prévio. Ver PROXIMOS_PASSOS.md.

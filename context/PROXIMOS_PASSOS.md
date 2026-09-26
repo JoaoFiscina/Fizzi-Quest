@@ -2,9 +2,9 @@
 
 O plano detalhado e os critérios de aceite ficam em [`ROADMAP_IMPLEMENTACOES.md`](ROADMAP_IMPLEMENTACOES.md). Esta página mantém a ordem prática de execução.
 
-## Próxima etapa recomendada
+## Entrega atual
 
-### v23.09.2003.14 — recuperação da fundação visual
+### v23.09.2003.14 — implementada; validação em docs/VALIDATION.md
 
 1. Separar movimentos-base, reações ocasionais e partículas raras.
 2. Restaurar água e fogo contínuos no modo completo, com fases diferentes.
@@ -25,7 +25,7 @@ O plano detalhado e os critérios de aceite ficam em [`ROADMAP_IMPLEMENTACOES.md
 
 ## Etapas seguintes
 
-### v23.09.2003.15 — criaturas e mapa
+### Próxima: v23.09.2003.15 — criaturas e mapa
 
 1. Refinar a pixel art dos monstros sem aumentar a escala ou mudar hitboxes.
 2. Dar idle, pausa, reação e ataque visual próprios para cada espécie.

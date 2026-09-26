@@ -10,11 +10,10 @@ export class BattlePresentation {
   private cue: Phaser.GameObjects.Text;
   private active = true;
   private pending = new Set<() => void>();
-  private reduced = window.matchMedia("(prefers-reduced-motion: reduce)")
-    .matches;
   constructor(
     private scene: Phaser.Scene,
     battle: Battle,
+    private reduced = false,
   ) {
     const w = scene.scale.width,
       h = scene.scale.height,

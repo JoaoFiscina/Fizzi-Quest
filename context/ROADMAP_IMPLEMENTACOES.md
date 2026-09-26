@@ -1,6 +1,6 @@
 # Roadmap auditado de implementações futuras
 
-Data da organização: 17/09/2026. Base atual: `v23.09.2003.13`.
+Data da organização: 17/09/2026. Base de implementação: `v23.09.2003.14`.
 
 Este documento registra intenções futuras. Um item só muda para concluído depois de implementação, testes e inspeção visual. Cada etapa deve manter saves existentes e receber uma versão `v23.09.2003.x` própria.
 
@@ -105,7 +105,7 @@ Objetivo: deixar o mundo mais vivo sem produzir ruído visual, mudar gameplay ou
 - modo reduzido não mostra folhas ou poeira;
 - desktop e 390×844 mantêm HUD, mapa e direcional legíveis.
 
-## Etapa 4 — recuperação da fundação visual — v23.09.2003.14
+## Etapa 4 — recuperação da fundação visual — implementada na v23.09.2003.14
 
 Objetivo: corrigir a regressão perceptiva da v13 antes de adicionar mais arte.
 

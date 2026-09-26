@@ -87,19 +87,43 @@ export function polishArt(scene: Phaser.Scene) {
     clone("water", "water-" + f, 16, 16, (c) => {
       dot(c, "#387b80", 0, 0, 16, 16);
       dot(c, "#417f80", 0, 8, 16, 8);
-      dot(c, "#69a5a0", (f * 3) % 10, 4, 6, 1);
+      // Broken wave crests travel inside the tile; no layer displacement.
+      for (let row = 0; row < 2; row++) {
+        const crest = (f * 2 + row * 7) % 16;
+        for (let p = 0; p < 5; p++) {
+          dot(
+            c,
+            p === 2 ? "#86bcb0" : "#599d9b",
+            (crest + p) % 16,
+            3 + row * 8 + (f % 2),
+            1,
+            1,
+          );
+          dot(c, "#306e78", (crest + p) % 16, 5 + row * 8, 1, 1);
+        }
+      }
       dot(c, "#4d9091", (12 + f * 2) % 14, 11, 4, 1);
       dot(c, "#b0c9ad", 2 + f * 3, 5, 1, 1);
     });
     clone("fire", "fire-" + f, 24, 24, (c) => {
       c.clearRect(0, 0, 24, 17);
       dot(c, "#b66a49", 6, 13, 13, 6);
+      // Two tongues change silhouette around a fixed ember bed.
+      dot(c, "#d98542", 7, 12, 11, 6);
+      dot(c, "#eead55", 7 + (f % 2), 7 + (f % 3), 4, 9);
+      dot(c, "#eab35f", 14 - (f % 2), 5 + ((f + 1) % 3), 3, 12);
       dot(c, "#df9e51", 8 + (f % 2), 8, 9, 10);
       dot(c, "#f0ca78", 10, 5 + (f % 3), 5, 12);
       dot(c, "#f8e5ac", 12, 12, 3, 7);
       dot(c, "#d7b768", 6 + f * 3, 2 + f, 1, 2);
     });
     clone("tree", "tree-" + f, 40, 52, (c) => {
+      const source = scene.textures
+        .get("tree")
+        .getSourceImage() as HTMLCanvasElement;
+      const sway = [0, 1, 0, -1][f];
+      c.clearRect(0, 0, 40, 34);
+      c.drawImage(source, 0, 0, 40, 34, sway, 0, 40, 34);
       dot(c, "#87a961", 12 + (f % 2), 10, 3, 1);
       dot(c, "#659151", 26 - (f % 2), 19, 3, 2);
       dot(c, "#91aa62", 16 + (f % 3), 25, 2, 1);
@@ -235,7 +259,7 @@ export function polishArt(scene: Phaser.Scene) {
       key: `ambient-${key}`,
       frames: Array.from({ length: 4 }, (_, i) => ({ key: `${key}-${i}` })),
       frameRate: rate,
-      repeat: 0,
+      repeat: key === "water" || key === "fire" ? -1 : 0,
       yoyo: true,
     });
   for (const key of ["water", "fire"] as const)
@@ -243,7 +267,7 @@ export function polishArt(scene: Phaser.Scene) {
       key: `ambient-${key}-reduced`,
       frames: [{ key: `${key}-0` }, { key: `${key}-1` }],
       frameRate: 1,
-      repeat: 0,
+      repeat: -1,
       yoyo: true,
     });
 

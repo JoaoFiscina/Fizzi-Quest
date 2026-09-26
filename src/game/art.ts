@@ -1,6 +1,8 @@
 import Phaser from "phaser";
 import { polishArt } from "./polishArt";
 export function createArt(scene: Phaser.Scene) {
+  if (scene.textures.exists("water-0") && scene.anims.exists("ambient-water"))
+    return;
   const texture = (
     key: string,
     w: number,

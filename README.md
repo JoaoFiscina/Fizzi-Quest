@@ -2,7 +2,7 @@
 
 RPG pessoal de exploração em pixel art, construído com Phaser, TypeScript e Vite para o marco **Treino à aventura**.
 
-## Estado atual — v23.09.2003.13
+## Implementação atual — v23.09.2003.14
 
 Já estão implementados os blocos principais do domínio e da experiência:
 
@@ -35,7 +35,7 @@ Build para Vercel: `npm run build`, saída `dist`. A versão `v23.09.2003.13` es
 
 Validação: `npm test` e `npm run test:e2e` (Edge via Playwright). Evidências e limites em [`docs/VALIDATION.md`](docs/VALIDATION.md).
 
-Esta versão torna o terreno vivo com ciclos finitos, pausas variadas e redução de movimento. A versão pública usa `v23.09.2003.x`; a versão npm equivalente usa SemVer (`23.9.2003-13`).
+Esta versão restaura água e fogo contínuos, refina os quadros ambientais e permite escolher Completa, Usar sistema ou Reduzida nos Ajustes. A versão pública usa `v23.09.2003.x`; a versão npm equivalente usa SemVer (`23.9.2003-14`).
 
 ## Contexto vivo
 

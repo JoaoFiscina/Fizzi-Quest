@@ -22,8 +22,14 @@ export class World extends Phaser.Scene {
   private enemySprites = new Map<string, Phaser.GameObjects.Sprite>();
   private presentation?: BattlePresentation;
   private foreground!: Phaser.GameObjects.Container;
-  private reduced = window.matchMedia("(prefers-reduced-motion: reduce)")
-    .matches;
+  private motionMedia = window.matchMedia("(prefers-reduced-motion: reduce)");
+  private reduced = false;
+  private resolveReduced() {
+    return (
+      this.store.state.motion === "reduced" ||
+      (this.store.state.motion === "system" && this.motionMedia.matches)
+    );
+  }
   private flags: Phaser.GameObjects.Sprite[] = [];
   private chest?: Phaser.GameObjects.Sprite;
   private ambience?: AmbientController;
@@ -69,13 +75,15 @@ export class World extends Phaser.Scene {
     window.addEventListener("keydown", down);
     window.addEventListener("keyup", up);
     window.addEventListener("blur", blur);
+    const resize = () => this.resizeCamera();
     this.events.once("shutdown", () => {
+      this.scale.off("resize", resize);
       this.ambience?.destroy();
       window.removeEventListener("keydown", down);
       window.removeEventListener("keyup", up);
       window.removeEventListener("blur", blur);
     });
-    this.scale.on("resize", () => this.resizeCamera());
+    this.scale.on("resize", resize);
     this.resizeCamera();
   }
   clearInput() {
@@ -88,6 +96,7 @@ export class World extends Phaser.Scene {
   }
   build() {
     if (!this.root) return;
+    this.reduced = this.resolveReduced();
     this.ambience?.destroy();
     this.ambience = undefined;
     this.root.removeAll(true);
@@ -432,6 +441,10 @@ export class World extends Phaser.Scene {
   sync() {
     if (!this.player) return;
     const s = this.store.state;
+    if (this.reduced !== this.resolveReduced() && !this.presentation) {
+      this.build();
+      return;
+    }
     this.speed = 56 + Math.min(18, stats(s).speed * 1.2);
     if (this.worldKey !== s.map && !s.battle) this.build();
     const hero = s.appearance === "feminine" ? "hero-f" : "hero";
@@ -458,7 +471,7 @@ export class World extends Phaser.Scene {
     camera.removeBounds();
     camera.setZoom(1);
     camera.setScroll(0, 0);
-    this.presentation = new BattlePresentation(this, b);
+    this.presentation = new BattlePresentation(this, b, this.resolveReduced());
   }
   async battleFeedback(
     events: CombatEvent[],
@@ -476,8 +489,8 @@ export class World extends Phaser.Scene {
   update(time: number, delta: number) {
     if (!this.player) return;
     void time;
-    if (this.paused) return;
     this.sync();
+    if (this.paused) return;
     const s = this.store.state;
     let dx = 0,
       dy = 0;

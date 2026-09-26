@@ -126,7 +126,7 @@ test("reduced motion limita ciclos essenciais e desativa detalhes decorativos", 
     "reduced",
   );
   await expect
-    .poll(async () => (await ambience(page)).activations)
+    .poll(async () => (await ambience(page)).continuousCount)
     .toBeGreaterThan(0);
   const reduced = await ambience(page);
   expect(reduced.maxActive).toBe(1);
