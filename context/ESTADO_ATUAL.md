@@ -1,6 +1,6 @@
 # Estado atual — v23.09.2003.18
 
-Base: v23.09.2003.17 integrada à `main` pelo PR #10. A v18 está na branch `fix/v23.09.2003.18-atualizacao` enquanto ocorre a validação/publicação.
+Base: v23.09.2003.18 integrada à `main` pelo PR #11 e confirmada no domínio oficial. A próxima etapa é somente planejada neste momento.
 
 ## O que funciona
 
@@ -15,4 +15,4 @@ Base: v23.09.2003.17 integrada à `main` pelo PR #10. A v18 está na branch `fix
 
 ## Retomada
 
-Concluir integração e verificação de `https://fizzi-quest.vercel.app/` antes de chamar a v18 de oficial. Depois, observar o equilíbrio do Anel/treino e planejar Botas na v19. Roadmap e plano em `PROXIMOS_PASSOS.md` e `PLANO_V18_ATUALIZACAO_E_MOVIMENTO.md`.
+Observar o equilíbrio do Anel/treino e executar o piloto da v19 nos níveis 5, 10 e 20. Roadmap e plano em `PROXIMOS_PASSOS.md` e `PLANO_V19_BOTAS_E_IMPULSO.md`.
