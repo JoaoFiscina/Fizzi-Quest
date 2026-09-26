@@ -26,3 +26,5 @@ Verificações e limitações: docs/VALIDATION.md.
 
 ## Próximo passo
 v23.09.2003.15: criaturas e mapa prévio. Ver PROXIMOS_PASSOS.md.
+
+Planejamento detalhado registrado em 26/09/2026: [PLANO_V15_COMPOSICAO_ESTETICA.md](PLANO_V15_COMPOSICAO_ESTETICA.md). Somente documentação; nenhuma alteração gráfica da v15 foi executada. Retomada: confirmar base Git, capturar referência e preparar piloto estático.

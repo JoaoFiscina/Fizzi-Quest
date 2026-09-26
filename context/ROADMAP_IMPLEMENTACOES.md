@@ -121,6 +121,8 @@ O diagnóstico e a nova régua de aceite estão em [`DIAGNOSTICO_GRAFICO_V13.md`
 
 ## Etapa 5 — criaturas e mapa — v23.09.2003.15
 
+Guia de execução: [`PLANO_V15_COMPOSICAO_ESTETICA.md`](PLANO_V15_COMPOSICAO_ESTETICA.md). Planejado, não implementado. Inclui composição estática da vila/bosque, identidade das criaturas e mapa de consulta; transições amplas de combate são opcionais para conter a complexidade.
+
 Objetivo: reforçar a identidade das criaturas e a leitura do mapa sem misturar mudanças de combate ou progressão.
 
 - Refinar silhueta e detalhes dos quatro monstros dentro da escala atual.

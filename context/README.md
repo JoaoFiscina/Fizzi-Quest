@@ -14,6 +14,7 @@ fizzi-quest/
 │   ├── README.md                 ← este mapa e regras de continuidade
 │   ├── ESTADO_ATUAL.md           ← o que funciona e o que está incompleto
 │   ├── PROXIMOS_PASSOS.md        ← fila priorizada para a próxima sessão
+│   ├── PLANO_V15_COMPOSICAO_ESTETICA.md ← guia detalhado da próxima etapa; somente planejado
 │   ├── ROADMAP_IMPLEMENTACOES.md ← plano auditado das próximas melhorias
 │   ├── DIAGNOSTICO_GRAFICO_V13.md ← causa da regressão visual e nova régua de aceite
 │   ├── DECISOES.md               ← escolhas de produto e engenharia

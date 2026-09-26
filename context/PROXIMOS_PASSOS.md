@@ -27,6 +27,8 @@ O plano detalhado e os critérios de aceite ficam em [`ROADMAP_IMPLEMENTACOES.md
 
 ### Próxima: v23.09.2003.15 — criaturas e mapa
 
+Guia detalhado de composição, execução e aceite: [`PLANO_V15_COMPOSICAO_ESTETICA.md`](PLANO_V15_COMPOSICAO_ESTETICA.md). Elaborado em 26/09/2026; implementação ainda não iniciada. Começar pelas capturas de referência e pelo piloto estático, preservando a escala atual.
+
 1. Refinar a pixel art dos monstros sem aumentar a escala ou mudar hitboxes.
 2. Dar idle, pausa, reação e ataque visual próprios para cada espécie.
 3. Melhorar transições do combate e respeitar movimento reduzido.
