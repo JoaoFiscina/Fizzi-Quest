@@ -1,5 +1,9 @@
 # Histórico de versões
 
+## v23.09.2003.18 — 26/09/2026
+
+O jogo agora explica quando a preferência de movimento reduzido do aparelho pausa monstros/folhas e suaviza água/fogo, com acesso direto a animações completas. Os Ajustes exibem o estado e permitem verificar a versão; um manifesto gerado no build anuncia versões novas e oferece recarga com URL renovada, preservando o save. Arte, cadências, regras e formato de save não mudaram. Plano: `PLANO_V18_ATUALIZACAO_E_MOVIMENTO.md`. Validação e publicação em `docs/VALIDATION.md`.
+
 ## v23.09.2003.17 — 26/09/2026
 
 Anel liberado no nível 4 com duas escolhas moderadas, slot próprio e migração de saves antigos. O fluxo principal de treino passa a usar um prompt com ID persistente e uma resposta JSON curta; bônus de PR fica separado dos ganhos base e limitado a três por sessão/dia. Histórico e importação detalhada v1 permanecem compatíveis. Arte, animações, mapa, movimento e combate não foram alterados. Plano: `PLANO_V17.md` e `PLANO_IMPORTACAO_COMPACTA_PR.md`; validação: `docs/VALIDATION.md`. PR #10 integrado e domínio oficial verificado.

@@ -4,7 +4,7 @@ Esta pasta é a memória operacional do jogo. Atualize-a a cada versão antes de
 
 ## Versão corrente
 
-`v23.09.2003.17` — Anel no nível 4, resposta curta do treino e bônus de PR. Integração e domínio oficial confirmados em `ESTADO_ATUAL.md`. Planos em `PLANO_V17.md` e `PLANO_IMPORTACAO_COMPACTA_PR.md`.
+`v23.09.2003.18` — aviso de movimento reduzido no PC e verificação de versão para recarregar arquivos novos sem apagar o progresso. Estado da integração em `ESTADO_ATUAL.md`. Plano em `PLANO_V18_ATUALIZACAO_E_MOVIMENTO.md`.
 
 ## Árvore lógica
 
@@ -17,6 +17,7 @@ fizzi-quest/
 │   ├── PLANO_V15_COMPOSICAO_ESTETICA.md ← plano executado da v15
 │   ├── PLANO_V16.md             ← balanço de treino e habilidades
 │   ├── PLANO_V17.md             ← Anel e integração do treino compacto
+│   ├── PLANO_V18_ATUALIZACAO_E_MOVIMENTO.md ← diagnóstico PC/celular e atualização
 │   ├── PLANO_IMPORTACAO_COMPACTA_PR.md ← resposta curta da IA e bônus de recorde
 │   ├── MOLDE_EXPANSAO.md         ← roteiro reutilizável para novas versões
 │   ├── ROADMAP_IMPLEMENTACOES.md ← plano auditado das próximas melhorias
