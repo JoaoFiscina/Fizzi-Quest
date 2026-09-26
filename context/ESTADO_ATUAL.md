@@ -1,6 +1,6 @@
 # Estado atual — v23.09.2003.19
 
-Base: v23.09.2003.18 integrada à `main` pelo PR #11. Este ramo implementa a v23.09.2003.19 e aguarda validação final, PR e confirmação no domínio oficial.
+Base: v23.09.2003.19 integrada à `main` pelo PR #12. O manifesto público de `https://fizzi-quest.vercel.app/version.json` respondeu `v23.09.2003.19` após o merge.
 
 ## O que funciona
 
@@ -13,8 +13,8 @@ Base: v23.09.2003.18 integrada à `main` pelo PR #11. Este ramo implementa a v23
 
 ## Evidência e limites
 
-46 testes de regras, build e 24 jornadas E2E passaram; a expiração do Impulso usa relógio do navegador para continuar correta quando a cadência de frames varia. Capturas e detalhes da entrega estão em `docs/VALIDATION_V19.md` e `docs/evidence/v23.09.2003.19/`. Falta somente enviar o commit ao GitHub e confirmar a produção.
+46 testes de regras, build e 24 jornadas E2E passaram; a expiração do Impulso usa relógio do navegador para continuar correta quando a cadência de frames varia. Capturas e detalhes da entrega estão em `docs/VALIDATION_V19.md` e `docs/evidence/v23.09.2003.19/`. A publicação foi confirmada pelo manifesto público; o piloto de balanceamento nos níveis 10 e 20 segue pendente.
 
 ## Retomada
 
-Concluir a regressão/publicação da v19. Depois abrir o plano de movimentação de monstros com raio, ciclos variáveis e spawn raro de bosses. Roadmap e fila em `PROXIMOS_PASSOS.md` e `ROADMAP_IMPLEMENTACOES.md`.
+Executar o piloto de balanceamento do Impulso nos níveis 10 e 20 e abrir o plano de movimentação de monstros com raio, ciclos variáveis e spawn raro de bosses. Roadmap e fila em `PROXIMOS_PASSOS.md` e `ROADMAP_IMPLEMENTACOES.md`.

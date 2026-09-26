@@ -18,7 +18,7 @@ Plano detalhado: [`PLANO_V17.md`](PLANO_V17.md). Complemento: [`PLANO_IMPORTACAO
 
 Plano: [`PLANO_V18_ATUALIZACAO_E_MOVIMENTO.md`](PLANO_V18_ATUALIZACAO_E_MOVIMENTO.md). O modo do sistema é explicado no início e nos Ajustes; **Completa** permite manter as animações neste aparelho. O build publica `version.json` e o jogo oferece **Atualizar jogo** quando detectar uma versão mais nova, preservando o save. Conferir testes e produção em `docs/VALIDATION.md` e `ESTADO_ATUAL.md`.
 
-## v23.09.2003.19 — Botas e Impulso da Trilha (implementada neste ramo)
+## v23.09.2003.19 — Botas e Impulso da Trilha (publicada)
 
 Plano detalhado: [`PLANO_V19_BOTAS_E_IMPULSO.md`](PLANO_V19_BOTAS_E_IMPULSO.md).
 
@@ -27,7 +27,7 @@ Plano detalhado: [`PLANO_V19_BOTAS_E_IMPULSO.md`](PLANO_V19_BOTAS_E_IMPULSO.md).
 - O efeito acontece somente no mapa, não entra em `Action`, não muda combate/iniciativa/dano e não acumula. O tempo ativo fica fora do save; o fôlego gasto permanece salvo.
 - Validar piloto nos níveis 5, 10 e 20, movimento reto/diagonal, expiração, reload, batalha, troca de mapa e layouts desktop/mobile antes de integrar.
 
-Implementação realizada: Botas aparecem no nível 5, entram na migração/loja/mochila/ficha/HUD e o Impulso da Trilha custa 1 fôlego, aplica +5% por 5 segundos no rank 1, não acumula e expira com relógio do navegador. A validação final e a publicação ficam registradas em `docs/VALIDATION_V19.md`.
+Implementação realizada: Botas aparecem no nível 5, entram na migração/loja/mochila/ficha/HUD e o Impulso da Trilha custa 1 fôlego, aplica +5% por 5 segundos no rank 1, não acumula e expira com relógio do navegador. PR #12 integrado e versão pública confirmada; detalhes em `docs/VALIDATION_V19.md`. O piloto dos níveis 10 e 20 segue pendente.
 
 ## Depois da v19
 

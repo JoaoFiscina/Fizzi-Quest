@@ -20,7 +20,7 @@ Botas no nível 5 e a habilidade ativa Impulso da Trilha. A entrega preserva o f
 - [x] A expiração usa relógio do navegador e remove o estado visual mesmo com variação de frames.
 - [x] O efeito fica restrito ao mapa e é limpo ao entrar em combate.
 - [ ] Validar níveis 10 e 20 com o piloto de balanceamento.
-- [ ] Confirmar o domínio oficial após o PR.
+- [x] PR #12 integrado à `main`; `https://fizzi-quest.vercel.app/version.json` respondeu `{"version":"v23.09.2003.19"}` com HTTP 200 e `Cache-Control: no-store, max-age=0`.
 
 ## Evidências
 
