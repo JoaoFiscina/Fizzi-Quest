@@ -19,6 +19,7 @@ fizzi-quest/
 │   ├── PLANO_V17.md             ← Anel e integração do treino compacto
 │   ├── PLANO_V18_ATUALIZACAO_E_MOVIMENTO.md ← diagnóstico PC/celular e atualização
 │   ├── PLANO_V19_BOTAS_E_IMPULSO.md ← Botas e habilidade ativa de velocidade
+│   ├── PLANO_V21_MODO_DESENVOLVEDOR.md ← plano DEV23 para testes isolados
 │   ├── PLANO_IMPORTACAO_COMPACTA_PR.md ← resposta curta da IA e bônus de recorde
 │   ├── MOLDE_EXPANSAO.md         ← roteiro reutilizável para novas versões
 │   ├── ROADMAP_IMPLEMENTACOES.md ← plano auditado das próximas melhorias
@@ -48,6 +49,7 @@ fizzi-quest/
 - Próxima prioridade de ambientação: movimentação dos monstros. Cada monstro terá uma área/raio predefinido e, em ciclos variáveis, caminhará dentro desse limite.
 - Ao descansar, monstros comuns poderão trocar entre si pontos de spawn compatíveis, sem sobrepor obstáculos ou o jogador.
 - Um boss derrotado entrará numa tabela rara de spawn de monstros comuns, com probabilidade menor e registro determinístico.
+- Modo desenvolvedor `DEV23` planejado após a movimentação dos monstros: XP, ouro e bônus de atributos em um save de teste separado. Ver `PLANO_V21_MODO_DESENVOLVEDOR.md`.
 
 ## Regra de continuidade
 

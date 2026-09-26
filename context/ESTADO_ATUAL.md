@@ -17,4 +17,4 @@ Base: v23.09.2003.19 integrada à `main` pelo PR #12. O manifesto público de `h
 
 ## Retomada
 
-Executar o piloto de balanceamento do Impulso nos níveis 10 e 20 e abrir o plano de movimentação de monstros com raio, ciclos variáveis e spawn raro de bosses. Roadmap e fila em `PROXIMOS_PASSOS.md` e `ROADMAP_IMPLEMENTACOES.md`.
+Executar o piloto de balanceamento do Impulso nos níveis 10 e 20. A v20 está reservada para movimentação de monstros com raio, ciclos variáveis e spawn raro de bosses. O modo desenvolvedor `DEV23` está planejado para a etapa seguinte em `PLANO_V21_MODO_DESENVOLVEDOR.md`; ainda não foi implementado. Roadmap e fila em `PROXIMOS_PASSOS.md` e `ROADMAP_IMPLEMENTACOES.md`.

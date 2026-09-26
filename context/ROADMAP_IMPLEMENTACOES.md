@@ -214,7 +214,7 @@ Complexidade alvo: média-alta, limitada a um slot e uma habilidade temporária 
 - Manter o efeito em runtime, fora do save, e testar reload, troca de mapa, batalha, diagonais e expiração.
 - Limitar esta versão a Botas, habilidade ativa e balanceamento; não incluir Capa, Runas, novas áreas ou nova camada de animações.
 
-### Próxima etapa — movimentação de monstros
+### v23.09.2003.20 — movimentação de monstros
 
 Complexidade alvo: alta, por envolver simulação, colisões e equilíbrio de encontros. Não misturar com novo slot de equipamento.
 
@@ -224,11 +224,15 @@ Complexidade alvo: alta, por envolver simulação, colisões e equilíbrio de en
 - Após a morte, registrar bosses numa tabela rara de spawn comum; a raridade e a persistência devem ser testadas antes de liberar.
 - Validar em mapa, combate, reload, movimento reduzido e 30 segundos de observação real antes de integrar.
 
-### v23.09.2003.20 — Capa
+### v23.09.2003.21 — modo desenvolvedor
+
+Plano detalhado: [`PLANO_V21_MODO_DESENVOLVEDOR.md`](PLANO_V21_MODO_DESENVOLVEDOR.md). Ativar por `DEV23`, editar XP de aventura, ouro e bônus dos quatro atributos e testar ganhos de XP em combate/missão. Usar save DEV separado, selo visível e retorno ao progresso normal intacto. Complexidade média-alta; validar isolamento e consistência antes de publicar.
+
+### Versão posterior — Capa
 
 Complexidade alvo: média. Adicionar o slot **Capa** com bônus defensivo moderado, após validar Botas em saves antigos e no celular. A loja, a ficha e o HUD devem continuar compactos.
 
-### v23.09.2003.21 — Runas
+### Versão posterior — Runas
 
 Complexidade alvo: média-alta e isolada.
 
