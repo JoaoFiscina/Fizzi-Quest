@@ -1,6 +1,6 @@
-# Estado atual — v23.09.2003.19
+# Estado atual — v23.09.2003.20 validada no ramo
 
-Base: v23.09.2003.19 integrada à `main` pelo PR #12. O manifesto público de `https://fizzi-quest.vercel.app/version.json` respondeu `v23.09.2003.19` após o merge.
+Base: v23.09.2003.19 integrada à `main` pelo PR #12. O modo DEV23 foi antecipado para a v20 a pedido do jogador; este ramo ainda não foi integrado. O domínio oficial permanece na v19 até nova confirmação.
 
 ## O que funciona
 
@@ -10,11 +10,12 @@ Base: v23.09.2003.19 integrada à `main` pelo PR #12. O manifesto público de `h
 - Falha de rede na consulta não impede jogar. O botão de atualização não apaga `localStorage`.
 - Botas são desbloqueadas no nível 5, com dois itens de catálogo, migração compatível e equipagem no slot próprio.
 - Impulso da Trilha libera no nível 5, custa 1 fôlego, aplica o bônus de velocidade apenas no mapa e expira com relógio do navegador; cada rank de cinco níveis acrescenta 5% e 2 segundos.
+- No ramo v20, `DEV23` em Ajustes cria ou retoma uma cópia de teste. O painel edita XP, ouro, bônus dos quatro atributos e ganho de XP em combate/missão; o HUD mostra MODO DEV e o retorno carrega o save normal.
 
 ## Evidência e limites
 
-46 testes de regras, build e 24 jornadas E2E passaram; a expiração do Impulso usa relógio do navegador para continuar correta quando a cadência de frames varia. Capturas e detalhes da entrega estão em `docs/VALIDATION_V19.md` e `docs/evidence/v23.09.2003.19/`. A publicação foi confirmada pelo manifesto público; o piloto de balanceamento nos níveis 10 e 20 segue pendente.
+Validação da v19: 46 testes de regras, build e 24 jornadas E2E aprovados. No ramo v20, 49 testes de regras, build e 26 cenários E2E passaram; capturas de desktop e celular emulado foram inspecionadas. Ainda faltam a integração e a confirmação da publicação. O piloto de balanceamento do Impulso nos níveis 10 e 20 segue pendente.
 
 ## Retomada
 
-Executar o piloto de balanceamento do Impulso nos níveis 10 e 20 e abrir o plano de movimentação de monstros com raio, ciclos variáveis e spawn raro de bosses. Roadmap e fila em `PROXIMOS_PASSOS.md` e `ROADMAP_IMPLEMENTACOES.md`.
+Revisar e integrar a v20 quando autorizado, então confirmar o domínio oficial. Depois abrir a v21 de movimentação de monstros com raio, ciclos variáveis e spawn raro de bosses. Usar o modo DEV para testar o Impulso nos níveis 10 e 20. Roadmap e fila em `PROXIMOS_PASSOS.md` e `ROADMAP_IMPLEMENTACOES.md`.

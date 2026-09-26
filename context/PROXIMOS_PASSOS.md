@@ -31,7 +31,7 @@ Implementação realizada: Botas aparecem no nível 5, entram na migração/loja
 
 ## Depois da v19
 
-- v20: Capa, separada de Botas para controlar a complexidade por versão.
-- v21: um slot de Runa e efeitos passivos simples.
-- Próxima prioridade: movimentação dos monstros. Definir para cada criatura um raio de movimento, um ciclo variável de descanso/andar e limites de caminhabilidade; comuns podem trocar pontos de spawn ao descansar, e bosses derrotados passam a uma tabela rara de spawn comum.
+- v20: modo desenvolvedor `DEV23` antecipado a pedido do jogador. XP, ouro, bônus dos quatro atributos e multiplicador de XP de aventura ficam em save isolado. Plano: [`PLANO_V20_MODO_DESENVOLVEDOR.md`](PLANO_V20_MODO_DESENVOLVEDOR.md). Implementado e validado neste ramo; revisar e integrar quando autorizado.
+- v21: movimentação dos monstros. Definir para cada criatura um raio de movimento, um ciclo variável de descanso/andar e limites de caminhabilidade; comuns podem trocar pontos de spawn ao descansar, e bosses derrotados passam a uma tabela rara de spawn comum.
+- Depois: Capa e Runa em versões separadas, com numeração confirmada ao abrir cada etapa.
 - Depois: respawn variável em pontos caminháveis e áreas novas; revisar proposta e complexidade antes de abrir cada etapa.

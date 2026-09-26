@@ -228,6 +228,10 @@ export type Save = {
   appearance: Appearance;
   cameraZoom: CameraZoom;
   motion: "system" | "full" | "reduced";
+  dev?: {
+    attributeBonus: Vector;
+    xpMultiplier: 1 | 2 | 5 | 10;
+  };
 };
 export function freshSave(): Save {
   return {
@@ -290,6 +294,7 @@ export function stats(s: Save) {
         training: number;
         allocated: number;
         equipment: number;
+        dev: number;
       }
     >;
   attributes.forEach((k) => {
@@ -306,6 +311,7 @@ export function stats(s: Save) {
       training: training[k],
       allocated: s.allocated[k],
       equipment: equipment + ringBonus + bootsBonus,
+      dev: s.dev?.attributeBonus[k] ?? 0,
     };
     a[k] =
       Math.round(
@@ -315,7 +321,8 @@ export function stats(s: Save) {
           s.allocated[k] +
           equipment +
           ringBonus +
-          bootsBonus) *
+          bootsBonus +
+          attributeBreakdown[k].dev) *
           100,
       ) / 100;
   });
@@ -531,7 +538,8 @@ export function act(s: Save, action: Action): CombatEvent[] {
   }
   if (b.hp <= 0) {
     b.status = "victory";
-    s.adventureXpTotal += e.xp;
+    const xpGain = e.xp * (s.dev?.xpMultiplier ?? 1);
+    s.adventureXpTotal += xpGain;
     s.gold += e.gold;
     s.materials += e.materials;
     s.defeated.push(b.enemy);
@@ -539,7 +547,7 @@ export function act(s: Save, action: Action): CombatEvent[] {
     if (b.enemy === "guardian" && s.quest !== "completed")
       s.quest = "emblem_recovered";
     b.log.push(
-      `Vitória! +${e.xp} XP · +${e.gold} ouro · +${e.materials} material.`,
+      `Vitória! +${xpGain} XP · +${e.gold} ouro · +${e.materials} material.`,
     );
     events.push({ kind: "victory", actor: "hero" });
   } else if (s.hp <= 0) {

@@ -2,7 +2,7 @@
 
 RPG pessoal de exploração em pixel art, construído com Phaser, TypeScript e Vite para o marco **Treino à aventura**.
 
-## Implementação atual — v23.09.2003.19
+## Implementação atual — v23.09.2003.20
 
 Já estão implementados os blocos principais do domínio e da experiência:
 
@@ -19,6 +19,7 @@ Já estão implementados os blocos principais do domínio e da experiência:
 - Anel liberado no nível 4, com duas opções na loja, slot próprio na mochila e indicação no HUD;
 - Botas liberadas no nível 5, com catálogo próprio, equipagem e bônus na ficha/HUD;
 - Impulso da Trilha ativo no nível 5: custa 1 fôlego, dá +5% por 5 segundos no rank 1 e escala a cada cinco níveis apenas durante a exploração;
+- modo desenvolvedor `DEV23` em Ajustes: cria uma cópia de teste para ajustar XP, ouro, bônus dos quatro atributos e multiplicador de XP de combate/missão, mantendo a aventura normal separada;
 - manual do aventureiro com Defesa, Fôlego, atributos, equipamentos, treinos e exploração;
 - escolha cosmética de personagem masculino ou feminino, preservada no save;
 - zoom Afastado, Padrão e Próximo com escala inteira e adaptação à viewport;
@@ -45,7 +46,7 @@ Build para Vercel: `npm run build`, saída `dist`. O endereço oficial é [fizzi
 
 Validação: `npm test` e `npm run test:e2e` (Edge via Playwright). Evidências e limites em [`docs/VALIDATION.md`](docs/VALIDATION.md).
 
-Esta versão acrescenta Botas e Impulso da Trilha sobre a base de atualização da v18. A arte e as cadências ambientais permanecem iguais. A versão pública usa `v23.09.2003.x`; a versão npm equivalente usa SemVer (`23.9.2003-19`).
+Esta versão acrescenta o modo DEV para experimentar progressão e economia sem alterar o save normal. A arte e as cadências ambientais permanecem iguais. A versão pública usa `v23.09.2003.x`; a versão npm equivalente usa SemVer (`23.9.2003-20`).
 
 ## Contexto vivo
 
