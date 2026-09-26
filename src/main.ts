@@ -2,7 +2,21 @@ import Phaser from "phaser";
 import "./style.css";
 import "./polish.css";
 import { GAME_VERSION } from "./version";
-import { Store } from "./application/store";
+import {
+  Store,
+  SAVE_KEY,
+  DEV_SAVE_KEY,
+  validateSave,
+} from "./application/store";
+import {
+  DEV_CODE,
+  DEV_SESSION_KEY,
+  createDevCopy,
+  previewDevEdit,
+  xpForLevel,
+  type DevEdit,
+  type DevMultiplier,
+} from "./application/devMode";
 import {
   publishedVersion,
   updateUrl,
@@ -22,6 +36,7 @@ import {
   startBattle,
   stats,
   intent,
+  freshSave,
   type Action,
   type ItemId,
   type ItemSlot,
@@ -30,7 +45,7 @@ import {
   type CombatEvent,
 } from "./domain/game";
 import { trailImpulse } from "./domain/game";
-import { attributes } from "./domain/workouts";
+import { attributes, type Vector } from "./domain/workouts";
 import { el, button, bar, labels, fmt } from "./ui/dom";
 import { workoutsUI } from "./ui/workouts";
 import { TUTORIAL_TOPICS } from "./content/tutorial";
@@ -48,9 +63,32 @@ try {
     },
   } as unknown as Storage;
 }
-const store = new Store(storage),
+let devActive = false;
+let devLoadError = "";
+try {
+  if (sessionStorage.getItem(DEV_SESSION_KEY) === "1") {
+    const raw = storage.getItem(DEV_SAVE_KEY);
+    if (!raw) throw Error("Save DEV não encontrado.");
+    validateSave(JSON.parse(raw), "dev");
+    devActive = true;
+  }
+} catch {
+  try {
+    sessionStorage.removeItem(DEV_SESSION_KEY);
+  } catch {
+    /* Browsers may block session storage. */
+  }
+  devLoadError =
+    "A cópia DEV não pôde ser aberta. Sua aventura normal foi preservada.";
+}
+const store = new Store(
+    storage,
+    devActive ? DEV_SAVE_KEY : SAVE_KEY,
+    devActive,
+  ),
   world = new World(store),
   app = document.querySelector<HTMLDivElement>("#app")!;
+if (devLoadError) store.error = devLoadError;
 const canvas = el("div", "", "world");
 canvas.id = "world";
 app.append(canvas);
@@ -280,6 +318,7 @@ function renderHUD() {
     el("span", `Mat. ${s.materials}`, "materials-icon"),
     el("span", `Poções ${s.potions}`, "potions-icon"),
   );
+  if (devActive) loot.append(el("strong", "MODO DEV", "dev-mode-badge"));
   const impulseStatus = world.getTrailImpulseStatus();
   if (impulseStatus)
     loot.append(
@@ -400,7 +439,7 @@ function character() {
       el("summary", "Origem do atributo"),
       el(
         "p",
-        `Base ${fmt(breakdown.base)} · Treinos ${fmt(breakdown.legacy + breakdown.training)} · Pontos ${fmt(breakdown.allocated)} · Equipamentos ${breakdown.equipment >= 0 ? "+" : ""}${fmt(breakdown.equipment)}`,
+        `Base ${fmt(breakdown.base)} · Treinos ${fmt(breakdown.legacy + breakdown.training)} · Pontos ${fmt(breakdown.allocated)} · Equipamentos ${breakdown.equipment >= 0 ? "+" : ""}${fmt(breakdown.equipment)}${devActive ? ` · DEV +${fmt(breakdown.dev)}` : ""}`,
       ),
     );
     row.append(source);
@@ -642,7 +681,9 @@ function download() {
   );
   const a = el("a");
   a.href = url;
-  a.download = "fizzi-quest-backup.json";
+  a.download = devActive
+    ? "fizzi-quest-backup-TESTE-DEV.json"
+    : "fizzi-quest-backup.json";
   a.click();
   setTimeout(() => URL.revokeObjectURL(url), 5000);
 }
@@ -805,15 +846,86 @@ function settings() {
       "update-help",
     ),
   );
+  const devSettings = el("section", "", "dev-settings");
+  devSettings.append(
+    el("h3", "Modo desenvolvedor"),
+    el(
+      "p",
+      devActive
+        ? "Você está usando uma cópia de teste. Seu progresso normal está guardado neste navegador."
+        : "Teste níveis, atributos e ouro em uma cópia separada da aventura.",
+    ),
+  );
+  if (devActive) {
+    devSettings.append(
+      button("Abrir painel DEV", developerPanel, "primary"),
+      button("Voltar à aventura normal", leaveDevMode, "quiet"),
+    );
+  } else {
+    const code = el("input");
+    code.type = "password";
+    code.autocomplete = "off";
+    code.placeholder = "Código";
+    code.setAttribute("aria-label", "Código de desenvolvedor");
+    const options = el("div", "", "dev-unlock-options");
+    const unlock = () => {
+      if (code.value.trim() !== DEV_CODE) {
+        notify("Código incorreto.");
+        return;
+      }
+      code.value = "";
+      options.replaceChildren();
+      let existing = false;
+      try {
+        const raw = storage.getItem(DEV_SAVE_KEY);
+        if (raw) {
+          validateSave(JSON.parse(raw), "dev");
+          existing = true;
+        }
+      } catch {
+        options.append(
+          el(
+            "p",
+            "A cópia DEV anterior não pode ser lida. Você pode criar outra a partir do progresso normal.",
+            "muted",
+          ),
+        );
+      }
+      if (existing)
+        options.append(button("Continuar teste", () => enterDevMode(false)));
+      options.append(
+        button(
+          existing
+            ? "Recomeçar teste a partir do progresso normal"
+            : "Criar cópia de teste",
+          () => enterDevMode(true),
+          "primary",
+        ),
+      );
+    };
+    code.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") unlock();
+    });
+    const entry = el("div", "", "dev-code-entry");
+    entry.append(code, button("Aplicar código", unlock));
+    devSettings.append(entry, options);
+  }
   content.append(
     personalization,
     updateSettings,
+    devSettings,
     el("h3", "Seu progresso, com você"),
     el(
       "p",
-      "O save fica neste navegador. Exporte um backup para transferir de aparelho ou endereço.",
+      devActive
+        ? "Este backup contém apenas o teste DEV e não substitui a aventura normal."
+        : "O save fica neste navegador. Exporte um backup para transferir de aparelho ou endereço.",
     ),
-    button("Exportar backup", download, "primary"),
+    button(
+      devActive ? "Exportar backup de TESTE DEV" : "Exportar backup",
+      download,
+      "primary",
+    ),
   );
   const input = el("textarea");
   input.rows = 6;
@@ -838,8 +950,18 @@ function settings() {
     button("Restaurar backup", () => {
       const text = input.value;
       content.replaceChildren(
-        el("h3", "Substituir o progresso atual?"),
-        el("p", "Exporte seu progresso antes de restaurar um backup."),
+        el(
+          "h3",
+          devActive
+            ? "Substituir a cópia de teste?"
+            : "Substituir o progresso atual?",
+        ),
+        el(
+          "p",
+          devActive
+            ? "O backup DEV substitui somente a cópia de teste."
+            : "Exporte seu progresso antes de restaurar um backup.",
+        ),
         button("Exportar atual", download),
         button(
           "Confirmar restauração",
@@ -860,12 +982,14 @@ function settings() {
       "p",
       "WASD ou setas: mover, inclusive em diagonais ao combinar duas direções. E ou Espaço: interagir. Esc: fechar menus. No celular, use o direcional de oito posições.",
     ),
-    button("Iniciar nova aventura", () => {
+    button(devActive ? "Iniciar novo teste" : "Iniciar nova aventura", () => {
       content.replaceChildren(
         el("h3", "Começar do zero?"),
         el(
           "p",
-          "Isso substitui o save deste navegador. Você pode guardar uma cópia antes.",
+          devActive
+            ? "Isso reinicia somente a cópia de teste deste navegador."
+            : "Isso substitui o save deste navegador. Você pode guardar uma cópia antes.",
         ),
         button("Exportar backup", download),
         button(
@@ -874,7 +998,9 @@ function settings() {
             store.reset();
             world.hideBattle();
             closeModal();
-            notify("Uma nova história começa.");
+            notify(
+              devActive ? "Novo teste iniciado." : "Uma nova história começa.",
+            );
           },
           "danger",
         ),
@@ -882,6 +1008,211 @@ function settings() {
       );
     }),
   );
+}
+let undoDevEdit: Save | null = null;
+function enterDevMode(restart: boolean) {
+  safe(() => {
+    if (restart) {
+      const copy = createDevCopy(store.state);
+      storage.setItem(DEV_SAVE_KEY, JSON.stringify(copy));
+    } else {
+      const raw = storage.getItem(DEV_SAVE_KEY);
+      if (!raw) throw Error("Cópia DEV não encontrada.");
+      validateSave(JSON.parse(raw), "dev");
+    }
+    sessionStorage.setItem(DEV_SESSION_KEY, "1");
+    window.location.reload();
+  });
+}
+function leaveDevMode() {
+  safe(() => {
+    store.persist();
+    if (store.error) throw Error(store.error);
+    sessionStorage.removeItem(DEV_SESSION_KEY);
+    window.location.reload();
+  });
+}
+function developerPanel() {
+  const current = store.state;
+  if (!devActive || !current.dev || current.battle) return;
+  openModal("Modo desenvolvedor");
+  content.classList.add("dev-panel");
+  const numberField = (title: string, value: number, maximum = 1_000_000) => {
+    const label = el("label", "", "dev-field");
+    const input = el("input");
+    input.type = "number";
+    input.min = "0";
+    input.max = String(maximum);
+    input.step = "1";
+    input.value = String(value);
+    label.append(el("span", title), input);
+    return { label, input };
+  };
+  const xpTotal = numberField("XP total", current.adventureXpTotal);
+  const addXp = numberField("Adicionar XP", 0);
+  const goldTotal = numberField("Ouro total", current.gold);
+  const addGold = numberField("Adicionar ouro", 0);
+  const xpSection = el("section", "", "dev-card");
+  xpSection.append(
+    el("h3", "Experiência e ouro"),
+    el("p", `Nível atual: ${stats(current).level}.`),
+  );
+  const presets = el("div", "", "dev-presets");
+  for (const target of [1, 5, 10, 20])
+    presets.append(
+      button(`Nível ${target}`, () => {
+        xpTotal.input.value = String(xpForLevel(target));
+        addXp.input.value = "0";
+        updatePreview();
+      }),
+    );
+  const amounts = el("div", "", "dev-field-grid");
+  amounts.append(xpTotal.label, addXp.label, goldTotal.label, addGold.label);
+  xpSection.append(presets, amounts);
+  const multiplierLabel = el("label", "", "dev-field");
+  multiplierLabel.append(el("span", "XP ganho em combate e missão"));
+  const multiplier = el("select");
+  for (const value of [1, 2, 5, 10] as const) {
+    const option = el("option", `${value}×`);
+    option.value = String(value);
+    multiplier.append(option);
+  }
+  multiplier.value = String(current.dev.xpMultiplier);
+  multiplierLabel.append(multiplier);
+  xpSection.append(multiplierLabel);
+  const attributeSection = el("section", "", "dev-card");
+  attributeSection.append(
+    el("h3", "Bônus de atributos"),
+    el(
+      "p",
+      "O bônus de teste soma ao atributo final; não altera treinos nem pontos distribuídos.",
+      "muted",
+    ),
+  );
+  const attributeFields = {} as Record<
+    (typeof attributes)[number],
+    HTMLInputElement
+  >;
+  const attributeGrid = el("div", "", "dev-field-grid");
+  for (const attribute of attributes) {
+    const field = numberField(
+      labels[attribute],
+      current.dev.attributeBonus[attribute],
+      30,
+    );
+    attributeFields[attribute] = field.input;
+    attributeGrid.append(field.label);
+  }
+  attributeSection.append(attributeGrid);
+  const resetLabel = el("label", "", "dev-check");
+  const resetAllocated = el("input");
+  resetAllocated.type = "checkbox";
+  resetLabel.append(
+    resetAllocated,
+    el("span", "Zerar pontos distribuídos na cópia de teste"),
+  );
+  attributeSection.append(resetLabel);
+  const preview = el("p", "", "dev-preview");
+  preview.setAttribute("role", "status");
+  const actions = el("div", "", "dev-actions");
+  const apply = button(
+    "Aplicar alterações",
+    () =>
+      safe(() => {
+        const next = previewDevEdit(store.state, readEdit());
+        undoDevEdit = store.transactDev((save) => Object.assign(save, next));
+        developerPanel();
+        notify("Valores de teste aplicados.");
+      }),
+    "primary",
+  );
+  const undo = button("Desfazer última alteração", () =>
+    safe(() => {
+      if (!undoDevEdit) return;
+      const previous = undoDevEdit;
+      store.transactDev((save) => Object.assign(save, previous));
+      undoDevEdit = null;
+      developerPanel();
+    }),
+  );
+  undo.disabled = !undoDevEdit;
+  const resetBonus = button("Restaurar bônus DEV", () => {
+    for (const attribute of attributes) attributeFields[attribute].value = "0";
+    multiplier.value = "1";
+    updatePreview();
+  });
+  const fromNormal = button(
+    "Recomeçar teste a partir do progresso normal",
+    () =>
+      safe(() => {
+        const raw = storage.getItem(SAVE_KEY);
+        const normal = raw ? validateSave(JSON.parse(raw)) : freshSave();
+        const next = createDevCopy(normal);
+        undoDevEdit = store.transactDev((save) => Object.assign(save, next));
+        developerPanel();
+        notify("Cópia de teste recriada a partir da aventura normal.");
+      }),
+    "quiet",
+  );
+  actions.append(
+    apply,
+    undo,
+    resetBonus,
+    fromNormal,
+    button("Voltar à aventura normal", leaveDevMode),
+  );
+  content.append(
+    el(
+      "p",
+      "MODO DEV · as mudanças ficam somente nesta cópia de teste.",
+      "dev-warning",
+    ),
+    xpSection,
+    attributeSection,
+    preview,
+    actions,
+  );
+  function readNumber(input: HTMLInputElement) {
+    return input.value.trim() === "" ? Number.NaN : input.valueAsNumber;
+  }
+  function readEdit(): DevEdit {
+    const bonus = {} as Vector;
+    for (const attribute of attributes)
+      bonus[attribute] = readNumber(attributeFields[attribute]);
+    return {
+      xpTotal: readNumber(xpTotal.input),
+      addXp: readNumber(addXp.input),
+      goldTotal: readNumber(goldTotal.input),
+      addGold: readNumber(addGold.input),
+      attributeBonus: bonus,
+      xpMultiplier: Number(multiplier.value) as DevMultiplier,
+      resetAllocated: resetAllocated.checked,
+    };
+  }
+  function updatePreview() {
+    try {
+      const next = previewDevEdit(store.state, readEdit());
+      const result = stats(next);
+      preview.textContent = `Prévia: nível ${result.level} · ${next.adventureXpTotal} XP · ${next.gold} ouro · Força ${fmt(result.attributes.strength)} · Vigor ${fmt(result.attributes.vigor)} · Agilidade ${fmt(result.attributes.agility)} · Fôlego ${fmt(result.attributes.breath)}.`;
+      preview.classList.remove("invalid");
+      apply.disabled = false;
+    } catch (error) {
+      preview.textContent = (error as Error).message;
+      preview.classList.add("invalid");
+      apply.disabled = true;
+    }
+  }
+  for (const input of [
+    xpTotal.input,
+    addXp.input,
+    goldTotal.input,
+    addGold.input,
+    multiplier,
+    resetAllocated,
+    ...attributes.map((attribute) => attributeFields[attribute]),
+  ])
+    input.addEventListener("input", updatePreview);
+  updatePreview();
 }
 function worldMap() {
   openModal("Mapa da região");
@@ -1040,12 +1371,12 @@ world.onInteract = (e) =>
             "“Nosso emblema! Parece que esta casa ainda tem histórias para viver.”",
           ),
           button(
-            "Entregar emblema · +40 XP e +30 ouro",
+            `Entregar emblema · +${40 * (store.state.dev?.xpMultiplier ?? 1)} XP e +30 ouro`,
             () => {
               store.transact((s) => {
                 if (s.quest !== "emblem_recovered") return;
                 s.quest = "completed";
-                s.adventureXpTotal += 40;
+                s.adventureXpTotal += 40 * (s.dev?.xpMultiplier ?? 1);
                 s.gold += 30;
               });
               closeModal();

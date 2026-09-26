@@ -27,7 +27,17 @@ import {
   allocate,
   trailImpulse,
 } from "../src/domain/game";
-import { Store, SAVE_KEY, validateSave } from "../src/application/store";
+import {
+  Store,
+  SAVE_KEY,
+  DEV_SAVE_KEY,
+  validateSave,
+} from "../src/application/store";
+import {
+  createDevCopy,
+  previewDevEdit,
+  xpForLevel,
+} from "../src/application/devMode";
 import { parseCompactWorkout } from "../src/domain/compactWorkouts";
 import { trainingPrompt } from "../src/content/trainingPrompt";
 import { makeMap, walkable } from "../src/game/maps";
@@ -78,6 +88,77 @@ const memory = () => {
     },
   };
 };
+describe("modo desenvolvedor isolado", () => {
+  it("usa outra chave, preserva o save normal e impede importar DEV como backup normal", () => {
+    const storage = memory();
+    const normal = new Store(storage);
+    normal.persist();
+    const original = storage.getItem(SAVE_KEY);
+    storage.setItem(DEV_SAVE_KEY, JSON.stringify(createDevCopy(normal.state)));
+    const dev = new Store(storage, DEV_SAVE_KEY, true);
+    dev.transactDev((save) => {
+      save.adventureXpTotal = xpForLevel(5);
+      save.gold = 500;
+      save.dev!.attributeBonus.agility = 4;
+    });
+    expect(stats(dev.state).level).toBe(5);
+    expect(stats(dev.state).attributes.agility).toBe(9);
+    expect(storage.getItem(SAVE_KEY)).toBe(original);
+    expect(() => validateSave(JSON.parse(dev.export()))).toThrow(/teste DEV/);
+    expect(() => normal.restore(dev.export())).toThrow(/teste DEV/);
+    expect(storage.getItem(SAVE_KEY)).toBe(original);
+    expect(new Store(storage).state.adventureXpTotal).toBe(0);
+  });
+
+  it("prevê níveis, impede XP abaixo de pontos distribuídos e limita recursos", () => {
+    expect(
+      [1, 5, 10, 20].map(xpForLevel).map(
+        (xp) =>
+          stats({
+            ...freshSave(),
+            adventureXpTotal: xp,
+          }).level,
+      ),
+    ).toEqual([1, 5, 10, 20]);
+    const source = createDevCopy(freshSave());
+    source.adventureXpTotal = xpForLevel(5);
+    source.allocated.strength = 3;
+    const edit = {
+      xpTotal: 0,
+      addXp: 0,
+      goldTotal: 100,
+      addGold: 50,
+      attributeBonus: { strength: 0, vigor: 0, agility: 4, breath: 0 },
+      xpMultiplier: 2 as const,
+      resetAllocated: false,
+    };
+    expect(() => previewDevEdit(source, edit)).toThrow(/pontos distribuídos/);
+    const result = previewDevEdit(source, { ...edit, resetAllocated: true });
+    expect(result.adventureXpTotal).toBe(0);
+    expect(result.gold).toBe(150);
+    expect(result.allocated.strength).toBe(0);
+    expect(stats(result).attributes.agility).toBe(9);
+    expect(() =>
+      previewDevEdit(source, { ...edit, goldTotal: 1_000_001 }),
+    ).toThrow(/Ouro total/);
+  });
+
+  it("multiplica XP de vitória apenas na cópia DEV e registra o ganho real", () => {
+    const dev = createDevCopy(freshSave());
+    dev.dev!.xpMultiplier = 5;
+    startBattle(dev, "sprout");
+    dev.battle!.hp = 1;
+    const events = act(dev, "attack");
+    expect(events.some((event) => event.kind === "victory")).toBe(true);
+    expect(dev.adventureXpTotal).toBe(75);
+    expect(dev.battle!.log.join(" ")).toContain("+75 XP");
+    const normal = freshSave();
+    startBattle(normal, "sprout");
+    normal.battle!.hp = 1;
+    act(normal, "attack");
+    expect(normal.adventureXpTotal).toBe(15);
+  });
+});
 describe("treinos e limites diários", () => {
   it("fixture exige revisão e gera 78 pontos, 2540 kg e nenhum cardio pela duração", () => {
     expect(pending(parseWorkout(JSON.stringify(fixture)))).toHaveLength(2);

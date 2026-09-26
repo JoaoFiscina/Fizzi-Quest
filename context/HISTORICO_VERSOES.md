@@ -1,5 +1,9 @@
 # Histórico de versões
 
+## v23.09.2003.20 — 26/09/2026
+
+Modo desenvolvedor ativado por `DEV23` nos Ajustes, com save de teste independente, editor de XP/ouro, bônus dos quatro atributos e multiplicador de XP de combate/missão. Selo no HUD, prévia, desfazer e retorno ao save normal. Treinos mantêm as regras atuais. Plano: `PLANO_V20_MODO_DESENVOLVEDOR.md`; validação: `docs/VALIDATION_V20.md`. Integração e publicação aguardam confirmação.
+
 ## v23.09.2003.19 — 26/09/2026
 
 Botas liberadas no nível 5, com dois itens, bônus de Agilidade/Fôlego, migração, loja, mochila, ficha e HUD. Impulso da Trilha libera no nível 5, custa 1 fôlego, aumenta a velocidade no mapa em 5% por 5 segundos no rank 1 e cresce a cada cinco níveis; o efeito não acumula, não entra no combate e expira pelo relógio do navegador. Plano: `PLANO_V19_BOTAS_E_IMPULSO.md`; validação: `docs/VALIDATION_V19.md`.

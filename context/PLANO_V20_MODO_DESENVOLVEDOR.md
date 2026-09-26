@@ -1,6 +1,6 @@
-# Plano proposto — v23.09.2003.21: modo desenvolvedor
+# Plano de execução — v23.09.2003.20: modo desenvolvedor
 
-Estado: **somente planejamento**. Base conhecida: v23.09.2003.19 publicada. A v20 permanece reservada para a movimentação dos monstros, conforme a prioridade já definida pelo jogador. Confirmar a numeração e a base Git ao abrir a implementação.
+Estado: **implementado neste ramo, aguardando integração**. Base: v23.09.2003.19 publicada. O jogador pediu aplicar o plano agora; por isso, DEV23 ocupa a v20 e a movimentação dos monstros passa para a v21.
 
 ## Problema e resultado desejado
 
@@ -23,7 +23,7 @@ Ficam fora desta versão: edição de inventário, missões, mapa, bosses, proba
 
 ## Modelo de dados e regras
 
-- Manter o save normal no formato atual. Criar um envelope de teste discriminado, por exemplo `{ mode: "dev", version: 1, save: Save, bonuses: Vector, xpMultiplier: number }`, em chave local separada. `validateDevSave` valida o envelope e o `Save` interno; `validateSave` usado para backups normais rejeita explicitamente um envelope DEV.
+- Manter o save normal no formato atual. A implementação marca a cópia de teste com o campo `dev`, que contém bônus de atributos e multiplicador, e a grava na chave local separada `fizzi-quest.dev.save.v1`. `validateSave` exige esse marcador no modo DEV e rejeita a cópia em backups normais.
 - Selecionar o armazenamento ativo **antes** de construir `Store` e `World`. Trocar entre normal e DEV por recarga controlada, após persistir o estado da origem. `sessionStorage` guarda só a escolha da aba, nunca o código ou valores do jogo. Ao sair, a cópia DEV pode ficar disponível para testes futuros, mas não é carregada automaticamente como aventura normal.
 - Aplicar mudanças em uma única operação atômica no save DEV: ler campos, validar limites, calcular prévia, criar próxima cópia, validar novamente e só então persistir/atualizar HUD e mundo. Erro de armazenamento deixa a versão anterior utilizável.
 - Sugestão de limites iniciais para o piloto: XP total e ouro entre 0 e 1.000.000; bônus de teste entre 0 e 30 por atributo; multiplicador apenas nas quatro opções acima. Ajustar os limites depois do piloto visual e de desempenho, se houver motivo.
@@ -59,4 +59,4 @@ Piloto mínimo: copiar um save sintético nível 1 com 20 ouro, ativar DEV, defi
 
 ## Prioridade e complexidade
 
-Complexidade estimada: **média-alta**. O risco principal está na consistência entre progressão, atributos derivados e dois armazenamentos, não no campo `DEV23`. Fazer esta entrega sozinha após a v20 de movimentação dos monstros. Capa e Runa permanecem no backlog e recebem número definitivo apenas quando essa base for validada.
+Complexidade: **média-alta**. O risco principal está na consistência entre progressão, atributos derivados e dois armazenamentos, não no campo `DEV23`. Esta entrega fica isolada na v20; a movimentação dos monstros passa para a v21. Capa e Runa permanecem no backlog e recebem número definitivo apenas quando essa base for validada.

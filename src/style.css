@@ -182,10 +182,98 @@ select:focus-visible {
 .hud-loot {
   grid-column: 1 / -1;
   display: flex;
+  flex-wrap: wrap;
   gap: 12px;
   padding-top: 2px;
   color: #c3cfb8;
   font-size: 9px;
+}
+.dev-mode-badge {
+  padding: 2px 6px;
+  border: 1px solid #edc16c;
+  border-radius: 4px;
+  background: #734523;
+  color: #fff0bd;
+  font-size: 9px;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+.dev-settings {
+  margin: 18px 0;
+  padding: 14px;
+  border: 1px solid #bd9f63;
+  border-radius: 9px;
+  background: #e9dbb8;
+}
+.dev-settings h3,
+.dev-card h3 {
+  margin: 0 0 8px;
+}
+.dev-settings p {
+  margin: 4px 0 12px;
+}
+.dev-code-entry,
+.dev-unlock-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: end;
+}
+.dev-code-entry input {
+  flex: 1 1 160px;
+  min-width: 0;
+}
+.dev-unlock-options button,
+.dev-settings > button {
+  margin: 5px 8px 5px 0;
+}
+.dev-card {
+  padding: 14px;
+  border: 1px solid #c9bd9b;
+  border-radius: 9px;
+  background: #f7eed8;
+  margin: 12px 0;
+}
+.dev-field-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 12px;
+}
+.dev-presets,
+.dev-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+.dev-presets button {
+  min-width: 90px;
+}
+.dev-actions button {
+  flex: 1 1 180px;
+}
+.dev-warning {
+  padding: 8px 10px;
+  border-left: 4px solid #ae712e;
+  background: #f8e2b3;
+  font-weight: 700;
+}
+.dev-preview {
+  padding: 10px;
+  border-radius: 7px;
+  background: #e0ead4;
+}
+.dev-preview.invalid {
+  background: #f4d9d0;
+  color: #833d31;
+}
+.modal-content .dev-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.modal-content .dev-check input {
+  margin: 0;
+  flex: 0 0 auto;
 }
 .gold {
   color: #e7c87e;

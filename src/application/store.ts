@@ -42,6 +42,20 @@ const vector = z.object({
   agility: int,
   breath: int,
 });
+const devConfig = z.object({
+  attributeBonus: z.object({
+    strength: z.number().int().min(0).max(30),
+    vigor: z.number().int().min(0).max(30),
+    agility: z.number().int().min(0).max(30),
+    breath: z.number().int().min(0).max(30),
+  }),
+  xpMultiplier: z.union([
+    z.literal(1),
+    z.literal(2),
+    z.literal(5),
+    z.literal(10),
+  ]),
+});
 const item = z.enum([
   "blade",
   "iron",
@@ -114,14 +128,26 @@ const schema = z.object({
   appearance: z.enum(["masculine", "feminine"]).default("masculine"),
   cameraZoom: z.enum(["far", "auto", "near"]).default("auto"),
   motion: z.enum(["system", "full", "reduced"]).default("system"),
+  dev: devConfig.optional(),
 });
-export function validateSave(raw: unknown): Save {
+export function validateSave(
+  raw: unknown,
+  mode: "normal" | "dev" = "normal",
+): Save {
+  if (raw && typeof raw === "object" && "mode" in raw && raw.mode === "dev")
+    throw Error("Backup de teste DEV não pode substituir a aventura normal.");
   const r = schema.safeParse(raw);
   if (!r.success)
     throw Error(
       "Backup inválido ou versão incompatível. O progresso atual foi preservado.",
     );
   const s = r.data as Save;
+  if (mode === "normal" && s.dev)
+    throw Error("Backup de teste DEV não pode substituir a aventura normal.");
+  if (mode === "dev" && !s.dev)
+    throw Error(
+      "Save de teste DEV inválido. A aventura normal foi preservada.",
+    );
   if (
     stats(s).free < 0 ||
     !s.owned.includes(s.weapon) ||
@@ -243,27 +269,33 @@ export function validateSave(raw: unknown): Save {
   return s;
 }
 export const SAVE_KEY = "fizzi-quest.save.v1";
+export const DEV_SAVE_KEY = "fizzi-quest.dev.save.v1";
 export interface StoragePort {
   getItem(k: string): string | null;
   setItem(k: string, v: string): void;
 }
 export class Store {
-  state: Save = freshSave();
+  state: Save;
   hasSave = false;
   error = "";
   listeners = new Set<() => void>();
-  constructor(private storage: StoragePort) {
+  constructor(
+    private storage: StoragePort,
+    private key = SAVE_KEY,
+    readonly devMode = false,
+  ) {
+    this.state = this.initialSave();
     try {
-      const raw = storage.getItem(SAVE_KEY);
+      const raw = storage.getItem(this.key);
       if (raw) {
-        this.state = validateSave(JSON.parse(raw));
+        this.state = validateSave(JSON.parse(raw), this.mode);
         this.hasSave = true;
       }
     } catch {
       try {
-        const previous = storage.getItem(SAVE_KEY + ".previous");
+        const previous = storage.getItem(this.key + ".previous");
         if (previous) {
-          this.state = validateSave(JSON.parse(previous));
+          this.state = validateSave(JSON.parse(previous), this.mode);
           this.hasSave = true;
           this.error = "Recuperamos a cópia anterior do progresso.";
         } else
@@ -273,6 +305,18 @@ export class Store {
         this.error = "Save ilegível. Importe um backup válido para recuperar.";
       }
     }
+  }
+  private get mode(): "normal" | "dev" {
+    return this.devMode ? "dev" : "normal";
+  }
+  private initialSave(): Save {
+    const save = freshSave();
+    if (this.devMode)
+      save.dev = {
+        attributeBonus: { strength: 0, vigor: 0, agility: 0, breath: 0 },
+        xpMultiplier: 1,
+      };
+    return save;
   }
   subscribe(fn: () => void) {
     this.listeners.add(fn);
@@ -284,16 +328,16 @@ export class Store {
   persist() {
     const oldError = this.error;
     try {
-      const previous = this.storage.getItem(SAVE_KEY);
+      const previous = this.storage.getItem(this.key);
       if (previous) {
         try {
-          validateSave(JSON.parse(previous));
-          this.storage.setItem(SAVE_KEY + ".previous", previous);
+          validateSave(JSON.parse(previous), this.mode);
+          this.storage.setItem(this.key + ".previous", previous);
         } catch {
           /* Keep last valid recovery snapshot. */
         }
       }
-      this.storage.setItem(SAVE_KEY, JSON.stringify(this.state));
+      this.storage.setItem(this.key, JSON.stringify(this.state));
       this.hasSave = true;
       this.error = "";
     } catch {
@@ -310,6 +354,22 @@ export class Store {
     this.persist();
     this.emit();
   }
+  transactDev(fn: (s: Save) => void) {
+    if (!this.devMode) throw Error("Modo DEV inativo.");
+    const previous = this.state;
+    const next = structuredClone(previous);
+    fn(next);
+    clampResources(next);
+    this.state = validateSave(next, "dev");
+    this.persist();
+    if (this.error) {
+      this.state = previous;
+      this.emit();
+      throw Error(this.error);
+    }
+    this.emit();
+    return previous;
+  }
   restore(text: string) {
     if (new TextEncoder().encode(text).length > 8 * 1024 * 1024)
       throw Error("Backup maior que 8 MB.");
@@ -319,13 +379,13 @@ export class Store {
     } catch {
       throw Error("Backup não é um JSON válido.");
     }
-    const next = validateSave(raw);
+    const next = validateSave(raw, this.mode);
     this.state = next;
     this.persist();
     this.emit();
   }
   reset() {
-    this.state = freshSave();
+    this.state = this.initialSave();
     this.persist();
     this.emit();
   }

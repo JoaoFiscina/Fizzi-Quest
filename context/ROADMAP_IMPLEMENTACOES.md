@@ -214,7 +214,11 @@ Complexidade alvo: média-alta, limitada a um slot e uma habilidade temporária 
 - Manter o efeito em runtime, fora do save, e testar reload, troca de mapa, batalha, diagonais e expiração.
 - Limitar esta versão a Botas, habilidade ativa e balanceamento; não incluir Capa, Runas, novas áreas ou nova camada de animações.
 
-### v23.09.2003.20 — movimentação de monstros
+### v23.09.2003.20 — modo desenvolvedor
+
+Plano detalhado: [`PLANO_V20_MODO_DESENVOLVEDOR.md`](PLANO_V20_MODO_DESENVOLVEDOR.md). O jogador antecipou esta etapa. Ativar por `DEV23`, editar XP de aventura, ouro e bônus dos quatro atributos e testar ganhos de XP em combate/missão. Usar save DEV separado, selo visível e retorno ao progresso normal intacto. Implementado neste ramo; validação e integração pendentes.
+
+### v23.09.2003.21 — movimentação de monstros
 
 Complexidade alvo: alta, por envolver simulação, colisões e equilíbrio de encontros. Não misturar com novo slot de equipamento.
 
@@ -223,10 +227,6 @@ Complexidade alvo: alta, por envolver simulação, colisões e equilíbrio de en
 - Permitir troca de ponto de spawn entre monstros comuns ao descansar, com regras determinísticas e sem duplicação indevida.
 - Após a morte, registrar bosses numa tabela rara de spawn comum; a raridade e a persistência devem ser testadas antes de liberar.
 - Validar em mapa, combate, reload, movimento reduzido e 30 segundos de observação real antes de integrar.
-
-### v23.09.2003.21 — modo desenvolvedor
-
-Plano detalhado: [`PLANO_V21_MODO_DESENVOLVEDOR.md`](PLANO_V21_MODO_DESENVOLVEDOR.md). Ativar por `DEV23`, editar XP de aventura, ouro e bônus dos quatro atributos e testar ganhos de XP em combate/missão. Usar save DEV separado, selo visível e retorno ao progresso normal intacto. Complexidade média-alta; validar isolamento e consistência antes de publicar.
 
 ### Versão posterior — Capa
 
