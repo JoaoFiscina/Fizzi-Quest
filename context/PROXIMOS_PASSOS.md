@@ -2,6 +2,23 @@
 
 Use [`MOLDE_EXPANSAO.md`](MOLDE_EXPANSAO.md) em cada entrega. O roadmap completo está em [`ROADMAP_IMPLEMENTACOES.md`](ROADMAP_IMPLEMENTACOES.md).
 
+## Fila ativa por prioridade e complexidade
+
+Regra permanente solicitada em 01/10/2026: apresentar sempre prioridade, ordem, complexidade, dependências e limite de escopo. Tarefas muito complexas ficam em versões separadas. Correções que bloqueiem jogo, save ou atualização passam à frente desta fila.
+
+| Ordem | Prioridade                | Entrega                                          | Complexidade  | Organização e dependência                                                                             |
+| ----- | ------------------------- | ------------------------------------------------ | ------------- | ----------------------------------------------------------------------------------------------------- |
+| 1     | Alta                      | v23.09.2003.22 — Guardião raro                   | Alta          | Identidade e migração → piloto → mundo/combate → regressão. Único sistema estrutural da versão.       |
+| 2     | Alta                      | Velocidade por Agilidade e calibração do Impulso | Média         | Medir níveis 1/10/20 e colisões antes de escolher teto. Versão própria após a v22.                    |
+| 3     | Média                     | Diário de versões nos Ajustes                    | Baixa a média | Catálogo de versões publicadas → interface compacta → verificação desktop/celular. Sem nova migração. |
+| 4     | Média                     | Capa                                             | Média         | Um slot, catálogo pequeno e fluxo completo; estabilizar antes das Runas.                              |
+| 5     | Média                     | Runas                                            | Média-alta    | Versão exclusiva para um slot e efeitos passivos simples; depende de equipamentos estabilizados.      |
+| 6     | Baixa, após estabilização | Mapa e novas áreas                               | Alta          | Separar polimento do mapa atual da criação de uma área nova; cada expansão começa por um piloto.      |
+
+Somente a v22 tem número definido. Cada plano novo deve explicar o motivo da prioridade e dividir uma tarefa se a implementação revelar complexidade maior. Preservar as animações aprovadas. Não juntar a v22 com novos slots, expansão gráfica ou balanceamento de velocidade.
+
+V22 implementada: 57 testes, build e 31 E2E aprovados; próxima ação é revisão/integração autorizada. Para a expansão, seguir a fila própria em [PLANO_EXPANSAO_MUNDO.md](PLANO_EXPANSAO_MUNDO.md): fundação compatível (alta) antes de área piloto (alta), histórias (média), Pedreira (alta) e boss separado (média-alta). Tutorial interno: [GUIA_QUALIDADE_EXPANSAO.md](GUIA_QUALIDADE_EXPANSAO.md). Essa fila detalha a expansão futura sem reservá-la toda para uma única versão.
+
 ## v23.09.2003.16 — concluída
 
 37 testes de regras, build e 18 jornadas E2E aprovados. Capturas de treino/habilidades conferidas, PR #9 integrado e versão v23.09.2003.16 confirmada no domínio oficial.
@@ -33,7 +50,7 @@ Implementação realizada: Botas aparecem no nível 5, entram na migração/loja
 
 - v20: modo desenvolvedor `DEV23` antecipado a pedido do jogador. XP, ouro, bônus dos quatro atributos e multiplicador de XP de aventura ficam em save isolado. Plano: [`PLANO_V20_MODO_DESENVOLVEDOR.md`](PLANO_V20_MODO_DESENVOLVEDOR.md). PR #13 integrado; versão pública confirmada.
 - v21 publicada: [patrulha e repouso](PLANO_V21_MOVIMENTACAO_MONSTROS.md), PR #14 integrado em 01/10/2026. Vercel aprovado e domínio oficial conferido na v21. Evidências e limites em `docs/VALIDATION_V21.md`.
-- **Próximo update, v22:** [Guardião raro](PLANO_V22_GUARDIAO_RARO.md), apenas planejado. Começar em branch pela identidade dos encontros e migração de saves/batalhas legadas; depois piloto completo de descanso, aparição, combate, vitória e reload. Proposta: 10% por descanso após vencer o original, substituição de um slot comum, no máximo um raro e nenhuma repetição da missão. Validar economia antes de fixar os valores.
+- **Próximo update, v22:** [Guardião raro](PLANO_V22_GUARDIAO_RARO.md), implementado em branch, aguardando fechamento da validação e revisão. Identidade dos encontros, migração e piloto de descanso/aparição/combate/reload concluídos. Regras: 10% por descanso após vencer o original, substituição de um slot comum, no máximo um raro e nenhuma repetição da missão. Simulação de 1.000 descansos: 103 aparições; descanso sozinho não concede recompensa. Ver `docs/VALIDATION_V22.md`.
 - Versão posterior de balanceamento: elevar o teto atual de contribuição da Agilidade para velocidade de navegação (`56 + min(18, Agilidade × 1,2)`), após medir deslocamento em níveis 1/10/20, com Botas e Impulso, em reta e diagonal. Preservar controle e colisões; não incluir na v21.
 - Melhoria futura de interface: **Diário de versões** nos Ajustes, com todas as atualizações publicadas, versões, datas e resumos. Pedido de 01/10/2026, fora da v22 e sem número reservado. Regras no roadmap.
 - Depois: Capa e Runa em versões separadas, com numeração confirmada ao abrir cada etapa.

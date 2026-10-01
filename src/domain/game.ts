@@ -1,4 +1,10 @@
 import {
+  freshEncounters,
+  nextDistribution,
+  encounterDefeated,
+  rareId,
+} from "./encounters";
+import {
   attributes,
   mastery,
   zero,
@@ -188,6 +194,7 @@ export type Appearance = (typeof appearances)[number];
 export const cameraZoomOptions = ["far", "auto", "near"] as const;
 export type CameraZoom = (typeof cameraZoomOptions)[number];
 export type Battle = {
+  encounterId?: string;
   enemy: EnemyId;
   hp: number;
   round: number;
@@ -220,6 +227,7 @@ export type Save = {
   y: number;
   defeated: EnemyId[];
   monsterRestCycle: number;
+  rareEncounter: import("./encounters").RareEncounter;
   quest: "not_started" | "active" | "emblem_recovered" | "completed";
   guild: boolean;
   chest: boolean;
@@ -260,6 +268,7 @@ export function freshSave(): Save {
     y: 232,
     defeated: [],
     monsterRestCycle: 0,
+    rareEncounter: freshEncounters(),
     quest: "not_started",
     guild: false,
     chest: false,
@@ -352,6 +361,7 @@ export function rest(s: Save) {
   s.stamina = a.maxStamina;
   s.defeated = s.defeated.filter((e) => e === "guardian");
   s.monsterRestCycle = (s.monsterRestCycle + 1) % 6;
+  nextDistribution(s);
 }
 export function allocate(s: Save, a: Attribute) {
   if (s.battle || stats(s).free <= 0) throw Error("Nenhum ponto disponível.");
@@ -386,9 +396,11 @@ export function equip(s: Save, id: ItemId) {
   else s.accessory = id;
   clampResources(s);
 }
-export function startBattle(s: Save, id: EnemyId) {
-  if (s.battle || s.defeated.includes(id)) return;
+export function startBattle(s: Save, id: EnemyId, encounterId?: string) {
+  if (s.battle || encounterDefeated(s, id, encounterId)) return;
+  if (encounterId && (id !== "guardian" || encounterId !== rareId(s))) return;
   s.battle = {
+    encounterId,
     enemy: id,
     hp: enemies[id].hp,
     round: 1,
@@ -545,9 +557,10 @@ export function act(s: Save, action: Action): CombatEvent[] {
     s.adventureXpTotal += xpGain;
     s.gold += e.gold;
     s.materials += e.materials;
-    s.defeated.push(b.enemy);
+    if (b.encounterId?.startsWith("rare:")) s.rareEncounter.defeated = true;
+    else s.defeated.push(b.enemy);
     s.kills = (s.kills || 0) + 1;
-    if (b.enemy === "guardian" && s.quest !== "completed")
+    if (b.enemy === "guardian" && !b.encounterId && s.quest !== "completed")
       s.quest = "emblem_recovered";
     b.log.push(
       `Vitória! +${xpGain} XP · +${e.gold} ouro · +${e.materials} material.`,

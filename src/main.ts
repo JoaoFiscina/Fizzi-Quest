@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { encounterName } from "./domain/encounters";
 import "./style.css";
 import "./polish.css";
 import { GAME_VERSION } from "./version";
@@ -1319,7 +1320,7 @@ world.onNear = (e) => {
 world.onInteract = (e) =>
   safe(() => {
     if (e.kind in enemies) {
-      store.transact((s) => startBattle(s, e.kind as EnemyId));
+      store.transact((s) => startBattle(s, e.kind as EnemyId, e.encounterId));
       world.setPaused(true);
       world.showBattle();
       battle();
@@ -1436,7 +1437,7 @@ function battle() {
   const e = enemies[b.enemy];
   battlePanel.append(
     el("small", `RODADA ${b.round}`),
-    el("h2", e.name),
+    el("h2", encounterName(b.enemy, e.name, b.encounterId)),
     el("p", `Vida ${b.hp}/${e.hp}`),
     bar(b.hp, e.hp),
     el(

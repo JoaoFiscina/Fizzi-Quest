@@ -4,7 +4,7 @@ Esta pasta é a memória operacional do jogo. Atualize-a a cada versão antes de
 
 ## Versão corrente
 
-`v23.09.2003.21` — movimentação dos monstros comuns publicada. PR #14 integrado em 01/10/2026 e domínio oficial conferido. Estado em `ESTADO_ATUAL.md`; próxima etapa planejada em [`PLANO_V22_GUARDIAO_RARO.md`](PLANO_V22_GUARDIAO_RARO.md), ainda sem implementação.
+`v23.09.2003.22` — Guardião raro implementado na branch `feat/v22-guardiao-raro`, em validação. Oficial permanece v21 (PR #14). Estado em `ESTADO_ATUAL.md`; plano em [`PLANO_V22_GUARDIAO_RARO.md`](PLANO_V22_GUARDIAO_RARO.md). Expansão futura em [`PLANO_EXPANSAO_MUNDO.md`](PLANO_EXPANSAO_MUNDO.md), com tutorial em [`GUIA_QUALIDADE_EXPANSAO.md`](GUIA_QUALIDADE_EXPANSAO.md).
 
 ## Árvore lógica
 
@@ -24,6 +24,8 @@ fizzi-quest/
 │   ├── PLANO_V22_GUARDIAO_RARO.md ← próximo update: encontros raros persistentes
 │   ├── PLANO_IMPORTACAO_COMPACTA_PR.md ← resposta curta da IA e bônus de recorde
 │   ├── MOLDE_EXPANSAO.md         ← roteiro reutilizável para novas versões
+│   ├── PLANO_EXPANSAO_MUNDO.md   ← áreas, missões, criaturas e prioridades futuras
+│   ├── GUIA_QUALIDADE_EXPANSAO.md ← tutorial interno de arte, animações e tom
 │   ├── ROADMAP_IMPLEMENTACOES.md ← plano auditado das próximas melhorias
 │   ├── DIAGNOSTICO_GRAFICO_V13.md ← causa da regressão visual e nova régua de aceite
 │   ├── DECISOES.md               ← escolhas de produto e engenharia
