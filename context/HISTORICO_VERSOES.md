@@ -1,8 +1,8 @@
 # Histórico de versões
 
-## v23.09.2003.21 — em validação
+## v23.09.2003.21 — publicada em 01/10/2026
 
-Broto, Besouro e Mariposa passam a patrulhar áreas pequenas com pausas variáveis. O encontro acompanha a posição visível; descansar redistribui e persiste os pontos de repouso dos três monstros comuns. Saves anteriores recebem o ciclo inicial sem alterar o progresso. Guardião, combate, sprites e cadências ambientais permanecem iguais. Plano: `PLANO_V21_MOVIMENTACAO_MONSTROS.md`; validação: `docs/VALIDATION_V21.md`. Integração e publicação pendentes.
+Broto, Besouro e Mariposa passam a patrulhar áreas pequenas com pausas variáveis. O encontro acompanha a posição visível; descansar redistribui e persiste os pontos de repouso dos três monstros comuns. Saves anteriores recebem o ciclo inicial sem alterar o progresso. Guardião, combate, sprites e cadências ambientais permanecem iguais. Plano: `PLANO_V21_MOVIMENTACAO_MONSTROS.md`; validação: `docs/VALIDATION_V21.md`. PR #14 integrado, merge `49acd8b`; check Vercel aprovado e título/rodapé/entrada na aventura conferidos no domínio oficial. V22 planejada em `PLANO_V22_GUARDIAO_RARO.md`, ainda sem implementação.
 
 ## v23.09.2003.20 — 26/09/2026
 

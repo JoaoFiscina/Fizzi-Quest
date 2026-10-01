@@ -32,8 +32,9 @@ Implementação realizada: Botas aparecem no nível 5, entram na migração/loja
 ## Depois da v19
 
 - v20: modo desenvolvedor `DEV23` antecipado a pedido do jogador. XP, ouro, bônus dos quatro atributos e multiplicador de XP de aventura ficam em save isolado. Plano: [`PLANO_V20_MODO_DESENVOLVEDOR.md`](PLANO_V20_MODO_DESENVOLVEDOR.md). PR #13 integrado; versão pública confirmada.
-- v21: movimentação dos monstros comuns implementada nesta branch, em validação. Plano detalhado em [`PLANO_V21_MOVIMENTACAO_MONSTROS.md`](PLANO_V21_MOVIMENTACAO_MONSTROS.md): áreas limitadas, ciclos variáveis de pausa/caminhada, interação na posição atual e troca persistida de pontos de repouso ao descansar. O Guardião permanece fixo. Próximo passo: regressão completa, evidências, revisão e integração quando autorizada.
-- Versão posterior: Guardião derrotado como encontro raro. Exige separar a instância do boss original da aparição rara no save e no combate; definir frequência e regras de respawn antes de implementar.
+- v21 publicada: [patrulha e repouso](PLANO_V21_MOVIMENTACAO_MONSTROS.md), PR #14 integrado em 01/10/2026. Vercel aprovado e domínio oficial conferido na v21. Evidências e limites em `docs/VALIDATION_V21.md`.
+- **Próximo update, v22:** [Guardião raro](PLANO_V22_GUARDIAO_RARO.md), apenas planejado. Começar em branch pela identidade dos encontros e migração de saves/batalhas legadas; depois piloto completo de descanso, aparição, combate, vitória e reload. Proposta: 10% por descanso após vencer o original, substituição de um slot comum, no máximo um raro e nenhuma repetição da missão. Validar economia antes de fixar os valores.
 - Versão posterior de balanceamento: elevar o teto atual de contribuição da Agilidade para velocidade de navegação (`56 + min(18, Agilidade × 1,2)`), após medir deslocamento em níveis 1/10/20, com Botas e Impulso, em reta e diagonal. Preservar controle e colisões; não incluir na v21.
+- Melhoria futura de interface: **Diário de versões** nos Ajustes, com todas as atualizações publicadas, versões, datas e resumos. Pedido de 01/10/2026, fora da v22 e sem número reservado. Regras no roadmap.
 - Depois: Capa e Runa em versões separadas, com numeração confirmada ao abrir cada etapa.
 - Depois: respawn variável em pontos caminháveis e áreas novas; revisar proposta e complexidade antes de abrir cada etapa.

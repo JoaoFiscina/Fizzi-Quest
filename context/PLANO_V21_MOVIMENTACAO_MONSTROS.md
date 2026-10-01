@@ -1,6 +1,6 @@
 # Plano de execução — v23.09.2003.21: movimentação dos monstros
 
-Estado: **implementado nesta branch, em validação**. Base oficial confirmada: v23.09.2003.20. Objetivo central: fazer os três monstros comuns do bosque caminharem em pequenas áreas próprias, com pausas de duração variável, e redistribuir seus pontos de repouso após descansar. Manter o Guardião no posto de vigia nesta etapa.
+Estado: **implementado, integrado e publicado em 01/10/2026**, PR #14, merge `49acd8b`. Domínio oficial conferido na v21; validação em `docs/VALIDATION_V21.md`. Base da implementação: v23.09.2003.20. Objetivo central: fazer os três monstros comuns do bosque caminharem em pequenas áreas próprias, com pausas de duração variável, e redistribuir seus pontos de repouso após descansar. Manter o Guardião no posto de vigia nesta etapa. Continuação planejada: [v22 — Guardião raro](PLANO_V22_GUARDIAO_RARO.md).
 
 ## Problema observável e resultado esperado
 
@@ -21,14 +21,14 @@ Ficam fora da v21: perseguição, ataque automático ao tocar, novos monstros, m
 
 ## Contrato técnico proposto
 
-| Camada | Mudança prevista | Invariante |
-| --- | --- | --- |
-| `src/game/maps.ts` | Definir identificador e configuração de patrulha para cada monstro comum; preservar os pontos originais como âncoras | `walkable` aceita todos os pontos escolhidos |
-| `src/game/monsterMovement.ts` (novo) | Funções puras para escolher próximo estado/destino e avançar um passo por delta limitado | Mesmo estado, seed e delta produzem mesmo resultado |
-| `src/game/world.ts` | Manter atores de runtime com posição atual, sprite e fase; atualizar movimento e proximidade pelo ator | O encontro aparece onde a criatura está visível |
-| `src/domain/game.ts` | Acrescentar estado mínimo da redistribuição ao save e avançá-lo no descanso | `defeated`, missão e recompensa continuam com a semântica atual |
-| `src/application/store.ts` | Validar/migrar o campo opcional de ordem dos repousos | Save e backup da v20 abrem sem perda |
-| `src/main.ts` | Exibir texto de descanso coerente com a redistribuição, se ocorrer | A ação persiste antes de atualizar o mapa |
+| Camada                               | Mudança prevista                                                                                                     | Invariante                                                      |
+| ------------------------------------ | -------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| `src/game/maps.ts`                   | Definir identificador e configuração de patrulha para cada monstro comum; preservar os pontos originais como âncoras | `walkable` aceita todos os pontos escolhidos                    |
+| `src/game/monsterMovement.ts` (novo) | Funções puras para escolher próximo estado/destino e avançar um passo por delta limitado                             | Mesmo estado, seed e delta produzem mesmo resultado             |
+| `src/game/world.ts`                  | Manter atores de runtime com posição atual, sprite e fase; atualizar movimento e proximidade pelo ator               | O encontro aparece onde a criatura está visível                 |
+| `src/domain/game.ts`                 | Acrescentar estado mínimo da redistribuição ao save e avançá-lo no descanso                                          | `defeated`, missão e recompensa continuam com a semântica atual |
+| `src/application/store.ts`           | Validar/migrar o campo opcional de ordem dos repousos                                                                | Save e backup da v20 abrem sem perda                            |
+| `src/main.ts`                        | Exibir texto de descanso coerente com a redistribuição, se ocorrer                                                   | A ação persiste antes de atualizar o mapa                       |
 
 Os três monstros comuns ainda existem em uma única instância cada. Sua **identidade** (tipo, combate, derrota) fica separada da **âncora atual** (ponto de repouso) e da **posição transitória** (caminhada). Persistir apenas a redistribuição feita no descanso; a posição transitória pode reiniciar na âncora ao recarregar. Isso evita gravar dezenas de coordenadas por segundo. Fazer a escolha de destino com candidatos pré-validados, limites de raio e tentativas finitas; se não houver destino, permanecer em `idle`.
 
@@ -36,13 +36,13 @@ O desenho da cena deve ordenar profundidade por `y` enquanto o monstro caminha. 
 
 ## Ordem de execução e piloto
 
-| Passo | Trabalho | Prova antes de avançar |
-| --- | --- | --- |
-| 1. Referência | Salvar cena do bosque da v20 com save sintético, 1366×768 e 390×844, zoom Padrão e modos Completa/Reduzida | Posições, alcance de **E**, save e cadência atual registrados |
-| 2. Piloto Broto | Introduzir ator de runtime, raio pequeno, `idle/walk`, colisão e interação móvel apenas no Broto | Observar por 30 s: desloca, para, retorna a caminhar, nunca ativa encontro no ponto antigo |
-| 3. Expandir | Configurar Besouro e Mariposa com fases desencontradas; ajustar raios à geografia real | Três ciclos visíveis sem atravessar obstáculos ou bloquear a rota |
-| 4. Descanso e save | Redistribuir pontos compatíveis em uma permutação determinística, persistir e migrar v20 | Descansar, sair/entrar no bosque, recarregar, importar backup v20 e repetir sem duplicações |
-| 5. Fechar | Estados reduzido, modal, batalha, fuga, vitória, DEV23, versão e contexto | Testes, build, E2E, capturas e revisão do diff aprovados |
+| Passo              | Trabalho                                                                                                   | Prova antes de avançar                                                                      |
+| ------------------ | ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| 1. Referência      | Salvar cena do bosque da v20 com save sintético, 1366×768 e 390×844, zoom Padrão e modos Completa/Reduzida | Posições, alcance de **E**, save e cadência atual registrados                               |
+| 2. Piloto Broto    | Introduzir ator de runtime, raio pequeno, `idle/walk`, colisão e interação móvel apenas no Broto           | Observar por 30 s: desloca, para, retorna a caminhar, nunca ativa encontro no ponto antigo  |
+| 3. Expandir        | Configurar Besouro e Mariposa com fases desencontradas; ajustar raios à geografia real                     | Três ciclos visíveis sem atravessar obstáculos ou bloquear a rota                           |
+| 4. Descanso e save | Redistribuir pontos compatíveis em uma permutação determinística, persistir e migrar v20                   | Descansar, sair/entrar no bosque, recarregar, importar backup v20 e repetir sem duplicações |
+| 5. Fechar          | Estados reduzido, modal, batalha, fuga, vitória, DEV23, versão e contexto                                  | Testes, build, E2E, capturas e revisão do diff aprovados                                    |
 
 Se o piloto mostrar que a troca entre as três âncoras prejudica a leitura do mapa, restringir pares compatíveis e registrar a decisão antes de expandir. Nunca resolver colisão com teleporte visível.
 

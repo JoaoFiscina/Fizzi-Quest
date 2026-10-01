@@ -4,7 +4,7 @@ Esta pasta é a memória operacional do jogo. Atualize-a a cada versão antes de
 
 ## Versão corrente
 
-`v23.09.2003.21` — movimentação dos monstros comuns em validação nesta branch. A versão oficial permanece `v23.09.2003.20` até integração e verificação do domínio. Estado em `ESTADO_ATUAL.md` e plano em `PLANO_V21_MOVIMENTACAO_MONSTROS.md`.
+`v23.09.2003.21` — movimentação dos monstros comuns publicada. PR #14 integrado em 01/10/2026 e domínio oficial conferido. Estado em `ESTADO_ATUAL.md`; próxima etapa planejada em [`PLANO_V22_GUARDIAO_RARO.md`](PLANO_V22_GUARDIAO_RARO.md), ainda sem implementação.
 
 ## Árvore lógica
 
@@ -20,7 +20,8 @@ fizzi-quest/
 │   ├── PLANO_V18_ATUALIZACAO_E_MOVIMENTO.md ← diagnóstico PC/celular e atualização
 │   ├── PLANO_V19_BOTAS_E_IMPULSO.md ← Botas e habilidade ativa de velocidade
 │   ├── PLANO_V20_MODO_DESENVOLVEDOR.md ← DEV23 para testes isolados
-│   ├── PLANO_V21_MOVIMENTACAO_MONSTROS.md ← próxima etapa: patrulha e repouso
+│   ├── PLANO_V21_MOVIMENTACAO_MONSTROS.md ← patrulha e repouso publicados
+│   ├── PLANO_V22_GUARDIAO_RARO.md ← próximo update: encontros raros persistentes
 │   ├── PLANO_IMPORTACAO_COMPACTA_PR.md ← resposta curta da IA e bônus de recorde
 │   ├── MOLDE_EXPANSAO.md         ← roteiro reutilizável para novas versões
 │   ├── ROADMAP_IMPLEMENTACOES.md ← plano auditado das próximas melhorias
@@ -47,10 +48,10 @@ fizzi-quest/
 
 - Continuar a estética do mundo quando novas áreas jogáveis forem planejadas.
 - Avaliar futuro refinamento do protagonista e de tiles secundários na escala atual.
-- Próxima prioridade após a v20: movimentação dos três monstros comuns na v21. Cada um terá área/raio predefinido e ciclos variáveis de pausa e caminhada.
-- Ao descansar, monstros comuns poderão trocar entre si pontos de repouso compatíveis, sem sobrepor obstáculos ou o jogador.
-- Boss derrotado como encontro raro fica para etapa posterior, pois exige distinguir instâncias do mesmo tipo no save e no combate.
+- V21 publicada: três monstros comuns patrulham áreas limitadas e trocam pontos de repouso ao descansar, com interação sincronizada.
+- Próxima prioridade, v22: Guardião errante raro após vencer o original. Identidade independente, sorteio persistido por descanso, missão preservada e no máximo um raro. Ver plano detalhado; chance e recompensa são hipóteses de piloto.
 - Elevar em versão futura o teto do ganho de velocidade de navegação por Agilidade; medir o efeito com Botas e Impulso antes de escolher o novo limite.
+- Adicionar futuramente o **Diário de versões** nos Ajustes com todas as atualizações publicadas; pedido de 01/10/2026 registrado no roadmap, fora da v22.
 - Modo desenvolvedor `DEV23` implementado na v20: XP, ouro e bônus de atributos em um save de teste separado. Ver `PLANO_V20_MODO_DESENVOLVEDOR.md`.
 
 ## Regra de continuidade

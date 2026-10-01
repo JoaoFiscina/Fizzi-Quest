@@ -2,7 +2,7 @@
 
 RPG pessoal de exploração em pixel art, construído com Phaser, TypeScript e Vite para o marco **Treino à aventura**.
 
-## Implementação atual — v23.09.2003.21 (em validação)
+## Implementação atual — v23.09.2003.21 (publicada)
 
 Já estão implementados os blocos principais do domínio e da experiência:
 
@@ -47,7 +47,7 @@ Build para Vercel: `npm run build`, saída `dist`. O endereço oficial é [fizzi
 
 Validação: `npm test` e `npm run test:e2e` (Edge via Playwright). Evidências e limites em [`docs/VALIDATION.md`](docs/VALIDATION.md).
 
-Esta etapa acrescenta patrulha dos monstros comuns e redistribuição dos seus pontos de repouso, preservando a arte, as animações ambientais e o modo DEV. A versão pública usa `v23.09.2003.x`; a versão npm equivalente usa SemVer (`23.9.2003-21`). A publicação oficial da v21 depende de integração e verificação.
+Esta etapa acrescenta patrulha dos monstros comuns e redistribuição dos seus pontos de repouso, preservando a arte, as animações ambientais e o modo DEV. A versão pública usa `v23.09.2003.x`; a versão npm equivalente usa SemVer (`23.9.2003-21`). PR #14 integrado em 01/10/2026; título, rodapé e entrada na aventura conferidos no domínio oficial. Próxima etapa: [plano da v22 — Guardião raro](context/PLANO_V22_GUARDIAO_RARO.md).
 
 ## Contexto vivo
 

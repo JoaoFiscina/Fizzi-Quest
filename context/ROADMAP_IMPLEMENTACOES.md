@@ -220,7 +220,7 @@ Plano detalhado: [`PLANO_V20_MODO_DESENVOLVEDOR.md`](PLANO_V20_MODO_DESENVOLVEDO
 
 ### v23.09.2003.21 — movimentação de monstros
 
-Plano detalhado: [`PLANO_V21_MOVIMENTACAO_MONSTROS.md`](PLANO_V21_MOVIMENTACAO_MONSTROS.md). Implementação em validação nesta branch. Complexidade alvo: alta, por envolver simulação, colisões, interação e migração mínima do save. Não misturar com novo slot de equipamento.
+Plano detalhado: [`PLANO_V21_MOVIMENTACAO_MONSTROS.md`](PLANO_V21_MOVIMENTACAO_MONSTROS.md). Publicada em 01/10/2026, PR #14 integrado e domínio oficial conferido. Complexidade: alta, por envolver simulação, colisões, interação e migração mínima do save. Evidências em `docs/VALIDATION_V21.md`.
 
 - Dar a cada monstro comum uma área de movimentação predefinida, com centro, raio e pontos caminháveis; o Guardião permanece fixo.
 - Executar ciclos variáveis de descanso e caminhada, mantendo o monstro dentro do raio e evitando obstáculos/jogador.
@@ -228,7 +228,16 @@ Plano detalhado: [`PLANO_V21_MOVIMENTACAO_MONSTROS.md`](PLANO_V21_MOVIMENTACAO_M
 - Deixar o boss raro para etapa posterior: a estrutura atual registra derrota por tipo, então a aparição rara precisará de identidade de instância independente do boss original.
 - Validar em mapa, combate, reload, movimento reduzido e 30 segundos de observação real antes de integrar.
 
-### Versões posteriores — boss raro e velocidade por Agilidade
+### v23.09.2003.22 — Guardião raro (planejada)
+
+Plano detalhado: [PLANO_V22_GUARDIAO_RARO.md](PLANO_V22_GUARDIAO_RARO.md). Complexidade alta e um único sistema estrutural: identidade de encontros. Implementação ainda não iniciada.
+
+- Desbloquear após vencer o boss original; gerar no máximo uma aparição rara persistida por descanso, substituindo um slot comum.
+- Separar identidade e tipo, preservar missão/batalhas antigas e impedir reroll por reload ou mapa.
+- Chance inicial de 10% e recompensas existentes do Guardião são hipóteses de piloto; validar economia e possíveis repetições antes de fechar.
+- Reutilizar sprites e patrulha existentes. Não alterar animações ambientais ou adicionar equipamentos nesta etapa.
+
+### Depois da v22 — velocidade por Agilidade
 
 - Após validar a patrulha, planejar o Guardião derrotado como encontro raro com identidade de instância, frequência moderada, persistência e regras de combate/recompensa próprias. Não liberar se isso permitir repetir missão ou bloquear o boss original.
 - Em uma versão de balanceamento separada, elevar o limite de contribuição da Agilidade para velocidade no mapa. A fórmula atual em `World.sync()` é `56 + min(18, Agilidade × 1,2)` antes do Impulso da Trilha; comparar níveis 1/10/20, com e sem Botas e Impulso, em caminhada reta/diagonal e perto de obstáculos. Escolher teto novo após o piloto, sem tornar o controle difícil.
@@ -250,6 +259,16 @@ Complexidade alvo: média-alta e isolada.
 - Uma versão adiciona no máximo um sistema estrutural novo ou dois slots simples apoiados em fundação testada.
 - Mudança de save, regra de combate e grande expansão visual não entram juntas.
 - Cada novo slot precisa de migração, catálogo, loja, mochila, personagem, backup e E2E antes do próximo.
+
+## Melhoria futura — Diário de versões nos Ajustes
+
+Pedido registrado em 01/10/2026. **Pendente; fora da v22**, sem número reservado. Complexidade estimada: baixa a média, adequada a uma etapa de interface após o sistema de encontros.
+
+- Criar uma aba **Diário de versões** dentro dos Ajustes, com todas as atualizações publicadas, da mais recente para a mais antiga.
+- Cada entrada apresenta versão `v23.09.2003.x`, data e resumo claro do que mudou: novidades, correções e ajustes de equilíbrio.
+- Destacar a versão instalada e manter consulta compacta, legível e rolável no PC e celular.
+- Manter um catálogo único de notas de lançamento e atualizá-lo em cada entrega; conferir as versões históricas com `HISTORICO_VERSOES.md`. Planos ainda não publicados não entram como mudanças entregues.
+- Não exigir login ou alterar saves. Validar abertura, rolagem, fechamento e versões históricas sem controles inacessíveis.
 
 ## Verificação exigida em cada versão
 
