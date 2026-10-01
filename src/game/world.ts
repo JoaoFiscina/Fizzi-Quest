@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { movementSpeed } from "../domain/movement";
 import { encounterDefeated, rareId } from "../domain/encounters";
 import { createArt } from "./art";
 import { makeMap, walkable, type Entity, type MapData } from "./maps";
@@ -590,12 +591,10 @@ export class World extends Phaser.Scene {
       this.build();
       return;
     }
-    const baseSpeed = 56 + Math.min(18, stats(s).speed * 1.2);
-    this.speed =
-      baseSpeed *
-      (this.trailImpulseState?.config.bonus
-        ? 1 + this.trailImpulseState.config.bonus
-        : 1);
+    this.speed = movementSpeed(
+      stats(s).speed,
+      this.trailImpulseState?.config.bonus,
+    );
     if (this.worldKey !== s.map && !s.battle) this.build();
     const hero = s.appearance === "feminine" ? "hero-f" : "hero";
     if (this.player.getData("heroKey") !== hero) {

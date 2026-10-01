@@ -1,5 +1,9 @@
 # Histórico de versões
 
+## v23.09.2003.23 — Passo Ágil e Diário da Jornada (01/10/2026, em validação)
+
+Entrega unificada do conteúdo proposto para v23/v24. Velocidade base até 100 px/s, mantendo Agilidade × 1,2 sobre base56; Impulso aplica seu multiplicador depois do teto e pode ultrapassá-lo. Ajustes têm abas de Preferências e Diário de versões, com catálogo das entregas e destaque da instalada. Sem migração ou mudança de animações. Plano `PLANO_V23_PASSO_E_DIARIO.md`; publicação pendente, dependente da integração da v22.
+
 ## v23.09.2003.22 — implementada, em validação (01/10/2026)
 
 Guardião errante raro após derrota do original, distribuição determinística por descanso e persistência separada. Substitui um slot comum, patrulha e interage na posição visível, sem repetir emblema/missão. Migração aditiva de saves/batalhas e recompensas únicas. Arte e animações ambientais preservadas. Validação: `docs/VALIDATION_V22.md`. Plano de expansão e tutorial interno adicionados; conteúdo futuro ainda não implementado. Publicação pendente.

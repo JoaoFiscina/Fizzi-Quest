@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { mkdirSync } from "node:fs";
 
-const evidence = "docs/evidence/v23.09.2003.22/after";
+const evidence = "docs/evidence/v23.09.2003.23/after";
 mkdirSync(evidence, { recursive: true });
 
 test("PC com movimento reduzido explica a diferença e ativa os ciclos completos", async ({
@@ -72,7 +72,7 @@ test("aviso de versão nova recarrega os arquivos e conserva o save", async ({
       status: 200,
       contentType: "application/json",
       headers: { "Cache-Control": "no-store" },
-      body: JSON.stringify({ version: "v23.09.2003.23" }),
+      body: JSON.stringify({ version: "v23.09.2003.24" }),
     }),
   );
   await page.goto("/");
@@ -87,14 +87,14 @@ test("aviso de versão nova recarrega os arquivos e conserva o save", async ({
   await page.setViewportSize({ width: 390, height: 844 });
   await page.screenshot({ path: `${evidence}/mobile-new-version.png` });
   await page.getByRole("button", { name: "Atualizar jogo" }).click();
-  await expect(page).toHaveURL(/atualizar=v23\.09\.2003\.23/);
+  await expect(page).toHaveURL(/atualizar=v23\.09\.2003\.24/);
   expect(
     await page.evaluate(() => localStorage.getItem("fizzi-quest.save.v1")),
   ).toBe(previousSave);
   await page.getByRole("button", { name: "Continuar aventura" }).click();
   await page.getByRole("button", { name: "Ajustes", exact: true }).click();
   await expect(
-    page.getByText("Instalada neste navegador: v23.09.2003.22"),
+    page.getByText("Instalada neste navegador: v23.09.2003.23"),
   ).toBeVisible();
 });
 
@@ -109,7 +109,7 @@ test("manifesto atual não mostra atualização e permite verificação manual",
   await page.getByRole("button", { name: "Ajustes", exact: true }).click();
   await page.getByRole("button", { name: "Verificar atualização" }).click();
   await expect(
-    page.getByText("Você já está na versão v23.09.2003.22."),
+    page.getByText("Você já está na versão v23.09.2003.23."),
   ).toBeVisible();
   await page.screenshot({ path: `${evidence}/pc-version-settings.png` });
   await page.setViewportSize({ width: 390, height: 844 });

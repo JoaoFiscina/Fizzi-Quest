@@ -4,6 +4,8 @@ Esta pasta é a memória operacional do jogo. Atualize-a a cada versão antes de
 
 ## Versão corrente
 
+`v23.09.2003.23` — velocidade e Diário unificados em validação na branch `feat/v23-passo-diario`. Plano em [PLANO_V23_PASSO_E_DIARIO.md](PLANO_V23_PASSO_E_DIARIO.md); v24 proposta foi absorvida. Oficial permanece v21; v22 é dependência da integração.
+
 `v23.09.2003.22` — Guardião raro implementado na branch `feat/v22-guardiao-raro`, em validação. Oficial permanece v21 (PR #14). Estado em `ESTADO_ATUAL.md`; plano em [`PLANO_V22_GUARDIAO_RARO.md`](PLANO_V22_GUARDIAO_RARO.md). Expansão futura em [`PLANO_EXPANSAO_MUNDO.md`](PLANO_EXPANSAO_MUNDO.md), com tutorial em [`GUIA_QUALIDADE_EXPANSAO.md`](GUIA_QUALIDADE_EXPANSAO.md).
 
 ## Árvore lógica
@@ -24,6 +26,7 @@ fizzi-quest/
 │   ├── PLANO_V22_GUARDIAO_RARO.md ← próximo update: encontros raros persistentes
 │   ├── PLANO_IMPORTACAO_COMPACTA_PR.md ← resposta curta da IA e bônus de recorde
 │   ├── MOLDE_EXPANSAO.md         ← roteiro reutilizável para novas versões
+│   ├── PLANO_V23_PASSO_E_DIARIO.md ← velocidade e Diário na mesma entrega
 │   ├── PLANO_EXPANSAO_MUNDO.md   ← áreas, missões, criaturas e prioridades futuras
 │   ├── GUIA_QUALIDADE_EXPANSAO.md ← tutorial interno de arte, animações e tom
 │   ├── ROADMAP_IMPLEMENTACOES.md ← plano auditado das próximas melhorias
