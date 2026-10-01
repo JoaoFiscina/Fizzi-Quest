@@ -20,3 +20,5 @@ Catálogo `src/content/releaseNotes.ts` cobre todas as entregas registradas, sem
 ## Limites e publicação
 
 Não há áreas/missões novas. Save e animações não mudaram. Branch `feat/v23-passo-diario`; PR deverá apontar para a branch v22 enquanto ela não estiver na main, preservando ordem de integração. Não chamar a v23 de oficial antes do merge autorizado e conferência do domínio.
+
+[PR #16](https://github.com/JoaoFiscina/Fizzi-Quest/pull/16) aberto e sem conflitos, base `feat/v22-guardiao-raro` (dependência PR #15). Check Vercel do commit `db4c3d5`: **success**, [preview](https://vercel.com/joao-fiscina-s-projects/fizzi-quest/5ELsNTzX7f6xsFyFj2874yfZrDxY). O fluxo jogável foi verificado localmente; check de preview não substitui conferência do domínio oficial.

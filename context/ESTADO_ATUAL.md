@@ -19,6 +19,8 @@ Validação da v20: 49 testes de regras, build e 26 cenários E2E aprovados; PR 
 
 ## Retomada
 
+[PR #16](https://github.com/JoaoFiscina/Fizzi-Quest/pull/16) aberto, sem conflitos, check Vercel `db4c3d5` aprovado. Aponta para a branch v22, PR #15; integrar primeiro v22 e então direcionar v23 à main quando autorizado. Workspace limpo após envio e documentos atualizados.
+
 V23 unifica Passo Ágil e Diário da Jornada, absorvendo o conteúdo planejado para v24. Teto base100 px/s, Impulso após o teto, catálogo completo e aba nos Ajustes. Branch `feat/v23-passo-diario` sobre v22; **60 testes, build e33 E2E aprovados**. Plano em `PLANO_V23_PASSO_E_DIARIO.md`, evidências em `docs/VALIDATION_V23.md`. Não há migração ou alteração de animações. Integrar v22 antes da v23 quando autorizado.
 
 V22 implementada: identidade rara independente, chance de 10% por descanso após vitória original, substituição de um slot comum, patrulha/interação, recompensa única e migração compatível. **57 testes de domínio, build e 31 E2E aprovados**, incluindo 60 segundos de continuidade. Ver `docs/VALIDATION_V22.md`. Próxima ação: revisão/PR e integração quando autorizada.
