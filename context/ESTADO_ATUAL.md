@@ -1,4 +1,4 @@
-# Estado atual — v23.09.2003.22 em revisão; oficial v21
+# Estado atual — v23.09.2003.23 em validação; oficial v21
 
 Base oficial: v23.09.2003.21 integrada à `main` pelo [PR #14](https://github.com/JoaoFiscina/Fizzi-Quest/pull/14) em 01/10/2026. Merge `49acd8b4e427161b0fc916bb386202aa13aae3b5`; domínio oficial conferido. V22 implementada na branch `feat/v22-guardiao-raro`, ainda sem integração/publicação.
 
@@ -18,6 +18,10 @@ Base oficial: v23.09.2003.21 integrada à `main` pelo [PR #14](https://github.co
 Validação da v20: 49 testes de regras, build e 26 cenários E2E aprovados; PR #13 integrado e domínio conferido. Na v21, 51 testes de regras e build passaram. A regressão E2E teve 28/29 aprovados de primeira; o único erro era a expectativa desatualizada do teste de versão, corrigida e aprovada isoladamente. A amostra temporal e as capturas foram inspecionadas. O piloto de balanceamento do Impulso nos níveis 10 e 20 segue pendente.
 
 ## Retomada
+
+[PR #16](https://github.com/JoaoFiscina/Fizzi-Quest/pull/16) aberto, sem conflitos, check Vercel `db4c3d5` aprovado. Aponta para a branch v22, PR #15; integrar primeiro v22 e então direcionar v23 à main quando autorizado. Workspace limpo após envio e documentos atualizados.
+
+V23 unifica Passo Ágil e Diário da Jornada, absorvendo o conteúdo planejado para v24. Teto base100 px/s, Impulso após o teto, catálogo completo e aba nos Ajustes. Branch `feat/v23-passo-diario` sobre v22; **60 testes, build e33 E2E aprovados**. Plano em `PLANO_V23_PASSO_E_DIARIO.md`, evidências em `docs/VALIDATION_V23.md`. Não há migração ou alteração de animações. Integrar v22 antes da v23 quando autorizado.
 
 V22 implementada: identidade rara independente, chance de 10% por descanso após vitória original, substituição de um slot comum, patrulha/interação, recompensa única e migração compatível. **57 testes de domínio, build e 31 E2E aprovados**, incluindo 60 segundos de continuidade. Ver `docs/VALIDATION_V22.md`. Próxima ação: revisão/PR e integração quando autorizada.
 

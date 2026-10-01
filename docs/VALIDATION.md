@@ -1,8 +1,10 @@
-# Validação atual — v23.09.2003.22
+# Validação atual — v23.09.2003.23
 
-Resultados, evidências e limites em [VALIDATION_V22.md](VALIDATION_V22.md): 57 testes de domínio, build e 31 cenários E2E aprovados. V22 implementada em branch; oficial permanece v21 até integração autorizada.
+Resultados, evidências e limites em [VALIDATION_V23.md](VALIDATION_V23.md): 60 testes de domínio, build e 33 E2E aprovados. V23 implementada sobre a v22; oficial permanece v21 até integração autorizada.
 
 ## Histórico
+
+- [v22 — Guardião raro](VALIDATION_V22.md)
 
 - [v21 — patrulha dos comuns](VALIDATION_V21.md)
 - [v20 — modo DEV](VALIDATION_V20.md)

@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { releaseNotes } from "./content/releaseNotes";
 import { encounterName } from "./domain/encounters";
 import "./style.css";
 import "./polish.css";
@@ -719,9 +720,79 @@ function tutorial(openTopic = "defense") {
   }
   content.append(topics);
 }
-function settings() {
+function settings(selected: "preferences" | "versions" = "preferences") {
+  selected = selected === "versions" ? "versions" : "preferences";
   openModal("Configurações");
   content.classList.add("settings-content");
+  const tabs = el("div", "", "settings-tabs");
+  tabs.setAttribute("role", "tablist");
+  tabs.setAttribute("aria-label", "Abas dos Ajustes");
+  for (const [id, label] of [
+    ["preferences", "Preferências"],
+    ["versions", "Diário de versões"],
+  ] as const) {
+    const tab = button(
+      label,
+      () => settings(id),
+      selected === id ? "selected" : "quiet",
+    );
+    tab.id = `settings-tab-${id}`;
+    tab.setAttribute("role", "tab");
+    tab.setAttribute("aria-selected", String(selected === id));
+    tab.setAttribute("aria-controls", "settings-panel");
+    tab.tabIndex = selected === id ? 0 : -1;
+    tab.onkeydown = (event) => {
+      if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key))
+        return;
+      event.preventDefault();
+      const next =
+        event.key === "Home"
+          ? "preferences"
+          : event.key === "End"
+            ? "versions"
+            : id === "preferences"
+              ? "versions"
+              : "preferences";
+      settings(next);
+      document.getElementById(`settings-tab-${next}`)?.focus();
+    };
+    tabs.append(tab);
+  }
+  const body = el("div");
+  body.id = "settings-panel";
+  body.setAttribute("role", "tabpanel");
+  body.setAttribute("aria-labelledby", `settings-tab-${selected}`);
+  content.append(tabs, body);
+  if (selected === "versions") {
+    body.className = "release-diary";
+    body.append(
+      el("h3", "Diário da Jornada"),
+      el(
+        "p",
+        "Histórico das entregas presentes neste jogo, da mais recente para a mais antiga.",
+      ),
+    );
+    for (const note of releaseNotes) {
+      const installed = note.version === GAME_VERSION;
+      const entry = el(
+        "article",
+        "",
+        `release-entry${installed ? " installed" : ""}`,
+      );
+      entry.append(
+        el(
+          "small",
+          `${note.version} · ${note.date}${installed ? " · INSTALADA" : ""}`,
+        ),
+        el("h4", note.title),
+      );
+      const changes = el("ul");
+      for (const change of note.changes) changes.append(el("li", change));
+      entry.append(changes);
+      body.append(entry);
+    }
+    return;
+  }
   const personalization = el("section", "", "personalization-settings");
   personalization.append(
     el("small", "APARÊNCIA E CÂMERA", "eyebrow-inline"),
@@ -911,7 +982,7 @@ function settings() {
     entry.append(code, button("Aplicar código", unlock));
     devSettings.append(entry, options);
   }
-  content.append(
+  body.append(
     personalization,
     updateSettings,
     devSettings,
@@ -945,7 +1016,7 @@ function settings() {
       void f.text().then((t) => (input.value = t));
     }
   };
-  content.append(
+  body.append(
     file,
     input,
     button("Restaurar backup", () => {

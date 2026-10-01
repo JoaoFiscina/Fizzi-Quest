@@ -1058,8 +1058,48 @@ button.alloc-btn:not(:disabled):hover {
 .update-settings .update-help {
   font-size: 12px;
 }
-.settings-content > .primary {
+.settings-content > .primary,
+.settings-content #settings-panel > .primary {
   position: static;
+}
+.settings-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.settings-tabs button {
+  flex: 1;
+  min-width: 0;
+  min-height: 44px;
+}
+.release-entry {
+  padding: 14px;
+  margin: 12px 0;
+  border: 1px solid #899378;
+  border-radius: 8px;
+  background: #f5efd9;
+}
+.release-entry.installed {
+  border-color: #9a752d;
+  border-left-width: 4px;
+}
+.release-entry small {
+  display: block;
+  color: #465845;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.release-entry h4 {
+  margin: 7px 0;
+  color: #284a3d;
+}
+.release-entry ul {
+  margin: 0;
+  padding-left: 18px;
+  line-height: 1.5;
+}
+.release-entry li + li {
+  margin-top: 5px;
 }
 .update-banner {
   position: fixed;
