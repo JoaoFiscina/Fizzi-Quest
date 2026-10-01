@@ -1,5 +1,9 @@
 # Histórico de versões
 
+## v23.09.2003.22 — implementada, em validação (01/10/2026)
+
+Guardião errante raro após derrota do original, distribuição determinística por descanso e persistência separada. Substitui um slot comum, patrulha e interage na posição visível, sem repetir emblema/missão. Migração aditiva de saves/batalhas e recompensas únicas. Arte e animações ambientais preservadas. Validação: `docs/VALIDATION_V22.md`. Plano de expansão e tutorial interno adicionados; conteúdo futuro ainda não implementado. Publicação pendente.
+
 ## v23.09.2003.21 — publicada em 01/10/2026
 
 Broto, Besouro e Mariposa passam a patrulhar áreas pequenas com pausas variáveis. O encontro acompanha a posição visível; descansar redistribui e persiste os pontos de repouso dos três monstros comuns. Saves anteriores recebem o ciclo inicial sem alterar o progresso. Guardião, combate, sprites e cadências ambientais permanecem iguais. Plano: `PLANO_V21_MOVIMENTACAO_MONSTROS.md`; validação: `docs/VALIDATION_V21.md`. PR #14 integrado, merge `49acd8b`; check Vercel aprovado e título/rodapé/entrada na aventura conferidos no domínio oficial. V22 planejada em `PLANO_V22_GUARDIAO_RARO.md`, ainda sem implementação.

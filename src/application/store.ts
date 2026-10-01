@@ -1,5 +1,10 @@
 import { z } from "zod";
 import {
+  freshEncounters,
+  encounterDefeated,
+  rareId,
+} from "../domain/encounters";
+import {
   freshSave,
   stats,
   clampResources,
@@ -111,12 +116,24 @@ const schema = z.object({
   y: z.number().finite().min(8).max(440),
   defeated: z.array(enemy).max(4),
   monsterRestCycle: z.number().int().min(0).max(5).default(0),
+  rareEncounter: z
+    .object({
+      seed: z.number().int().min(0).max(0xffffffff),
+      cycle: int,
+      slot: z.enum(["sprout", "beetle", "moth"]).nullable(),
+      defeated: z.boolean(),
+    })
+    .default(freshEncounters),
   quest: z.enum(["not_started", "active", "emblem_recovered", "completed"]),
   guild: z.boolean(),
   chest: z.boolean(),
   battle: z
     .object({
       enemy,
+      encounterId: z
+        .string()
+        .regex(/^rare:\d{1,9}$/)
+        .optional(),
       hp: int,
       round: int.min(1),
       guard: z.boolean(),
@@ -143,6 +160,16 @@ export function validateSave(
       "Backup inválido ou versão incompatível. O progresso atual foi preservado.",
     );
   const s = r.data as Save;
+  if (
+    (s.rareEncounter.slot && !s.defeated.includes("guardian")) ||
+    (s.rareEncounter.defeated && !s.rareEncounter.slot) ||
+    (s.battle?.encounterId &&
+      (s.battle.enemy !== "guardian" ||
+        ((s.battle.status === "awaiting_player" ||
+          s.battle.status === "victory") &&
+          (s.battle.encounterId !== rareId(s) || !s.rareEncounter.slot))))
+  )
+    throw Error("Estado de encontro raro inconsistente.");
   if (mode === "normal" && s.dev)
     throw Error("Backup de teste DEV não pode substituir a aventura normal.");
   if (mode === "dev" && !s.dev)
@@ -253,7 +280,8 @@ export function validateSave(
     ((s.battle.status === "awaiting_player" &&
       (s.battle.hp === 0 || s.hp === 0)) ||
       (s.battle.status === "victory" &&
-        (s.battle.hp !== 0 || !s.defeated.includes(s.battle.enemy))))
+        (s.battle.hp !== 0 ||
+          !encounterDefeated(s, s.battle.enemy, s.battle.encounterId))))
   )
     throw Error("Estado de combate inválido.");
   if (s.map === "village" && (s.x > 380 || s.y > 318))
@@ -264,7 +292,7 @@ export function validateSave(
     s.battle &&
     (s.battle.hp > enemies[s.battle.enemy].hp ||
       (s.battle.status === "awaiting_player" &&
-        s.defeated.includes(s.battle.enemy)))
+        encounterDefeated(s, s.battle.enemy, s.battle.encounterId)))
   )
     throw Error("Estado de encontro inconsistente.");
   return s;

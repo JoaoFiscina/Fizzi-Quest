@@ -1,6 +1,6 @@
-# Estado atual — v23.09.2003.21 publicada
+# Estado atual — v23.09.2003.22 em revisão; oficial v21
 
-Base oficial: v23.09.2003.21 integrada à `main` pelo [PR #14](https://github.com/JoaoFiscina/Fizzi-Quest/pull/14) em 01/10/2026. Merge `49acd8b4e427161b0fc916bb386202aa13aae3b5`; check Vercel aprovado. Título, rodapé, entrada na aventura e HUD conferidos em https://fizzi-quest.vercel.app/. A v22 está apenas planejada.
+Base oficial: v23.09.2003.21 integrada à `main` pelo [PR #14](https://github.com/JoaoFiscina/Fizzi-Quest/pull/14) em 01/10/2026. Merge `49acd8b4e427161b0fc916bb386202aa13aae3b5`; domínio oficial conferido. V22 implementada na branch `feat/v22-guardiao-raro`, ainda sem integração/publicação.
 
 ## O que funciona
 
@@ -19,4 +19,6 @@ Validação da v20: 49 testes de regras, build e 26 cenários E2E aprovados; PR 
 
 ## Retomada
 
-Integração da v21 concluída. Próxima ação: abrir branch da v22 e começar pela identidade dos encontros e migração, conforme [PLANO_V22_GUARDIAO_RARO.md](PLANO_V22_GUARDIAO_RARO.md). Implementação da v22 ainda não iniciada. O aumento do teto de velocidade por Agilidade fica para uma etapa separada, incluindo o piloto do Impulso nos níveis 10 e 20. Roadmap e fila em `PROXIMOS_PASSOS.md` e `ROADMAP_IMPLEMENTACOES.md`.
+V22 implementada: identidade rara independente, chance de 10% por descanso após vitória original, substituição de um slot comum, patrulha/interação, recompensa única e migração compatível. **57 testes de domínio, build e 31 E2E aprovados**, incluindo 60 segundos de continuidade. Ver `docs/VALIDATION_V22.md`. Próxima ação: revisão/PR e integração quando autorizada.
+
+Expansão futura em [PLANO_EXPANSAO_MUNDO.md](PLANO_EXPANSAO_MUNDO.md): fundação de áreas/missões → Ribeirão piloto → histórias secundárias → Pedreira → boss separado. Tutorial interno em [GUIA_QUALIDADE_EXPANSAO.md](GUIA_QUALIDADE_EXPANSAO.md), incluindo direção de tom mais maduro. Nenhuma área nova implementada. Velocidade/Impulso, Diário, Capa e Runas permanecem no backlog priorizado.

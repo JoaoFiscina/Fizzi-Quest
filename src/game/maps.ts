@@ -1,5 +1,7 @@
 import type { EnemyId } from "../domain/game";
 export type Entity = {
+  encounterId?: string;
+  patrolSlot?: import("../domain/encounters").CommonSlot;
   kind:
     | "tree"
     | "house"

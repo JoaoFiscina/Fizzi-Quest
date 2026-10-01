@@ -31,13 +31,13 @@ Executar `npm test`, `npm run build` e `npm run test:e2e` para alterações de d
 
 Além dos testes automáticos, usar a régua específica:
 
-| Tipo de etapa | Evidência obrigatória |
-| --- | --- |
-| Arte e mapa | Pares antes/depois na mesma condição, inspeção na escala real, leitura de personagem, rota e interação em desktop e celular emulado |
-| Animação | Pelo menos 30 segundos na cadência real; quadros mudam e retornam à pose; posições e contagens de objetos/timers permanecem estáveis; modo Reduzida verificado |
-| Treino/balanceamento | Simulações de personagem inicial e avançado; ganho bruto, caps e duplicatas; efeito sobre atributos, XP e duração da progressão |
-| Equipamentos/slots | Compra, mochila, equipar, HUD, combinações de bônus, nível bloqueado/desbloqueado, migração e backup |
-| Interface | Estados e ações em 390×844, 430×932, 1366×768 e 1920×1080; sem rolagem horizontal ou controle inacessível |
+| Tipo de etapa        | Evidência obrigatória                                                                                                                                          |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Arte e mapa          | Pares antes/depois na mesma condição, inspeção na escala real, leitura de personagem, rota e interação em desktop e celular emulado                            |
+| Animação             | Pelo menos 30 segundos na cadência real; quadros mudam e retornam à pose; posições e contagens de objetos/timers permanecem estáveis; modo Reduzida verificado |
+| Treino/balanceamento | Simulações de personagem inicial e avançado; ganho bruto, caps e duplicatas; efeito sobre atributos, XP e duração da progressão                                |
+| Equipamentos/slots   | Compra, mochila, equipar, HUD, combinações de bônus, nível bloqueado/desbloqueado, migração e backup                                                           |
+| Interface            | Estados e ações em 390×844, 430×932, 1366×768 e 1920×1080; sem rolagem horizontal ou controle inacessível                                                      |
 
 Diferença de pixels ou teste de timer comprova uma alteração técnica, não qualidade percebida. Descrever o que ficou mais legível e o que ainda precisa melhorar. Distinguir emulação de teste em aparelho físico. Não repetir toda a bateria após formatação ou documentação se nenhuma regra mudou.
 
@@ -55,6 +55,8 @@ Se a publicação falhar, registrar estado exato e conservar a versão pública 
 
 ```text
 Versão proposta:
+Prioridade atribuída e motivo:
+Ordem de execução e dependências:
 Base Git e versão oficial confirmadas:
 Objetivo central:
 Complexidade e motivo:

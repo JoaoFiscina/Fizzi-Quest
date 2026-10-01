@@ -1,6 +1,6 @@
 # v23.09.2003.22 — Guardião como encontro raro
 
-Estado: **planejada; implementação não iniciada**. Base: `main`, v23.09.2003.21, PR #14 integrado em 01/10/2026 (`49acd8b4e427161b0fc916bb386202aa13aae3b5`); título, rodapé e entrada na aventura conferidos no domínio oficial. Seguir [MOLDE_EXPANSAO.md](MOLDE_EXPANSAO.md).
+Estado: **implementada na branch `feat/v22-guardiao-raro`; validação em `docs/VALIDATION_V22.md`; publicação pendente**. Base: `main`, v23.09.2003.21, PR #14 integrado em 01/10/2026 (`49acd8b4e427161b0fc916bb386202aa13aae3b5`); título, rodapé e entrada na aventura conferidos no domínio oficial. Seguir [MOLDE_EXPANSAO.md](MOLDE_EXPANSAO.md).
 
 ## Objetivo e limite de complexidade
 
@@ -75,6 +75,6 @@ Em `src/game/world.ts`, mapear sprites e entidades pela identidade e resolver te
 
 Maior risco: confundir o tipo Guardião com duas origens distintas e repetir missão/recompensa. Mitigar com identidade no domínio antes do piloto visual. Outros riscos: reroll infinito, batalha legada perdida, criatura oculta por chave duplicada e ganho excessivo de ouro por descansos; cobrir pelos critérios acima.
 
-**Próxima ação concreta:** abrir branch da v22 a partir da main confirmada e implementar somente identidade/distribuição + testes de migração. Este documento é o plano; a v22 ainda não foi implementada.
+**Próxima ação concreta:** concluir checks, revisar e abrir PR da v22. Identidade/distribuição, migração e fluxo raro implementados. Expansão futura e tutorial interno em `PLANO_EXPANSAO_MUNDO.md` e `GUIA_QUALIDADE_EXPANSAO.md`; novas áreas não implementadas.
 
 Após a v22: etapa proposta de balanceamento da velocidade por Agilidade, incluindo o piloto pendente do Impulso nos níveis 10 e 20. Comparar a fórmula atual `56 + min(18, Agilidade × 1,2)` com tetos candidatos, reta/diagonal, Botas, Impulso e colisão; escolher limite por evidência. Capa e Runa continuam em entregas separadas.

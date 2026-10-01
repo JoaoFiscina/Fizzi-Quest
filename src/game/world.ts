@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { encounterDefeated, rareId } from "../domain/encounters";
 import { createArt } from "./art";
 import { makeMap, walkable, type Entity, type MapData } from "./maps";
 import {
@@ -37,7 +38,7 @@ export class World extends Phaser.Scene {
   private root!: Phaser.GameObjects.Container;
   private enemySprites = new Map<string, Phaser.GameObjects.Sprite>();
   private patrolActors = new Map<
-    CommonMonster,
+    string,
     { patrol: Patrol; sprite: Phaser.GameObjects.Sprite; entity: Entity }
   >();
   private builtRestCycle = 0;
@@ -148,6 +149,19 @@ export class World extends Phaser.Scene {
         return { x: anchor.x, y: anchor.y };
       },
     );
+    if (s.map === "forest" && s.rareEncounter.slot) {
+      m.entities = m.entities.map((e) =>
+        e.kind === s.rareEncounter.slot
+          ? {
+              ...e,
+              kind: "guardian",
+              label: "Guardião errante",
+              encounterId: rareId(s),
+              patrolSlot: s.rareEncounter.slot!,
+            }
+          : e,
+      );
+    }
     for (let y = 0; y < m.height; y++)
       for (let x = 0; x < m.width; x++) {
         const tile = this.add
@@ -248,9 +262,10 @@ export class World extends Phaser.Scene {
     for (const e of sorted) {
       const npc = e.kind === "master" || e.kind === "merchant";
       const common =
-        e.kind in enemies && isCommonMonster(e.kind as EnemyId)
+        e.patrolSlot ??
+        (e.kind in enemies && isCommonMonster(e.kind as EnemyId)
           ? (e.kind as CommonMonster)
-          : null;
+          : null);
       const home = common
         ? assignedHome(common, s.monsterRestCycle, commonAnchors)
         : e;
@@ -274,12 +289,15 @@ export class World extends Phaser.Scene {
         sprite.play(`${e.kind}-idle-0`);
       }
       if (e.kind in enemies) {
-        this.enemySprites.set(e.kind, sprite);
-        sprite.setVisible(!s.defeated.includes(e.kind as keyof typeof enemies));
+        this.enemySprites.set(e.encounterId ?? e.kind, sprite);
+        sprite.setData("encounter", e);
+        sprite.setVisible(
+          !encounterDefeated(s, e.kind as EnemyId, e.encounterId),
+        );
         sprite.setData("baseY", home.y);
         if (common) {
           const patrol = makePatrol(common, home, s.monsterRestCycle);
-          this.patrolActors.set(common, {
+          this.patrolActors.set(e.encounterId ?? common, {
             patrol,
             sprite,
             entity: { ...e, x: home.x, y: home.y },
@@ -589,8 +607,12 @@ export class World extends Phaser.Scene {
     }
     if (this.appliedCameraZoom !== s.cameraZoom && !this.presentation)
       this.resizeCamera();
-    for (const [key, sprite] of this.enemySprites)
-      sprite.setVisible(!s.defeated.includes(key as keyof typeof enemies));
+    for (const sprite of this.enemySprites.values()) {
+      const e = sprite.getData("encounter") as Entity;
+      sprite.setVisible(
+        !encounterDefeated(s, e.kind as EnemyId, e.encounterId),
+      );
+    }
     this.chest?.setTexture(s.chest ? "chest-open" : "chest");
     this.flags.forEach((f) => f.setTint(s.guild ? 0xffffff : 0x889978));
   }
@@ -648,11 +670,23 @@ export class World extends Phaser.Scene {
     this.player.setPosition(Math.round(s.x), Math.round(s.y)).setDepth(s.y);
     if (!this.reduced) {
       for (const actor of this.patrolActors.values()) {
-        if (s.defeated.includes(actor.patrol.kind)) continue;
+        if (
+          encounterDefeated(
+            s,
+            actor.entity.kind as EnemyId,
+            actor.entity.encounterId,
+          )
+        )
+          continue;
         const others = [...this.patrolActors.values()]
           .filter(
             (other) =>
-              other !== actor && !s.defeated.includes(other.patrol.kind),
+              other !== actor &&
+              !encounterDefeated(
+                s,
+                other.entity.kind as EnemyId,
+                other.entity.encounterId,
+              ),
           )
           .map((other) => other.patrol);
         advancePatrol(actor.patrol, delta, this.mapData, s, others);
@@ -679,15 +713,15 @@ export class World extends Phaser.Scene {
     this.foreground.sort("depth");
     const near = this.mapData.entities
       .map((e) =>
-        e.kind in enemies && isCommonMonster(e.kind as EnemyId)
-          ? (this.patrolActors.get(e.kind as CommonMonster)?.entity ?? e)
+        e.kind in enemies
+          ? (this.patrolActors.get(e.encounterId ?? e.kind)?.entity ?? e)
           : e,
       )
       .filter(
         (e) =>
           e.label &&
           (!(e.kind in enemies) ||
-            !s.defeated.includes(e.kind as keyof typeof enemies)),
+            !encounterDefeated(s, e.kind as EnemyId, e.encounterId)),
       )
       .find((e) => Math.hypot(e.x - s.x, e.y - s.y) < 25);
     if (near !== this.near) {

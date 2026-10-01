@@ -228,9 +228,9 @@ Plano detalhado: [`PLANO_V21_MOVIMENTACAO_MONSTROS.md`](PLANO_V21_MOVIMENTACAO_M
 - Deixar o boss raro para etapa posterior: a estrutura atual registra derrota por tipo, então a aparição rara precisará de identidade de instância independente do boss original.
 - Validar em mapa, combate, reload, movimento reduzido e 30 segundos de observação real antes de integrar.
 
-### v23.09.2003.22 — Guardião raro (planejada)
+### v23.09.2003.22 — Guardião raro (implementada em branch)
 
-Plano detalhado: [PLANO_V22_GUARDIAO_RARO.md](PLANO_V22_GUARDIAO_RARO.md). Complexidade alta e um único sistema estrutural: identidade de encontros. Implementação ainda não iniciada.
+Plano detalhado: [PLANO_V22_GUARDIAO_RARO.md](PLANO_V22_GUARDIAO_RARO.md). Complexidade alta e um único sistema estrutural: identidade de encontros. Implementação concluída; validação e revisão em `docs/VALIDATION_V22.md`.
 
 - Desbloquear após vencer o boss original; gerar no máximo uma aparição rara persistida por descanso, substituindo um slot comum.
 - Separar identidade e tipo, preservar missão/batalhas antigas e impedir reroll por reload ou mapa.
@@ -256,11 +256,16 @@ Complexidade alvo: média-alta e isolada.
 
 ### Regra de complexidade por versão
 
+- Regra permanente do jogador (01/10/2026): todo roteiro apresenta ordem de execução, prioridade atribuída, complexidade e dependências. A fila ativa está em `PROXIMOS_PASSOS.md`; correções de bloqueios ou risco de perda de save têm precedência.
+- Classificar como baixa (mudança localizada), média (várias superfícies apoiadas em regras existentes) ou alta (novo sistema, migração ou interação ampla entre sistemas); explicar classificações intermediárias quando úteis.
+- Não reunir duas tarefas de alta complexidade na mesma versão. Dividir uma etapa quando o piloto revelar escopo maior; tarefas pequenas só acompanham o objetivo central se não ampliarem o risco ou atrasarem sua validação.
 - Uma versão adiciona no máximo um sistema estrutural novo ou dois slots simples apoiados em fundação testada.
 - Mudança de save, regra de combate e grande expansão visual não entram juntas.
 - Cada novo slot precisa de migração, catálogo, loja, mochila, personagem, backup e E2E antes do próximo.
 
 ## Melhoria futura — Diário de versões nos Ajustes
+
+Expansão de mundo separada por prioridade/complexidade em [PLANO_EXPANSAO_MUNDO.md](PLANO_EXPANSAO_MUNDO.md), com tutorial de qualidade em [GUIA_QUALIDADE_EXPANSAO.md](GUIA_QUALIDADE_EXPANSAO.md). Não juntar fundação de áreas, expansão gráfica ampla e novo sistema de combate na mesma entrega.
 
 Pedido registrado em 01/10/2026. **Pendente; fora da v22**, sem número reservado. Complexidade estimada: baixa a média, adequada a uma etapa de interface após o sistema de encontros.
 
