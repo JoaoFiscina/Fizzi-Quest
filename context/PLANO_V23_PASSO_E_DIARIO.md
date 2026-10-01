@@ -1,6 +1,6 @@
 # v23.09.2003.23 — Passo Ágil e Diário da Jornada
 
-Pedido de 01/10/2026: juntar o conteúdo planejado para v23/v24. **Uma entrega jogável v23**, v24 absorvida e não criada como versão fictícia. Prioridade alta para velocidade e média para diário; complexidade conjunta média, sem novo sistema estrutural ou migração. Branch `feat/v23-passo-diario` sobre v22 (`4e2a2df`), ainda em revisão no PR #15; PR desta etapa dependerá dela.
+Pedido de 01/10/2026: juntar o conteúdo planejado para v23/v24. **Uma entrega jogável v23**, v24 absorvida e não criada como versão fictícia. Prioridade alta para velocidade e média para diário; complexidade conjunta média, sem novo sistema estrutural ou migração. Branch `feat/v23-passo-diario` sobre v22 (`4e2a2df`), integrada após a v22 pelos PRs #15/#16; domínio oficial v23 conferido em01/10/2026.
 
 ## Regras e organização
 

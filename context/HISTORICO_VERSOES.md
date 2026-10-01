@@ -1,16 +1,16 @@
 # Histórico de versões
 
-## v23.09.2003.23 — Passo Ágil e Diário da Jornada (01/10/2026, em validação)
+## v23.09.2003.23 — Passo Ágil e Diário da Jornada (01/10/2026, publicada)
 
-Entrega unificada do conteúdo proposto para v23/v24. Velocidade base até 100 px/s, mantendo Agilidade × 1,2 sobre base56; Impulso aplica seu multiplicador depois do teto e pode ultrapassá-lo. Ajustes têm abas de Preferências e Diário de versões, com catálogo das entregas e destaque da instalada. Sem migração ou mudança de animações. Plano `PLANO_V23_PASSO_E_DIARIO.md`; publicação pendente, dependente da integração da v22.
+Entrega unificada do conteúdo proposto para v23/v24. Velocidade base até 100 px/s, mantendo Agilidade × 1,2 sobre base56; Impulso aplica seu multiplicador depois do teto e pode ultrapassá-lo. Ajustes têm abas de Preferências e Diário de versões, com catálogo das entregas e destaque da instalada. Sem migração ou mudança de animações. Plano `PLANO_V23_PASSO_E_DIARIO.md`; PR #16 integrado após o PR #15; merge final `dcf05d2`, Vercel aprovado e domínio oficial conferido na v23.
 
-## v23.09.2003.22 — implementada, em validação (01/10/2026)
+## v23.09.2003.22 — integrada em 01/10/2026, incluída na publicação v23
 
-Guardião errante raro após derrota do original, distribuição determinística por descanso e persistência separada. Substitui um slot comum, patrulha e interage na posição visível, sem repetir emblema/missão. Migração aditiva de saves/batalhas e recompensas únicas. Arte e animações ambientais preservadas. Validação: `docs/VALIDATION_V22.md`. Plano de expansão e tutorial interno adicionados; conteúdo futuro ainda não implementado. Publicação pendente.
+Guardião errante raro após derrota do original, distribuição determinística por descanso e persistência separada. Substitui um slot comum, patrulha e interage na posição visível, sem repetir emblema/missão. Migração aditiva de saves/batalhas e recompensas únicas. Arte e animações ambientais preservadas. Validação: `docs/VALIDATION_V22.md`. Plano de expansão e tutorial interno adicionados; conteúdo futuro ainda não implementado. PR #15 integrado (`b3cf349`); conteúdo incluído no build oficial v23, conferido após o PR #16.
 
 ## v23.09.2003.21 — publicada em 01/10/2026
 
-Broto, Besouro e Mariposa passam a patrulhar áreas pequenas com pausas variáveis. O encontro acompanha a posição visível; descansar redistribui e persiste os pontos de repouso dos três monstros comuns. Saves anteriores recebem o ciclo inicial sem alterar o progresso. Guardião, combate, sprites e cadências ambientais permanecem iguais. Plano: `PLANO_V21_MOVIMENTACAO_MONSTROS.md`; validação: `docs/VALIDATION_V21.md`. PR #14 integrado, merge `49acd8b`; check Vercel aprovado e título/rodapé/entrada na aventura conferidos no domínio oficial. V22 planejada em `PLANO_V22_GUARDIAO_RARO.md`, ainda sem implementação.
+Broto, Besouro e Mariposa passam a patrulhar áreas pequenas com pausas variáveis. O encontro acompanha a posição visível; descansar redistribui e persiste os pontos de repouso dos três monstros comuns. Saves anteriores recebem o ciclo inicial sem alterar o progresso. Guardião, combate, sprites e cadências ambientais permanecem iguais. Plano: `PLANO_V21_MOVIMENTACAO_MONSTROS.md`; validação: `docs/VALIDATION_V21.md`. PR #14 integrado, merge `49acd8b`; check Vercel aprovado e título/rodapé/entrada na aventura conferidos no domínio oficial. V22 posteriormente integrada; plano em `PLANO_V22_GUARDIAO_RARO.md`.
 
 ## v23.09.2003.20 — 26/09/2026
 

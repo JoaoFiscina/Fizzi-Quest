@@ -4,19 +4,21 @@ Use [`MOLDE_EXPANSAO.md`](MOLDE_EXPANSAO.md) em cada entrega. O roadmap completo
 
 ## Fila ativa por prioridade e complexidade
 
-Atualização de 01/10/2026: os itens velocidade/Impulso e Diário foram unidos por pedido explícito em **v23 — Passo Ágil e Diário da Jornada**, complexidade média. Implementados em branch sobre v22; teto base100 px/s e Impulso sem teto posterior. Plano [PLANO_V23_PASSO_E_DIARIO.md](PLANO_V23_PASSO_E_DIARIO.md). A v24 planejada não será uma entrega separada. Próxima ação operacional: validar/revisar v23, integrar v22→v23 quando solicitado; depois abrir a fundação de áreas/missões, mantendo as expansões de alta complexidade separadas.
+Atualização de 01/10/2026: os itens velocidade/Impulso e Diário foram unidos por pedido explícito em **v23 — Passo Ágil e Diário da Jornada**, complexidade média. Implementados em branch sobre v22; teto base100 px/s e Impulso sem teto posterior. Plano [PLANO_V23_PASSO_E_DIARIO.md](PLANO_V23_PASSO_E_DIARIO.md). A v24 planejada não será uma entrega separada. V22→v23 integradas e publicadas. Próxima ação: abrir a fundação de áreas/missões, mantendo as expansões de alta complexidade separadas.
 
 Regra permanente solicitada em 01/10/2026: apresentar sempre prioridade, ordem, complexidade, dependências e limite de escopo. Tarefas muito complexas ficam em versões separadas. Correções que bloqueiem jogo, save ou atualização passam à frente desta fila.
 
-| Ordem | Prioridade                | Entrega                              | Complexidade | Organização e dependência                                                                        |
-| ----- | ------------------------- | ------------------------------------ | ------------ | ------------------------------------------------------------------------------------------------ |
-| 1     | Alta                      | v23.09.2003.22 — Guardião raro       | Alta         | Identidade e migração → piloto → mundo/combate → regressão. Único sistema estrutural da versão.  |
-| 2     | Alta + média              | v23 — Passo Ágil e Diário da Jornada | Média        | Entrega unificada implementada; conferir validação e revisar sobre a v22.                        |
-| 4     | Média                     | Capa                                 | Média        | Um slot, catálogo pequeno e fluxo completo; estabilizar antes das Runas.                         |
-| 5     | Média                     | Runas                                | Média-alta   | Versão exclusiva para um slot e efeitos passivos simples; depende de equipamentos estabilizados. |
-| 6     | Baixa, após estabilização | Mapa e novas áreas                   | Alta         | Separar polimento do mapa atual da criação de uma área nova; cada expansão começa por um piloto. |
+| Ordem | Prioridade         | Entrega                     | Complexidade | Dependência e escopo                                                       |
+| ----- | ------------------ | --------------------------- | ------------ | -------------------------------------------------------------------------- |
+| 1     | Alta para expansão | Fundação de áreas e missões | Alta         | Próxima etapa exclusiva; migrar áreas/objetivos atuais antes de novo mapa. |
+| 2     | Alta para expansão | Margem do Ribeirão          | Alta         | Fundação validada; uma área piloto, missão e criatura.                     |
+| 3     | Média              | Histórias da Margem         | Média        | Objetivos existentes; duas histórias curtas e tom mais maduro.             |
+| 4     | Média              | Capa                        | Média        | Um slot, catálogo pequeno e fluxo completo.                                |
+| 5     | Média              | Pedreira Velha              | Alta         | Área/monstro/missão; boss em entrega posterior.                            |
+| 6     | Média              | Sentinela da Pedreira       | Média-alta   | Boss e conclusão do arco, sem mapa novo.                                   |
+| 7     | Média              | Runas                       | Média-alta   | Equipamentos estáveis; um slot e efeitos passivos simples.                 |
 
-Somente a v22 tem número definido. Cada plano novo deve explicar o motivo da prioridade e dividir uma tarefa se a implementação revelar complexidade maior. Preservar as animações aprovadas. Não juntar a v22 com novos slots, expansão gráfica ou balanceamento de velocidade.
+V22 e v23 publicadas; v24 absorvida. Confirmar os números futuros ao abrir cada etapa. Cada plano novo deve explicar o motivo da prioridade e dividir uma tarefa se a implementação revelar complexidade maior. Preservar as animações aprovadas. Não juntar a v22 com novos slots, expansão gráfica ou balanceamento de velocidade.
 
 V22 implementada: 57 testes, build e 31 E2E aprovados; próxima ação é revisão/integração autorizada. Para a expansão, seguir a fila própria em [PLANO_EXPANSAO_MUNDO.md](PLANO_EXPANSAO_MUNDO.md): fundação compatível (alta) antes de área piloto (alta), histórias (média), Pedreira (alta) e boss separado (média-alta). Tutorial interno: [GUIA_QUALIDADE_EXPANSAO.md](GUIA_QUALIDADE_EXPANSAO.md). Essa fila detalha a expansão futura sem reservá-la toda para uma única versão.
 
@@ -55,3 +57,7 @@ Implementação realizada: Botas aparecem no nível 5, entram na migração/loja
 - V23 unificada: velocidade base100 px/s, Impulso acima do teto e Diário de versões nos Ajustes implementados em branch. Fora da v22, dependente dela; plano e evidências nos documentos da v23. Após revisão/integração, seguir expansão por etapas.
 - Depois: Capa e Runa em versões separadas, com numeração confirmada ao abrir cada etapa.
 - Depois: respawn variável em pontos caminháveis e áreas novas; revisar proposta e complexidade antes de abrir cada etapa.
+
+## Integração concluída — 01/10/2026
+
+PRs #15 e #16 integrados; v23 oficial confirmada. A fila de implementação começa agora pela fundação de áreas/missões (alta prioridade para expansão, alta complexidade e entrega exclusiva), usando PLANO_EXPANSAO_MUNDO.md e GUIA_QUALIDADE_EXPANSAO.md. Velocidade/Diário concluídos; v24 absorvida. Os trechos anteriores de validação/integração pendente registram a preparação e foram superados por esta publicação.

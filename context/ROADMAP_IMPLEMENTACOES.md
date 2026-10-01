@@ -237,7 +237,7 @@ Plano detalhado: [PLANO_V22_GUARDIAO_RARO.md](PLANO_V22_GUARDIAO_RARO.md). Compl
 - Chance inicial de 10% e recompensas existentes do Guardião são hipóteses de piloto; validar economia e possíveis repetições antes de fechar.
 - Reutilizar sprites e patrulha existentes. Não alterar animações ambientais ou adicionar equipamentos nesta etapa.
 
-### v23 — Passo Ágil e Diário da Jornada (unificada, implementada em branch)
+### v23 — Passo Ágil e Diário da Jornada (unificada, publicada em01/10/2026)
 
 - Prioridade alta (velocidade) + média (diário); complexidade conjunta média. Pedido explícito para unir o conteúdo proposto para v23/v24, sem criar uma v24 fictícia.
 - Implementada velocidade `min(100, 56 + Agilidade × 1,2)` em px/s de mundo; Impulso multiplica depois do teto. Níveis1/10/20, Botas, runtime100→140, diagonal, colisão e reload verificados. Ver `PLANO_V23_PASSO_E_DIARIO.md` e `docs/VALIDATION_V23.md`.
@@ -266,11 +266,11 @@ Complexidade alvo: média-alta e isolada.
 
 ## Melhoria futura — Diário de versões nos Ajustes
 
-**Implementado na v23 unificada**, junto do ajuste de velocidade, por pedido de 01/10/2026. Plano `PLANO_V23_PASSO_E_DIARIO.md`; validação em `docs/VALIDATION_V23.md`. O texto abaixo preserva os critérios do pedido inicial. Publicação pendente.
+**Implementado na v23 unificada**, junto do ajuste de velocidade, por pedido de 01/10/2026. Plano `PLANO_V23_PASSO_E_DIARIO.md`; validação em `docs/VALIDATION_V23.md`. O texto abaixo preserva os critérios do pedido inicial. Publicação confirmada no build oficial v23, PRs #15/#16 integrados.
 
 Expansão de mundo separada por prioridade/complexidade em [PLANO_EXPANSAO_MUNDO.md](PLANO_EXPANSAO_MUNDO.md), com tutorial de qualidade em [GUIA_QUALIDADE_EXPANSAO.md](GUIA_QUALIDADE_EXPANSAO.md). Não juntar fundação de áreas, expansão gráfica ampla e novo sistema de combate na mesma entrega.
 
-Pedido registrado em 01/10/2026. **Implementado em branch na v23**, fora da v22. Complexidade da interface: baixa a média; entrega unificada com velocidade: média.
+Pedido registrado em 01/10/2026. **Publicado na v23**, fora da v22. Complexidade da interface: baixa a média; entrega unificada com velocidade: média.
 
 - Criar uma aba **Diário de versões** dentro dos Ajustes, com todas as atualizações publicadas, da mais recente para a mais antiga.
 - Cada entrada apresenta versão `v23.09.2003.x`, data e resumo claro do que mudou: novidades, correções e ajustes de equilíbrio.

@@ -2,7 +2,7 @@
 
 RPG pessoal de exploração em pixel art, construído com Phaser, TypeScript e Vite para o marco **Treino à aventura**.
 
-## Implementação atual — v23.09.2003.23 (em validação)
+## Implementação atual — v23.09.2003.23 (publicada)
 
 Já estão implementados os blocos principais do domínio e da experiência:
 
@@ -47,7 +47,7 @@ Build para Vercel: `npm run build`, saída `dist`. O endereço oficial é [fizzi
 
 Validação: `npm test` e `npm run test:e2e` (Edge via Playwright). Evidências e limites em [`docs/VALIDATION.md`](docs/VALIDATION.md).
 
-V23 unifica Passo Ágil e Diário da Jornada: velocidade base até 100 px/s e Impulso acima do teto, com histórico das entregas nos Ajustes. Base v22 inclui Guardião errante e saves compatíveis. Versão npm `23.9.2003-23`; oficial permanece v21 até integração autorizada de v22→v23. Validação em [VALIDATION_V23.md](docs/VALIDATION_V23.md). Expansão futura: [plano de áreas/missões](context/PLANO_EXPANSAO_MUNDO.md) e [guia interno de qualidade](context/GUIA_QUALIDADE_EXPANSAO.md).
+V23 unifica Passo Ágil e Diário da Jornada: velocidade base até 100 px/s e Impulso acima do teto, com histórico das entregas nos Ajustes. Base v22 inclui Guardião errante e saves compatíveis. Versão npm `23.9.2003-23`; PRs #15 e #16 integrados em 01/10/2026; versão oficial v23 conferida no domínio fixo. Validação em [VALIDATION_V23.md](docs/VALIDATION_V23.md). Expansão futura: [plano de áreas/missões](context/PLANO_EXPANSAO_MUNDO.md) e [guia interno de qualidade](context/GUIA_QUALIDADE_EXPANSAO.md).
 
 ## Contexto vivo
 

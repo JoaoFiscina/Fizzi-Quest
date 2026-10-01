@@ -28,3 +28,7 @@ Evidências em [evidence/v23.09.2003.22/](evidence/v23.09.2003.22/); referência
 ## Integração
 
 [PR #15](https://github.com/JoaoFiscina/Fizzi-Quest/pull/15) aberto, sem conflitos, branch enviada ao GitHub. Check Vercel do commit `6479408`: **success**, [deployment de preview](https://vercel.com/joao-fiscina-s-projects/fizzi-quest/9jPGB8TWSR7c5RkW53fUChesNme9). A verificação jogável foi no ambiente local; o status do preview não equivale a teste de produção. A v22 não está publicada no domínio oficial e não será chamada de oficial antes da conferência após merge autorizado.
+
+## Integração — 01/10/2026
+
+PR #15 integrado à main (b3cf34979890ef396adc5ff93983639d9fc35ef3), seguido pelo PR #16. Conferência pública final no build v23 contendo o Guardião raro. Não houve teste público isolado de v22; resultados de gameplay acima são os checks locais pré-merge.

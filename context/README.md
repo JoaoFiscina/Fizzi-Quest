@@ -4,9 +4,9 @@ Esta pasta é a memória operacional do jogo. Atualize-a a cada versão antes de
 
 ## Versão corrente
 
-`v23.09.2003.23` — velocidade e Diário unificados em validação na branch `feat/v23-passo-diario`. Plano em [PLANO_V23_PASSO_E_DIARIO.md](PLANO_V23_PASSO_E_DIARIO.md); v24 proposta foi absorvida. Oficial permanece v21; v22 é dependência da integração.
+`v23.09.2003.23` — velocidade e Diário publicados na main pelo PR #16, após o PR #15 da v22, em 01/10/2026. Plano em [PLANO_V23_PASSO_E_DIARIO.md](PLANO_V23_PASSO_E_DIARIO.md); v24 proposta foi absorvida. Oficial v23 confirmada no título, rodapé, entrada e Diário dos Ajustes.
 
-`v23.09.2003.22` — Guardião raro implementado na branch `feat/v22-guardiao-raro`, em validação. Oficial permanece v21 (PR #14). Estado em `ESTADO_ATUAL.md`; plano em [`PLANO_V22_GUARDIAO_RARO.md`](PLANO_V22_GUARDIAO_RARO.md). Expansão futura em [`PLANO_EXPANSAO_MUNDO.md`](PLANO_EXPANSAO_MUNDO.md), com tutorial em [`GUIA_QUALIDADE_EXPANSAO.md`](GUIA_QUALIDADE_EXPANSAO.md).
+`v23.09.2003.22` — Guardião raro integrado pelo PR #15, incluído no build oficial v23. Estado em `ESTADO_ATUAL.md`; plano em [`PLANO_V22_GUARDIAO_RARO.md`](PLANO_V22_GUARDIAO_RARO.md). Expansão futura em [`PLANO_EXPANSAO_MUNDO.md`](PLANO_EXPANSAO_MUNDO.md), com tutorial em [`GUIA_QUALIDADE_EXPANSAO.md`](GUIA_QUALIDADE_EXPANSAO.md).
 
 ## Árvore lógica
 

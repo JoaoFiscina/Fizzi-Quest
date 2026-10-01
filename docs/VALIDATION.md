@@ -1,6 +1,6 @@
 # Validação atual — v23.09.2003.23
 
-Resultados, evidências e limites em [VALIDATION_V23.md](VALIDATION_V23.md): 60 testes de domínio, build e 33 E2E aprovados. V23 implementada sobre a v22; oficial permanece v21 até integração autorizada.
+Resultados, evidências e limites em [VALIDATION_V23.md](VALIDATION_V23.md): 60 testes de domínio, build e 33 E2E aprovados. V23 implementada sobre a v22; PRs #15/#16 integrados em01/10/2026; domínio oficial conferido na v23.
 
 ## Histórico
 

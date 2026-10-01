@@ -1,6 +1,6 @@
 # v23.09.2003.22 — Guardião como encontro raro
 
-Estado: **implementada na branch `feat/v22-guardiao-raro`; validação em `docs/VALIDATION_V22.md`; publicação pendente**. Base: `main`, v23.09.2003.21, PR #14 integrado em 01/10/2026 (`49acd8b4e427161b0fc916bb386202aa13aae3b5`); título, rodapé e entrada na aventura conferidos no domínio oficial. Seguir [MOLDE_EXPANSAO.md](MOLDE_EXPANSAO.md).
+Estado: **implementada na branch `feat/v22-guardiao-raro`; validação em `docs/VALIDATION_V22.md`; integrada pelo PR #15 e incluída no build oficial v23 em01/10/2026**. Base: `main`, v23.09.2003.21, PR #14 integrado em 01/10/2026 (`49acd8b4e427161b0fc916bb386202aa13aae3b5`); título, rodapé e entrada na aventura conferidos no domínio oficial. Seguir [MOLDE_EXPANSAO.md](MOLDE_EXPANSAO.md).
 
 ## Objetivo e limite de complexidade
 
