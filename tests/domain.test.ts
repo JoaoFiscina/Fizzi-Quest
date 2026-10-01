@@ -849,6 +849,9 @@ describe("rodadas determinísticas", () => {
     s.defeated = ["sprout", "guardian"];
     rest(s);
     expect(s.defeated).toEqual(["guardian"]);
+    expect(s.monsterRestCycle).toBe(1);
+    for (let i = 0; i < 5; i++) rest(s);
+    expect(s.monsterRestCycle).toBe(0);
   });
 });
 describe("rotas e colisões", () => {

@@ -2,7 +2,7 @@ import { mkdirSync } from "node:fs";
 import { test, expect } from "@playwright/test";
 import { freshSave } from "../../src/domain/game";
 
-const evidence = "docs/evidence/v23.09.2003.20";
+const evidence = "docs/evidence/v23.09.2003.21/after";
 mkdirSync(evidence, { recursive: true });
 
 test("DEV23 altera somente a cópia de teste e permite voltar ao progresso normal", async ({

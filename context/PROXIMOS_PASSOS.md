@@ -32,6 +32,8 @@ Implementação realizada: Botas aparecem no nível 5, entram na migração/loja
 ## Depois da v19
 
 - v20: modo desenvolvedor `DEV23` antecipado a pedido do jogador. XP, ouro, bônus dos quatro atributos e multiplicador de XP de aventura ficam em save isolado. Plano: [`PLANO_V20_MODO_DESENVOLVEDOR.md`](PLANO_V20_MODO_DESENVOLVEDOR.md). PR #13 integrado; versão pública confirmada.
-- v21: movimentação dos monstros. Definir para cada criatura um raio de movimento, um ciclo variável de descanso/andar e limites de caminhabilidade; comuns podem trocar pontos de spawn ao descansar, e bosses derrotados passam a uma tabela rara de spawn comum.
+- v21: movimentação dos monstros comuns implementada nesta branch, em validação. Plano detalhado em [`PLANO_V21_MOVIMENTACAO_MONSTROS.md`](PLANO_V21_MOVIMENTACAO_MONSTROS.md): áreas limitadas, ciclos variáveis de pausa/caminhada, interação na posição atual e troca persistida de pontos de repouso ao descansar. O Guardião permanece fixo. Próximo passo: regressão completa, evidências, revisão e integração quando autorizada.
+- Versão posterior: Guardião derrotado como encontro raro. Exige separar a instância do boss original da aparição rara no save e no combate; definir frequência e regras de respawn antes de implementar.
+- Versão posterior de balanceamento: elevar o teto atual de contribuição da Agilidade para velocidade de navegação (`56 + min(18, Agilidade × 1,2)`), após medir deslocamento em níveis 1/10/20, com Botas e Impulso, em reta e diagonal. Preservar controle e colisões; não incluir na v21.
 - Depois: Capa e Runa em versões separadas, com numeração confirmada ao abrir cada etapa.
 - Depois: respawn variável em pontos caminháveis e áreas novas; revisar proposta e complexidade antes de abrir cada etapa.

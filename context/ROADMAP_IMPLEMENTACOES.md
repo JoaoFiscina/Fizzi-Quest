@@ -216,17 +216,22 @@ Complexidade alvo: média-alta, limitada a um slot e uma habilidade temporária 
 
 ### v23.09.2003.20 — modo desenvolvedor
 
-Plano detalhado: [`PLANO_V20_MODO_DESENVOLVEDOR.md`](PLANO_V20_MODO_DESENVOLVEDOR.md). O jogador antecipou esta etapa. Ativar por `DEV23`, editar XP de aventura, ouro e bônus dos quatro atributos e testar ganhos de XP em combate/missão. Usar save DEV separado, selo visível e retorno ao progresso normal intacto. Implementado neste ramo; validação e integração pendentes.
+Plano detalhado: [`PLANO_V20_MODO_DESENVOLVEDOR.md`](PLANO_V20_MODO_DESENVOLVEDOR.md). O jogador antecipou esta etapa. Ativar por `DEV23`, editar XP de aventura, ouro e bônus dos quatro atributos e testar ganhos de XP em combate/missão. Save DEV separado, selo visível e retorno ao progresso normal intacto. PR #13 integrado; versão pública confirmada.
 
 ### v23.09.2003.21 — movimentação de monstros
 
-Complexidade alvo: alta, por envolver simulação, colisões e equilíbrio de encontros. Não misturar com novo slot de equipamento.
+Plano detalhado: [`PLANO_V21_MOVIMENTACAO_MONSTROS.md`](PLANO_V21_MOVIMENTACAO_MONSTROS.md). Implementação em validação nesta branch. Complexidade alvo: alta, por envolver simulação, colisões, interação e migração mínima do save. Não misturar com novo slot de equipamento.
 
-- Dar a cada monstro comum uma área de movimentação predefinida, com centro, raio e pontos caminháveis.
+- Dar a cada monstro comum uma área de movimentação predefinida, com centro, raio e pontos caminháveis; o Guardião permanece fixo.
 - Executar ciclos variáveis de descanso e caminhada, mantendo o monstro dentro do raio e evitando obstáculos/jogador.
 - Permitir troca de ponto de spawn entre monstros comuns ao descansar, com regras determinísticas e sem duplicação indevida.
-- Após a morte, registrar bosses numa tabela rara de spawn comum; a raridade e a persistência devem ser testadas antes de liberar.
+- Deixar o boss raro para etapa posterior: a estrutura atual registra derrota por tipo, então a aparição rara precisará de identidade de instância independente do boss original.
 - Validar em mapa, combate, reload, movimento reduzido e 30 segundos de observação real antes de integrar.
+
+### Versões posteriores — boss raro e velocidade por Agilidade
+
+- Após validar a patrulha, planejar o Guardião derrotado como encontro raro com identidade de instância, frequência moderada, persistência e regras de combate/recompensa próprias. Não liberar se isso permitir repetir missão ou bloquear o boss original.
+- Em uma versão de balanceamento separada, elevar o limite de contribuição da Agilidade para velocidade no mapa. A fórmula atual em `World.sync()` é `56 + min(18, Agilidade × 1,2)` antes do Impulso da Trilha; comparar níveis 1/10/20, com e sem Botas e Impulso, em caminhada reta/diagonal e perto de obstáculos. Escolher teto novo após o piloto, sem tornar o controle difícil.
 
 ### Versão posterior — Capa
 

@@ -92,11 +92,11 @@ test("mapa responsivo e estados conhecidos", async ({ page }) => {
   }
 });
 
-test("quatro criaturas animam sem deslocar posição por 30 segundos", async ({
+test("três criaturas patrulham e o Guardião anima no posto por 30 segundos", async ({
   page,
 }) => {
   test.setTimeout(90000);
-  await enter(page, "forest", 152, 232);
+  await enter(page, "forest", 40, 232);
   await page.evaluate(() => {
     // @ts-expect-error scene exposed for diagnostics
     const scene = window.__PHASER_GAME__.scene.scenes[0];
@@ -129,18 +129,30 @@ test("quatro criaturas animam sem deslocar posição por 30 segundos", async ({
   expect(
     samples.every((sample) => sample.waterFirePlaying && sample.timer),
   ).toBe(true);
-  for (let monster = 0; monster < 4; monster++) {
+  for (const kind of ["sprout", "beetle", "moth", "guardian"]) {
     expect(
-      new Set(samples.map((sample) => sample.monsters[monster][1])).size,
+      new Set(
+        samples.map(
+          (sample) =>
+            sample.monsters.find((monster: any[]) => monster[0] === kind)[1],
+        ),
+      ).size,
     ).toBeGreaterThan(1);
     expect(
       new Set(
-        samples.map((sample) => sample.monsters[monster].slice(2).join(",")),
+        samples.map((sample) =>
+          sample.monsters
+            .find((monster: any[]) => monster[0] === kind)
+            .slice(2)
+            .join(","),
+        ),
       ).size,
-    ).toBe(1);
+    )[kind === "guardian" ? "toBe" : "toBeGreaterThan"](1);
   }
+  const movementEvidence = "docs/evidence/v23.09.2003.21/after";
+  mkdirSync(movementEvidence, { recursive: true });
   writeFileSync(
-    `${evidence}/after/monster-cadence.json`,
+    `${movementEvidence}/monster-cadence.json`,
     JSON.stringify(samples, null, 2),
   );
   const sheet = await page.evaluate(() => {
@@ -166,7 +178,7 @@ test("quatro criaturas animam sem deslocar posição por 30 segundos", async ({
     return canvas.toDataURL("image/png").split(",")[1];
   });
   writeFileSync(
-    `${evidence}/after/monster-frames.png`,
+    `${movementEvidence}/monster-frames.png`,
     Buffer.from(sheet, "base64"),
   );
 });

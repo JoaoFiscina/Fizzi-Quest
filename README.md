@@ -2,7 +2,7 @@
 
 RPG pessoal de exploração em pixel art, construído com Phaser, TypeScript e Vite para o marco **Treino à aventura**.
 
-## Implementação atual — v23.09.2003.20
+## Implementação atual — v23.09.2003.21 (em validação)
 
 Já estão implementados os blocos principais do domínio e da experiência:
 
@@ -26,6 +26,7 @@ Já estão implementados os blocos principais do domínio e da experiência:
 - movimento diagonal normalizado por teclado e direcional móvel de oito posições;
 - ciclos ambientais leves e dessincronizados para água, fogo, árvores, vegetação e bandeiras;
 - quatro criaturas redesenhadas com silhuetas e ciclos próprios; poses de combate acompanham os eventos já calculados;
+- na v21, Broto, Besouro e Mariposa patrulham pequenas áreas do bosque, com pausas variadas, encontros na posição visível e pontos de repouso redistribuídos ao descansar;
 - vila e bosque com caminho, texturas e pontos de referência refinados; mapa regional responsivo distingue locais atuais de regiões futuras;
 - folhas e poeira ocasionais com limite de dois efeitos e modo de movimento reduzido;
 - aviso quando o aparelho pede movimento reduzido, com atalho para ativar os ciclos completos;
@@ -46,7 +47,7 @@ Build para Vercel: `npm run build`, saída `dist`. O endereço oficial é [fizzi
 
 Validação: `npm test` e `npm run test:e2e` (Edge via Playwright). Evidências e limites em [`docs/VALIDATION.md`](docs/VALIDATION.md).
 
-Esta versão acrescenta o modo DEV para experimentar progressão e economia sem alterar o save normal. A arte e as cadências ambientais permanecem iguais. A versão pública usa `v23.09.2003.x`; a versão npm equivalente usa SemVer (`23.9.2003-20`).
+Esta etapa acrescenta patrulha dos monstros comuns e redistribuição dos seus pontos de repouso, preservando a arte, as animações ambientais e o modo DEV. A versão pública usa `v23.09.2003.x`; a versão npm equivalente usa SemVer (`23.9.2003-21`). A publicação oficial da v21 depende de integração e verificação.
 
 ## Contexto vivo
 

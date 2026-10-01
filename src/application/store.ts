@@ -110,6 +110,7 @@ const schema = z.object({
   x: z.number().finite().min(8).max(632),
   y: z.number().finite().min(8).max(440),
   defeated: z.array(enemy).max(4),
+  monsterRestCycle: z.number().int().min(0).max(5).default(0),
   quest: z.enum(["not_started", "active", "emblem_recovered", "completed"]),
   guild: z.boolean(),
   chest: z.boolean(),

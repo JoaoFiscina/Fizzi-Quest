@@ -4,7 +4,7 @@ Esta pasta é a memória operacional do jogo. Atualize-a a cada versão antes de
 
 ## Versão corrente
 
-`v23.09.2003.20` — modo desenvolvedor `DEV23` integrado à `main` e confirmado no domínio oficial. Estado em `ESTADO_ATUAL.md` e plano em `PLANO_V20_MODO_DESENVOLVEDOR.md`. Próximo sistema: movimentação de monstros.
+`v23.09.2003.21` — movimentação dos monstros comuns em validação nesta branch. A versão oficial permanece `v23.09.2003.20` até integração e verificação do domínio. Estado em `ESTADO_ATUAL.md` e plano em `PLANO_V21_MOVIMENTACAO_MONSTROS.md`.
 
 ## Árvore lógica
 
@@ -20,6 +20,7 @@ fizzi-quest/
 │   ├── PLANO_V18_ATUALIZACAO_E_MOVIMENTO.md ← diagnóstico PC/celular e atualização
 │   ├── PLANO_V19_BOTAS_E_IMPULSO.md ← Botas e habilidade ativa de velocidade
 │   ├── PLANO_V20_MODO_DESENVOLVEDOR.md ← DEV23 para testes isolados
+│   ├── PLANO_V21_MOVIMENTACAO_MONSTROS.md ← próxima etapa: patrulha e repouso
 │   ├── PLANO_IMPORTACAO_COMPACTA_PR.md ← resposta curta da IA e bônus de recorde
 │   ├── MOLDE_EXPANSAO.md         ← roteiro reutilizável para novas versões
 │   ├── ROADMAP_IMPLEMENTACOES.md ← plano auditado das próximas melhorias
@@ -46,9 +47,10 @@ fizzi-quest/
 
 - Continuar a estética do mundo quando novas áreas jogáveis forem planejadas.
 - Avaliar futuro refinamento do protagonista e de tiles secundários na escala atual.
-- Próxima prioridade após a v20: movimentação dos monstros. Cada monstro terá uma área/raio predefinido e, em ciclos variáveis, caminhará dentro desse limite.
-- Ao descansar, monstros comuns poderão trocar entre si pontos de spawn compatíveis, sem sobrepor obstáculos ou o jogador.
-- Um boss derrotado entrará numa tabela rara de spawn de monstros comuns, com probabilidade menor e registro determinístico.
+- Próxima prioridade após a v20: movimentação dos três monstros comuns na v21. Cada um terá área/raio predefinido e ciclos variáveis de pausa e caminhada.
+- Ao descansar, monstros comuns poderão trocar entre si pontos de repouso compatíveis, sem sobrepor obstáculos ou o jogador.
+- Boss derrotado como encontro raro fica para etapa posterior, pois exige distinguir instâncias do mesmo tipo no save e no combate.
+- Elevar em versão futura o teto do ganho de velocidade de navegação por Agilidade; medir o efeito com Botas e Impulso antes de escolher o novo limite.
 - Modo desenvolvedor `DEV23` implementado na v20: XP, ouro e bônus de atributos em um save de teste separado. Ver `PLANO_V20_MODO_DESENVOLVEDOR.md`.
 
 ## Regra de continuidade

@@ -1,5 +1,9 @@
 # Histórico de versões
 
+## v23.09.2003.21 — em validação
+
+Broto, Besouro e Mariposa passam a patrulhar áreas pequenas com pausas variáveis. O encontro acompanha a posição visível; descansar redistribui e persiste os pontos de repouso dos três monstros comuns. Saves anteriores recebem o ciclo inicial sem alterar o progresso. Guardião, combate, sprites e cadências ambientais permanecem iguais. Plano: `PLANO_V21_MOVIMENTACAO_MONSTROS.md`; validação: `docs/VALIDATION_V21.md`. Integração e publicação pendentes.
+
 ## v23.09.2003.20 — 26/09/2026
 
 Modo desenvolvedor ativado por `DEV23` nos Ajustes, com save de teste independente, editor de XP/ouro, bônus dos quatro atributos e multiplicador de XP de combate/missão. Selo no HUD, prévia, desfazer e retorno ao save normal. Treinos mantêm as regras atuais. Plano: `PLANO_V20_MODO_DESENVOLVEDOR.md`; validação: `docs/VALIDATION_V20.md`. PR #13 integrado e versão pública confirmada no domínio oficial.
