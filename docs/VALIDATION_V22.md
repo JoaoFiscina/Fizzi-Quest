@@ -27,4 +27,4 @@ Evidências em [evidence/v23.09.2003.22/](evidence/v23.09.2003.22/); referência
 
 ## Integração
 
-PR/preview a registrar após os checks. A v22 não está publicada no domínio oficial e não será chamada de oficial antes da conferência após merge autorizado.
+[PR #15](https://github.com/JoaoFiscina/Fizzi-Quest/pull/15) aberto, sem conflitos, branch enviada ao GitHub. Check Vercel do commit `6479408`: **success**, [deployment de preview](https://vercel.com/joao-fiscina-s-projects/fizzi-quest/9jPGB8TWSR7c5RkW53fUChesNme9). A verificação jogável foi no ambiente local; o status do preview não equivale a teste de produção. A v22 não está publicada no domínio oficial e não será chamada de oficial antes da conferência após merge autorizado.

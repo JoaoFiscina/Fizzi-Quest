@@ -21,4 +21,6 @@ Validação da v20: 49 testes de regras, build e 26 cenários E2E aprovados; PR 
 
 V22 implementada: identidade rara independente, chance de 10% por descanso após vitória original, substituição de um slot comum, patrulha/interação, recompensa única e migração compatível. **57 testes de domínio, build e 31 E2E aprovados**, incluindo 60 segundos de continuidade. Ver `docs/VALIDATION_V22.md`. Próxima ação: revisão/PR e integração quando autorizada.
 
+[PR #15](https://github.com/JoaoFiscina/Fizzi-Quest/pull/15) aberto e sem conflitos; check Vercel do commit `6479408` aprovado. Implementação e documentos enviados ao GitHub. Próxima ação operacional: integrar este PR quando solicitado e conferir domínio oficial; não há área nova publicada.
+
 Expansão futura em [PLANO_EXPANSAO_MUNDO.md](PLANO_EXPANSAO_MUNDO.md): fundação de áreas/missões → Ribeirão piloto → histórias secundárias → Pedreira → boss separado. Tutorial interno em [GUIA_QUALIDADE_EXPANSAO.md](GUIA_QUALIDADE_EXPANSAO.md), incluindo direção de tom mais maduro. Nenhuma área nova implementada. Velocidade/Impulso, Diário, Capa e Runas permanecem no backlog priorizado.
