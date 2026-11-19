@@ -93,6 +93,8 @@ Status: publicada como `v23.09.2003.24 — Trilha Firme` (PR #17, merge `f87a3fb
 
 ### Etapa 2 — Impacto do combate (somente apresentação)
 
+Status: implementada como `v23.09.2003.25 — Golpe Certeiro` em `feat/v25-impacto-combate` (19/11/2026); evidências em `docs/VALIDATION_V25.md`. Ajuste ao plano: o log já mostrava todas as linhas da rodada (o diagnóstico F5 estava impreciso), então ganhou destaque das linhas novas em vez de mais linhas. Achado extra corrigido: o combate sempre mostrava o visual masculino.
+
 - Transição de entrada: flash + íris/mosaico de 300–400 ms; saída com fade. Respeitar modo reduzido (fade simples).
 - Golpe: hit-stop de 60–80 ms, tremor de câmera proporcional (pesado > normal), knockback do alvo, 4–6 partículas pixel geradas em código, número de dano com "pop" e fonte pixel própria (bitmap gerado no código, sem asset externo).
 - Barras: vida do inimigo também no palco; barras DOM com transição e "barra fantasma" que desce depois do dano. Exige atualizar a barra em vez de recriá-la.

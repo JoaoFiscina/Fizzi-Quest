@@ -72,6 +72,8 @@ export class World extends Phaser.Scene {
   }> = [];
   private appliedCameraZoom = "";
   private pendingBattle = false;
+  private pendingEntrance = false;
+  private entranceRequested = false;
   private depthDirty = true;
   private savedPosition = { map: "", x: 0, y: 0 };
   private movingMs = 0;
@@ -650,7 +652,45 @@ export class World extends Phaser.Scene {
     camera.removeBounds();
     camera.setZoom(1);
     camera.setScroll(0, 0);
-    this.presentation = new BattlePresentation(this, b, this.resolveReduced());
+    camera.resetFX();
+    const entrance = this.pendingEntrance || this.entranceRequested;
+    this.pendingEntrance = false;
+    this.entranceRequested = false;
+    this.presentation = new BattlePresentation(
+      this,
+      b,
+      this.resolveReduced(),
+      this.store.state.appearance === "feminine" ? "hero-f" : "hero",
+      entrance,
+    );
+  }
+  /** Opens the battle with the entrance transition (new encounter or resumed save). */
+  enterBattle() {
+    this.entranceRequested = true;
+    if (!this.ready) this.pendingEntrance = true;
+    this.showBattle();
+  }
+  /** Fades the battle out before rebuilding the map; instant in reduced motion. */
+  exitBattle() {
+    return new Promise<void>((resolve) => {
+      const camera = this.cameras?.main;
+      if (!this.presentation || !camera || this.resolveReduced()) {
+        this.hideBattle();
+        resolve();
+        return;
+      }
+      let finished = false;
+      const finish = () => {
+        if (finished) return;
+        finished = true;
+        this.hideBattle();
+        resolve();
+      };
+      camera.once("camerafadeoutcomplete", finish);
+      camera.fadeOut(180, 24, 61, 53);
+      // Hidden tabs pause the game loop: never leave the player stuck.
+      window.setTimeout(finish, 450);
+    });
   }
   async battleFeedback(
     events: CombatEvent[],

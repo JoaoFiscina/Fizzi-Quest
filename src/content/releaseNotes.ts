@@ -7,6 +7,16 @@ export type ReleaseNote = {
 // Catalog of implemented deliveries, newest first. Never add planned features here.
 export const releaseNotes: readonly ReleaseNote[] = [
   {
+    version: "v23.09.2003.25",
+    date: "19/11/2026",
+    title: "Golpe Certeiro",
+    changes: [
+      "Combate começa com transição em mosaico e termina com fade de volta ao mapa.",
+      "Golpes com pausa de impacto, tremor, recuo, partículas e números em pixel; vida do inimigo também no palco.",
+      "Barras de vida mostram o que foi perdido; atalhos de teclado 1–5, Esc e Enter nas ações.",
+    ],
+  },
+  {
     version: "v23.09.2003.24",
     date: "18/11/2026",
     title: "Trilha Firme",
