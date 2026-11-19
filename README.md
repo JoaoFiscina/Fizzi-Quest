@@ -2,7 +2,7 @@
 
 RPG pessoal de exploração em pixel art, construído com Phaser, TypeScript e Vite para o marco **Treino à aventura**.
 
-## Implementação atual — v23.09.2003.24 (publicada)
+## Implementação atual — v23.09.2003.25 (em branch; oficial v23.09.2003.24)
 
 Já estão implementados os blocos principais do domínio e da experiência:
 
@@ -47,7 +47,9 @@ Build para Vercel: `npm run build`, saída `dist`. O endereço oficial é [fizzi
 
 Validação: `npm test` e `npm run test:e2e` (Edge via Playwright). Evidências e limites em [`docs/VALIDATION.md`](docs/VALIDATION.md).
 
-V24 (Trilha Firme, PR #17 integrado em 18/11/2026 e conferida no domínio oficial) melhora robustez e fluidez sem mudar regras: boot seguro com canvas oculto e alternativa Canvas, posição salva só quando muda, câmera sem tremido e deslize nas quinas. Versão npm `23.9.2003-24`. Validação em [VALIDATION_V24.md](docs/VALIDATION_V24.md); plano geral em [PLANO_MELHORIA_GERAL.md](context/PLANO_MELHORIA_GERAL.md).
+V25 (Golpe Certeiro, em branch `feat/v25-impacto-combate`) dá impacto ao combate sem mudar regras: entrada em mosaico, pausa e tremor no golpe, partículas, números em pixel, vida do inimigo no palco, barras animadas e atalhos de teclado. Versão npm `23.9.2003-25`. Validação em [VALIDATION_V25.md](docs/VALIDATION_V25.md).
+
+V24 (Trilha Firme, PR #17 integrado em 18/11/2026 e conferida no domínio oficial) melhora robustez e fluidez sem mudar regras: boot seguro com canvas oculto e alternativa Canvas, posição salva só quando muda, câmera sem tremido e deslize nas quinas. Validação em [VALIDATION_V24.md](docs/VALIDATION_V24.md); plano geral em [PLANO_MELHORIA_GERAL.md](context/PLANO_MELHORIA_GERAL.md).
 
 V23 unifica Passo Ágil e Diário da Jornada: velocidade base até 100 px/s e Impulso acima do teto, com histórico das entregas nos Ajustes. Base v22 inclui Guardião errante e saves compatíveis. PRs #15 e #16 integrados em 01/10/2026; versão oficial v23 conferida no domínio fixo. Validação em [VALIDATION_V23.md](docs/VALIDATION_V23.md). Expansão futura: [plano de áreas/missões](context/PLANO_EXPANSAO_MUNDO.md) e [guia interno de qualidade](context/GUIA_QUALIDADE_EXPANSAO.md).
 

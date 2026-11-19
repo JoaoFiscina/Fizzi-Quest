@@ -1,5 +1,9 @@
 # Histórico de versões
 
+## v23.09.2003.25 — Golpe Certeiro (19/11/2026, em branch)
+
+Etapa 2 do `PLANO_MELHORIA_GERAL.md`, somente apresentação do combate. Entrada com clarão e mosaico pixel (~380 ms) e saída com fade antes de reconstruir o mapa. Golpe com avanço, pausa de impacto de 65–90 ms, tremor de câmera, recuo do alvo e partículas na cor de cada criatura; números de dano em fonte pixel 5×7 gerada no código; vida do inimigo no palco com faixa fantasma. Herói com idle de costas e respeitando a aparência escolhida (antes o combate sempre mostrava o visual masculino). Avisos de intenção somem durante a animação e não sobrepõem mais os números. Barras do HUD e do inimigo animam com faixa fantasma; log destaca as linhas novas; atalhos 1–5, letras A/H/D/I/F, Esc e Enter. Aviso de boas-vindas some ao iniciar batalha. Rodada continua persistida antes da animação; movimento reduzido sem mosaico, tremor, pausa ou partículas. Validação: `docs/VALIDATION_V25.md`.
+
 ## v23.09.2003.24 — Trilha Firme (18/11/2026, publicada)
 
 Etapa 1 do `PLANO_MELHORIA_GERAL.md`, só robustez e fluidez. Boot espera o canvas ter tamanho real e recarrega uma vez em Canvas se o WebGL falhar antes da cena; batalha salva aguarda a cena existir. Posição salva apenas quando muda (parada de 600 ms, 5 s andando, troca de mapa, aba oculta, `pagehide`); `persist()` não regrava save idêntico nem revalida o que o próprio Store escreveu. `sync()` sai do laço por frame e fica no `emit`/batida do HUD; HUD só reconstrói o DOM quando um valor exibido muda. Delta até 100 ms com passos fatiados ≤ 4 px, câmera com lerp 1, deslize de até 6 px em quinas, ordenação de profundidade só com movimento e aviso limpo na troca de mapa. Regras, save, arte e animações sem mudança. Validação: `docs/VALIDATION_V24.md`.

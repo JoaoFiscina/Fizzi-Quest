@@ -342,12 +342,12 @@ function renderHUD() {
   const hp = el("div", "", "resource");
   const hpLabel = el("span", "Vida", "hud-icon");
   const hpVal = el("span", `${s.hp}/${a.maxHp}`, "resource-value");
-  hp.append(hpLabel, bar(s.hp, a.maxHp), hpVal);
+  hp.append(hpLabel, bar(s.hp, a.maxHp, "", "hud-hp"), hpVal);
 
   const stamina = el("div", "", "resource");
   const stLabel = el("span", "Fôlego", "hud-icon");
   const stVal = el("span", `${s.stamina}/${a.maxStamina}`, "resource-value");
-  stamina.append(stLabel, bar(s.stamina, a.maxStamina, "stamina"), stVal);
+  stamina.append(stLabel, bar(s.stamina, a.maxStamina, "stamina", "hud-stamina"), stVal);
 
   info.append(hp, stamina);
 
@@ -1456,10 +1456,11 @@ function worldMap() {
   );
 }
 
-world.onMapChange = () => {
+function dismissToast() {
   clearTimeout(toastTimer);
   toast.classList.remove("show");
-};
+}
+world.onMapChange = dismissToast;
 world.onNear = (e) => {
   interact.textContent = e ? `${e.label} · E` : "Explore a trilha";
   interact.disabled = !e;
@@ -1469,7 +1470,8 @@ world.onInteract = (e) =>
     if (e.kind in enemies) {
       store.transact((s) => startBattle(s, e.kind as EnemyId, e.encounterId));
       world.setPaused(true);
-      world.showBattle();
+      dismissToast();
+      world.enterBattle();
       battle();
     } else if (e.kind === "merchant") equipment(true);
     else if (e.kind === "fire") {
@@ -1567,6 +1569,52 @@ world.onInteract = (e) =>
 const battlePanel = el("section", "", "battle-panel");
 app.append(battlePanel);
 battlePanel.hidden = true;
+let lastBattleLog = "";
+let leavingBattle = false;
+/** Marks a battle button with a keyboard shortcut; the visual hint stays out of its accessible name. */
+function withShortcut(btn: HTMLButtonElement, key: string) {
+  btn.dataset.shortcut = key;
+  btn.setAttribute("aria-keyshortcuts", key);
+  const hint = el(
+    "span",
+    key === "Escape" ? "Esc" : key === "Enter" ? "↵" : key,
+    "kbd",
+  );
+  hint.setAttribute("aria-hidden", "true");
+  btn.append(hint);
+  return btn;
+}
+const BATTLE_LETTERS: Record<string, string> = {
+  a: "1",
+  h: "2",
+  d: "3",
+  i: "4",
+  f: "5",
+};
+window.addEventListener("keydown", (e) => {
+  if (battlePanel.hidden || modal.open || busy || e.repeat) return;
+  if (e.ctrlKey || e.metaKey || e.altKey) return;
+  if (
+    e.target instanceof HTMLInputElement ||
+    e.target instanceof HTMLTextAreaElement ||
+    e.target instanceof HTMLSelectElement
+  )
+    return;
+  if (e.key === "Enter" && document.activeElement instanceof HTMLButtonElement)
+    return;
+  const key = e.key === "Esc" ? "Escape" : e.key;
+  const find = (k: string) =>
+    battlePanel.querySelector<HTMLButtonElement>(
+      `button[data-shortcut="${CSS.escape(k)}"]`,
+    );
+  // Letter aliases only on the main action row (submenus use digits + Esc).
+  const inSubmenu = Boolean(find("Escape"));
+  const alias = inSubmenu ? undefined : BATTLE_LETTERS[key.toLowerCase()];
+  const target = find(key) ?? (alias ? find(alias) : null);
+  if (!target || target.disabled) return;
+  e.preventDefault();
+  target.click();
+});
 function battle() {
   const s = visualState ?? store.state,
     b = s.battle;
@@ -1586,7 +1634,7 @@ function battle() {
     el("small", `RODADA ${b.round}`),
     el("h2", encounterName(b.enemy, e.name, b.encounterId)),
     el("p", `Vida ${b.hp}/${e.hp}`),
-    bar(b.hp, e.hp),
+    bar(b.hp, e.hp, "enemy", `enemy-${b.encounterId ?? b.enemy}`),
     el(
       "p",
       busy
@@ -1603,36 +1651,49 @@ function battle() {
   );
   const log = el("div", "", "battle-log");
   log.setAttribute("aria-live", "polite");
-  b.log.forEach((t) => log.append(el("p", t)));
+  const logKey = `${b.round}|${b.status}|${b.log.join("|")}`;
+  const freshLog = logKey !== lastBattleLog && lastBattleLog !== "";
+  lastBattleLog = logKey;
+  b.log.forEach((t) => log.append(el("p", t, freshLog ? "fresh" : "")));
   battlePanel.append(log);
   const actions = el("div", "", "battle-actions");
   battlePanel.append(actions);
-  const choice = (text: string, action: Action, disabled = false) => {
+  const choice = (
+    text: string,
+    action: Action,
+    disabled = false,
+    key = "",
+  ) => {
     const btn = button(text, () => {
       void resolveRound(action);
     });
     btn.disabled = busy || disabled;
+    if (key) withShortcut(btn, key);
     actions.append(btn);
   };
   if (b.status !== "awaiting_player") {
-    actions.append(
-      button(
-        "Voltar à aventura",
-        () => {
-          store.transact((s) => (s.battle = null));
-          battlePanel.hidden = true;
-          nav.hidden = false;
-          controls.hidden = false;
-          place.hidden = false;
-          world.hideBattle();
+    const back = button(
+      "Voltar à aventura",
+      () => {
+        if (leavingBattle) return;
+        leavingBattle = true;
+        store.transact((s) => (s.battle = null));
+        battlePanel.hidden = true;
+        nav.hidden = false;
+        controls.hidden = false;
+        place.hidden = false;
+        void world.exitBattle().then(() => {
+          leavingBattle = false;
           world.setPaused(false);
-        },
-        "primary",
-      ),
+        });
+      },
+      "primary",
     );
+    withShortcut(back, "Enter");
+    actions.append(back);
     return;
   }
-  choice("Atacar", "attack");
+  choice("Atacar", "attack", false, "1");
   const skill = button("Habilidades", () => {
     actions.replaceChildren();
     battlePanel.classList.add("skills-open");
@@ -1654,11 +1715,13 @@ function battle() {
       description: string,
       unlockLevel: number,
       cost = 0,
+      key = "",
     ) => {
       const locked = level < unlockLevel;
       const card = el("div", "", "skill-card" + (locked ? " locked" : ""));
       const option = button(text, () => void resolveRound(action));
       option.disabled = locked || s.stamina < cost;
+      if (key) withShortcut(option, key);
       card.append(
         option,
         el(
@@ -1677,12 +1740,15 @@ function battle() {
       "Dano maior por 3 de fôlego. Bom contra um alvo exposto.",
       1,
       3,
+      "1",
     );
     skillChoice(
       "Recuperar fôlego +4",
       "recover",
       "Recupera até 4 de fôlego e usa a rodada.",
       1,
+      0,
+      "2",
     );
     skillChoice(
       "Corte veloz · 2",
@@ -1690,6 +1756,7 @@ function battle() {
       "Aumenta a chance de agir primeiro e causa mais dano por 2 de fôlego.",
       2,
       2,
+      "3",
     );
     skillChoice(
       "Impacto firme · 4",
@@ -1697,20 +1764,23 @@ function battle() {
       "Ignora a defesa do alvo e causa mais dano por 4 de fôlego.",
       3,
       4,
+      "4",
     );
-    actions.append(button("Voltar", battle));
+    actions.append(withShortcut(button("Voltar", battle), "Escape"));
   });
   skill.disabled = busy;
+  withShortcut(skill, "2");
   actions.append(skill);
-  choice("Defender", "defend");
+  choice("Defender", "defend", false, "3");
   const item = button(`Item · ${s.potions}`, () => {
     actions.replaceChildren();
-    choice("Usar poção · +20 vida", "potion", s.potions === 0);
-    actions.append(button("Voltar", battle));
+    choice("Usar poção · +20 vida", "potion", s.potions === 0, "1");
+    actions.append(withShortcut(button("Voltar", battle), "Escape"));
   });
   item.disabled = busy;
+  withShortcut(item, "4");
   actions.append(item);
-  choice("Fugir", "flee");
+  choice("Fugir", "flee", false, "5");
   actions.append(
     button("Como funciona a Defesa?", () => tutorial("defense"), "battle-help"),
   );
@@ -1736,7 +1806,8 @@ const begin = button(
     renderHUD();
     if (store.state.battle) {
       world.setPaused(true);
-      world.showBattle();
+      dismissToast();
+      world.enterBattle();
       battle();
     } else notify("Boas-vindas! Fale com o mestre da guilda ao norte.");
   },
