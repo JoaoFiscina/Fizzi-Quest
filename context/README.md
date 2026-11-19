@@ -4,6 +4,8 @@ Esta pasta é a memória operacional do jogo. Atualize-a a cada versão antes de
 
 ## Versão corrente
 
+`v23.09.2003.27` — Criaturas do Bosque, em branch `feat/v27-monstros` (19/11/2026), não publicada: redesenho dos quatro monstros a pedido do jogador.
+
 `v23.09.2003.26` — Bosque Vivo, publicada em 19/11/2026 pelo PR #19 (merge `77644c9`): etapa 3 do plano geral (bosque com identidade e refinamento da arte e das animações de personagens).
 
 `v23.09.2003.25` — Golpe Certeiro, publicada em 19/11/2026 pelo PR #18 (merge `dfe2af3`): etapa 2 do plano geral (impacto do combate, só apresentação).

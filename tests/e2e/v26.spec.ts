@@ -1,7 +1,7 @@
 import { test, expect, type Page } from "@playwright/test";
 import { freshSave } from "../../src/domain/game";
 import { mkdirSync, writeFileSync } from "node:fs";
-const evidence = "docs/evidence/v23.09.2003.26/after";
+const evidence = "docs/evidence/v23.09.2003.27/after";
 mkdirSync(evidence, { recursive: true });
 
 async function open(

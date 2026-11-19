@@ -1,5 +1,9 @@
 # Histórico de versões
 
+## v23.09.2003.27 — Criaturas do Bosque (19/11/2026, em branch)
+
+Pedido do jogador após a v26: monstros redesenhados. Broto com bulbo, folhas afiladas e expressões; Besouro de pedra com carapaça, cabeça, mandíbulas e pernas articuladas; Mariposa felpuda com manchas-olho e batida de asa em quatro tempos; Guardião como golem de pedra com capa de musgo, muda, runa e braços em blocos. Poses de ataque, dano, carapaça e preparo mais claras. Mesmos nomes de textura e tamanhos; regras e save sem mudança. Evidências em `docs/VALIDATION_V27.md`.
+
 ## v23.09.2003.26 — Bosque Vivo (19/11/2026, publicada)
 
 Etapa 3 do `PLANO_MELHORIA_GERAL.md` ampliada a pedido do jogador para refazer a estética mais bruta: chão de cada mapa desenhado numa única textura (caminho com cantos arredondados, borda pisada, margem na água, grama fria no bosque e decoração espalhada por ruído determinístico); três espécies de árvore com contorno, volume e balanço da copa; vegetação orgânica em vez de grade, com arbustos e tocos sólidos por tile; bruma em duas camadas com parallax; herói, heroína, mestre e mercador redesenhados nas 4 direções com caminhada de 4 quadros, respiração e piscada; contorno em monstros e objetos; sombras elípticas sob atores; marcadores de interação em balões pixel. Regras, colisão por tile e save sem mudança. Evidências em `docs/VALIDATION_V26.md`.

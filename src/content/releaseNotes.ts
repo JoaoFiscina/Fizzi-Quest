@@ -7,6 +7,15 @@ export type ReleaseNote = {
 // Catalog of implemented deliveries, newest first. Never add planned features here.
 export const releaseNotes: readonly ReleaseNote[] = [
   {
+    version: "v23.09.2003.27",
+    date: "19/11/2026",
+    title: "Criaturas do Bosque",
+    changes: [
+      "Broto, Besouro, Mariposa e Guardião redesenhados com volume, contorno e expressões próprias.",
+      "Poses de ataque, dano, carapaça e preparo mais claras; Mariposa bate as asas em quatro tempos.",
+    ],
+  },
+  {
     version: "v23.09.2003.26",
     date: "19/11/2026",
     title: "Bosque Vivo",
