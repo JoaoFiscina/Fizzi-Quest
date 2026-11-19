@@ -40,4 +40,8 @@ Etapa 1 do `context/PLANO_MELHORIA_GERAL.md`: robustez e fluidez. Branch `feat/v
 - Tremido de câmera e travadas de salvamento foram corrigidos pela causa, mas não houve medição de FPS em celular físico.
 - O fallback Canvas só é exercitado quando o WebGL falha de fato; o E2E cobre o caminho do canvas oculto, não uma GPU recusando o contexto.
 - A cópia `.previous` agora é a última gravação diferente, não "a gravação imediatamente anterior mesmo se idêntica" — mais útil para recuperação.
-- Não publicado. Oficial continua v23.09.2003.23 até merge autorizado e conferência do domínio.
+- Publicação registrada na seção abaixo.
+
+## Publicação confirmada — 18/11/2026
+
+PR #17 integrado na main (merge `f87a3fb`). Checks Vercel aprovados. `https://fizzi-quest.vercel.app/version.json` respondeu `v23.09.2003.24`; smoke test headless no domínio oficial conferiu título e rodapé v24, entrada na aventura com a cena carregada e Diário com a v24 INSTALADA, sem erros de página. Smoke test público, sem repetir a bateria completa em produção.

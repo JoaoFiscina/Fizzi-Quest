@@ -79,7 +79,7 @@ Depois disso, retomar a fila de expansão (`PROXIMOS_PASSOS.md`: fundação de �
 
 ### Etapa 1 — Robustez e fluidez
 
-Status: implementada como `v23.09.2003.24 — Trilha Firme` em `feat/v24-robustez-fluidez` (18/11/2026); evidências em `docs/VALIDATION_V24.md`. Diferenças do plano: o fallback recarrega a página uma vez em Canvas (mais seguro que reaproveitar a cena destruída) e o HUD, que reconstruía o DOM 4×/s, também passou a só reconstruir quando um valor exibido muda.
+Status: publicada como `v23.09.2003.24 — Trilha Firme` (PR #17, merge `f87a3fb`, 18/11/2026); evidências em `docs/VALIDATION_V24.md`. Diferenças do plano: o fallback recarrega a página uma vez em Canvas (mais seguro que reaproveitar a cena destruída) e o HUD, que reconstruía o DOM 4×/s, também passou a só reconstruir quando um valor exibido muda.
 
 - Boot: esperar o contêiner ter tamanho > 0 (`ResizeObserver`) antes de criar o `Phaser.Game`; em caso de falha do WebGL, recriar com `Phaser.CANVAS`. E2E com contêiner inicialmente oculto.
 - Persistência: gravar posição só se mudou, com debounce (ex. 3 s parado ou troca de mapa/`visibilitychange`/`pagehide`). Validar o save anterior apenas quando o snapshot `.previous` for realmente renovado (ex. por transação), não em cada passo.

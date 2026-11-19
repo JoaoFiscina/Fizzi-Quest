@@ -1,6 +1,6 @@
 # Histórico de versões
 
-## v23.09.2003.24 — Trilha Firme (18/11/2026, em branch)
+## v23.09.2003.24 — Trilha Firme (18/11/2026, publicada)
 
 Etapa 1 do `PLANO_MELHORIA_GERAL.md`, só robustez e fluidez. Boot espera o canvas ter tamanho real e recarrega uma vez em Canvas se o WebGL falhar antes da cena; batalha salva aguarda a cena existir. Posição salva apenas quando muda (parada de 600 ms, 5 s andando, troca de mapa, aba oculta, `pagehide`); `persist()` não regrava save idêntico nem revalida o que o próprio Store escreveu. `sync()` sai do laço por frame e fica no `emit`/batida do HUD; HUD só reconstrói o DOM quando um valor exibido muda. Delta até 100 ms com passos fatiados ≤ 4 px, câmera com lerp 1, deslize de até 6 px em quinas, ordenação de profundidade só com movimento e aviso limpo na troca de mapa. Regras, save, arte e animações sem mudança. Validação: `docs/VALIDATION_V24.md`.
 
