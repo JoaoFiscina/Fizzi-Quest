@@ -1,5 +1,6 @@
 import type Phaser from "phaser";
 import type { EnemyId } from "../domain/game";
+import { outline } from "./pixel";
 
 type Pose = "idle" | "attack" | "hurt" | "guard" | "prepare";
 
@@ -24,7 +25,6 @@ function paint(
   const hurt = pose === "hurt";
   if (kind === "sprout") {
     const lift = frame === 2 ? 1 : 0;
-    r("#3c5a3f", 8, 28, 17, 2);
     r("#354f38", 7, 25, 5, 4);
     r("#354f38", 21, 25, 5, 4);
     r("#567743", 9, 26, 3, 2);
@@ -55,7 +55,6 @@ function paint(
     }
   } else if (kind === "beetle") {
     const step = frame === 1 || frame === 3 ? 1 : 0;
-    r("#43584a", 3, 27, 26, 2);
     for (const x of [2, 7, 22, 27]) {
       r("#273f39", x, 21 + ((x + step) % 2), 3, 7);
       r("#74846b", x, 26 + ((x + step) % 2), 4, 2);
@@ -87,7 +86,6 @@ function paint(
   } else if (kind === "moth") {
     const open = frame === 1 || frame === 3 || active;
     const top = open ? 3 : 7;
-    r("#566262", 13, 28, 7, 2);
     r("#434e58", 3, top + 2, 10, 18);
     r("#777d98", 4, top + 3, 9, 16);
     r("#c3bad0", 5, top + 4, 6, 8);
@@ -108,7 +106,6 @@ function paint(
     if (hurt) r("#f1e4d8", 14, 16, 4, 2);
   } else {
     const breathe = frame === 2 ? 1 : 0;
-    r("#37573e", 11, 48, 28, 3);
     r("#263e37", 10, 38, 12, 11);
     r("#263e37", 28, 38, 12, 11);
     r("#68804f", 12, 40, 8, 8);
@@ -147,6 +144,7 @@ export function createMonsterArt(scene: Phaser.Scene) {
     const texture = (key: string, frame: number, pose: Pose) => {
       const t = scene.textures.createCanvas(key, w, h)!;
       paint(t.context, kind, frame, pose);
+      outline(t.context);
       t.refresh();
     };
     texture(kind, 0, "idle");

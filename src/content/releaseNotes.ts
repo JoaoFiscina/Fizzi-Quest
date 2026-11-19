@@ -7,6 +7,16 @@ export type ReleaseNote = {
 // Catalog of implemented deliveries, newest first. Never add planned features here.
 export const releaseNotes: readonly ReleaseNote[] = [
   {
+    version: "v23.09.2003.26",
+    date: "19/11/2026",
+    title: "Bosque Vivo",
+    changes: [
+      "Bosque com pinheiros, carvalhos, arbustos, tocos, samambaias, cogumelos e bruma em camadas.",
+      "Caminhos com cantos arredondados e chão desenhado de uma vez, mais leve para o aparelho.",
+      "Personagens redesenhados com contorno, caminhada mais fluida, respiração, piscada e sombra no chão.",
+    ],
+  },
+  {
     version: "v23.09.2003.25",
     date: "19/11/2026",
     title: "Golpe Certeiro",

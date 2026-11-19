@@ -1,6 +1,8 @@
 import Phaser from "phaser";
 import { polishArt } from "./polishArt";
 import { createMonsterArt } from "./monsterArt";
+import { createCharacterArt } from "./characterArt";
+import { createNatureArt, finishProps } from "./natureArt";
 export function createArt(scene: Phaser.Scene) {
   if (scene.textures.exists("water-0") && scene.anims.exists("ambient-water"))
     return;
@@ -110,22 +112,7 @@ export function createArt(scene: Phaser.Scene) {
     rect(c, "#4d9091", 1, 5, 8, 1);
     rect(c, "#6aabaa", 9, 12, 5, 1);
   });
-  texture("tree", 40, 52, (c) => {
-    rect(c, "#557646", 8, 43, 27, 6);
-    rect(c, "#604b35", 17, 29, 8, 20);
-    rect(c, "#a5814f", 18, 32, 3, 15);
-    rect(c, "#284d39", 8, 9, 26, 29);
-    rect(c, "#284d39", 3, 20, 35, 14);
-    rect(c, "#355f3e", 5, 13, 29, 20);
-    rect(c, "#467448", 9, 5, 22, 24);
-    rect(c, "#5e8650", 13, 3, 13, 16);
-    rect(c, "#74995b", 13, 5, 10, 3);
-    rect(c, "#74995b", 7, 18, 8, 2);
-    rect(c, "#527f46", 25, 15, 9, 13);
-    rect(c, "#223f31", 9, 34, 23, 3);
-  });
   texture("house", 112, 88, (c) => {
-    rect(c, "#59744b", 6, 73, 103, 12);
     rect(c, "#735b3e", 14, 28, 84, 49);
     rect(c, "#e5d1a0", 17, 31, 78, 43);
     rect(c, "#c0a475", 17, 62, 78, 12);
@@ -156,7 +143,6 @@ export function createArt(scene: Phaser.Scene) {
     rect(c, "#beaa7a", 44, 81, 28, 3);
   });
   texture("stall", 64, 48, (c) => {
-    rect(c, "#557646", 2, 42, 59, 6);
     rect(c, "#795536", 7, 10, 4, 32);
     rect(c, "#795536", 53, 10, 4, 32);
     rect(c, "#855d3e", 4, 33, 56, 11);
@@ -170,14 +156,16 @@ export function createArt(scene: Phaser.Scene) {
     rect(c, "#d7b768", 42, 28, 8, 5);
   });
   texture("rock", 24, 20, (c) => {
-    rect(c, "#557047", 1, 15, 23, 5);
     rect(c, "#5e6b60", 3, 5, 19, 12);
     rect(c, "#859080", 6, 2, 13, 13);
     rect(c, "#a7ad8c", 8, 3, 9, 3);
     rect(c, "#71864e", 2, 12, 9, 4);
   });
   texture("fire", 24, 24, (c) => {
-    rect(c, "#61714f", 2, 18, 20, 5);
+    for (const [x, y] of [[2, 19], [6, 21], [11, 22], [16, 21], [19, 19]]) {
+      rect(c, "#68705f", x, y, 4, 2);
+      rect(c, "#a7a78e", x + 1, y, 2, 1);
+    }
     rect(c, "#776345", 3, 17, 18, 3);
     rect(c, "#cd7848", 7, 10, 12, 9);
     rect(c, "#e0a958", 9, 5, 8, 14);
@@ -191,62 +179,9 @@ export function createArt(scene: Phaser.Scene) {
     rect(c, "#e2c77e", 10, 7, 4, 7);
     rect(c, "#62462f", 4, 16, 16, 3);
   });
-  for (const kind of ["hero", "hero-f", "master", "merchant"])
-    for (let dir = 0; dir < 4; dir++)
-      for (let frame = 0; frame < 3; frame++)
-        texture(`${kind}-${dir}-${frame}`, 20, 28, (c) => {
-          const bob = frame === 1 ? 1 : 0,
-            isHero = kind === "hero" || kind === "hero-f",
-            coat =
-              kind === "hero"
-                ? "#426f78"
-                : kind === "hero-f"
-                  ? "#6b637f"
-                  : kind === "master"
-                    ? "#b98446"
-                    : "#927193";
-          rect(c, "#35533b", 4, 25, 13, 2);
-          rect(c, "#3e3c32", 6, 21 + bob, 4, 5 - bob);
-          rect(
-            c,
-            "#3e3c32",
-            12,
-            21 + (frame === 2 ? 1 : 0),
-            4,
-            5 - (frame === 2 ? 1 : 0),
-          );
-          rect(c, "#253e38", 4, 11 + bob, 13, 12);
-          rect(c, coat, 5, 12 + bob, 11, 9);
-          rect(c, "#d5b773", 5, 20, 11, 2);
-          rect(c, "#e2ba88", 6, 4 + bob, 10, 9);
-          rect(c, "#694735", 5, 3 + bob, 12, 5);
-          rect(c, "#886039", 7, 2 + bob, 9, 3);
-          rect(c, "#e2ba88", 3, 14 + bob, 3, 6);
-          rect(c, "#e2ba88", 16, 14 + bob, 2, 6);
-          if (dir !== 1) {
-            rect(
-              c,
-              "#273b35",
-              dir === 2 ? 6 : dir === 3 ? 14 : 8,
-              8 + bob,
-              1,
-              2,
-            );
-            if (dir === 0) rect(c, "#273b35", 13, 8 + bob, 1, 2);
-          } else rect(c, "#694735", 6, 7 + bob, 10, 5);
-          if (kind === "hero-f") {
-            rect(c, "#5a3a34", 4, 6 + bob, 2, 9);
-            rect(c, "#5a3a34", 16, 6 + bob, 2, 9);
-            rect(c, "#7b4f54", 4, 12 + bob, 4, 11);
-            rect(c, "#a86f6c", 3, 13 + bob, 2, 6);
-          } else if (kind === "hero") {
-            rect(c, "#b66a49", 4, 12 + bob, 4, 11);
-            rect(c, "#d1935a", 3, 13 + bob, 2, 6);
-          }
-          if (isHero) {
-            rect(c, "#c1cfb5", 17, 16 + bob, 2, 8);
-          }
-        });
   createMonsterArt(scene);
   polishArt(scene);
+  createCharacterArt(scene);
+  createNatureArt(scene);
+  finishProps(scene);
 }

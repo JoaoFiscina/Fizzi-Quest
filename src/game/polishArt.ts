@@ -40,22 +40,6 @@ export function polishArt(scene: Phaser.Scene) {
       dot(c, "#6b8c50", 10 - (variant % 2), 12, 3, 1);
       dot(c, "#8aa565", 11 - (variant % 2), 12, 1, 1);
     });
-  edit("tree", (c) => {
-    for (const [x, y] of [
-      [11, 11],
-      [20, 8],
-      [8, 23],
-      [19, 19],
-      [27, 23],
-      [16, 29],
-    ]) {
-      dot(c, "#91aa62", x, y, 3, 1);
-      dot(c, "#719650", x - 1, y + 1, 5, 2);
-      dot(c, "#2b553c", x + 1, y + 4, 4, 1);
-    }
-    dot(c, "#b2905c", 19, 35, 1, 10);
-    dot(c, "#413f2f", 21, 39, 2, 3);
-  });
   edit("house", (c) => {
     for (let y = 35; y < 73; y += 8)
       for (let x = 18; x < 94; x += 12) dot(c, "#d4bc8d", x + (y % 3), y, 8, 1);
@@ -83,20 +67,6 @@ export function polishArt(scene: Phaser.Scene) {
     dot(c, "#c0bea0", 8, 4, 7, 1);
     dot(c, "#637870", 17, 8, 2, 7);
   });
-  for (const hero of ["hero", "hero-f"])
-    for (let d = 0; d < 4; d++)
-      for (let f = 0; f < 3; f++)
-        edit(`${hero}-${d}-${f}`, (c) => {
-          const bob = f === 1 ? 1 : 0;
-          dot(c, hero === "hero" ? "#29515d" : "#4f4663", 12, 14 + bob, 3, 5);
-          dot(c, hero === "hero" ? "#6c9b9b" : "#9385a1", 8, 13 + bob, 2, 6);
-          dot(c, "#efcf9c", 7, 6 + bob, 2, 2);
-          dot(c, hero === "hero" ? "#4e382d" : "#49302f", 5, 4 + bob, 2, 5);
-          dot(c, hero === "hero" ? "#9d7751" : "#80565b", 8, 3 + bob, 5, 1);
-          dot(c, "#e1c38a", 6, 20, 1, 2);
-          dot(c, "#f2e9bf", 17, 17 + bob, 1, 6);
-          dot(c, "#1c342d", 7, 25, 3, 1);
-        });
   const clone = (
     source: string,
     target: string,
@@ -146,17 +116,6 @@ export function polishArt(scene: Phaser.Scene) {
       dot(c, "#f0ca78", 10, 5 + (f % 3), 5, 12);
       dot(c, "#f8e5ac", 12, 12, 3, 7);
       dot(c, "#d7b768", 6 + f * 3, 2 + f, 1, 2);
-    });
-    clone("tree", "tree-" + f, 40, 52, (c) => {
-      const source = scene.textures
-        .get("tree")
-        .getSourceImage() as HTMLCanvasElement;
-      const sway = [0, 1, 0, -1][f];
-      c.clearRect(0, 0, 40, 34);
-      c.drawImage(source, 0, 0, 40, 34, sway, 0, 40, 34);
-      dot(c, "#87a961", 12 + (f % 2), 10, 3, 1);
-      dot(c, "#659151", 26 - (f % 2), 19, 3, 2);
-      dot(c, "#91aa62", 16 + (f % 3), 25, 2, 1);
     });
     const flag = scene.textures.createCanvas("flag-" + f, 24, 32)!;
     const c = flag.context;
@@ -240,7 +199,6 @@ export function polishArt(scene: Phaser.Scene) {
   for (const [key, rate] of [
     ["water", 3],
     ["fire", 6],
-    ["tree", 2],
     ["flag", 4],
   ] as const)
     scene.anims.create({
@@ -259,37 +217,4 @@ export function polishArt(scene: Phaser.Scene) {
       yoyo: true,
     });
 
-  // Personagens mantêm o desenho compacto e recebem ciclos próprios.
-  // O idle mexe só um detalhe por vez para evitar a sensação de flutuação.
-  for (const kind of ["hero", "hero-f", "master", "merchant"]) {
-    for (let d = 0; d < 4; d++) {
-      for (let f = 0; f < 4; f++)
-        clone(`${kind}-${d}-0`, `${kind}-${d}-idle-${f}`, 20, 28, (c) => {
-          if (f === 2) {
-            dot(c, "#886039", 14, 3, 2, 1);
-            if (kind === "hero") dot(c, "#d1935a", 3, 15, 1, 3);
-            if (kind === "hero-f") dot(c, "#a86f6c", 3, 15, 1, 3);
-          }
-        });
-      scene.anims.create({
-        key: `${kind}-idle-${d}`,
-        frames: Array.from({ length: 4 }, (_, i) => ({
-          key: `${kind}-${d}-idle-${i}`,
-        })),
-        frameRate: 2,
-        repeat: -1,
-      });
-      scene.anims.create({
-        key: `${kind}-walk-${d}`,
-        frames: [
-          { key: `${kind}-${d}-0` },
-          { key: `${kind}-${d}-1` },
-          { key: `${kind}-${d}-0` },
-          { key: `${kind}-${d}-2` },
-        ],
-        frameRate: 7,
-        repeat: -1,
-      });
-    }
-  }
 }

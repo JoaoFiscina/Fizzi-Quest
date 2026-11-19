@@ -2,6 +2,8 @@ import Phaser from "phaser";
 import { movementSpeed } from "../domain/movement";
 import { encounterDefeated, rareId } from "../domain/encounters";
 import { createArt } from "./art";
+import { bakeGround } from "./ground";
+import { TREE_SPECIES } from "./natureArt";
 import {
   makeMap,
   moveActor,
@@ -59,6 +61,10 @@ export class World extends Phaser.Scene {
     );
   }
   private flags: Phaser.GameObjects.Sprite[] = [];
+  private markers: Phaser.GameObjects.Image[] = [];
+  private mist: Phaser.GameObjects.TileSprite[] = [];
+  private shadowLayer!: Phaser.GameObjects.Container;
+  private playerShadow?: Phaser.GameObjects.Image;
   private chest?: Phaser.GameObjects.Sprite;
   private ambience?: AmbientController;
   private terrainSprites: Phaser.GameObjects.Sprite[] = [];
@@ -152,6 +158,7 @@ export class World extends Phaser.Scene {
     this.fireSprites = [];
     this.effectSprites = [];
     this.flags = [];
+    this.markers = [];
     this.chest = undefined;
     this.near = undefined;
     this.onNear(undefined);
@@ -181,58 +188,29 @@ export class World extends Phaser.Scene {
           : e,
       );
     }
+    const forest = s.map === "forest";
+    const groundKey = bakeGround(
+      this,
+      `ground-${s.map}`,
+      m,
+      forest,
+      m.entities.filter((e) => e.label),
+    );
+    this.root.add(this.add.image(0, 0, groundKey).setOrigin(0));
     for (let y = 0; y < m.height; y++)
       for (let x = 0; x < m.width; x++) {
-        const tile = this.add
-          .sprite(
-            x * 16,
-            y * 16,
-            m.tiles[y][x] === 1
-              ? "path"
-              : m.tiles[y][x] === 2
-                ? "water"
-                : "grass" + ((x * 7 + y * 3) % 4),
-          )
-          .setOrigin(0);
-        this.root.add(tile);
         if (m.tiles[y][x] === 2) {
           const phase = (x * 5 + y * 7) % 4;
-          tile.setTexture(`water-${phase}`).setData("ambientPhase", phase);
+          const tile = this.add
+            .sprite(x * 16, y * 16, `water-${phase}`)
+            .setOrigin(0)
+            .setData("ambientPhase", phase);
+          this.root.add(tile);
           this.waterSprites.push(tile);
-        }
-        if (m.tiles[y][x] === 1) {
-          const edge = (key: string) => {
-            const overlay = this.add.sprite(x * 16, y * 16, key).setOrigin(0);
-            this.root.add(overlay);
-          };
-          if (m.tiles[y - 1]?.[x] !== 1) edge("path-edge-n");
-          if (m.tiles[y + 1]?.[x] !== 1) edge("path-edge-s");
-          if (m.tiles[y]?.[x - 1] !== 1) edge("path-edge-w");
-          if (m.tiles[y]?.[x + 1] !== 1) edge("path-edge-e");
-          if ((x * 5 + y * 11) % 17 === 0) {
-            const stones = this.add
-              .sprite(x * 16, y * 16, "pebbles")
-              .setOrigin(0);
-            this.root.add(stones);
-          }
-          if (s.map === "village" && (x * 9 + y * 5) % 11 === 0) {
-            this.root.add(
-              this.add.sprite(x * 16, y * 16, "courtyard-stone").setOrigin(0),
-            );
-          }
-          if (
-            s.map === "forest" &&
-            y < 13 &&
-            x > 19 &&
-            (x * 3 + y * 7) % 9 === 0
-          ) {
-            this.root.add(
-              this.add.sprite(x * 16, y * 16, "forest-stone").setOrigin(0),
-            );
-          }
         }
         if (
           m.tiles[y][x] === 0 &&
+          !m.solid[y][x] &&
           (x * 11 + y * 7) % 53 === 0 &&
           this.terrainSprites.length < 8
         ) {
@@ -240,41 +218,26 @@ export class World extends Phaser.Scene {
             .sprite(x * 16, y * 16, "grass-wind-0")
             .setOrigin(0)
             .setDepth(y * 16 - 1);
+          if (forest) breeze.setTint(0x9fb8a4);
           this.root.add(breeze);
           this.terrainSprites.push(breeze);
         }
-        if (m.tiles[y][x] === 0) {
-          const detail = (x * 19 + y * 3) % 41;
+        if (m.tiles[y][x] === 0 && !m.solid[y][x] && (x * 19 + y * 3) % 41 === 13) {
           const nearEncounter =
-            s.map === "forest" &&
+            forest &&
             encounters.some(
-              (entry) =>
-                entry.kind in enemies &&
-                Math.hypot(entry.x - x * 16, entry.y - y * 16) < 45,
+              (entry) => Math.hypot(entry.x - x * 16, entry.y - y * 16) < 45,
             );
-          if (!nearEncounter && (detail === 0 || detail === 13)) {
-            const decor = this.add
-              .sprite(
-                x * 16,
-                y * 16,
-                detail === 0 ? "wildflower" : "grass-tuft",
-              )
-              .setOrigin(0);
-            this.root.add(decor);
-            if (detail === 13) this.terrainSprites.push(decor);
+          if (!nearEncounter) {
+            const tuft = this.add.sprite(x * 16, y * 16, "grass-tuft").setOrigin(0);
+            if (forest) tuft.setTint(0x9fb8a4);
+            this.root.add(tuft);
+            this.terrainSprites.push(tuft);
           }
-          if (
-            s.map === "forest" &&
-            x > 19 &&
-            y > 15 &&
-            !nearEncounter &&
-            (x * 11 + y * 7) % 29 === 0
-          )
-            this.root.add(
-              this.add.sprite(x * 16, y * 16, "forest-moss").setOrigin(0),
-            );
         }
       }
+    this.shadowLayer = this.add.container(0, 0);
+    this.root.add(this.shadowLayer);
     this.foreground = this.add.container(0, 0);
     this.root.add(this.foreground);
     const sorted = [...m.entities].sort((a, b) => a.y - b.y);
@@ -301,9 +264,24 @@ export class World extends Phaser.Scene {
         }
       }
       const sprite = this.add
-        .sprite(home.x + ox, home.y + oy, npc ? `${e.kind}-0-idle-0` : e.kind)
+        .sprite(
+          home.x + ox,
+          home.y + oy,
+          npc
+            ? `${e.kind}-0-idle-0`
+            : e.kind === "tree"
+              ? TREE_SPECIES[e.variant ?? 0]
+              : e.kind,
+        )
         .setOrigin(0.5, 1)
         .setDepth(home.y);
+      if (npc || e.kind in enemies) {
+        const shadow = this.add
+          .image(sprite.x, sprite.y - 1, e.kind === "guardian" ? "shadow-big" : "shadow-actor")
+          .setOrigin(0.5);
+        this.shadowLayer.add(shadow);
+        sprite.setData("shadow", shadow);
+      }
       if (npc && !this.reduced) {
         sprite.play(`${e.kind}-idle-0`);
       }
@@ -324,32 +302,24 @@ export class World extends Phaser.Scene {
         }
         if (!this.reduced) sprite.play(`monster-${e.kind}-idle`);
       }
-      if (e.kind === "tree") this.treeSprites.push(sprite);
+      if (e.kind === "tree") {
+        sprite.setData("species", TREE_SPECIES[e.variant ?? 0]);
+        this.treeSprites.push(sprite);
+      }
       if (e.kind === "fire") this.fireSprites.push(sprite);
       if (e.kind === "chest") this.chest = sprite;
       this.foreground.add(sprite);
       if (e.label && !(e.kind in enemies)) {
         const mark = this.add
-          .text(
+          .image(
             e.x,
-            e.y - 32,
-            e.kind === "master"
-              ? "◆"
-              : e.kind === "merchant"
-                ? "$"
-                : e.kind === "fire"
-                  ? "♨"
-                  : "◇",
-            {
-              fontFamily: "Georgia",
-              fontSize: "10px",
-              color: "#f1e6ca",
-              stroke: "#183d35",
-              strokeThickness: 3,
-            },
+            e.y - (e.kind === "fire" ? 22 : e.kind === "chest" ? 20 : 30),
+            `mark-${e.kind === "master" || e.kind === "merchant" || e.kind === "fire" ? e.kind : "chest"}`,
           )
-          .setOrigin(0.5)
+          .setOrigin(0.5, 1)
           .setDepth(e.y + 1);
+        mark.setData("baseY", mark.y);
+        this.markers.push(mark);
         this.foreground.add(mark);
       }
     }
@@ -375,7 +345,22 @@ export class World extends Phaser.Scene {
       .setDepth(s.y)
       .setData("heroKey", hero);
     this.foreground.add(this.player);
+    this.playerShadow = this.add.image(s.x, s.y - 1, "shadow-actor").setOrigin(0.5);
+    this.shadowLayer.add(this.playerShadow);
     if (!this.reduced) this.player.play(`${hero}-idle-0`);
+    this.mist = [];
+    if (forest)
+      for (const [key, alpha] of [
+        ["mist-far", 0.55],
+        ["mist-near", 0.75],
+      ] as const) {
+        const layer = this.add
+          .tileSprite(0, 0, m.width * 16, m.height * 16, key)
+          .setOrigin(0)
+          .setAlpha(alpha);
+        this.root.add(layer);
+        this.mist.push(layer);
+      }
     this.cameras.main.setBounds(0, 0, m.width * 16, m.height * 16);
     // Lerp 1 keeps camera and hero on the same integer pixel: no 1 px shimmer.
     this.cameras.main.startFollow(this.player, true, 1, 1);
@@ -476,12 +461,14 @@ export class World extends Phaser.Scene {
       essential: true,
       reducedAnimation: "ambient-fire-reduced",
     });
-    add(this.treeSprites, "tree", "ambient-tree", () => "tree", {
-      min: 9000,
-      max: 19000,
-      duration: 2300,
-      probability: 0.48,
-    });
+    for (const species of TREE_SPECIES)
+      add(
+        this.treeSprites.filter((tree) => tree.getData("species") === species),
+        "tree",
+        species === "tree" ? "ambient-tree" : `ambient-${species}`,
+        () => species,
+        { min: 9000, max: 19000, duration: 2300, probability: 0.48 },
+      );
     this.terrainSprites.forEach((sprite, index) => {
       const tuft = sprite.texture.key === "grass-tuft";
       controller.add({
@@ -629,9 +616,9 @@ export class World extends Phaser.Scene {
       this.resizeCamera();
     for (const sprite of this.enemySprites.values()) {
       const e = sprite.getData("encounter") as Entity;
-      sprite.setVisible(
-        !encounterDefeated(s, e.kind as EnemyId, e.encounterId),
-      );
+      const visible = !encounterDefeated(s, e.kind as EnemyId, e.encounterId);
+      sprite.setVisible(visible);
+      (sprite.getData("shadow") as Phaser.GameObjects.Image | undefined)?.setVisible(visible);
     }
     this.chest?.setTexture(s.chest ? "chest-open" : "chest");
     this.flags.forEach((f) => f.setTint(s.guild ? 0xffffff : 0x889978));
@@ -742,15 +729,26 @@ export class World extends Phaser.Scene {
     this.onMapChange();
     this.store.emit();
   }
+  /** Purely visual: marker bob and slow mist drift. Never touches game state. */
+  private animateScenery(time: number) {
+    if (this.reduced) return;
+    const bob = Math.floor(time / 600) % 2;
+    for (const mark of this.markers) mark.y = (mark.getData("baseY") as number) - bob;
+    if (this.mist.length) {
+      const scroll = this.cameras.main.scrollX;
+      this.mist[0].tilePositionX = Math.round(time * 0.003 + scroll * 0.08);
+      this.mist[1].tilePositionX = Math.round(time * 0.006 - scroll * 0.12);
+    }
+  }
   update(time: number, delta: number) {
     if (!this.player) return;
-    void time;
     // State-driven refreshes happen in sync(), called on every store emit and by
     // the HUD heartbeat. Per frame we only expire the Impulso precisely.
     if (this.trailImpulseState && Date.now() >= this.trailImpulseState.until) {
       this.clearTrailImpulse();
       this.speed = movementSpeed(stats(this.store.state).speed);
     }
+    this.animateScenery(time);
     if (this.paused) return;
     const s = this.store.state;
     let dx = 0,
@@ -788,6 +786,7 @@ export class World extends Phaser.Scene {
           py = Math.round(s.y);
         if (px !== this.player.x || py !== this.player.y) {
           this.player.setPosition(px, py).setDepth(s.y);
+          this.playerShadow?.setPosition(px, py - 1);
           this.depthDirty = true;
         }
       }
@@ -813,7 +812,9 @@ export class World extends Phaser.Scene {
         const px = Math.round(actor.patrol.x),
           py = Math.round(actor.patrol.y);
         if (px !== actor.sprite.x || py !== actor.sprite.y) {
+          if (px !== actor.sprite.x) actor.sprite.setFlipX(px < actor.sprite.x);
           actor.sprite.setPosition(px, py).setDepth(actor.patrol.y);
+          (actor.sprite.getData("shadow") as Phaser.GameObjects.Image | undefined)?.setPosition(px, py - 1);
           this.depthDirty = true;
         }
       }
