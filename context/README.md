@@ -4,6 +4,8 @@ Esta pasta é a memória operacional do jogo. Atualize-a a cada versão antes de
 
 ## Versão corrente
 
+`v23.09.2003.24` — Trilha Firme, em branch `feat/v24-robustez-fluidez` (18/11/2026), não publicada: etapa 1 do [PLANO_MELHORIA_GERAL.md](PLANO_MELHORIA_GERAL.md) (robustez e fluidez). Oficial continua v23.
+
 `v23.09.2003.23` — velocidade e Diário publicados na main pelo PR #16, após o PR #15 da v22, em 01/10/2026. Plano em [PLANO_V23_PASSO_E_DIARIO.md](PLANO_V23_PASSO_E_DIARIO.md); v24 proposta foi absorvida. Oficial v23 confirmada no título, rodapé, entrada e Diário dos Ajustes.
 
 `v23.09.2003.22` — Guardião raro integrado pelo PR #15, incluído no build oficial v23. Estado em `ESTADO_ATUAL.md`; plano em [`PLANO_V22_GUARDIAO_RARO.md`](PLANO_V22_GUARDIAO_RARO.md). Expansão futura em [`PLANO_EXPANSAO_MUNDO.md`](PLANO_EXPANSAO_MUNDO.md), com tutorial em [`GUIA_QUALIDADE_EXPANSAO.md`](GUIA_QUALIDADE_EXPANSAO.md).
@@ -27,6 +29,7 @@ fizzi-quest/
 │   ├── PLANO_IMPORTACAO_COMPACTA_PR.md ← resposta curta da IA e bônus de recorde
 │   ├── MOLDE_EXPANSAO.md         ← roteiro reutilizável para novas versões
 │   ├── PLANO_V23_PASSO_E_DIARIO.md ← velocidade e Diário na mesma entrega
+│   ├── PLANO_MELHORIA_GERAL.md   ← auditoria de 18/11/2026 e 8 etapas de melhoria
 │   ├── PLANO_EXPANSAO_MUNDO.md   ← áreas, missões, criaturas e prioridades futuras
 │   ├── GUIA_QUALIDADE_EXPANSAO.md ← tutorial interno de arte, animações e tom
 │   ├── ROADMAP_IMPLEMENTACOES.md ← plano auditado das próximas melhorias

@@ -1,4 +1,9 @@
-# Estado atual — v23.09.2003.23 publicada
+# Estado atual — v23.09.2003.24 em branch (oficial: v23.09.2003.23)
+
+## v24 — Trilha Firme (18/11/2026, branch `feat/v24-robustez-fluidez`)
+
+Etapa 1 do [PLANO_MELHORIA_GERAL.md](PLANO_MELHORIA_GERAL.md): robustez e fluidez, sem mudar regras, save, arte ou animações. Boot espera tamanho real do canvas e recarrega uma vez em Canvas se o WebGL falhar; posição persistida só quando muda; `sync()` fora do laço por frame; HUD só reconstrói quando algo exibido muda; câmera com lerp 1; passos fatiados até 100 ms de frame; deslize de quina até 6 px; aviso limpo ao trocar de mapa. Evidências em `docs/VALIDATION_V24.md`. Não publicado; aguarda revisão/PR autorizado. Oficial continua v23.
+
 
 Em 01/10/2026, PR #15 (v22) integrado: `b3cf34979890ef396adc5ff93983639d9fc35ef3`; depois PR #16 (v23): `dcf05d21fc8c75f1e7fe3431b9be6f3e40697bba`. Main local sincronizada. Check Vercel do merge final aprovado.
 

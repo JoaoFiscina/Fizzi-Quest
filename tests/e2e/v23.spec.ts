@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { freshSave } from "../../src/domain/game";
 import { mkdirSync } from "node:fs";
-const evidence = "docs/evidence/v23.09.2003.23/after";
+const evidence = "docs/evidence/v23.09.2003.24/after";
 mkdirSync(evidence, { recursive: true });
 
 test("Ajustes abre diário completo, navega por teclado e cabe nos quatro layouts", async ({
@@ -12,9 +12,9 @@ test("Ajustes abre diário completo, navega por teclado e cabe nos quatro layout
   await page.getByRole("button", { name: "Ajustes", exact: true }).click();
   await page.getByRole("tab", { name: "Diário de versões" }).click();
   await expect(page.getByRole("tabpanel")).toContainText(
-    "v23.09.2003.23 · 01/10/2026 · INSTALADA",
+    "v23.09.2003.24 · 18/11/2026 · INSTALADA",
   );
-  await expect(page.locator(".release-entry")).toHaveCount(21);
+  await expect(page.locator(".release-entry")).toHaveCount(22);
   for (const size of [
     { width: 390, height: 844 },
     { width: 430, height: 932 },
