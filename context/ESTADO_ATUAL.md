@@ -1,8 +1,8 @@
-# Estado atual — v23.09.2003.26 em branch (oficial: v23.09.2003.25)
+# Estado atual — v23.09.2003.26 publicada
 
-## v26 — Bosque Vivo (19/11/2026, branch `feat/v26-bosque-identidade`)
+## v26 — Bosque Vivo (publicada em 19/11/2026)
 
-Etapa 3 do [PLANO_MELHORIA_GERAL.md](PLANO_MELHORIA_GERAL.md) ampliada a pedido do jogador para refazer a estética mais bruta: chão de cada mapa desenhado numa única textura (caminho com cantos arredondados, borda pisada, margem na água, grama fria no bosque e decoração espalhada por ruído determinístico); três espécies de árvore com contorno, volume e balanço da copa; vegetação orgânica em vez de grade, com arbustos e tocos sólidos por tile; bruma em duas camadas com parallax; herói, heroína, mestre e mercador redesenhados nas 4 direções com caminhada de 4 quadros, respiração e piscada; contorno em monstros e objetos; sombras elípticas sob atores; marcadores de interação em balões pixel. Regras, colisão por tile e save sem mudança. Evidências em `docs/VALIDATION_V26.md`. Não publicado; oficial continua v25.
+Etapa 3 do [PLANO_MELHORIA_GERAL.md](PLANO_MELHORIA_GERAL.md) ampliada a pedido do jogador para refazer a estética mais bruta: chão de cada mapa desenhado numa única textura (caminho com cantos arredondados, borda pisada, margem na água, grama fria no bosque e decoração espalhada por ruído determinístico); três espécies de árvore com contorno, volume e balanço da copa; vegetação orgânica em vez de grade, com arbustos e tocos sólidos por tile; bruma em duas camadas com parallax; herói, heroína, mestre e mercador redesenhados nas 4 direções com caminhada de 4 quadros, respiração e piscada; contorno em monstros e objetos; sombras elípticas sob atores; marcadores de interação em balões pixel. Regras, colisão por tile e save sem mudança. Evidências em `docs/VALIDATION_V26.md`. PR #19 integrado (merge `77644c9`), checks Vercel aprovados; domínio oficial serve `version.json` v23.09.2003.26 e o smoke test conferiu título v26 e a vila nova sem erros no console.
 
 ## v25 — Golpe Certeiro (publicada em 19/11/2026)
 

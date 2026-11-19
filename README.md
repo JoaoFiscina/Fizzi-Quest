@@ -2,7 +2,7 @@
 
 RPG pessoal de exploração em pixel art, construído com Phaser, TypeScript e Vite para o marco **Treino à aventura**.
 
-## Implementação atual — v23.09.2003.26 (em branch; oficial v23.09.2003.25)
+## Implementação atual — v23.09.2003.26 (publicada)
 
 Já estão implementados os blocos principais do domínio e da experiência:
 
@@ -47,7 +47,7 @@ Build para Vercel: `npm run build`, saída `dist`. O endereço oficial é [fizzi
 
 Validação: `npm test` e `npm run test:e2e` (Edge via Playwright). Evidências e limites em [`docs/VALIDATION.md`](docs/VALIDATION.md).
 
-V26 (Bosque Vivo, em branch `feat/v26-bosque-identidade`) refaz a estética: chão desenhado por mapa com caminhos arredondados, três espécies de árvore, bosque orgânico com bruma, personagens redesenhados com caminhada mais fluida, contorno, sombras e marcadores pixel. Versão npm `23.9.2003-26`. Validação em [VALIDATION_V26.md](docs/VALIDATION_V26.md).
+V26 (Bosque Vivo, PR #19 integrado em 19/11/2026 e conferida no domínio oficial) refaz a estética: chão desenhado por mapa com caminhos arredondados, três espécies de árvore, bosque orgânico com bruma, personagens redesenhados com caminhada mais fluida, contorno, sombras e marcadores pixel. Versão npm `23.9.2003-26`. Validação em [VALIDATION_V26.md](docs/VALIDATION_V26.md).
 
 V25 (Golpe Certeiro, PR #18 integrado em 19/11/2026 e conferida no domínio oficial) dá impacto ao combate sem mudar regras: entrada em mosaico, pausa e tremor no golpe, partículas, números em pixel, vida do inimigo no palco, barras animadas e atalhos de teclado. Versão npm `23.9.2003-25`. Validação em [VALIDATION_V25.md](docs/VALIDATION_V25.md).
 

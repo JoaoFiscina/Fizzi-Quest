@@ -1,6 +1,6 @@
 # Histórico de versões
 
-## v23.09.2003.26 — Bosque Vivo (19/11/2026, em branch)
+## v23.09.2003.26 — Bosque Vivo (19/11/2026, publicada)
 
 Etapa 3 do `PLANO_MELHORIA_GERAL.md` ampliada a pedido do jogador para refazer a estética mais bruta: chão de cada mapa desenhado numa única textura (caminho com cantos arredondados, borda pisada, margem na água, grama fria no bosque e decoração espalhada por ruído determinístico); três espécies de árvore com contorno, volume e balanço da copa; vegetação orgânica em vez de grade, com arbustos e tocos sólidos por tile; bruma em duas camadas com parallax; herói, heroína, mestre e mercador redesenhados nas 4 direções com caminhada de 4 quadros, respiração e piscada; contorno em monstros e objetos; sombras elípticas sob atores; marcadores de interação em balões pixel. Regras, colisão por tile e save sem mudança. Evidências em `docs/VALIDATION_V26.md`.
 

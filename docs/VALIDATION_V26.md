@@ -47,4 +47,8 @@ Etapa 3 do `context/PLANO_MELHORIA_GERAL.md` (bosque com identidade), ampliada a
 - Fundo do palco de combate ainda é a fileira de árvores da versão anterior (agora com o carvalho novo); é a etapa 4.
 - Poeira ao andar, transição de mapa e "!" dos monstros ficam para a etapa 5.
 - Tufos animados antigos recebem só um tom mais frio no bosque.
-- Não publicado.
+- Publicação registrada na seção abaixo.
+
+## Publicação confirmada — 19/11/2026
+
+PR #19 integrado na main (merge `77644c9`). Checks Vercel aprovados. `https://fizzi-quest.vercel.app/version.json` respondeu `v23.09.2003.26`; no domínio oficial, título `Fizzi Quest · v23.09.2003.26`, nova aventura abriu a vila com a arte nova e sem erros no console. Smoke test público, sem repetir a bateria completa em produção nem visitar o bosque no domínio.
