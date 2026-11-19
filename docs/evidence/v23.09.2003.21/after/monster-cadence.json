@@ -33,147 +33,27 @@
     "monsters": [
       [
         "beetle",
-        "beetle-idle-2",
+        "beetle-idle-1",
         392,
         136
       ],
       [
         "guardian",
-        "guardian-idle-2",
+        "guardian-idle-1",
         565,
         196
       ],
       [
         "sprout",
-        "sprout-idle-3",
+        "sprout-idle-1",
         168,
         232
       ],
       [
         "moth",
-        "moth-idle-1",
+        "moth-idle-3",
         392,
         344
-      ]
-    ],
-    "waterFirePlaying": true,
-    "timer": true
-  },
-  {
-    "monsters": [
-      [
-        "beetle",
-        "beetle-idle-2",
-        392,
-        136
-      ],
-      [
-        "guardian",
-        "guardian-idle-2",
-        565,
-        196
-      ],
-      [
-        "sprout",
-        "sprout-idle-0",
-        168,
-        238
-      ],
-      [
-        "moth",
-        "moth-idle-0",
-        392,
-        344
-      ]
-    ],
-    "waterFirePlaying": true,
-    "timer": true
-  },
-  {
-    "monsters": [
-      [
-        "beetle",
-        "beetle-idle-0",
-        389,
-        128
-      ],
-      [
-        "guardian",
-        "guardian-idle-0",
-        565,
-        196
-      ],
-      [
-        "sprout",
-        "sprout-idle-0",
-        168,
-        246
-      ],
-      [
-        "moth",
-        "moth-idle-1",
-        392,
-        344
-      ]
-    ],
-    "waterFirePlaying": true,
-    "timer": true
-  },
-  {
-    "monsters": [
-      [
-        "beetle",
-        "beetle-idle-0",
-        385,
-        119
-      ],
-      [
-        "guardian",
-        "guardian-idle-0",
-        565,
-        196
-      ],
-      [
-        "sprout",
-        "sprout-idle-3",
-        168,
-        246
-      ],
-      [
-        "moth",
-        "moth-idle-1",
-        400,
-        343
-      ]
-    ],
-    "waterFirePlaying": true,
-    "timer": true
-  },
-  {
-    "monsters": [
-      [
-        "beetle",
-        "beetle-idle-1",
-        385,
-        119
-      ],
-      [
-        "guardian",
-        "guardian-idle-0",
-        565,
-        196
-      ],
-      [
-        "sprout",
-        "sprout-idle-0",
-        168,
-        247
-      ],
-      [
-        "moth",
-        "moth-idle-0",
-        400,
-        343
       ]
     ],
     "waterFirePlaying": true,
@@ -184,20 +64,110 @@
       [
         "beetle",
         "beetle-idle-3",
-        385,
-        119
+        392,
+        136
       ],
       [
         "guardian",
-        "guardian-idle-2",
+        "guardian-idle-3",
+        565,
+        196
+      ],
+      [
+        "sprout",
+        "sprout-idle-1",
+        168,
+        234
+      ],
+      [
+        "moth",
+        "moth-idle-0",
+        392,
+        344
+      ]
+    ],
+    "waterFirePlaying": true,
+    "timer": true
+  },
+  {
+    "monsters": [
+      [
+        "beetle",
+        "beetle-idle-1",
+        390,
+        131
+      ],
+      [
+        "guardian",
+        "guardian-idle-1",
         565,
         196
       ],
       [
         "sprout",
         "sprout-idle-0",
-        173,
-        252
+        168,
+        246
+      ],
+      [
+        "moth",
+        "moth-idle-2",
+        392,
+        344
+      ]
+    ],
+    "waterFirePlaying": true,
+    "timer": true
+  },
+  {
+    "monsters": [
+      [
+        "beetle",
+        "beetle-idle-0",
+        386,
+        120
+      ],
+      [
+        "guardian",
+        "guardian-idle-0",
+        565,
+        196
+      ],
+      [
+        "sprout",
+        "sprout-idle-2",
+        168,
+        246
+      ],
+      [
+        "moth",
+        "moth-idle-0",
+        398,
+        343
+      ]
+    ],
+    "waterFirePlaying": true,
+    "timer": true
+  },
+  {
+    "monsters": [
+      [
+        "beetle",
+        "beetle-idle-0",
+        385,
+        119
+      ],
+      [
+        "guardian",
+        "guardian-idle-0",
+        565,
+        196
+      ],
+      [
+        "sprout",
+        "sprout-idle-1",
+        168,
+        246
       ],
       [
         "moth",
@@ -213,9 +183,9 @@
     "monsters": [
       [
         "beetle",
-        "beetle-idle-1",
+        "beetle-idle-2",
         385,
-        120
+        119
       ],
       [
         "guardian",
@@ -225,13 +195,43 @@
       ],
       [
         "sprout",
-        "sprout-idle-3",
+        "sprout-idle-0",
         173,
         252
       ],
       [
         "moth",
         "moth-idle-0",
+        400,
+        343
+      ]
+    ],
+    "waterFirePlaying": true,
+    "timer": true
+  },
+  {
+    "monsters": [
+      [
+        "beetle",
+        "beetle-idle-2",
+        385,
+        119
+      ],
+      [
+        "guardian",
+        "guardian-idle-2",
+        565,
+        196
+      ],
+      [
+        "sprout",
+        "sprout-idle-2",
+        173,
+        252
+      ],
+      [
+        "moth",
+        "moth-idle-1",
         403,
         338
       ]
@@ -245,7 +245,7 @@
         "beetle",
         "beetle-idle-0",
         384,
-        132
+        129
       ],
       [
         "guardian",
@@ -255,13 +255,13 @@
       ],
       [
         "sprout",
-        "sprout-idle-0",
+        "sprout-idle-1",
         171,
         253
       ],
       [
         "moth",
-        "moth-idle-2",
+        "moth-idle-1",
         403,
         338
       ]
@@ -274,8 +274,8 @@
       [
         "beetle",
         "beetle-idle-0",
-        382,
-        144
+        383,
+        141
       ],
       [
         "guardian",
@@ -315,13 +315,13 @@
       ],
       [
         "sprout",
-        "sprout-idle-3",
+        "sprout-idle-2",
         171,
         253
       ],
       [
         "moth",
-        "moth-idle-3",
+        "moth-idle-2",
         395,
         338
       ]
@@ -340,6 +340,216 @@
       [
         "guardian",
         "guardian-idle-3",
+        565,
+        196
+      ],
+      [
+        "sprout",
+        "sprout-idle-1",
+        171,
+        253
+      ],
+      [
+        "moth",
+        "moth-idle-0",
+        395,
+        338
+      ]
+    ],
+    "waterFirePlaying": true,
+    "timer": true
+  },
+  {
+    "monsters": [
+      [
+        "beetle",
+        "beetle-idle-0",
+        384,
+        146
+      ],
+      [
+        "guardian",
+        "guardian-idle-1",
+        565,
+        196
+      ],
+      [
+        "sprout",
+        "sprout-idle-0",
+        159,
+        250
+      ],
+      [
+        "moth",
+        "moth-idle-2",
+        395,
+        338
+      ]
+    ],
+    "waterFirePlaying": true,
+    "timer": true
+  },
+  {
+    "monsters": [
+      [
+        "beetle",
+        "beetle-idle-0",
+        395,
+        140
+      ],
+      [
+        "guardian",
+        "guardian-idle-0",
+        565,
+        196
+      ],
+      [
+        "sprout",
+        "sprout-idle-3",
+        159,
+        250
+      ],
+      [
+        "moth",
+        "moth-idle-0",
+        385,
+        339
+      ]
+    ],
+    "waterFirePlaying": true,
+    "timer": true
+  },
+  {
+    "monsters": [
+      [
+        "beetle",
+        "beetle-idle-1",
+        405,
+        135
+      ],
+      [
+        "guardian",
+        "guardian-idle-0",
+        565,
+        196
+      ],
+      [
+        "sprout",
+        "sprout-idle-0",
+        159,
+        250
+      ],
+      [
+        "moth",
+        "moth-idle-3",
+        385,
+        339
+      ]
+    ],
+    "waterFirePlaying": true,
+    "timer": true
+  },
+  {
+    "monsters": [
+      [
+        "beetle",
+        "beetle-idle-3",
+        406,
+        134
+      ],
+      [
+        "guardian",
+        "guardian-idle-1",
+        565,
+        196
+      ],
+      [
+        "sprout",
+        "sprout-idle-0",
+        160,
+        249
+      ],
+      [
+        "moth",
+        "moth-idle-0",
+        385,
+        339
+      ]
+    ],
+    "waterFirePlaying": true,
+    "timer": true
+  },
+  {
+    "monsters": [
+      [
+        "beetle",
+        "beetle-idle-1",
+        406,
+        134
+      ],
+      [
+        "guardian",
+        "guardian-idle-3",
+        565,
+        196
+      ],
+      [
+        "sprout",
+        "sprout-idle-3",
+        166,
+        246
+      ],
+      [
+        "moth",
+        "moth-idle-2",
+        377,
+        339
+      ]
+    ],
+    "waterFirePlaying": true,
+    "timer": true
+  },
+  {
+    "monsters": [
+      [
+        "beetle",
+        "beetle-idle-0",
+        406,
+        134
+      ],
+      [
+        "guardian",
+        "guardian-idle-1",
+        565,
+        196
+      ],
+      [
+        "sprout",
+        "sprout-idle-0",
+        166,
+        246
+      ],
+      [
+        "moth",
+        "moth-idle-0",
+        377,
+        339
+      ]
+    ],
+    "waterFirePlaying": true,
+    "timer": true
+  },
+  {
+    "monsters": [
+      [
+        "beetle",
+        "beetle-idle-0",
+        407,
+        142
+      ],
+      [
+        "guardian",
+        "guardian-idle-0",
         565,
         196
       ],
@@ -347,343 +557,13 @@
         "sprout",
         "sprout-idle-0",
         169,
-        252
-      ],
-      [
-        "moth",
-        "moth-idle-0",
-        395,
-        338
-      ]
-    ],
-    "waterFirePlaying": true,
-    "timer": true
-  },
-  {
-    "monsters": [
-      [
-        "beetle",
-        "beetle-idle-0",
-        386,
-        145
-      ],
-      [
-        "guardian",
-        "guardian-idle-1",
-        565,
-        196
-      ],
-      [
-        "sprout",
-        "sprout-idle-0",
-        159,
-        250
-      ],
-      [
-        "moth",
-        "moth-idle-2",
-        395,
-        338
-      ]
-    ],
-    "waterFirePlaying": true,
-    "timer": true
-  },
-  {
-    "monsters": [
-      [
-        "beetle",
-        "beetle-idle-0",
-        397,
-        139
-      ],
-      [
-        "guardian",
-        "guardian-idle-0",
-        565,
-        196
-      ],
-      [
-        "sprout",
-        "sprout-idle-3",
-        159,
-        250
-      ],
-      [
-        "moth",
-        "moth-idle-0",
-        385,
-        339
-      ]
-    ],
-    "waterFirePlaying": true,
-    "timer": true
-  },
-  {
-    "monsters": [
-      [
-        "beetle",
-        "beetle-idle-1",
-        406,
-        134
-      ],
-      [
-        "guardian",
-        "guardian-idle-0",
-        565,
-        196
-      ],
-      [
-        "sprout",
-        "sprout-idle-0",
-        159,
-        250
-      ],
-      [
-        "moth",
-        "moth-idle-2",
-        385,
-        339
-      ]
-    ],
-    "waterFirePlaying": true,
-    "timer": true
-  },
-  {
-    "monsters": [
-      [
-        "beetle",
-        "beetle-idle-3",
-        406,
-        134
-      ],
-      [
-        "guardian",
-        "guardian-idle-2",
-        565,
-        196
-      ],
-      [
-        "sprout",
-        "sprout-idle-1",
-        163,
-        248
-      ],
-      [
-        "moth",
-        "moth-idle-0",
-        385,
-        339
-      ]
-    ],
-    "waterFirePlaying": true,
-    "timer": true
-  },
-  {
-    "monsters": [
-      [
-        "beetle",
-        "beetle-idle-1",
-        406,
-        134
-      ],
-      [
-        "guardian",
-        "guardian-idle-2",
-        565,
-        196
-      ],
-      [
-        "sprout",
-        "sprout-idle-2",
-        166,
-        246
-      ],
-      [
-        "moth",
-        "moth-idle-1",
-        377,
-        339
-      ]
-    ],
-    "waterFirePlaying": true,
-    "timer": true
-  },
-  {
-    "monsters": [
-      [
-        "beetle",
-        "beetle-idle-0",
-        406,
-        134
-      ],
-      [
-        "guardian",
-        "guardian-idle-0",
-        565,
-        196
-      ],
-      [
-        "sprout",
-        "sprout-idle-0",
-        166,
-        246
-      ],
-      [
-        "moth",
-        "moth-idle-1",
-        377,
-        339
-      ]
-    ],
-    "waterFirePlaying": true,
-    "timer": true
-  },
-  {
-    "monsters": [
-      [
-        "beetle",
-        "beetle-idle-1",
-        407,
-        142
-      ],
-      [
-        "guardian",
-        "guardian-idle-0",
-        565,
-        196
-      ],
-      [
-        "sprout",
-        "sprout-idle-1",
-        171,
         245
       ],
       [
         "moth",
-        "moth-idle-0",
+        "moth-idle-2",
         377,
         339
-      ]
-    ],
-    "waterFirePlaying": true,
-    "timer": true
-  },
-  {
-    "monsters": [
-      [
-        "beetle",
-        "beetle-idle-3",
-        407,
-        142
-      ],
-      [
-        "guardian",
-        "guardian-idle-1",
-        565,
-        196
-      ],
-      [
-        "sprout",
-        "sprout-idle-2",
-        183,
-        241
-      ],
-      [
-        "moth",
-        "moth-idle-1",
-        381,
-        337
-      ]
-    ],
-    "waterFirePlaying": true,
-    "timer": true
-  },
-  {
-    "monsters": [
-      [
-        "beetle",
-        "beetle-idle-1",
-        407,
-        142
-      ],
-      [
-        "guardian",
-        "guardian-idle-3",
-        565,
-        196
-      ],
-      [
-        "sprout",
-        "sprout-idle-0",
-        186,
-        239
-      ],
-      [
-        "moth",
-        "moth-idle-0",
-        396,
-        332
-      ]
-    ],
-    "waterFirePlaying": true,
-    "timer": true
-  },
-  {
-    "monsters": [
-      [
-        "beetle",
-        "beetle-idle-0",
-        407,
-        142
-      ],
-      [
-        "guardian",
-        "guardian-idle-1",
-        565,
-        196
-      ],
-      [
-        "sprout",
-        "sprout-idle-1",
-        186,
-        239
-      ],
-      [
-        "moth",
-        "moth-idle-2",
-        396,
-        332
-      ]
-    ],
-    "waterFirePlaying": true,
-    "timer": true
-  },
-  {
-    "monsters": [
-      [
-        "beetle",
-        "beetle-idle-0",
-        400,
-        132
-      ],
-      [
-        "guardian",
-        "guardian-idle-0",
-        565,
-        196
-      ],
-      [
-        "sprout",
-        "sprout-idle-2",
-        186,
-        239
-      ],
-      [
-        "moth",
-        "moth-idle-0",
-        397,
-        336
       ]
     ],
     "waterFirePlaying": true,
@@ -694,6 +574,126 @@
       [
         "beetle",
         "beetle-idle-2",
+        407,
+        142
+      ],
+      [
+        "guardian",
+        "guardian-idle-0",
+        565,
+        196
+      ],
+      [
+        "sprout",
+        "sprout-idle-3",
+        180,
+        241
+      ],
+      [
+        "moth",
+        "moth-idle-0",
+        378,
+        339
+      ]
+    ],
+    "waterFirePlaying": true,
+    "timer": true
+  },
+  {
+    "monsters": [
+      [
+        "beetle",
+        "beetle-idle-2",
+        407,
+        142
+      ],
+      [
+        "guardian",
+        "guardian-idle-2",
+        565,
+        196
+      ],
+      [
+        "sprout",
+        "sprout-idle-0",
+        186,
+        239
+      ],
+      [
+        "moth",
+        "moth-idle-1",
+        393,
+        333
+      ]
+    ],
+    "waterFirePlaying": true,
+    "timer": true
+  },
+  {
+    "monsters": [
+      [
+        "beetle",
+        "beetle-idle-0",
+        407,
+        142
+      ],
+      [
+        "guardian",
+        "guardian-idle-2",
+        565,
+        196
+      ],
+      [
+        "sprout",
+        "sprout-idle-0",
+        186,
+        239
+      ],
+      [
+        "moth",
+        "moth-idle-1",
+        396,
+        332
+      ]
+    ],
+    "waterFirePlaying": true,
+    "timer": true
+  },
+  {
+    "monsters": [
+      [
+        "beetle",
+        "beetle-idle-0",
+        402,
+        133
+      ],
+      [
+        "guardian",
+        "guardian-idle-0",
+        565,
+        196
+      ],
+      [
+        "sprout",
+        "sprout-idle-3",
+        186,
+        239
+      ],
+      [
+        "moth",
+        "moth-idle-0",
+        396,
+        333
+      ]
+    ],
+    "waterFirePlaying": true,
+    "timer": true
+  },
+  {
+    "monsters": [
+      [
+        "beetle",
+        "beetle-idle-1",
         400,
         132
       ],
@@ -706,12 +706,12 @@
       [
         "sprout",
         "sprout-idle-0",
-        182,
-        238
+        184,
+        239
       ],
       [
         "moth",
-        "moth-idle-3",
+        "moth-idle-1",
         398,
         341
       ]
@@ -723,7 +723,7 @@
     "monsters": [
       [
         "beetle",
-        "beetle-idle-2",
+        "beetle-idle-3",
         400,
         132
       ],
@@ -735,8 +735,8 @@
       ],
       [
         "sprout",
-        "sprout-idle-1",
-        170,
+        "sprout-idle-0",
+        172,
         236
       ],
       [
@@ -753,9 +753,9 @@
     "monsters": [
       [
         "beetle",
-        "beetle-idle-0",
+        "beetle-idle-1",
         399,
-        142
+        139
       ],
       [
         "guardian",
@@ -765,13 +765,13 @@
       ],
       [
         "sprout",
-        "sprout-idle-2",
-        158,
-        233
+        "sprout-idle-3",
+        161,
+        234
       ],
       [
         "moth",
-        "moth-idle-3",
+        "moth-idle-2",
         398,
         341
       ]
@@ -785,7 +785,7 @@
         "beetle",
         "beetle-idle-0",
         397,
-        153
+        151
       ],
       [
         "guardian",
@@ -802,8 +802,8 @@
       [
         "moth",
         "moth-idle-0",
-        392,
-        347
+        394,
+        344
       ]
     ],
     "waterFirePlaying": true,
@@ -813,7 +813,7 @@
     "monsters": [
       [
         "beetle",
-        "beetle-idle-1",
+        "beetle-idle-0",
         397,
         153
       ],
@@ -832,7 +832,7 @@
       [
         "moth",
         "moth-idle-2",
-        382,
+        383,
         356
       ]
     ],
@@ -845,7 +845,7 @@
         "beetle",
         "beetle-idle-3",
         397,
-        147
+        149
       ],
       [
         "guardian",
@@ -855,7 +855,7 @@
       ],
       [
         "sprout",
-        "sprout-idle-1",
+        "sprout-idle-2",
         149,
         231
       ],
@@ -875,7 +875,7 @@
         "beetle",
         "beetle-idle-1",
         399,
-        134
+        137
       ],
       [
         "guardian",
@@ -886,12 +886,12 @@
       [
         "sprout",
         "sprout-idle-0",
-        154,
-        233
+        151,
+        232
       ],
       [
         "moth",
-        "moth-idle-1",
+        "moth-idle-3",
         382,
         356
       ]
@@ -905,7 +905,7 @@
         "beetle",
         "beetle-idle-0",
         401,
-        122
+        125
       ],
       [
         "guardian",
@@ -915,15 +915,15 @@
       ],
       [
         "sprout",
-        "sprout-idle-2",
-        164,
-        239
+        "sprout-idle-1",
+        162,
+        238
       ],
       [
         "moth",
         "moth-idle-0",
-        376,
-        350
+        378,
+        352
       ]
     ],
     "waterFirePlaying": true,

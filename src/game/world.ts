@@ -2,7 +2,13 @@ import Phaser from "phaser";
 import { movementSpeed } from "../domain/movement";
 import { encounterDefeated, rareId } from "../domain/encounters";
 import { createArt } from "./art";
-import { makeMap, walkable, type Entity, type MapData } from "./maps";
+import {
+  makeMap,
+  moveActor,
+  walkable,
+  type Entity,
+  type MapData,
+} from "./maps";
 import {
   advancePatrol,
   assignedHome,
@@ -34,7 +40,6 @@ export class World extends Phaser.Scene {
   private frame = 0;
   private direction = 0;
   private worldKey = "";
-  private elapsed = 0;
   private speed = 56;
   private root!: Phaser.GameObjects.Container;
   private enemySprites = new Map<string, Phaser.GameObjects.Sprite>();
@@ -66,6 +71,16 @@ export class World extends Phaser.Scene {
     kind: "leaf" | "dust";
   }> = [];
   private appliedCameraZoom = "";
+  private pendingBattle = false;
+  private depthDirty = true;
+  private savedPosition = { map: "", x: 0, y: 0 };
+  private movingMs = 0;
+  private idleMs = 0;
+  /** True once the scene exists and the hero sprite was built. */
+  get ready() {
+    return Boolean(this.player);
+  }
+  onMapChange: () => void = () => {};
   paused = true;
   touch = "";
   near: Entity | undefined;
@@ -110,6 +125,7 @@ export class World extends Phaser.Scene {
     });
     this.scale.on("resize", resize);
     this.resizeCamera();
+    if (this.pendingBattle && this.store.state.battle) this.showBattle();
   }
   clearInput() {
     this.keys.clear();
@@ -359,7 +375,10 @@ export class World extends Phaser.Scene {
     this.foreground.add(this.player);
     if (!this.reduced) this.player.play(`${hero}-idle-0`);
     this.cameras.main.setBounds(0, 0, m.width * 16, m.height * 16);
-    this.cameras.main.startFollow(this.player, true, 0.15, 0.15);
+    // Lerp 1 keeps camera and hero on the same integer pixel: no 1 px shimmer.
+    this.cameras.main.startFollow(this.player, true, 1, 1);
+    this.depthDirty = true;
+    this.savedPosition = { map: s.map, x: s.x, y: s.y };
     this.resizeCamera();
     this.setupAmbience();
     if (!this.reduced) this.cameras.main.fadeIn(200, 24, 61, 53);
@@ -616,6 +635,12 @@ export class World extends Phaser.Scene {
     this.flags.forEach((f) => f.setTint(s.guild ? 0xffffff : 0x889978));
   }
   showBattle() {
+    if (!this.ready) {
+      // Scene still booting (e.g. canvas waited for a real size): open on create.
+      this.pendingBattle = true;
+      return;
+    }
+    this.pendingBattle = false;
     this.clearTrailImpulse();
     this.presentation?.destroy();
     const b = this.store.state.battle;
@@ -640,10 +665,52 @@ export class World extends Phaser.Scene {
     this.presentation = undefined;
     this.build();
   }
+  /** Saves position only after it changed: when the hero stops, or every 5 s of continuous walking. */
+  private persistPosition(moving: boolean, delta: number) {
+    const s = this.store.state,
+      saved = this.savedPosition;
+    if (saved.map === s.map && saved.x === s.x && saved.y === s.y) {
+      this.movingMs = 0;
+      this.idleMs = 0;
+      return;
+    }
+    if (moving) {
+      this.movingMs += delta;
+      this.idleMs = 0;
+    } else this.idleMs += delta;
+    if (this.idleMs >= 600 || this.movingMs >= 5000) this.flushPosition();
+  }
+  /** Persists the current position immediately if it changed since the last save. */
+  flushPosition() {
+    const s = this.store.state,
+      saved = this.savedPosition;
+    this.movingMs = 0;
+    this.idleMs = 0;
+    if (saved.map === s.map && saved.x === s.x && saved.y === s.y) return;
+    this.savedPosition = { map: s.map, x: s.x, y: s.y };
+    this.store.persist();
+  }
+  private changeMap(map: "village" | "forest", x: number, y: number) {
+    const s = this.store.state;
+    s.map = map;
+    s.x = x;
+    s.y = y;
+    this.clearInput();
+    this.build();
+    this.store.persist();
+    this.savedPosition = { map, x, y };
+    this.onMapChange();
+    this.store.emit();
+  }
   update(time: number, delta: number) {
     if (!this.player) return;
     void time;
-    this.sync();
+    // State-driven refreshes happen in sync(), called on every store emit and by
+    // the HUD heartbeat. Per frame we only expire the Impulso precisely.
+    if (this.trailImpulseState && Date.now() >= this.trailImpulseState.until) {
+      this.clearTrailImpulse();
+      this.speed = movementSpeed(stats(this.store.state).speed);
+    }
     if (this.paused) return;
     const s = this.store.state;
     let dx = 0,
@@ -661,39 +728,54 @@ export class World extends Phaser.Scene {
       dx *= Math.SQRT1_2;
       dy *= Math.SQRT1_2;
     }
-    const step = (this.speed * Math.min(delta, 35)) / 1000,
-      nx = s.x + dx * step,
-      ny = s.y + dy * step;
-    if (walkable(this.mapData, nx, s.y)) s.x = nx;
-    if (walkable(this.mapData, s.x, ny)) s.y = ny;
-    this.player.setPosition(Math.round(s.x), Math.round(s.y)).setDepth(s.y);
-    if (!this.reduced) {
-      for (const actor of this.patrolActors.values()) {
+    // Up to 100 ms per frame keeps real speed on slow devices; moveActor splits
+    // long steps so fast heroes never skip through a tile.
+    const frameMs = Math.min(delta, 100),
+      moving = Boolean(dx || dy);
+    if (moving) {
+      const next = moveActor(
+        this.mapData,
+        s.x,
+        s.y,
+        dx,
+        dy,
+        (this.speed * frameMs) / 1000,
+      );
+      if (next.x !== s.x || next.y !== s.y) {
+        s.x = next.x;
+        s.y = next.y;
+        const px = Math.round(s.x),
+          py = Math.round(s.y);
+        if (px !== this.player.x || py !== this.player.y) {
+          this.player.setPosition(px, py).setDepth(s.y);
+          this.depthDirty = true;
+        }
+      }
+    }
+    if (!this.reduced && this.patrolActors.size) {
+      const alive: Array<{ patrol: Patrol; sprite: Phaser.GameObjects.Sprite; entity: Entity }> = [];
+      for (const actor of this.patrolActors.values())
         if (
-          encounterDefeated(
+          !encounterDefeated(
             s,
             actor.entity.kind as EnemyId,
             actor.entity.encounterId,
           )
         )
-          continue;
-        const others = [...this.patrolActors.values()]
-          .filter(
-            (other) =>
-              other !== actor &&
-              !encounterDefeated(
-                s,
-                other.entity.kind as EnemyId,
-                other.entity.encounterId,
-              ),
-          )
-          .map((other) => other.patrol);
-        advancePatrol(actor.patrol, delta, this.mapData, s, others);
+          alive.push(actor);
+      for (const actor of alive) {
+        const others: Patrol[] = [];
+        for (const other of alive)
+          if (other !== actor) others.push(other.patrol);
+        advancePatrol(actor.patrol, frameMs, this.mapData, s, others);
         actor.entity.x = actor.patrol.x;
         actor.entity.y = actor.patrol.y;
-        actor.sprite
-          .setPosition(Math.round(actor.patrol.x), Math.round(actor.patrol.y))
-          .setDepth(actor.patrol.y);
+        const px = Math.round(actor.patrol.x),
+          py = Math.round(actor.patrol.y);
+        if (px !== actor.sprite.x || py !== actor.sprite.y) {
+          actor.sprite.setPosition(px, py).setDepth(actor.patrol.y);
+          this.depthDirty = true;
+        }
       }
     }
     if (this.reduced) {
@@ -709,45 +791,34 @@ export class World extends Phaser.Scene {
         this.player.play(anim);
       }
     }
-    this.foreground.sort("depth");
-    const near = this.mapData.entities
-      .map((e) =>
-        e.kind in enemies
-          ? (this.patrolActors.get(e.encounterId ?? e.kind)?.entity ?? e)
-          : e,
+    if (this.depthDirty) {
+      this.foreground.sort("depth");
+      this.depthDirty = false;
+    }
+    let near: Entity | undefined;
+    for (const entry of this.mapData.entities) {
+      if (!entry.label) continue;
+      const enemy = entry.kind in enemies;
+      if (
+        enemy &&
+        encounterDefeated(s, entry.kind as EnemyId, entry.encounterId)
       )
-      .filter(
-        (e) =>
-          e.label &&
-          (!(e.kind in enemies) ||
-            !encounterDefeated(s, e.kind as EnemyId, e.encounterId)),
-      )
-      .find((e) => Math.hypot(e.x - s.x, e.y - s.y) < 25);
+        continue;
+      const e = enemy
+        ? (this.patrolActors.get(entry.encounterId ?? entry.kind)?.entity ??
+          entry)
+        : entry;
+      if (Math.hypot(e.x - s.x, e.y - s.y) < 25) {
+        near = e;
+        break;
+      }
+    }
     if (near !== this.near) {
       this.near = near;
       this.onNear(near);
     }
-    if (s.map === "village" && s.x > 374) {
-      s.map = "forest";
-      s.x = 40;
-      s.y = 232;
-      this.clearInput();
-      this.build();
-      this.store.persist();
-      this.store.emit();
-    } else if (s.map === "forest" && s.x < 10) {
-      s.map = "village";
-      s.x = 360;
-      s.y = 168;
-      this.clearInput();
-      this.build();
-      this.store.persist();
-      this.store.emit();
-    }
-    this.elapsed += delta;
-    if (this.elapsed > 1500) {
-      this.elapsed = 0;
-      this.store.persist();
-    }
+    if (s.map === "village" && s.x > 374) this.changeMap("forest", 40, 232);
+    else if (s.map === "forest" && s.x < 10) this.changeMap("village", 360, 168);
+    else this.persistPosition(moving, frameMs);
   }
 }

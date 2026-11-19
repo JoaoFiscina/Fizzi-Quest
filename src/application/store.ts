@@ -308,6 +308,7 @@ export class Store {
   hasSave = false;
   error = "";
   listeners = new Set<() => void>();
+  private lastWritten: string | null = null;
   constructor(
     private storage: StoragePort,
     private key = SAVE_KEY,
@@ -357,16 +358,27 @@ export class Store {
   persist() {
     const oldError = this.error;
     try {
+      const next = JSON.stringify(this.state);
       const previous = this.storage.getItem(this.key);
-      if (previous) {
-        try {
-          validateSave(JSON.parse(previous), this.mode);
-          this.storage.setItem(this.key + ".previous", previous);
-        } catch {
-          /* Keep last valid recovery snapshot. */
-        }
+      if (previous === next && !oldError) {
+        this.hasSave = true;
+        return;
       }
-      this.storage.setItem(this.key, JSON.stringify(this.state));
+      if (previous) {
+        // Only re-validate content this Store did not write itself (another
+        // tab, a manual edit). Our own last write is already a valid save.
+        let valid = previous === this.lastWritten;
+        if (!valid)
+          try {
+            validateSave(JSON.parse(previous), this.mode);
+            valid = true;
+          } catch {
+            /* Keep last valid recovery snapshot. */
+          }
+        if (valid) this.storage.setItem(this.key + ".previous", previous);
+      }
+      this.storage.setItem(this.key, next);
+      this.lastWritten = next;
       this.hasSave = true;
       this.error = "";
     } catch {

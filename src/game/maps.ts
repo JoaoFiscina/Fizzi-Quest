@@ -112,6 +112,57 @@ export function makeMap(forest: boolean): MapData {
   }
   return { width, height, tiles, solid, entities };
 }
+/**
+ * Moves an actor by `distance` px along the (already normalised) direction.
+ * Long steps are split into ≤4 px slices so fast movement never tunnels.
+ * With single-axis input, a blocked actor slides around a corner when a free
+ * lane is within `slideReach` px on exactly one side (ties do not slide).
+ */
+export function moveActor(
+  map: MapData,
+  x: number,
+  y: number,
+  dx: number,
+  dy: number,
+  distance: number,
+  slideReach = 6,
+) {
+  if (distance <= 0 || (!dx && !dy)) return { x, y };
+  const slices = Math.max(1, Math.ceil(distance / 4)),
+    part = distance / slices;
+  for (let i = 0; i < slices; i++) {
+    const nx = x + dx * part,
+      ny = y + dy * part;
+    const movedX = Boolean(dx) && walkable(map, nx, y);
+    if (movedX) x = nx;
+    const movedY = Boolean(dy) && walkable(map, x, ny);
+    if (movedY) y = ny;
+    if (movedX || movedY) continue;
+    if (dx && !dy) {
+      const offset = laneOffset(slideReach, (k) =>
+        walkable(map, x, y + k) && walkable(map, nx, y + k),
+      );
+      if (!offset) break;
+      y += Math.sign(offset) * Math.min(part, Math.abs(offset));
+    } else if (dy && !dx) {
+      const offset = laneOffset(slideReach, (k) =>
+        walkable(map, x + k, y) && walkable(map, x + k, ny),
+      );
+      if (!offset) break;
+      x += Math.sign(offset) * Math.min(part, Math.abs(offset));
+    } else break;
+  }
+  return { x, y };
+}
+function laneOffset(reach: number, free: (offset: number) => boolean) {
+  for (let k = 1; k <= reach; k++) {
+    const minus = free(-k),
+      plus = free(k);
+    if (minus !== plus) return minus ? -k : k;
+    if (minus && plus) return 0;
+  }
+  return 0;
+}
 export function walkable(map: MapData, x: number, y: number) {
   return [
     [x - 4, y - 2],

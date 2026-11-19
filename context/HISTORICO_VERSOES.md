@@ -1,5 +1,9 @@
 # Histórico de versões
 
+## v23.09.2003.24 — Trilha Firme (18/11/2026, em branch)
+
+Etapa 1 do `PLANO_MELHORIA_GERAL.md`, só robustez e fluidez. Boot espera o canvas ter tamanho real e recarrega uma vez em Canvas se o WebGL falhar antes da cena; batalha salva aguarda a cena existir. Posição salva apenas quando muda (parada de 600 ms, 5 s andando, troca de mapa, aba oculta, `pagehide`); `persist()` não regrava save idêntico nem revalida o que o próprio Store escreveu. `sync()` sai do laço por frame e fica no `emit`/batida do HUD; HUD só reconstrói o DOM quando um valor exibido muda. Delta até 100 ms com passos fatiados ≤ 4 px, câmera com lerp 1, deslize de até 6 px em quinas, ordenação de profundidade só com movimento e aviso limpo na troca de mapa. Regras, save, arte e animações sem mudança. Validação: `docs/VALIDATION_V24.md`.
+
 ## v23.09.2003.23 — Passo Ágil e Diário da Jornada (01/10/2026, publicada)
 
 Entrega unificada do conteúdo proposto para v23/v24. Velocidade base até 100 px/s, mantendo Agilidade × 1,2 sobre base56; Impulso aplica seu multiplicador depois do teto e pode ultrapassá-lo. Ajustes têm abas de Preferências e Diário de versões, com catálogo das entregas e destaque da instalada. Sem migração ou mudança de animações. Plano `PLANO_V23_PASSO_E_DIARIO.md`; PR #16 integrado após o PR #15; merge final `dcf05d2`, Vercel aprovado e domínio oficial conferido na v23.

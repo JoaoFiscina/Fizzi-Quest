@@ -4,6 +4,8 @@ Use [`MOLDE_EXPANSAO.md`](MOLDE_EXPANSAO.md) em cada entrega. O roadmap completo
 
 ## Fila ativa por prioridade e complexidade
 
+Atualização de 18/11/2026: auditoria geral registrada em [PLANO_MELHORIA_GERAL.md](PLANO_MELHORIA_GERAL.md). Por pedido do jogador, a melhoria passa à frente da expansão. Etapa 1 (robustez e fluidez, média) implementada como **v23.09.2003.24 — Trilha Firme** em `feat/v24-robustez-fluidez`, aguardando revisão/PR autorizado. Próxima: etapa 2, Impacto do combate (alta, média, só apresentação), depois Bosque com identidade (alta, alta) e Palco de combate antes da fundação de áreas, pois geram a base de arte reutilizada pela Margem do Ribeirão. O número "v24" abaixo, citado como absorvido na v23, refere-se ao plano antigo; a entrega atual usa o sufixo `.24`.
+
 Atualização de 01/10/2026: os itens velocidade/Impulso e Diário foram unidos por pedido explícito em **v23 — Passo Ágil e Diário da Jornada**, complexidade média. Implementados em branch sobre v22; teto base100 px/s e Impulso sem teto posterior. Plano [PLANO_V23_PASSO_E_DIARIO.md](PLANO_V23_PASSO_E_DIARIO.md). A v24 planejada não será uma entrega separada. V22→v23 integradas e publicadas. Próxima ação: abrir a fundação de áreas/missões, mantendo as expansões de alta complexidade separadas.
 
 Regra permanente solicitada em 01/10/2026: apresentar sempre prioridade, ordem, complexidade, dependências e limite de escopo. Tarefas muito complexas ficam em versões separadas. Correções que bloqueiem jogo, save ou atualização passam à frente desta fila.

@@ -94,22 +94,60 @@ if (devLoadError) store.error = devLoadError;
 const canvas = el("div", "", "world");
 canvas.id = "world";
 app.append(canvas);
-const game = new Phaser.Game({
-  type: Phaser.AUTO,
-  parent: "world",
-  backgroundColor: "#183d35",
-  pixelArt: true,
-  roundPixels: true,
-  scale: {
-    mode: Phaser.Scale.RESIZE,
-    width: window.innerWidth,
-    height: window.innerHeight,
-  },
-  scene: [world],
-  render: { antialias: false },
+let game: Phaser.Game | undefined;
+const RENDERER_KEY = "fizzi-quest.renderer";
+let forcedCanvas = false;
+try {
+  forcedCanvas = sessionStorage.getItem(RENDERER_KEY) === "canvas";
+} catch {
+  /* Session storage may be blocked. */
+}
+function bootGame(type: number) {
+  game = new Phaser.Game({
+    type,
+    parent: "world",
+    backgroundColor: "#183d35",
+    pixelArt: true,
+    roundPixels: true,
+    scale: {
+      mode: Phaser.Scale.RESIZE,
+      width: Math.max(1, canvas.clientWidth || window.innerWidth),
+      height: Math.max(1, canvas.clientHeight || window.innerHeight),
+    },
+    scene: [world],
+    render: { antialias: false },
+  });
+  // @ts-ignore
+  window.__PHASER_GAME__ = game;
+  document.documentElement.dataset.renderer =
+    type === Phaser.CANVAS ? "canvas" : "auto";
+}
+// O WebGL não cria o framebuffer quando o canvas nasce com 0×0 (aba oculta,
+// painel recolhido, alguns webviews). Espera um tamanho real e, se a GPU ainda
+// falhar antes da cena existir, recarrega uma única vez usando Canvas. Nada se
+// perde: a aventura ainda não começou e o save não foi tocado.
+window.addEventListener("error", (event) => {
+  if (forcedCanvas || world.ready) return;
+  if (!/Framebuffer|WebGL/i.test(String(event.message ?? ""))) return;
+  try {
+    sessionStorage.setItem(RENDERER_KEY, "canvas");
+    location.reload();
+  } catch {
+    /* Without session storage, keep the page as is. */
+  }
 });
-// @ts-ignore
-window.__PHASER_GAME__ = game;
+const rendererType = forcedCanvas ? Phaser.CANVAS : Phaser.AUTO;
+const worldHasSize = () => canvas.clientWidth > 0 && canvas.clientHeight > 0;
+if (worldHasSize()) bootGame(rendererType);
+else {
+  document.documentElement.dataset.renderer = "waiting";
+  const observer = new ResizeObserver(() => {
+    if (!worldHasSize() || game) return;
+    observer.disconnect();
+    bootGame(rendererType);
+  });
+  observer.observe(canvas);
+}
 const hud = el("header", "", "hud"),
   place = el("div", "", "place"),
   nav = el("nav", "", "nav"),
@@ -254,9 +292,43 @@ modal.addEventListener("cancel", (e) => {
   e.preventDefault();
   closeModal();
 });
+let lastHudKey = "";
 function renderHUD() {
   const s = visualState ?? store.state,
     a = stats(s);
+  // The HUD heartbeat runs 4×/s; rebuild the DOM only when something shown changed.
+  const heartbeatImpulse = world.getTrailImpulseStatus();
+  const hudKey = JSON.stringify([
+    s.appearance,
+    a.level,
+    s.hp,
+    a.maxHp,
+    s.stamina,
+    a.maxStamina,
+    s.weapon,
+    s.shield,
+    s.armor,
+    s.boots,
+    s.ring,
+    isSlotUnlocked(s, "ring"),
+    s.gold,
+    s.materials,
+    s.potions,
+    devActive,
+    heartbeatImpulse
+      ? [heartbeatImpulse.bonus, Math.ceil(heartbeatImpulse.remainingMs / 1000)]
+      : 0,
+    s.map,
+    store.error,
+    started,
+    Boolean(store.state.battle),
+    world.paused,
+  ]);
+  if (hudKey === lastHudKey) {
+    world.sync();
+    return;
+  }
+  lastHudKey = hudKey;
   hud.replaceChildren();
   const crest = el("div", "FQ", "crest");
   const info = el("div", "", "vitals");
@@ -823,7 +895,7 @@ function settings(selected: "preferences" | "versions" = "preferences") {
     preview.setAttribute("aria-hidden", "true");
     const key = value === "feminine" ? "hero-f-0-0" : "hero-0-0";
     const context = preview.getContext("2d");
-    if (context && game.textures.exists(key)) {
+    if (context && game?.textures.exists(key)) {
       context.imageSmoothingEnabled = false;
       context.drawImage(
         game.textures.get(key).getSourceImage() as CanvasImageSource,
@@ -1384,6 +1456,10 @@ function worldMap() {
   );
 }
 
+world.onMapChange = () => {
+  clearTimeout(toastTimer);
+  toast.classList.remove("show");
+};
 world.onNear = (e) => {
   interact.textContent = e ? `${e.label} · E` : "Explore a trilha";
   interact.disabled = !e;
@@ -1798,4 +1874,7 @@ window.setInterval(() => {
 }, 250);
 window.addEventListener("pagehide", () => {
   if (started) store.persist();
+});
+document.addEventListener("visibilitychange", () => {
+  if (started && document.hidden) world.flushPosition();
 });

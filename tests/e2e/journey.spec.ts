@@ -5,6 +5,30 @@ const move = async (page: Page, key: string, ms: number) => {
   await page.waitForTimeout(ms);
   await page.keyboard.up(key);
 };
+const walkUntil = async (
+  page: Page,
+  key: string,
+  reached: (p: { x: number; y: number }) => boolean,
+) => {
+  await page.keyboard.down(key);
+  try {
+    await expect
+      .poll(
+        async () =>
+          reached(
+            await page.evaluate(() => {
+              // @ts-expect-error exposed only for browser diagnostics
+              const s = window.__PHASER_GAME__.scene.scenes[0].store.state;
+              return { x: s.x, y: s.y };
+            }),
+          ),
+        { intervals: [16], timeout: 10000 },
+      )
+      .toBe(true);
+  } finally {
+    await page.keyboard.up(key);
+  }
+};
 test("modelo da IA, importação, recompensa, histórico e reload", async ({
   page,
 }) => {
@@ -494,8 +518,10 @@ test("compra e descanso pela vila", async ({ page }) => {
   await expect(page.locator(".shop-balance")).toContainText("2 ouro");
   await expect(page.locator(".shop-balance")).toContainText("4 poções");
   await page.getByRole("button", { name: "Fechar menu" }).click();
-  await move(page, "ArrowDown", 350);
-  await move(page, "ArrowRight", 2700);
+  // Walk until reaching the fire instead of holding keys for fixed times:
+  // movement follows real elapsed time, so fixed holds overshoot on busy machines.
+  // On this row the fire's own collision block stops the hero ~22 px from it.
+  await walkUntil(page, "ArrowRight", (p) => p.x >= 248);
   await page.keyboard.press("e");
   await expect(page.locator(".resource-value").first()).toHaveText("50/50");
   expect(

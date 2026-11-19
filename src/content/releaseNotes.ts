@@ -7,6 +7,16 @@ export type ReleaseNote = {
 // Catalog of implemented deliveries, newest first. Never add planned features here.
 export const releaseNotes: readonly ReleaseNote[] = [
   {
+    version: "v23.09.2003.24",
+    date: "18/11/2026",
+    title: "Trilha Firme",
+    changes: [
+      "Jogo abre com segurança mesmo quando a tela começa oculta, com alternativa automática se o WebGL falhar.",
+      "Caminhada mais estável: câmera sem tremido, deslize nas quinas e passo correto em aparelhos lentos.",
+      "Salvamento da posição só quando ela muda, sem travadas periódicas durante a caminhada.",
+    ],
+  },
+  {
     version: "v23.09.2003.23",
     date: "01/10/2026",
     title: "Passo Ágil e Diário da Jornada",
