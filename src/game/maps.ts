@@ -1,4 +1,5 @@
 import type { EnemyId } from "../domain/game";
+import { hash2, noise2 } from "./noise";
 export type Entity = {
   encounterId?: string;
   patrolSlot?: import("../domain/encounters").CommonSlot;
@@ -11,10 +12,14 @@ export type Entity = {
     | "master"
     | "merchant"
     | "chest"
+    | "bush"
+    | "stump"
     | EnemyId;
   x: number;
   y: number;
   label?: string;
+  /** Visual species for trees (0 oak, 1 pine, 2 dark oak); never affects collision. */
+  variant?: number;
 };
 export type MapData = {
   width: number;
@@ -91,27 +96,104 @@ export function makeMap(forest: boolean): MapData {
         solid[y][x] = true;
       }
   }
-  for (let y = 1; y < height - 1; y += 2)
-    for (let x = 1; x < width - 1; x += 2) {
-      if (
-        tiles[y][x] ||
-        solid[y][x] ||
-        entities.some((e) => Math.hypot(e.x - x * 16, e.y - y * 16) < 48)
-      )
-        continue;
-      if ((x * 17 + y * 13) % 11 < (forest ? 9 : 5)) {
-        entities.push({ kind: "tree", x: x * 16 + 8, y: y * 16 + 20 });
+  placeVegetation(forest, width, height, tiles, solid, entities, block);
+  return { width, height, tiles, solid, entities };
+}
+/**
+ * Organic, deterministic vegetation. Collision stays per tile (one solid tile per
+ * plant); only the sprite position gets a small visual jitter. Trees thin out
+ * near paths and are denser deep in the woods; every labelled point keeps a
+ * clear radius so it remains reachable and patrol areas stay free.
+ */
+function placeVegetation(
+  forest: boolean,
+  width: number,
+  height: number,
+  tiles: number[][],
+  solid: boolean[][],
+  entities: Entity[],
+  block: (x: number, y: number, w: number, h: number) => void,
+) {
+  const seed = forest ? 2603 : 1907;
+  const pathTiles: Array<[number, number]> = [];
+  for (let y = 0; y < height; y++)
+    for (let x = 0; x < width; x++) if (tiles[y][x] === 1) pathTiles.push([x, y]);
+  const pathDistance = (x: number, y: number) => {
+    let best = Infinity;
+    for (const [px, py] of pathTiles)
+      best = Math.min(best, Math.max(Math.abs(px - x), Math.abs(py - y)));
+    return best;
+  };
+  const anchors = entities.map((e) => ({ x: e.x, y: e.y }));
+  const planted: Array<[number, number]> = [];
+  const crowded = (x: number, y: number, spacing: number) =>
+    planted.some(([px, py]) => Math.hypot(px - x, py - y) < spacing);
+  const variant = (x: number, y: number) => {
+    if (!forest) return hash2(x, y, seed + 5) < 0.18 ? 1 : 0;
+    if (hash2(x, y, seed + 6) < 0.16) return 0;
+    return noise2(x / 5, y / 5, seed + 9) > 0.48 ? 1 : 2;
+  };
+  const jitter = (x: number, y: number, salt: number, range: number) =>
+    Math.floor(hash2(x, y, seed + salt) * (range * 2 + 1)) - range;
+  const plantTree = (x: number, y: number, edge = false) => {
+    entities.push({
+      kind: "tree",
+      variant: variant(x, y),
+      x: x * 16 + 8 + jitter(x, y, 1, edge ? 2 : 3),
+      y: y * 16 + 20 + jitter(x, y, 2, edge ? 1 : 2),
+    });
+    planted.push([x, y]);
+  };
+  for (let y = 1; y < height - 1; y++)
+    for (let x = 1; x < width - 1; x++) {
+      if (tiles[y][x] || solid[y][x]) continue;
+      const cx = x * 16 + 8,
+        cy = y * 16 + 8;
+      if (anchors.some((a) => Math.hypot(a.x - cx, a.y - cy) < 50)) continue;
+      const distance = pathDistance(x, y);
+      const density = forest
+        ? [0, 0.18, 0.4, 0.58][Math.min(distance, 3)]
+        : [0, 0.08, 0.2, 0.34][Math.min(distance, 3)];
+      const chance = density * (0.45 + noise2(x / 3.5, y / 3.5, seed));
+      const roll = hash2(x, y, seed);
+      if (roll < chance && !crowded(x, y, forest ? 2.1 : 1.9)) {
+        plantTree(x, y);
+        block(x, y, 1, 1);
+      } else if (
+        distance >= 1 &&
+        hash2(x, y, seed + 3) < (forest ? 0.06 : 0.025) &&
+        !crowded(x, y, 1.4)
+      ) {
+        entities.push({
+          kind: forest && hash2(x, y, seed + 4) < 0.45 ? "stump" : "bush",
+          x: cx + jitter(x, y, 7, 2),
+          y: y * 16 + 14,
+        });
+        planted.push([x, y]);
         block(x, y, 1, 1);
       }
     }
+  // Border rows frame the map; side edges skip the map exits.
   for (let x = 0; x < width; x += 2) {
-    entities.push(
-      { kind: "tree", x: x * 16 + 8, y: 20 },
-      { kind: "tree", x: x * 16 + 8, y: height * 16 + 12 },
-    );
+    plantTree(x, -1, true);
+    entities[entities.length - 1].y = 20 + jitter(x, 0, 11, 1);
+    plantTree(x, height - 1, true);
+    entities[entities.length - 1].y = height * 16 + 12 + jitter(x, 1, 12, 1);
   }
-  return { width, height, tiles, solid, entities };
+  for (let y = 2; y < height - 2; y += 2) {
+    const exit = forest ? y >= 11 && y <= 16 : false;
+    if (!exit) {
+      plantTree(0, y, true);
+      entities[entities.length - 1].x = 6 + jitter(0, y, 13, 2);
+    }
+    const villageExit = !forest && y >= 8 && y <= 12;
+    if (!villageExit) {
+      plantTree(width - 1, y, true);
+      entities[entities.length - 1].x = width * 16 - 6 + jitter(1, y, 14, 2);
+    }
+  }
 }
+
 /**
  * Moves an actor by `distance` px along the (already normalised) direction.
  * Long steps are split into ≤4 px slices so fast movement never tunnels.

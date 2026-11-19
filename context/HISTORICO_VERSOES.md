@@ -1,5 +1,9 @@
 # Histórico de versões
 
+## v23.09.2003.26 — Bosque Vivo (19/11/2026, em branch)
+
+Etapa 3 do `PLANO_MELHORIA_GERAL.md` ampliada a pedido do jogador para refazer a estética mais bruta: chão de cada mapa desenhado numa única textura (caminho com cantos arredondados, borda pisada, margem na água, grama fria no bosque e decoração espalhada por ruído determinístico); três espécies de árvore com contorno, volume e balanço da copa; vegetação orgânica em vez de grade, com arbustos e tocos sólidos por tile; bruma em duas camadas com parallax; herói, heroína, mestre e mercador redesenhados nas 4 direções com caminhada de 4 quadros, respiração e piscada; contorno em monstros e objetos; sombras elípticas sob atores; marcadores de interação em balões pixel. Regras, colisão por tile e save sem mudança. Evidências em `docs/VALIDATION_V26.md`.
+
 ## v23.09.2003.25 — Golpe Certeiro (19/11/2026, publicada)
 
 Etapa 2 do `PLANO_MELHORIA_GERAL.md`, somente apresentação do combate. Entrada com clarão e mosaico pixel (~380 ms) e saída com fade antes de reconstruir o mapa. Golpe com avanço, pausa de impacto de 65–90 ms, tremor de câmera, recuo do alvo e partículas na cor de cada criatura; números de dano em fonte pixel 5×7 gerada no código; vida do inimigo no palco com faixa fantasma. Herói com idle de costas e respeitando a aparência escolhida (antes o combate sempre mostrava o visual masculino). Avisos de intenção somem durante a animação e não sobrepõem mais os números. Barras do HUD e do inimigo animam com faixa fantasma; log destaca as linhas novas; atalhos 1–5, letras A/H/D/I/F, Esc e Enter. Aviso de boas-vindas some ao iniciar batalha. Rodada continua persistida antes da animação; movimento reduzido sem mosaico, tremor, pausa ou partículas. Validação: `docs/VALIDATION_V25.md`.
