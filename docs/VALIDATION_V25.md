@@ -40,4 +40,8 @@ Movimento reduzido: sem mosaico, tremor, pausa, partículas, faixa fantasma ou a
 - A dica de atalho some via `pointer: coarse`; em viewport emulado de celular sem toque ela aparece.
 - O fundo do palco ainda é o da versão anterior (retângulos + árvores tingidas); é a etapa 4 do plano.
 - Tremor e pausa não foram medidos em celular físico.
-- Não publicado.
+- Publicação registrada na seção abaixo.
+
+## Publicação confirmada — 19/11/2026
+
+PR #18 integrado na main (merge `dfe2af3`). Checks Vercel aprovados. `https://fizzi-quest.vercel.app/version.json` respondeu `v23.09.2003.25`; o domínio oficial abriu com título `Fizzi Quest · v23.09.2003.25` e sem erros no console. Smoke test público, sem repetir a bateria completa em produção nem entrar em batalha no domínio.

@@ -1,8 +1,8 @@
-# Estado atual — v23.09.2003.25 em branch (oficial: v23.09.2003.24)
+# Estado atual — v23.09.2003.25 publicada
 
-## v25 — Golpe Certeiro (19/11/2026, branch `feat/v25-impacto-combate`)
+## v25 — Golpe Certeiro (publicada em 19/11/2026)
 
-Etapa 2 do [PLANO_MELHORIA_GERAL.md](PLANO_MELHORIA_GERAL.md): impacto do combate, só apresentação. Entrada em mosaico, saída com fade, pausa de impacto, tremor, recuo, partículas, números em fonte pixel gerada no código, vida do inimigo no palco, barras com faixa fantasma, idle do herói com a aparência correta, log destacado e atalhos de teclado. Evidências em `docs/VALIDATION_V25.md`. Não publicado; oficial continua v24.
+Etapa 2 do [PLANO_MELHORIA_GERAL.md](PLANO_MELHORIA_GERAL.md): impacto do combate, só apresentação. Entrada em mosaico, saída com fade, pausa de impacto, tremor, recuo, partículas, números em fonte pixel gerada no código, vida do inimigo no palco, barras com faixa fantasma, idle do herói com a aparência correta, log destacado e atalhos de teclado. Evidências em `docs/VALIDATION_V25.md`. PR #18 integrado (merge `dfe2af3`), checks Vercel aprovados; domínio oficial serve `version.json` v23.09.2003.25 e o smoke test conferiu título v25 e tela inicial sem erros no console.
 
 ## v24 — Trilha Firme (publicada em 18/11/2026)
 

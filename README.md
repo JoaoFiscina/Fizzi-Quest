@@ -2,7 +2,7 @@
 
 RPG pessoal de exploração em pixel art, construído com Phaser, TypeScript e Vite para o marco **Treino à aventura**.
 
-## Implementação atual — v23.09.2003.25 (em branch; oficial v23.09.2003.24)
+## Implementação atual — v23.09.2003.25 (publicada)
 
 Já estão implementados os blocos principais do domínio e da experiência:
 
@@ -47,7 +47,7 @@ Build para Vercel: `npm run build`, saída `dist`. O endereço oficial é [fizzi
 
 Validação: `npm test` e `npm run test:e2e` (Edge via Playwright). Evidências e limites em [`docs/VALIDATION.md`](docs/VALIDATION.md).
 
-V25 (Golpe Certeiro, em branch `feat/v25-impacto-combate`) dá impacto ao combate sem mudar regras: entrada em mosaico, pausa e tremor no golpe, partículas, números em pixel, vida do inimigo no palco, barras animadas e atalhos de teclado. Versão npm `23.9.2003-25`. Validação em [VALIDATION_V25.md](docs/VALIDATION_V25.md).
+V25 (Golpe Certeiro, PR #18 integrado em 19/11/2026 e conferida no domínio oficial) dá impacto ao combate sem mudar regras: entrada em mosaico, pausa e tremor no golpe, partículas, números em pixel, vida do inimigo no palco, barras animadas e atalhos de teclado. Versão npm `23.9.2003-25`. Validação em [VALIDATION_V25.md](docs/VALIDATION_V25.md).
 
 V24 (Trilha Firme, PR #17 integrado em 18/11/2026 e conferida no domínio oficial) melhora robustez e fluidez sem mudar regras: boot seguro com canvas oculto e alternativa Canvas, posição salva só quando muda, câmera sem tremido e deslize nas quinas. Validação em [VALIDATION_V24.md](docs/VALIDATION_V24.md); plano geral em [PLANO_MELHORIA_GERAL.md](context/PLANO_MELHORIA_GERAL.md).
 
