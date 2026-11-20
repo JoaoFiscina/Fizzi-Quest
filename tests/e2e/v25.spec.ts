@@ -1,7 +1,7 @@
 import { test, expect, type Page } from "@playwright/test";
 import { freshSave, startBattle } from "../../src/domain/game";
 import { mkdirSync } from "node:fs";
-const evidence = "docs/evidence/v23.09.2003.26/after";
+const evidence = "docs/evidence/v23.09.2003.27/after";
 mkdirSync(evidence, { recursive: true });
 
 const savedBattle = (page: Page) =>

@@ -106,7 +106,7 @@ Status: publicada como `v23.09.2003.25 — Golpe Certeiro` (PR #18, merge `dfe2a
 
 ### Etapa 3 — Bosque com identidade
 
-Status: implementada como `v23.09.2003.26 — Bosque Vivo` em `feat/v26-bosque-identidade` (19/11/2026); evidências em `docs/VALIDATION_V26.md`. Ampliação pedida pelo jogador: personagens redesenhados (4 direções, caminhada de 4 quadros, respiração e piscada) e contorno em monstros/objetos. Diferenças do plano: o chão vira uma textura de canvas por mapa (em vez de Tilemap) e o autotile do caminho é calculado por pixel (média em janela + ruído), o que arredonda cantos internos e externos sem tiles extras; a bruma usa duas faixas com parallax.
+Status: publicada como `v23.09.2003.26 — Bosque Vivo` (PR #19, merge `77644c9`, 19/11/2026); evidências em `docs/VALIDATION_V26.md`. Ampliação pedida pelo jogador: personagens redesenhados (4 direções, caminhada de 4 quadros, respiração e piscada) e contorno em monstros/objetos. Diferenças do plano: o chão vira uma textura de canvas por mapa (em vez de Tilemap) e o autotile do caminho é calculado por pixel (média em janela + ruído), o que arredonda cantos internos e externos sem tiles extras; a bruma usa duas faixas com parallax.
 
 - Paleta do bosque: grama mais fria/escura e 2 variações de árvore (pinheiro largo e carvalho) + arbustos, tocos, cogumelos e flores de sombra, dentro da paleta registrada.
 - Distribuição por ruído determinístico (semente fixa) em vez de grade; clareiras mais densas nas bordas, mais livres perto dos caminhos. Hitbox continua em tiles; testes de caminhabilidade para pontos de repouso/patrulha.
