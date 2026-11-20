@@ -1,8 +1,8 @@
-# Estado atual — v23.09.2003.27 em branch (oficial: v23.09.2003.26)
+# Estado atual — v23.09.2003.27 (oficial)
 
-## v27 — Criaturas do Bosque (19/11/2026, branch `feat/v27-monstros`)
+## v27 — Criaturas do Bosque (publicada em 19/11/2026)
 
-Pedido do jogador após a v26: monstros redesenhados. Broto com bulbo, folhas afiladas e expressões; Besouro de pedra com carapaça, cabeça, mandíbulas e pernas articuladas; Mariposa felpuda com manchas-olho e batida de asa em quatro tempos; Guardião como golem de pedra com capa de musgo, muda, runa e braços em blocos. Poses de ataque, dano, carapaça e preparo mais claras. Mesmos nomes de textura e tamanhos; regras e save sem mudança. Evidências em `docs/VALIDATION_V27.md`. Não publicado; oficial continua v26.
+Pedido do jogador após a v26: monstros redesenhados. Broto com bulbo, folhas afiladas e expressões; Besouro de pedra com carapaça, cabeça, mandíbulas e pernas articuladas; Mariposa felpuda com manchas-olho e batida de asa em quatro tempos; Guardião como golem de pedra com capa de musgo, muda, runa e braços em blocos. Poses de ataque, dano, carapaça e preparo mais claras. Mesmos nomes de textura e tamanhos; regras e save sem mudança. Evidências em `docs/VALIDATION_V27.md`. Publicada pelo PR #20 (merge `7f1e846`) e conferida no domínio.
 
 ## v26 — Bosque Vivo (publicada em 19/11/2026)
 

@@ -2,7 +2,7 @@
 
 RPG pessoal de exploração em pixel art, construído com Phaser, TypeScript e Vite para o marco **Treino à aventura**.
 
-## Implementação atual — v23.09.2003.27 (em branch; oficial v23.09.2003.26)
+## Implementação atual — v23.09.2003.27 (oficial)
 
 Já estão implementados os blocos principais do domínio e da experiência:
 
@@ -47,7 +47,7 @@ Build para Vercel: `npm run build`, saída `dist`. O endereço oficial é [fizzi
 
 Validação: `npm test` e `npm run test:e2e` (Edge via Playwright). Evidências e limites em [`docs/VALIDATION.md`](docs/VALIDATION.md).
 
-V27 (Criaturas do Bosque, em branch `feat/v27-monstros`) redesenha Broto, Besouro, Mariposa e Guardião com volume, contorno, expressões e poses mais claras. Versão npm `23.9.2003-27`. Validação em [VALIDATION_V27.md](docs/VALIDATION_V27.md).
+V27 (Criaturas do Bosque, publicada pelo PR #20) redesenha Broto, Besouro, Mariposa e Guardião com volume, contorno, expressões e poses mais claras. Versão npm `23.9.2003-27`. Validação em [VALIDATION_V27.md](docs/VALIDATION_V27.md).
 
 V26 (Bosque Vivo, PR #19 integrado em 19/11/2026 e conferida no domínio oficial) refaz a estética: chão desenhado por mapa com caminhos arredondados, três espécies de árvore, bosque orgânico com bruma, personagens redesenhados com caminhada mais fluida, contorno, sombras e marcadores pixel. Versão npm `23.9.2003-26`. Validação em [VALIDATION_V26.md](docs/VALIDATION_V26.md).
 

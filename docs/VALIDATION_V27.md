@@ -31,4 +31,8 @@ Todas as poses passam pelo contorno automático da v26 e usam a paleta registrad
 
 - Fundo do palco de combate continua o da etapa anterior (etapa 4 do plano).
 - As poses de guarda e preparo do Broto reaproveitam o idle (o domínio nunca as usa).
-- Não publicado.
+- Publicação registrada na seção abaixo.
+
+## Publicação confirmada — 19/11/2026
+
+PR #20 integrado na main (merge `7f1e846`). Checks Vercel aprovados. `https://fizzi-quest.vercel.app/version.json` respondeu `v23.09.2003.27`; no domínio oficial, título `Fizzi Quest · v23.09.2003.27`, texturas novas dos monstros carregadas (`sprout-attack`, `beetle-guard`, `moth-idle-3`, `guardian-prepare`) e nenhum erro no console. Smoke test público, sem repetir a bateria completa em produção.

@@ -1,6 +1,6 @@
 # Histórico de versões
 
-## v23.09.2003.27 — Criaturas do Bosque (19/11/2026, em branch)
+## v23.09.2003.27 — Criaturas do Bosque (19/11/2026, publicada)
 
 Pedido do jogador após a v26: monstros redesenhados. Broto com bulbo, folhas afiladas e expressões; Besouro de pedra com carapaça, cabeça, mandíbulas e pernas articuladas; Mariposa felpuda com manchas-olho e batida de asa em quatro tempos; Guardião como golem de pedra com capa de musgo, muda, runa e braços em blocos. Poses de ataque, dano, carapaça e preparo mais claras. Mesmos nomes de textura e tamanhos; regras e save sem mudança. Evidências em `docs/VALIDATION_V27.md`.
 
